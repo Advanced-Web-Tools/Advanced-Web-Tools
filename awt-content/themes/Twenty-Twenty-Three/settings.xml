@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<settings>
+    <csscolors>
+        <primary-color>#4263EB</primary-color>
+        <primary-color-variant>#EDF2FF</primary-color-variant>
+        <secondary-color>#FFFFFF</secondary-color>
+        <secondary-color-variant>#F2F2F2</secondary-color-variant>
+        <text-color>#212529</text-color>
+        <text-color-variant>#84898D</text-color-variant>
+        <primary-button>#c5aba5</primary-button>
+        <secondary-button>#f7f6f3</secondary-button>
+    </csscolors>
+</settings>

@@ -1,0 +1,72 @@
+:root {
+    --icon-filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(297deg) brightness(104%) contrast(103%);
+    --icon-filter-secondary: invert(58%) sepia(60%) saturate(423%) hue-rotate(136deg) brightness(91%) contrast(92%);
+    --text-color: #ffffff;
+    --text-color-secondary: #3AAFB9;
+    --accent-color: #001011;
+    --accent-color-secondary: #093A3E;
+    --background-color: #97C8EB;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+    display: flex;
+    flex-wrap: wrap;
+    flex-flow: column;
+    height: 100%;
+}
+
+.main-section {
+    display: grid;
+    grid-template-columns: 150px auto;
+    grid-template-rows: auto;
+}
+
+.top-nav {
+    padding: 10px 0;
+    width: 100vw;
+    background: var(--accent-color);
+    color: var(--text-color);
+    font-size: 13px;
+}
+
+.top-nav .profiler {
+    margin: 0 10px;
+}
+
+.top-nav .profiler * {
+    margin: 0;
+}
+
+.main-section {
+    height: 100%;
+    padding: 0;
+}
+
+.page {
+    margin: 10px;
+}
+
+*.hidden {
+    display: none;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height:100vh;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+@media only screen and (max-width: 768px) {
+    .main-section {
+        display: flex;
+    }
+}
