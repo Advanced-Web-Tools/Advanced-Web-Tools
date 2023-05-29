@@ -1,0 +1,45 @@
+.main-navbar {
+    height: 100%;
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    background: #000;
+}
+
+.main-navbar .nav-item {
+    padding: 0 10px;
+    height: 40px;
+    font-size: 15px;
+    display: grid;
+    grid-template-columns: 30px auto;
+    grid-template-rows: 100%;
+    justify-content: left;
+    align-items: center;
+    color: #fff;
+    text-decoration: none;
+    transition: 0.2s ease all;
+}
+
+.main-navbar .nav-item img {
+    width: 15px;
+    height: 15px;
+}
+
+.main-navbar .nav-item .svg {
+    filter: var(--icon-filter);
+}
+
+.main-navbar .nav-item:hover, .nav-item.current {
+    background: var(--secondary-color-variant);
+    color: var(--secondary-text-color);
+}
+
+.main-navbar .nav-item:hover .svg, .nav-item.current .svg{
+    filter: var(--icon-filter);
+}
+
+@media only screen and (max-width: 768px) {
+    .main-navbar {
+        display: none;
+    }
+}
