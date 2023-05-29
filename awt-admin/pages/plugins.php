@@ -39,8 +39,9 @@ if (!$check->checkAuthentication()) {
         </div>
     </div>
 </section>
-<section>
-    <button onclick="openClose('.upload');">Add new plugins</button>
+<section class="add-plugins">
+    <input type="text" placeholder="Search in the store...">
+    <button onclick="openClose('.upload');">Add new plugin</button>
 </section>
 <section>
     <div class="plugin-list">

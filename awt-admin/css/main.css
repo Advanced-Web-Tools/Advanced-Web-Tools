@@ -1,11 +1,14 @@
 :root {
     --icon-filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(297deg) brightness(104%) contrast(103%);
     --icon-filter-secondary: invert(58%) sepia(60%) saturate(423%) hue-rotate(136deg) brightness(91%) contrast(92%);
-    --text-color: #ffffff;
-    --text-color-secondary: #3AAFB9;
-    --accent-color: #001011;
-    --accent-color-secondary: #093A3E;
-    --background-color: #97C8EB;
+    --background-color: #F7F8F6;
+    --text-color: #000;
+    --text-color-variant: #84898D;
+    --secondary-text-color: var(--background-color);
+    --primary-color: #4152BD;
+    --primary-color-variant: #85ABCF;
+    --secondary-color: #D8A9BE;
+    --secondary-color-variant: #4378D5;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
@@ -18,6 +21,7 @@ body {
     flex-wrap: wrap;
     flex-flow: column;
     height: 100%;
+    background: #FFF9F9;
 }
 
 .main-section {
@@ -29,8 +33,8 @@ body {
 .top-nav {
     padding: 10px 0;
     width: 100vw;
-    background: var(--accent-color);
-    color: var(--text-color);
+    background: #000;
+    color: var(--secondary-text-color);
     font-size: 13px;
 }
 

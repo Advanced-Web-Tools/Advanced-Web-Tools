@@ -1,5 +1,39 @@
 .page {
     overflow-y: auto;
+    padding: 10px;
+}
+
+.add-plugins {
+    margin: 40px 0 0 0;
+    height: 100px;
+}
+
+.add-plugins input {
+    width: 350px;
+    height: 50px;
+    padding: 0 10px;
+    border: 1px solid var(--primary-color);
+    border-radius: 10px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.add-plugins button {
+    padding: 15px 30px;
+    margin: 0 20px;
+    background: var(--primary-color);
+    color: var(--secondary-text-color);
+    font-weight: 600;
+    font-size: 15px;
+    border: 1px solid var(--primary-color-variant);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease all;
+}
+
+.add-plugins button:hover {
+    background: var(--seconadry-text-color);
+    color: var(--primary-color);
 }
 
 .upload {
@@ -100,28 +134,36 @@
 }
 
 .plugin-list {
-    display: grid;
-    grid-template-rows: 60px;
-    grid-auto-flow: row;
-    border: 1px solid var(--accent-color-secondary);
+    display: flex;
+    gap: 20px;
 }
 
 #headers.plugin {
-    background: var(--accent-color-secondary);
-    color: var(--text-color);
+    background: var(--secondary-color-variant);
+    color: var(---secondary-text-color);
+    display: none;
 }
 
 .plugin {
-    min-height: 60px;
+    height: 200px;
+    width: auto;
     padding: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    border-radius: 10px;
+    padding: 20px;
+    background: var(--primary-color);
+    color: var(--secondary-text-color);
+}
+
+.plugin .plugin-header {
+    height: 80px;
     display: grid;
-    grid-template-columns: 5% 31% 21% 41%;
-    grid-template-rows: 100%;
-    padding: 0 20px;
-    align-items: center;
+    grid-template-columns: 70px auto;
     justify-content: center;
-    text-align: center;
-    border-bottom: 1px solid var(--accent-color-secondary);
+    align-items: center;
+    gap: 20px;
 }
 
 #status1.plugin {
@@ -133,12 +175,12 @@
 }
 
 .plugin img {
-    height: 30px;
+    height: 50px;
     justify-self: center;
 }
 
 .plugin .svg {
-    filter: var(--icon-filter-secondary);
+    filter: var(--icon-filter);
 }
 
 .plugin h2 {
@@ -146,41 +188,44 @@
 }
 
 .plugin form {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     flex-direction: row;
     gap: 10px;
     margin: 0;
+    place-content: center;
 }
 
 .plugin button {
-    background: var(--accent-color);
+    background: var(--secondary-color);
     padding: 13px 30px;
-    border: 1px solid var(--accent-color);
-    color: var(--text-color);
+    border: 1px solid var(--secondary-color);
+    color: var(--secondary-text-color);
     font-size: 15px;
     cursor: pointer;
     transition: 0.3s ease all;
+    max-height: 50px;
 }
 
 .plugin button[value='1'] {
-    background: var(--accent-color-secondary);
-    border: 1px solid var(--accent-color-secondary);
-    color: var(--text-color);
+    background: var(--secondary-color-variant);
+    border: 1px solid var(--secondary-color-variant);
+    color: var(--secondary-text-color);
 }
 
 .plugin button:enabled:hover:not([disabled]) {
-    background: var(--text-color);
-    border: 1px solid var(--accent-color);
-    color: var(--accent-color);
+    background: var(--background-color);
+    border: 1px solid var(--secondary-color);
+    color: var(---secondary-text-color);
     font-size: 15px;
 }
 
 .plugin button[value='1']:enabled:hover:not([disabled]) {
-    background: var(--text-color);
-    border: 1px solid var(--accent-color-secondary);
-    color: var(--accent-color-secondary);
+    background: var(--background-color);
+    border: 1px solid var(--secondary-color-variant);
+    color: var(--secondary-color-varianty);
 }
 
 .plugin button:disabled {

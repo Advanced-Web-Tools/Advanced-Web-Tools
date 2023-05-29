@@ -22,7 +22,7 @@ $(document).ready(function () {
                 var pluginList = '<div class="plugin" id="id' + value.id + '">';
                 if (value.icon != null && value.icon != '') {
                     if (value.icon.endsWith('.svg')) {
-                        pluginList += '<img src="../awt-content/plugins/' + value.name + '/data/icons/' + value.icon + '" alt="icon" class="svg">';
+                        pluginList += '<div class="plugin-header"> <img src="../awt-content/plugins/' + value.name + '/data/icons/' + value.icon + '" alt="icon" class="svg">';
                     } else {
                         pluginList += '<img src="../awt-content/plugins/' + value.name + '/data/icons/' + value.icon + '" alt="icon">';
                     }
@@ -33,7 +33,7 @@ $(document).ready(function () {
                 if (value.xml.requiresAuthorization !== undefined) {
                     if (value.xml.requiresAuthorization === 'true' && value.status === 0) disabled = 'disabled';
                 }
-                pluginList += '<h2 class="name">' + value.name + ' v' + value.version + '</h2><p class="description">' + value.description + '</p><form class="action" method="post" action="./jobs/plugins.php?id=' + value.id + '&name=' + value.name + '">';
+                pluginList += '<div class="plugin-header-name"><h2 class="name">' + value.name + ' v' + value.version + '</h2><p class="description">' + value.description + '</p></div></div><form class="action" method="post" action="./jobs/plugins.php?id=' + value.id + '&name=' + value.name + '">';
                 if (value.status === 1) {
                     pluginList += '<button type="submit" value="0" name="action" id="red"' + disabled + '>Disable</button>';
                 } else {

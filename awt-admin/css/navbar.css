@@ -3,7 +3,7 @@
     width: 150px;
     display: flex;
     flex-direction: column;
-    background: var(--accent-color);
+    background: #000;
 }
 
 .main-navbar .nav-item {
@@ -15,7 +15,7 @@
     grid-template-rows: 100%;
     justify-content: left;
     align-items: center;
-    color: var(--text-color);
+    color: #fff;
     text-decoration: none;
     transition: 0.2s ease all;
 }
@@ -30,12 +30,12 @@
 }
 
 .main-navbar .nav-item:hover, .nav-item.current {
-    background: var(--accent-color-secondary);
-    color: var(--text-color-secondary);
+    background: var(--secondary-color-variant);
+    color: var(--secondary-text-color);
 }
 
 .main-navbar .nav-item:hover .svg, .nav-item.current .svg{
-    filter: var(--icon-filter-secondary);
+    filter: var(--icon-filter);
 }
 
 @media only screen and (max-width: 768px) {

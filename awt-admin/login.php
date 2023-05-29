@@ -23,15 +23,29 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/main.css">
+    <link rel="stylesheet" href="./css/login.css">
+    <script src="https://kit.fontawesome.com/9623f60d76.js" crossorigin="anonymous"></script>
     <title><?php echo WEB_NAME; ?> | Login</title>
 </head>
 <body>
     <section class="login">
-        <form action="./jobs/signInOut.php" method="post">
-            <input type="username" name="username" id="password">
-            <input type="password" name="password" id="password">
-            <button type="submit" name="login">Login</button>
-        </form>
+        <div class="form-wrapper">
+            <form action="./jobs/signInOut.php" method="post">
+                <div class="form-header">
+                    <h1>Welcome back!</h1>
+                    <p>Please login to continue.</p>
+                </div>
+                <input type="username" name="username" id="username" placeholder="Username or email">
+                <input type="password" name="password" id="password" placeholder="Password">
+                <button type="submit" name="login"><i class="fa-solid fa-arrow-right"></i></button>
+                <div class="lost">
+                    <p>Are you lost?</p>
+                    <hr>
+                    <a href="../">Go to the visitor area  <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </form>
+        </div>
     </section>
 </body>
 </html>

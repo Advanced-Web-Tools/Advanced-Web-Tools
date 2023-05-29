@@ -29,8 +29,9 @@ if (defined('DASHBOARD') || checkForPlugin('floatingEditor', '0.0.1') == true) {
     <script src="../awt-src/vendor/jQuery/jquery.min.js"></script>
     <script>
         window.addEventListener("load", (event) => {
-            var page = '?page=<?php echo $_GET['page']; ?>';
+            var page = '<?php echo HOSTNAME . 'awt-admin/?page='.$_GET['page']; ?>';
             $('.nav-item[href="' + page + '"]').addClass('current');
+           
         });
     </script>
 <?php endif; ?>
