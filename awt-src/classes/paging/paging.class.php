@@ -2,14 +2,16 @@
 
 namespace paging;
 
-class paging
+use cache\cache;
+use database\databaseConfig;
+
+class paging extends cache
 {
     protected array $adminPages;
-
     protected array $pluginPages;
-
     protected array $pages;
-
+    private object $database;
+    private object $mysqli;
     public function __construct($pluginPages)
     {
         $this->pages = array();
@@ -27,6 +29,12 @@ class paging
         $this->pluginPages = $pluginPages;
 
         if (isset($_GET['page'])) echo "<title>" . WEB_NAME . " | " . $_GET['page'] . "</title>";
+
+        $this->database = new databaseConfig;
+
+        $this->database->checkAuthority() == 1 or die("Fatal error database access for " . $this->database->getCaller() . " was denied");
+
+        $this->mysqli = $this->database->getConfig();
     }
 
     public function addBuiltInPage($name, $path, $description = '')
@@ -41,6 +49,35 @@ class paging
         global $menu;
         global $settings;
         global $aio;
+
+        $this->initializeCache();
+        
+        if ($this->cacheEnabled && $this->checkForCache($_GET['page'])) {
+            echo $this->readCache($_GET['page']);
+            return 1;
+        }
+
+        $result = array();
+        $status = 'live';
+
+        $stmt = $this->mysqli->prepare("SELECT * FROM `awt_paging` WHERE `name` = ? AND `status` = ?;");
+        $stmt->bind_param('ss', $_GET['page'], $status);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($result['id'], $result['name'], $result['content_1'], $result['content_2'], $result['status'], $result['token'], $result['override']);
+        $stmt->fetch();
+
+
+        if ($stmt->num_rows == 1) {
+
+            echo $result['content_1'] . $result['content_2'];
+            if($this->cacheEnabled) $this->writePageCache( $_GET['page'],  $result['content_1'] . $result['content_2']);
+
+            $stmt->close();
+            return 1;
+        }
+
+        $stmt->close();
 
         if ($selfCalled && $varName != '') {
             global $$varName;
