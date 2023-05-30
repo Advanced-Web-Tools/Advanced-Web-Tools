@@ -1,0 +1,5 @@
+# Ignore files ending with _cached.html
+*_cached.html
+
+# Ignore .vscode folder
+.vscode/
