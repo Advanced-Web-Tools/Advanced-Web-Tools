@@ -25,7 +25,8 @@ define("CONTENT", ROOT.DIRECTORY_SEPARATOR.'awt-content'.DIRECTORY_SEPARATOR);
 define("THEMES", CONTENT.'themes'.DIRECTORY_SEPARATOR);
 define("PLUGINS", CONTENT.'plugins'.DIRECTORY_SEPARATOR);
 
-define('HOSTNAME_PATH', '/Advanced-Web-Tools/');
+include_once JOBS.'loaders'.DIRECTORY_SEPARATOR.'awt-autoLoader.php';
+include_once JOBS.'awt-Settings.php';
 
 //Safe switch
 define("ACCESS_ALLOWED", 1);

@@ -21,6 +21,7 @@ class sessionHandler
         
         
         if(!isset($_SESSION['sessionInfo']['started'])) $_SESSION['sessionInfo']['started'] = $this->time;
+        if(!isset($_SESSION['cache']['started'])) $_SESSION['cache']['started'] = $this->time;
         
         if(isset($_SESSION['sessionInfo']['expires'])) {
             if ($_SESSION['sessionInfo']['expires'] < $this->time) {

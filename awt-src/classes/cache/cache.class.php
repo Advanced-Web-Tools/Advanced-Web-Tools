@@ -3,6 +3,7 @@
 namespace cache;
 
 use session\sessionHandler;
+use settings\settings;
 
 class cache extends SessionHandler
 {
@@ -12,21 +13,14 @@ class cache extends SessionHandler
     private string $location;
     private array $files;
     private object $settings;
-
-    public function __construct()
-    {
-        $this->cacheEnabled = true;
-        $this->sessionDuration = 300;
-        $this->fileDuration = 600;
-        $this->location = CACHE;
-    }
-
     public function initializeCache()
     {
-        $this->cacheEnabled = true;
-        $this->sessionDuration = 300;
-        $this->fileDuration = 10;
+        $this->settings = new settings;
+        $this->cacheEnabled = $this->settings->getSettingsValue('enable_caching');
+        $this->sessionDuration = $this->settings->getSettingsValue('page_caching_time');
+        $this->fileDuration = $this->settings->getSettingsValue('cache_in_session_time');
         $this->location = CACHE;
+        $this->sessionHandler();
     }
 
     public function scanCacheDirectory()
@@ -71,5 +65,46 @@ class cache extends SessionHandler
         $file = fopen(CACHE . $name . '_cached.html', 'w');
         fwrite($file, $content);
         fclose($file);
+    }
+
+    public function addToSessionCache($name, $value)
+    {
+        $this->sessionHandler();
+        $_SESSION['cache'][$name] = $value;
+        return 1;
+    }
+
+    public function checkForCacheSession($name)
+    {
+        $this->sessionHandler();
+
+        if(time() - $_SESSION['cache']['started'] > 300) $this->sessionRemover('cache');
+
+        if(!isset($_SESSION['cache'])) return false;
+
+        if(!isset($_SESSION['cache'][$name])) return false;
+
+        return true;
+
+    }
+
+    public function getCacheSession($name)
+    {   
+        if($this->checkForCacheSession($name)) return $_SESSION['cache'][$name];
+        return false;
+    }
+
+    public function clearCache()
+    {
+        $this->sessionHandler();
+
+        if(isset($_SESSION['cache'])) $this->sessionRemover('cache');
+
+        foreach ($this->files as $key => $value) {
+            unlink($this->location.$value);
+        }
+
+        return 1;
+
     }
 }

@@ -33,8 +33,6 @@ class profiler extends sessionHandler
             if($this->permissionLevel == 2) $this->accountType = 'Author';
         }
 
-
-
     }
 
     public function getProfile()

@@ -30,6 +30,7 @@ final class databaseConfig
         CLASSES.'content'.DIRECTORY_SEPARATOR.'pluginInstaller.class.php',
         CLASSES.'content'.DIRECTORY_SEPARATOR.'themeInstaller.class.php',
         CLASSES.'paging'.DIRECTORY_SEPARATOR.'paging.class.php',
+        CLASSES.'settings'.DIRECTORY_SEPARATOR.'settings.class.php',
     );
 
     private object $mysqli;
