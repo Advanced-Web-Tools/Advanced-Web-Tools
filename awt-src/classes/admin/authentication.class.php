@@ -32,7 +32,7 @@ class authentication extends sessionHandler
         $this->stmt->fetch();
         
         if($this->stmt->num_rows != 1) {
-            return 'false';
+            return false;
         }
         
         $this->stmt->close();

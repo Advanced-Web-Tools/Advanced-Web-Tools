@@ -23,10 +23,10 @@ $plugins = new plugins();
 
 $plugins = $plugins->getPlugins();
 
-
-loadAllPlugins();
-
 include_once PLUGINS . 'defaultdashboardNavigation' . DIRECTORY_SEPARATOR . 'plugin.main.php';
+
+if(USE_PLUGINS == 'true') loadAllPlugins();
+
 
 
 ob_start();

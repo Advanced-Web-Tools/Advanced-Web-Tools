@@ -8,7 +8,7 @@ require_once './awt-config.php';
 
 
 //Crucial jobs
-include_once JOBS.'loaders'.DIRECTORY_SEPARATOR.'awt-autoLoader.php';
+
 include_once JOBS.'awt-domainBuilder.php';
 include_once JOBS.'loaders'.DIRECTORY_SEPARATOR.'awt-pluginLoader.php';
 
