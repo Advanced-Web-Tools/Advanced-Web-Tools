@@ -57,7 +57,7 @@
             <?php navbarLoader($navbar); ?>
         </nav>
         <section class="page">
-            <?php $paging->getPage(); ?>
+            <?php $paging->getPage(true, "paging"); ?>
         </section>
     </section>
 </body>

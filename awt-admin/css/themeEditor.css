@@ -1,64 +1,66 @@
 .main-section {
-   display: block !important;
-   margin: 0;
-}
-
-.page {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row-reverse;
-    width: 100%;
-    height: 100%;
+    display: block !important;
     margin: 0;
-    padding: 0;
-}
-
-.settings {
-    display: grid;
-    grid-auto-flow: row;
-    height: 100%;
-    width: 10%;
-    background-color: var(--accent-color-secondary);
-    color: var(--text-color-secondary);
-}
-
-.settings .wrapper {
-    height: 50px;
-}
-
-.settings form input {
-    margin: 10px 0;
-    border: none;
-    padding: 10px;
-}
-
-.preview {
-    width: 90%;
-    max-height: 100vh;
-    overflow-y: auto;
-}
-
-.options-header {
-    border-bottom: 1px solid var(--text-color-secondary);
-}
-
-.options-header * {
-    cursor: pointer;
-    margin: 20px 10px;
-}
-
-.options {
-    margin: 10px;
-}
-.options * {
-    cursor: pointer;
-}
-
-.options label {
-    cursor: default;
-}
-
-.options input {
-    cursor: auto;
-}
-
+ }
+ 
+ .page {
+     display: flex;
+     flex-wrap: wrap;
+     flex-direction: row-reverse;
+     width: 100%;
+     height: 100%;
+     margin: 0;
+     padding: 0;
+ }
+ 
+ .settings {
+     display: grid;
+     grid-template-rows: 20px auto;
+     grid-auto-flow: row;
+     height: 100%;
+     width: 10%;
+     background-color: var(--accent-color-secondary);
+     color: var(--text-color-secondary);
+ }
+ 
+ .settings .wrapper {
+     height: 50px;
+ }
+ 
+ .settings form input {
+     margin: 10px 0;
+     border: none;
+     padding: 10px;
+ }
+ 
+ .preview {
+     width: 90%;
+     max-height: 100vh;
+     overflow-y: auto;
+ }
+ 
+ .options-header {
+     border-bottom: 1px solid var(--text-color-secondary);
+ }
+ 
+ .options-header * {
+     cursor: pointer;
+     margin: 20px 10px;
+ }
+ 
+ .options {
+     margin: 10px;
+ }
+ .options * {
+     cursor: pointer;
+ }
+ 
+ .options label {
+     cursor: default;
+ }
+ 
+ .options input {
+     cursor: auto;
+ }
+ 
+ 

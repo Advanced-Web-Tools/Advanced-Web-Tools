@@ -31,6 +31,8 @@ $moduleData = $module->getModuleData(THEME_DIR . $_GET['page'] . "PageModules.xm
 <script src="./javascript/themeEditor/colorEditor.js"></script>
 <script src="./javascript/themeEditor/settingsSubmenu.js"></script>
 <script src="./javascript/themeEditor/moduleDragger.js"></script>
+<script src="./javascript/themeEditor/textEditor.js"></script>
+<script src="./javascript/themeEditor/linkEditor.js"></script>
 <script src="./javascript/themeEditor/viewPort.js"></script>
 
 <form>
@@ -43,5 +45,6 @@ $moduleData = $module->getModuleData(THEME_DIR . $_GET['page'] . "PageModules.xm
 <script>
     openSubmenu(".colors .options-header", ".colors .options", "hidden");
     openSubmenu(".modules .options-header", ".modules .options", "hidden");
+    openSubmenu(".modules-settings .options-header", ".modules-settings .options", "hidden");
     moduleDragger(".preview", ".modules .options");
 </script>
