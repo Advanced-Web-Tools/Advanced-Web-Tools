@@ -4,6 +4,6 @@
     <version>0.0.1</version>
     <description>This is default Metrics plugin for AWT</description>
     <icon>chart-line-solid.svg</icon>
-    <requiresAuthorization>true</requiresAuthorization>
+    <requiresAuthorization>false</requiresAuthorization>
     <authorizationFile>src.SPRT.awtMetrics.class.php</authorizationFile>
 </plugin>

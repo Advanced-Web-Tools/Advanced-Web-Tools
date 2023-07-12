@@ -3,8 +3,8 @@
 function loadAllPlugins()
 {   
 
-    global $plugins;
     global $dependencies;
+    global $plugins;
     global $aio;
     global $settings;
     global $pluginPages;
@@ -14,6 +14,8 @@ function loadAllPlugins()
     global $engines;
     global $widgets;
     global $loadedPlugins;
+    global $pluginBlocks;
+    global $loadedBlocks;
 
     foreach ($plugins as $plugin) {
         if ($plugin['status'] === 1) {

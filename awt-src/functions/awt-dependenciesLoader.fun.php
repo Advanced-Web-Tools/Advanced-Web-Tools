@@ -19,6 +19,8 @@ function dependenciesLoader()
     global $engines;
     global $widgets;
     global $loadedPlugins;
+    global $pluginBlocks;
+    global $loadedBlocks;
     
     $highPriority = array();
     $mediumPriority = array();

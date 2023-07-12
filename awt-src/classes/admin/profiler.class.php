@@ -40,7 +40,7 @@ class profiler extends sessionHandler
         return array('name' => $this->name, 'email' => $this->email, 'fname' => $this->firstname, 'lname' => $this->lastname, 'type' => $this->accountType);
     }
 
-    public function checkPermissions($requiredPerm)
+    public function checkPermissions(int $requiredPerm)
     {
         if($this->permissionLevel == 0) return true;
         if($this->permissionLevel > $requiredPerm) return false;

@@ -5,7 +5,7 @@
                 <h1><?php echo $data['title']['_text']; ?></h1>
             </div>
             <div class="description-container">
-                <?php echo $data['paragraph']['_text']; ?>
+                <p><?php echo $data['paragraph']['_text']; ?></p>
             </div>
             <div class="button-container">
                 <a href="<?php echo $data['button']['link']; ?>">

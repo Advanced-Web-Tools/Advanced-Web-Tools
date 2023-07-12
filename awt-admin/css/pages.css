@@ -1,0 +1,30 @@
+.table {
+    display: grid;
+    grid-template-columns: repeat(5, 100px);
+    gap: 20px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+}
+
+.table-row {
+    display: contents;
+    text-align: center;
+}
+
+.table-header {
+    text-align: center;
+}
+
+.data-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.table-cell.actions-cell{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
