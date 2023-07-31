@@ -3,4 +3,9 @@
 
 # Ignore .vscode folder
 .vscode/
+
+# Ignore .VSCodeCounter folder (if needed)
 .VSCodeCounter/
+
+# Ignore databaseConfig.class.php
+databaseConfig.class.php

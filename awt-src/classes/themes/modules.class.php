@@ -13,8 +13,8 @@ class modules
 
     public function loadModule($name, $additional_data = '')
     {
-        $data = $additional_data;
         global $theme;
+        $data = $additional_data;
         include_once $this->requiredModules[$name];
     }
 

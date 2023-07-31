@@ -5,6 +5,7 @@ define("THEME_PAGES_DIR", THEME_DIR . "pages" . DIRECTORY_SEPARATOR);
 define("THEME_MODULES_DIR", THEME_DIR . "modules" . DIRECTORY_SEPARATOR);
 define("THEME_NAME", "Twenty-Twenty-Three");
 
+
 use paging\paging;
 
 
@@ -13,6 +14,7 @@ $paging = new paging($pluginPages);
 
 $paging->addBuiltInPage("Home", THEME_PAGES_DIR . "home.page.php", "This is a test desciption");
 $paging->addBuiltInPage("About Us", THEME_PAGES_DIR . "about.page.php", "This is a test desciption");
+$paging->addBuiltInPage("custom", THEME_PAGES_DIR . "customPage.page.php", "This is a test desciption");
 
 $theme->addModule("Menu", THEME_MODULES_DIR . "menu.mod.php");
 $theme->addModule("Landing", THEME_MODULES_DIR . "landing.mod.php");
@@ -41,5 +43,9 @@ if (!defined('DASHBOARD') || defined('THEME_EDIT')) {
     echo '<script src="https://kit.fontawesome.com/9623f60d76.js" crossorigin="anonymous"></script>';
     if (!isset($_GET['page']) || empty($_GET['page'])) $_GET['page'] = "Home";
 
-    $paging->getPage(true, 'paging');
+    if (isset($_GET['custom'])) {
+        include THEME_PAGES_DIR . "customPage.page.php";
+    } else {
+        $paging->getPage(true, 'paging');
+    }
 }

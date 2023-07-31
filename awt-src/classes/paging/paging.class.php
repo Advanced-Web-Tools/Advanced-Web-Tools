@@ -25,6 +25,7 @@ class paging extends cache
             'Accounts' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'accounts.php',
             'ThemeEditor' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'themeEditor.php',
             'Pages' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'pages.php',
+            'Media' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'media.php',
             'pageEditor' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'pageEditor.php',
         );
 
@@ -155,6 +156,12 @@ class paging extends cache
 
         $page_length = strlen($page);
 
+        $page =  str_replace("ui-sortable-handle", "", $page);
+        $page =  str_replace("ui-sortable", "", $page);
+        $page =  str_replace("ui-sortable", "", $page);
+        $page =  str_replace('contenteditable="true"', "", $page);
+        $page =  str_replace('selected', "", $page);
+
         if ($page_length > 16777215) {
             $content_1 = substr($page, 0, 16777214);
             $content_2 = substr($page, 16777214, 16777214 * 2);
@@ -173,13 +180,14 @@ class paging extends cache
     {
         $result = array();
 
-        $stmt = $this->mysqli->prepare("SELECT * FROM `awt_paging`");
+        $stmt = $this->mysqli->prepare("SELECT `id`, `name`, `status`, `override`, `token` FROM `awt_paging`");
         $stmt->execute();
         $res = $stmt->get_result();
 
         while ($row = $res->fetch_assoc()) {
             $result[] = $row;
         }
+
 
         return $result;
     }
@@ -212,15 +220,73 @@ class paging extends cache
         return "Page deleted with id: $id";
     }
 
-    public function loadPage(int $page)
-    {
+    public function loadPageEdit(int $id) {
+
         $result = array();
+
         $stmt = $this->mysqli->prepare("SELECT * FROM `awt_paging` WHERE `id` = ?;");
-        $stmt->bind_param('i', $page);
+        $stmt->bind_param('s', $id);
         $stmt->execute();
         $stmt->store_result();
         $stmt->bind_result($result['id'], $result['name'], $result['content_1'], $result['content_2'], $result['status'], $result['token'], $result['override']);
         $stmt->fetch();
+
+
+        if ($stmt->num_rows == 1) {
+
+            echo $result['content_1'] . $result['content_2'];
+            $stmt->close();
+            return 1;
+        } else {
+            die("Page does not exist");
+        }
+    }
+    
+    public function loadPage($page, string $mode = "id")
+    {
+        $result = array();
+
+        $status = "live";
+
+        if ($mode == "id") {
+            $stmt = $this->mysqli->prepare("SELECT * FROM `awt_paging` WHERE `id` = ? AND `status` = ?;");
+            $stmt->bind_param('ss', $page, $status);
+            $stmt->execute();
+            $stmt->store_result();
+            $stmt->bind_result($result['id'], $result['name'], $result['content_1'], $result['content_2'], $result['status'], $result['token'], $result['override']);
+            $stmt->fetch();
+        } else if ($mode == "name") {
+            $stmt = $this->mysqli->prepare("SELECT * FROM `awt_paging` WHERE `name` = ? AND `status` = ?;");
+            $stmt->bind_param('ss', $page, $status);
+            $stmt->execute();
+            $stmt->store_result();
+            $stmt->bind_result($result['id'], $result['name'], $result['content_1'], $result['content_2'], $result['status'], $result['token'], $result['override']);
+            $stmt->fetch();
+        }
+
+        if ($stmt->num_rows == 1) {
+
+            echo $result['content_1'] . $result['content_2'];
+            $stmt->close();
+            return 1;
+        } else {
+            die("Page does not exist");
+        }
+    }
+
+    public function loadPreview(string $token, string $name)
+    {
+        $result = array();
+
+        $status = "preview";
+
+        $stmt = $this->mysqli->prepare("SELECT * FROM `awt_paging` WHERE `name` = ? AND `token` = ? AND `status` = ?;");
+        $stmt->bind_param('sss', $name, $token, $status);
+        $stmt->execute();
+        $stmt->store_result();
+        $stmt->bind_result($result['id'], $result['name'], $result['content_1'], $result['content_2'], $result['status'], $result['token'], $result['override']);
+        $stmt->fetch();
+
         if ($stmt->num_rows == 1) {
 
             echo $result['content_1'] . $result['content_2'];

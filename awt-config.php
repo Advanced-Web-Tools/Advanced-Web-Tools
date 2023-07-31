@@ -1,11 +1,11 @@
 <?php
 //Info
 
-define('WEB_NAME', 'AWT Development');
+define('WEB_NAME', "AWT Development");
 
-define('AWT_VERSION', '23.4a');
+define('AWT_VERSION', "23.7a");
 
-define("CONTACT_EMAIL", 'mycontact@mail.com');
+define("CONTACT_EMAIL", "mycontact@mail.com");
 
 //File paths
 define("ROOT", __DIR__);

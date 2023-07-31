@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<modules>
+    <module name="Footer" status="Enabled">
+        <twitter link="#" status="Enabled"/>
+        <instagram link="#" status="Enabled"/>
+        <linkedin link="#" status="Enabled"/>
+    </module>
+</modules>

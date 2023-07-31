@@ -6,12 +6,12 @@ use mysqli;
 
 final class databaseConfig
 {
+    private static string $hostname = "localhost";
+    private static string $database = "awt_development";
+    private static string $username = "root";
+    private static string $password = "";
     private static string $key = "rxpR|dNckm1J_XosGyWb_9Q*87(^ga)(U+e%CRj?f9y'~gH%uGMMdkIW:ldE:D8";
     private static int $keyLength;
-    private static string $hostname = 'localhost';
-    private static string $database = 'awt_development';
-    private static string $username = 'root';
-    private static string $password = '';
     private $authorized;
     private string $fileHash;
     private $caller;
@@ -31,6 +31,8 @@ final class databaseConfig
         CLASSES.'content'.DIRECTORY_SEPARATOR.'themeInstaller.class.php',
         CLASSES.'paging'.DIRECTORY_SEPARATOR.'paging.class.php',
         CLASSES.'settings'.DIRECTORY_SEPARATOR.'settings.class.php',
+        CLASSES.'media'.DIRECTORY_SEPARATOR.'albums.class.php',
+        CLASSES.'media'.DIRECTORY_SEPARATOR.'media.class.php',
     );
 
     private object $mysqli;

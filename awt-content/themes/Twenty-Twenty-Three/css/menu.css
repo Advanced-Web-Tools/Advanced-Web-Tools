@@ -3,8 +3,8 @@
     width: 100%;
     padding: 20px 0;
     background: var(--primary-color-variant);
-    position: fixed;
     top: 0;
+    position: fixed;
     transition: 0.5s ease all;
 }
 

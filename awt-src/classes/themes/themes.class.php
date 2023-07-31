@@ -3,6 +3,7 @@
 namespace themes;
 
 use database\databaseConfig;
+use admin\profiler;
 
 class themes extends modules
 {
@@ -115,5 +116,37 @@ class themes extends modules
     {
         if (array_key_exists("global", $this->settingsPage)) return $this->settingsPage["global"]['path'];
         return false;
+    }
+
+    public function loadThemePage(string $name)
+    {   
+        global $theme;
+        global $paging;
+        $this->linkToThemeDir = HOSTNAME . "awt-content/themes/" . $this->activeTheme['name'];
+        include_once THEMES . $this->activeTheme['name'] . DIRECTORY_SEPARATOR . "pages".DIRECTORY_SEPARATOR.$name.".php";
+    }
+
+    public function enableTheme(int $id, profiler $profiler) {
+
+        if($profiler->checkPermissions(0)) {
+            
+            $status = 1;
+
+            $oldThemeStatus = 0;
+
+            $stmt = $this->mysqli->prepare("UPDATE `awt_themes` SET `active` = ? WHERE `active` = ?;");
+            $stmt->bind_param("ss", $oldThemeStatus, $status);
+            $stmt->execute();
+
+            $stmt = $this->mysqli->prepare("UPDATE `awt_themes` SET `active` = ? WHERE `id` = ?;");
+            $stmt->bind_param("ss", $status, $id);
+            $stmt->execute();
+
+            return true;
+
+        } else {
+            return false;
+        }
+
     }
 }

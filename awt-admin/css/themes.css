@@ -1,0 +1,155 @@
+.add-themes {
+    margin: 40px 0 0 0;
+    height: 100px;
+}
+
+.add-themes input {
+    width: 350px;
+    height: 50px;
+    padding: 0 10px;
+    border: 1px solid var(--primary-color);
+    border-radius: 10px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.add-themes button {
+    padding: 15px 30px;
+    margin: 0 20px;
+    background: var(--primary-color);
+    color: var(--secondary-text-color);
+    font-weight: 600;
+    font-size: 15px;
+    border: 1px solid var(--primary-color-variant);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s ease all;
+}
+
+.add-themes button:hover {
+    background: var(--seconadry-text-color);
+    color: var(--primary-color);
+}
+
+.upload {
+    max-width: 650px;
+    margin: 10px 0;
+    padding: 10px;
+    position: absolute;
+    background: #fff;
+    z-index: 2;
+    border-radius: 10px;
+    -webkit-box-shadow: 10px 10px 47px 0px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 10px 10px 47px 0px rgba(0, 0, 0, 0.75);
+    box-shadow: 10px 10px 47px 0px rgba(0, 0, 0, 0.75);
+    left: 50%;
+    transform: translate(-50%);
+}
+
+.upload-header {
+    color: var(--accent-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.upload-header h3 {
+    margin: auto;
+    align-self: center;
+    padding: 10px 0;
+}
+
+.upload-header button {
+    border: none;
+    background: none;
+    color: #FF0800;
+    font-size: 20px;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+.installer-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.installer-container form label {
+    text-align: center;
+    font-size: 20px;
+    margin: 10px;
+    padding: 20px;
+    cursor: pointer;
+    background: #00563B;
+    color: #fff;
+    border-radius: 5px;
+    transition: 0.5s ease all;
+    display: grid;
+    grid-auto-flow: row;
+    gap: 5px;
+    align-items: center;
+}
+
+.installer-container form label:hover {
+    filter: brightness(1.2);
+}
+
+.installer-container form label img {
+    margin: 0 auto;
+    height: 50px;
+    filter: var(--icon-filter);
+}
+
+.installer-jquery-response {
+    display: grid;
+    grid-template-columns: 300px auto;
+}
+
+.installer-jquery-response .capitalize {
+    text-transform: capitalize;
+}
+
+.upload #action {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.upload #action button {
+    padding: 10px 30px;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.themesList {
+    display: grid;
+    grid-template-columns: repeat(3, 300px);
+    grid-template-rows: 320px;
+    grid-auto-flow: row;
+    gap: 30px;
+}
+
+.card {
+    width: 300px;
+    height: 320px;
+    background: var(--primary-color);
+    padding: 10px;
+    border-radius: 15px;
+    color: var(--background-color);
+}
+
+.card input[type=checkbox]:enabled {
+    cursor: pointer;
+}
+
+.card img {
+    width: 100%;
+    border-radius: 10px;
+}

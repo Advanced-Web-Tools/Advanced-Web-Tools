@@ -8,30 +8,40 @@ include_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-pluginLoader.php';
 include_once JOBS . 'awt-domainBuilder.php';
 
 use admin\{authentication, profiler};
-use plugins\plugins;
-use content\pluginInstaller;
+use themes\themes;
+use content\themeInstaller;
 
 $check = new authentication;
 $profiler = new profiler;
-$plugins = new plugins;
-$installer = new pluginInstaller;
+
+$themes = new themes();
+$installer = new themeInstaller();
 
 if (!$check->checkAuthentication()) {
     header("Location: ../login.php");
     exit();
 }
 
-if(isset($_POST['getList'])) {
-    $response = $plugins->getPlugins();
-    echo json_encode($response);
-    exit();
+if(isset($_POST['get_themes']))
+{
+    echo json_encode($themes->getThemes());
 }
+
+if(isset($_POST['enable_theme']))
+{   
+    if($themes->enableTheme($_POST['enable_theme'], $profiler)) {
+        echo json_encode("OK");
+    } else {
+        echo json_encode("NOT OK");
+    }
+    
+}
+
 
 if (!$profiler->checkPermissions(0)) {
-    header("Location: ../?page=Plugins&status=permissionDenied");
+    header("Location: ../?page=Themes&status=permissionDenied");
     exit();
 }
-
 
 if (isset($_POST['installer'])) {
     $response = $installer->packageExtractor();
@@ -48,24 +58,7 @@ if (isset($_POST['installerAction'])) {
 
 if (isset($_POST['uninstall'])) {
     $uninstall = explode('=', $_POST['uninstall']);
-    $status = $installer->removePlugin($uninstall[0], $uninstall[1]);
-    header("Location: ../?page=Plugins&status=" . $status);
+    $status = $installer->removeTheme($uninstall[0], $uninstall[1]);
+    header("Location: ../?page=Themes&status=" . $status);
     exit();
 }
-
-if (!isset($_GET['id']) || !isset($_POST['action'])) {
-    header("Location: ../?page=Plugins&status=notSpecified");
-    exit();
-}
-
-if (str_contains($_POST['action'], 'authorize=')) {
-    $action = explode('=', $_POST['action']);
-    $status = $plugins->authorizeDatabase($action[0], $action[1], $_GET['name']);
-    header("Location: ../?page=Plugins&status=" . $status);
-    exit();
-}
-
-$plugins->changeStatus($_GET['id'], $_POST['action']);
-
-header("Location: ../?page=Plugins&status=success");
-exit();

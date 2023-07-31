@@ -1,4 +1,4 @@
-function createEmptyPage(inputName) {
+function createEmptyPage(inputName, link) {
   var val = $(inputName).val();
 
   $.ajax({
@@ -11,7 +11,7 @@ function createEmptyPage(inputName) {
     success: function(response) {
       console.log('AJAX request succeeded.');
       console.log(response);
-      fetchPages('.pages'); // Refresh the table after creating a new page
+      fetchPages('.pages', link); // Refresh the table after creating a new page
     },
     error: function(xhr, status, error) {
       console.log('AJAX request failed.');
@@ -40,7 +40,7 @@ function deletePage(pageId, element) {
   });
 }
 
-function createTable(elementId, jsonData) {
+function createTable(elementId, jsonData, link) {
   var tableContainer = $(elementId);
   tableContainer.empty();
 
@@ -73,15 +73,21 @@ function createTable(elementId, jsonData) {
     });
 
     // Add hyperlink and button to the row
+    var pageName = rowData.name;
     var pageId = rowData.id;
-    var editLink = $('<a>').attr('href', '?page=pageEditor&editPage=' + pageId).text('Edit');
+    var token = rowData.token;
+    var editLink = $('<a>').attr('href', '?page=pageEditor&editPage=' + pageId + '&pageName=' + pageName).text('Edit');
+    var liveLink = $('<a>').attr('href', link + '?page=' + pageName + "&custom").text('Visit');
+    var previewLink = $('<a>').attr('href', link + '?page=' + pageName + "&custom&preview=" + token).text('Preview');
     editLink.attr('target', "_blank");
+    liveLink.attr('target', "_blank");
+    previewLink.attr('target', "_blank");
     var deleteButton = $('<button>').text('Delete').on('click', function() {
       deletePage(pageId, elementId);
     });
 
     var actionsCell = $('<div>').addClass('table-cell actions-cell');
-    actionsCell.append(editLink, deleteButton);
+    actionsCell.append(editLink, liveLink, previewLink, deleteButton);
     dataRow.append(actionsCell);
 
     table.append(dataRow);
@@ -90,9 +96,7 @@ function createTable(elementId, jsonData) {
   tableContainer.append(table);
 }
 
-
-
-function fetchPages(element) {
+function fetchPages(element, link) {
   $.ajax({
     url: './jobs/pages.php',
     type: 'POST',
@@ -102,7 +106,7 @@ function fetchPages(element) {
     success: function(response) {
       console.log('AJAX request succeeded.');
       console.log(response);
-      createTable(element, JSON.parse(response)); // Convert response to JSON array
+      createTable(element, JSON.parse(response), link); // Convert response to JSON array
     },
     error: function(xhr, status, error) {
       console.log('AJAX request failed.');
