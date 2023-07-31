@@ -22,6 +22,7 @@ body {
     flex-flow: column;
     height: 100%;
     background: #FFF9F9;
+    overflow-y: hidden;
 }
 
 .main-section {
@@ -53,10 +54,17 @@ body {
 
 .page {
     margin: 10px;
+    overflow-y: scroll;
 }
 
 *.hidden {
     display: none;
+}
+
+*.shadow {
+    -webkit-box-shadow: 14px 10px 38px 1px rgba(0,0,0,0.59);
+    -moz-box-shadow: 14px 10px 38px 1px rgba(0,0,0,0.59);
+    box-shadow: 14px 10px 38px 1px rgba(0,0,0,0.59);
 }
 
 .overlay {
@@ -64,7 +72,7 @@ body {
     top: 0;
     left: 0;
     width: 100vw;
-    height:100vh;
+    height: 100vh;
     z-index: 1;
     background-color: rgba(0, 0, 0, 0.5);
 }

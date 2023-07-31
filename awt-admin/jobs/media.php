@@ -7,9 +7,6 @@ include_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-autoLoader.php';
 include_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-pluginLoader.php';
 include_once JOBS . 'awt-domainBuilder.php';
 
-
-
-use paging\paging;
 use admin\{authentication, profiler};
 
 $check = new authentication;
@@ -20,10 +17,16 @@ if (!$check->checkAuthentication()) {
     exit();
 }
 
-$paging = new paging(array());
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['uploadedFiles']) && $profiler->checkPermissions(2)) {
+    $uploadedFiles = $_FILES['uploadedFiles'];
 
-if(isset($_POST['getBlocks'])) echo json_encode($loadedBlocks);
+    $mediaHandler = new media\media();
+    
+    try {
+        $uploadedFileNames = $mediaHandler->uploadFiles($uploadedFiles);
+    } catch (\Exception $e) {
+        json_encode('Error: ' . $e->getMessage());
+    }
+}
 
-if(isset($_POST['getBlock'])) include_once getBlockPath($_POST['getBlock']);
-
-if(isset($_POST['name']) && isset($_POST['htmlContent']) && isset($_POST['pageStatus'])) $paging->uploadPage($_POST['name'], $_POST['htmlContent'], $_POST['pageStatus']);
+exit();

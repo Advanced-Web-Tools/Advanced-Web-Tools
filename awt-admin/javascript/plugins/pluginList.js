@@ -9,13 +9,10 @@ $(document).ready(function () {
         type: 'POST',
         data: formData,
         processData: false,
-        contentType: false,
-        success: function (data) {
-            console.log(data);
-        }
+        contentType: false
     }).done(function (data) {
         var response = JSON.parse(data);
-        const HOSTNAME = "localhost/projectX/";
+    
         $.each(response, function (index, value) {
             var plugin = container.find('.plugin#id' + value.id);
             if (!plugin.length) {

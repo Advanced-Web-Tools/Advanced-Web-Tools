@@ -7,7 +7,7 @@ use RecursiveIteratorIterator;
 class fileScanner {
     protected function searchDirectory($directory)
     {
-        $file_extensions = array('php', 'txt');
+        $file_extensions = array('php', 'txt', 'html', 'xml', 'doc');
         $files = array();
 
         $dir_iterator = new RecursiveDirectoryIterator($directory);
@@ -28,10 +28,10 @@ class fileScanner {
 
         foreach ($code as $key => $value) {
             if (strpos($value, 'file(') !== false) {
-                return 'Forbiden usage of file() function in ' . $file . ' on line: ' . $key + 1 . ' you should reconsider usage of this plugin!';
+                return 'Forbiden usage of file() function in ' . $file . ' on line: ' . $key + 1 . ' you should reconsider usage of this plugin or theme!';
             }
-            if (strpos($value, 'Reflection') !== false) {
-                return 'Forbiden usage of Reflector class in ' . $file . ' on line: ' . $key + 1  . ' you should reconsider usage of this plugin!';
+            if (strpos($value, 'Reflection(') !== false) {
+                return 'Forbiden usage of Reflector class in ' . $file . ' on line: ' . $key + 1  . ' you should reconsider usage of this plugin or theme!';
             }
         }
 

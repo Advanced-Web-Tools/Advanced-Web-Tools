@@ -1,0 +1,82 @@
+.page {
+    display: grid;
+    grid-template-columns: 420px auto;
+    grid-template-rows: 100%;
+    grid-auto-flow: column;
+    gap: 30px;
+}
+
+.info {
+    position: absolute;
+    left: 50%;
+    top: 60;
+    padding: 10px;
+    background: #fff;
+    border-radius: 10px;
+}
+
+.wrapper {
+    margin: 0 50px;
+}
+
+.account-list {
+    text-align: left;
+}
+
+.account-list .account {
+    background: #fff;
+    border-radius: 10px;
+    color: var(--text-color);
+    width: 100%;
+    margin: 20px 0;
+    padding: 20px;
+}
+
+.create-new-account {
+    width: 450px;
+    height: 500px;
+    margin: 50px 0;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    background: #fff;
+    border-radius: 15px;
+}
+
+.create-new-account h3 {
+    text-align: center;
+}
+
+.create-new-account input{
+    height: 50px;
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid #000;
+    color: #000;
+}
+
+.create-new-account input:focus {
+    outline: none !important;
+    border-bottom: 1px solid #000;
+}
+
+.create-new-account button, .create-new-account select {
+    width: 150px;
+    padding: 10px;
+    margin: 0 auto;
+    border: none;
+    cursor: pointer;
+}
+
+.create-new-account button {
+    background: var(--primary-color);
+    color: #fff;
+    border-radius: 5px;
+}
+
+.create-new-account select {
+    background: var(--secondary-color-variant);
+    color: #fff;
+    border-radius: 5px;
+}

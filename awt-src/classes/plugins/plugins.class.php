@@ -12,7 +12,6 @@ class plugins
     private object $database;
     private object $mysqli;
     private object $xml;
-
     private object $writeXml;
     protected array $info;
 
@@ -23,7 +22,6 @@ class plugins
         $this->database->checkAuthority() == 1 or die("Fatal error database access for " . $this->database->getCaller() . " was denied");
         $this->mysqli = $this->database->getConfig();
 
-        $this->mysqli = $this->database->getConfig();
         $stmt = $this->mysqli->prepare("SELECT * FROM `awt_plugins` ORDER BY `id` ASC;");
         $stmt->execute();
         $this->info = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);

@@ -63,8 +63,11 @@ function checkBlock(string $name) {
 function loadBlock(string $name)
 {   
     $test = checkBlock($name);
-    if($test !== false) return $test;
-    die("ERROR loading block $name");
+    if($test !== false) {
+        return $test;
+    } else {
+        die("ERROR loading block $name");
+    }
 }
 
 function getBlockPath(string $name)
@@ -73,7 +76,7 @@ function getBlockPath(string $name)
     if($test !== false) return $test['path'];
     die("ERROR loading block $name");
 }
-function loadBlocks(string $collection)
+function getCollection(string $collection)
 {
     global $dependencies;
     global $plugins;
@@ -90,4 +93,23 @@ function loadBlocks(string $collection)
     global $loadedBlocks;
     if(array_key_exists($collection, $pluginBlocks)) return $pluginBlocks[$collection];
     die("Error collection of block: $collection does not exist");
+}
+
+
+function returnCollections()
+{
+    global $dependencies;
+    global $plugins;
+    global $aio;
+    global $settings;
+    global $pluginPages;
+    global $dashboardWidgets;
+    global $menu;
+    global $navbar;
+    global $engines;
+    global $widgets;
+    global $loadedPlugins;
+    global $pluginBlocks;
+    global $loadedBlocks;
+    return $pluginBlocks;
 }

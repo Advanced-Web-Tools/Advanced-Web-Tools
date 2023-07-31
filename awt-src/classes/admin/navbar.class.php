@@ -21,26 +21,28 @@ class navbar
 
     public function writeItems()
     {
-        foreach ($this->items as $item) {
+        foreach ($this->items as $item => $value) {
 
-            if(!isset($item['attr'])) $item['attr'] = '';
+            if(!isset($value['attr'])) $value['attr'] = '';
 
-            $attr = $item['attr'];
+            $attr = $value['attr'];
 
-            if(isset($item['permission'])) {
-                if(!$this->profiler->checkPermissions($item['permission'])) {
-                    return;
+            if(isset($value['permission'])) {
+                if(!$this->profiler->checkPermissions($value['permission'])) {
+                    unset($this->items[$item]);
+                    continue;
                 }
             }
-            if(isset($item['icon'])) {
+
+            if(isset($value['icon'])) {
 
                 $class = 'def-icon';
 
-                if(str_ends_with($item['icon'], '.svg')) $class = 'svg';
-
-                echo "<a class='nav-item' href='".$item['link']."'$attr><img class='".$class."' src='".$item['icon']."'/>".$item['name']."</a>";
+                if(str_ends_with($value['icon'], '.svg')) $class = 'svg';
+                
+                echo "<a class='nav-item' href='".$value['link']."'$attr><img class='".$class."' src='".$value['icon']."'/>".$value['name']."</a>";
             } else {
-                echo "<a class='nav-item' href='".$item['link']."'$attr>".$item['name']."</a>";
+                echo "<a class='nav-item' href='".$value['link']."'$attr>".$value['name']."</a>";
             }
         }
     }
