@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<plugin>
+    <name>awtDashboardWidgets</name>
+    <version>0.0.1</version>
+    <description>This is a widget pack for awt dashboard</description>
+    <icon>widgets.svg</icon>
+    <authorizationFile>src.SPRT.awtWidgets.class.php</authorizationFile>
+</plugin>

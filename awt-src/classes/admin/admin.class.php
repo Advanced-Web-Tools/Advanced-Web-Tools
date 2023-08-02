@@ -3,6 +3,7 @@
 namespace admin;
 
 use database\databaseConfig;
+use notifications\notifications;
 use session\sessionHandler;
 use admin\profiler;
 
@@ -87,6 +88,9 @@ class admin extends sessionHandler
         }
 
         $stmt->close();
+
+        $notification = new notifications("Accounts", $this->profiler->name . " has created new account @$username", "high");
+        $notification->pushNotification();
 
         return "Account created!";
     }
@@ -173,12 +177,15 @@ class admin extends sessionHandler
     {
         $profiler = new profiler();
         if (!$profiler->checkPermissions(0)) return "You need to be an admin to perform that operation!";
-
+        
         $this->connectToDatabase();
-
+        
         $stmt = $this->mysqli->prepare("DELETE FROM `awt_admin` WHERE `id` = ?;");
         $stmt->bind_param("s", $id);
         $stmt->execute();
+
+        $notification = new notifications("Accounts", $profiler->name . " has deleted account with ID: $id", "medium");
+        $notification->pushNotification();
 
         return "Account deleted.";
     }

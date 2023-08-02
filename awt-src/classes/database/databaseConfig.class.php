@@ -33,6 +33,7 @@ final class databaseConfig
         CLASSES.'settings'.DIRECTORY_SEPARATOR.'settings.class.php',
         CLASSES.'media'.DIRECTORY_SEPARATOR.'albums.class.php',
         CLASSES.'media'.DIRECTORY_SEPARATOR.'media.class.php',
+        CLASSES.'notifications'.DIRECTORY_SEPARATOR.'notifications.class.php',
     );
 
     private object $mysqli;
@@ -135,4 +136,21 @@ final class databaseConfig
 
         return false;
     }
+
+    public function checkForTable(string $tableName) {
+        if ($this->allow == 0) return false;
+    
+        $query = "SELECT * FROM " . $this->mysqli->real_escape_string($tableName) . ";";
+    
+        $stmt = $this->mysqli->prepare($query);
+        if (!$stmt) {
+            return false;
+        }
+    
+        $result = $stmt->execute();
+        $stmt->close();
+    
+        return $result;
+    }
+    
 }

@@ -2,8 +2,10 @@
 
 namespace paging;
 
+use admin\profiler;
 use cache\cache;
 use database\databaseConfig;
+use notifications\notifications;
 
 class paging extends cache
 {
@@ -149,6 +151,11 @@ class paging extends cache
         $stmt->bind_param("sssssi", $name, $content_1, $content_2, $status, $token, $override);
         $stmt->execute();
         $stmt->close();
+
+        $profiler = new profiler();
+
+        $notifications = new notifications("Paging", $profiler->name . " has uploaded content to $name page.");
+        $notifications->pushNotification();
     }
 
     public function updatePage(string $name, string $page, string $status = "live", int $override = 0)
@@ -174,6 +181,11 @@ class paging extends cache
         $stmt->bind_param("sssis", $content_1, $content_2, $status, $override, $name);
         $stmt->execute();
         $stmt->close();
+
+        $profiler = new profiler();
+
+        $notifications = new notifications("Paging", $profiler->name . " has updated content of $name page.");
+        $notifications->pushNotification();
     }
 
     public function getAllPages()
@@ -207,6 +219,11 @@ class paging extends cache
         $stmt->execute();
         $stmt->close();
 
+        $profiler = new profiler();
+
+        $notifications = new notifications("Paging", $profiler->name . " has created new page: $name.");
+        $notifications->pushNotification();
+
         return "OK";
     }
 
@@ -216,6 +233,11 @@ class paging extends cache
         $stmt->bind_param("i", $id);
         $stmt->execute();
         $stmt->close();
+
+        $profiler = new profiler();
+
+        $notifications = new notifications("Paging", $profiler->name . " has deleted page with ID: $id.", "high");
+        $notifications->pushNotification();
 
         return "Page deleted with id: $id";
     }

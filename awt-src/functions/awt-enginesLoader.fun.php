@@ -1,11 +1,12 @@
 <?php
 
-function addEngine($name, $path, $version, $runtime) {
+function addEngine(string $name, string $path, string $version, string $runtime) {
     global $engines;
     $engines[] = array('name' => $name, 'path' => $path, 'version' => $version, 'runtime' => $runtime);
 }
 
-function enginesLoader($runtime) {
+function enginesLoader(string $runtime) {
+
     global $dependencies;
     global $plugins;
     global $aio;
@@ -19,12 +20,14 @@ function enginesLoader($runtime) {
     global $loadedPlugins;
     global $pluginBlocks;
     global $loadedBlocks;
+
     foreach ($engines as $engine) {
+        
         if(!file_exists($engine['path']) && $engine['runtime'] == $runtime) {
-            echo 'Faled to load engine '. $engine['name'] . ' at '. $engine['path'];
-            return false;
+            continue;
         }
-        include $engine['path'];
+
+        if($engine['runtime'] == $runtime)  include_once $engine['path'];
     }
     return true;
 

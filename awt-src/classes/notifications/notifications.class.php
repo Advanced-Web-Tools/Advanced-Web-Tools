@@ -38,9 +38,10 @@ class notifications {
         $stmt->execute();
     }
 
-    public function getNotifications()
+    public function getNotifications(int $limit)
     {
-        $stmt = $this->mysqli->prepare("SELECT * FROM `awt_notifications` ORDER BY `time` DESC;");
+        $stmt = $this->mysqli->prepare("SELECT * FROM `awt_notifications` ORDER BY `time` DESC LIMIT ?;");
+        $stmt->bind_param("s", $limit);
         $stmt->execute();
         $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         return $result;
