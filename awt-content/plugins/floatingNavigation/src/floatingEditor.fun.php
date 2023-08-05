@@ -1,6 +1,7 @@
 <?php
 
-function addToFloatingEditor(array $options){
+function addToFloatingNavigation(array $options){
     global $floatingEditor;
 }
+
 ?>

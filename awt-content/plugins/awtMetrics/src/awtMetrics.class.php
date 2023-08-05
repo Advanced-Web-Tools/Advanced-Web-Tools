@@ -34,6 +34,13 @@ class awtMetrics
                 $stmt = $this->mysqli->prepare($query);
 
                 $stmt->execute();
+
+                $query = "ALTER TABLE `awt_metrics` CHANGE `id` `id` INT(255) NOT NULL AUTO_INCREMENT;";
+
+                $stmt = $this->mysqli->prepare($query);
+
+                $stmt->execute();
+                
             }
             
         }
@@ -93,6 +100,46 @@ class awtMetrics
         if ($this->auth == 0) return false;
 
         $stmt = $this->mysqli->prepare("SELECT `url`, COUNT(`url`) AS `value_occurrence` FROM `awt_metrics` GROUP BY `url` ORDER BY `value_occurrence` DESC LIMIT 1;");
+        $stmt->execute();
+        $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);;
+        $stmt->close();
+        return $result;
+    }
+
+    public function getMetricsTodayAll() {
+        if ($this->auth == 0) return false;
+        $stmt = $this->mysqli->prepare("SELECT * FROM `awt_metrics` WHERE `date` = ?;");
+        $date = date("Y-m-d");
+        $stmt->bind_param("s", $date);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $rowCount = $result->num_rows;
+        $stmt->close();
+        return $rowCount;
+    }
+    
+
+    public function getMetricsTodayUnique()
+    {
+        if ($this->auth == 0) return false;
+
+        $stmt = $this->mysqli->prepare("SELECT DISTINCT `uid` FROM `awt_metrics` WHERE `date` = ?;");
+        $date = date("Y-m-d");
+        $stmt->bind_param("s", $date);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $stmt->close();
+        return $result->num_rows;
+    }
+
+    public function getMostVisitedToday()
+    {
+
+        if ($this->auth == 0) return false;
+
+        $stmt = $this->mysqli->prepare("SELECT `url`, COUNT(`url`) AS `value_occurrence` FROM `awt_metrics` WHERE `date` = ? GROUP BY `url` ORDER BY `value_occurrence` DESC LIMIT 1;");
+        $date = date("Y-m-d");
+        $stmt->bind_param("s", $date);
         $stmt->execute();
         $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);;
         $stmt->close();

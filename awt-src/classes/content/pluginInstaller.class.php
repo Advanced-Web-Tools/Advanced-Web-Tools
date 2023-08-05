@@ -4,6 +4,9 @@ namespace content;
 use ZipArchive;
 use XMLReader;
 use database\databaseConfig;
+use notifications\notifications;
+use admin\profiler;
+
 class pluginInstaller extends fileScanner{
 
     private object $database;
@@ -165,6 +168,10 @@ class pluginInstaller extends fileScanner{
             $stmt->execute();
             $this->moveDirectory(TEMP . $path, PLUGINS . $name);
 
+            $profiler = new profiler;
+            $notifications = new notifications("Installer", $profiler->name. " has installed new plugin: $name", "important");
+            $notifications->pushNotification();
+
             return $name." was installed succesfully! You can reload now or wait 5 seconds.";
         }
 
@@ -179,6 +186,11 @@ class pluginInstaller extends fileScanner{
         $stmt->bind_param("is", $id, $name);
         $stmt->execute();
         $stmt->close();
+
+        $profiler = new profiler;
+        $notifications = new notifications("Installer", $profiler->name. " has removed plugin: $name", "important");
+        $notifications->pushNotification();
+
         return true;
     }
 }

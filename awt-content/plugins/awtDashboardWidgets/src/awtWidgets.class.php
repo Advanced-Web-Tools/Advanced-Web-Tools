@@ -2,6 +2,8 @@
 
 use notifications\notifications;
 use admin\authentication;
+use paging\paging;
+use themes\themes;
 
 
 class awtWidgets  {
@@ -36,6 +38,35 @@ class awtWidgets  {
     public function pluginStatsWidget() {
         global $loadedPlugins;
         return count($loadedPlugins);
+    }
+
+    public function incidentsWidget()
+    {
+        return count($this->notifications->getNotificationsByDate(date('Y-m-d'), "incident"));
+    }
+
+    public function noticesWidget()
+    {
+        return count($this->notifications->getNotificationsByDate(date('Y-m-d'), "notice"));
+    }
+
+    public function themesWidget() {
+        $theme = new themes;
+        return $theme->getActiveTheme();
+    }
+
+    public function pagesWidget() {
+        $pages = new paging(array());
+
+        $pages = $pages->getAllPages();
+
+        
+        foreach($pages as $key => $value) {
+            $pageList[] = $value["name"];
+        }
+
+        return $pageList;
+
     }
 
 }

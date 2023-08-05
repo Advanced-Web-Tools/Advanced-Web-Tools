@@ -1,7 +1,11 @@
+.page {
+    margin: 0;
+}
+
 .widgets {
     display: flex;
     flex-wrap: wrap;
     gap: 50px;
-    margin: 20px;
-    height: 400px;
+    margin: 10px;
+    background: #FFF9F9;
 }

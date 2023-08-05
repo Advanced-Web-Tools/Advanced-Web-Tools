@@ -2,6 +2,8 @@
 
 namespace session;
 
+use ErrorException;
+use notifications\notifications;
 class sessionHandler
 {
     private $time;
@@ -32,9 +34,17 @@ class sessionHandler
         }
 
         if (isset($_SESSION['sessionInfo']['regenerate_id'])) {
-            if ($this->time - $_SESSION['sessionInfo']['regenerate_id'] > 5) {
+            if ($this->time - $_SESSION['sessionInfo']['regenerate_id'] > 10) {
                 $_SESSION['sessionInfo']['regenerate_id'] = $this->time;
-                session_regenerate_id(true);
+
+                try {
+                    session_regenerate_id(true);
+                } catch (ErrorException $e) {
+                    $notificiations = new notifications("Session Manager", $e, "notice");
+                    $notificiations->pushNotification();
+                }
+
+   
             }
         } else {
             $_SESSION['sessionInfo']['regenerate_id'] = $this->time;
@@ -151,7 +161,7 @@ class sessionHandler
             $_SESSION = [];
         }
 
-        setcookie('PHPSESSID', 'session hijacking detected', time() + 5, '/');
+        setcookie('PHPSESSID', 'session hijacking detected', time() + 10, '/');
         unset($_COOKIE['UID']);
         unset($_COOKIE['UIDV']);
         unset($_COOKIE['LAST_IP']);

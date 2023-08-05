@@ -4,6 +4,9 @@ namespace content;
 use ZipArchive;
 use XMLReader;
 use database\databaseConfig;
+use admin\profiler;
+use notifications\notifications;
+
 class themeInstaller extends fileScanner {
 
     private object $database;
@@ -181,6 +184,10 @@ class themeInstaller extends fileScanner {
             $stmt->execute();
             $this->moveDirectory(TEMP . $path, THEMES . $name);
 
+            $profiler = new profiler;
+            $notifications = new notifications("Installer", $profiler->name. " has installed new theme: $name", "important");
+            $notifications->pushNotification();
+
             return $name." was installed succesfully! You can reload now or wait 5 seconds.";
         }
 
@@ -196,6 +203,11 @@ class themeInstaller extends fileScanner {
         $stmt->bind_param("is", $id, $name);
         $stmt->execute();
         $stmt->close();
+
+        $profiler = new profiler;
+        $notifications = new notifications("Installer", $profiler->name. " has removed theme: $name", "important");
+        $notifications->pushNotification();
+
         return true;
     }
 

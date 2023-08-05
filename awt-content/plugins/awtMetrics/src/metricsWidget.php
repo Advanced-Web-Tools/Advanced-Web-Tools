@@ -6,10 +6,17 @@ $total = $widget->getMetricsTotal();
 $unique = $widget->getMetricsUnique();
 $mostVisited = $widget->getMostVisited();
 
+
+$visits = $widget->getMetricsTodayAll();
+$uniqueToday = $widget->getMetricsTodayUnique();
+$mostVisitedToday = $widget->getMostVisitedToday();
+
 if($mostVisited !== false && count($mostVisited) != 0) {
     $mostVisited = $mostVisited[0]["url"];
+    $mostVisitedToday = $mostVisitedToday[0]["url"];
 } else {
     $mostVisited = "Not enough data.";
+    $mostVisitedToday = "Not enough data.";
 }
 
 ?>
@@ -29,7 +36,23 @@ if($mostVisited !== false && count($mostVisited) != 0) {
     </div>
 </div>
 
+<div class="metrics-widgets-group today">
+    <div class="metrics-widget shadow today">
+        <h3>Number of visits today</h3>
+        <p><?php echo $visits ?></p>
+    </div>
+    <div class="metrics-widget shadow today">
+        <h3>Number of unique visitors today</h3>
+        <p><?php echo $uniqueToday ?></p>
+    </div>
+    <div class="metrics-widget shadow today">
+        <h3>Most visited page today</h3>
+        <p><?php echo $mostVisitedToday ?></p>
+    </div>
+</div>
+
 <style>
+
     .metrics-widgets-group {
         display: flex;
         flex-wrap: wrap;
@@ -66,5 +89,6 @@ if($mostVisited !== false && count($mostVisited) != 0) {
         color: #fff;
         width: 330px;
     }
+
 
 </style>

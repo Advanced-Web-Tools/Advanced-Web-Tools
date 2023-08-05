@@ -154,7 +154,7 @@ class paging extends cache
 
         $profiler = new profiler();
 
-        $notifications = new notifications("Paging", $profiler->name . " has uploaded content to $name page.");
+        $notifications = new notifications("Pages", $profiler->name . " has uploaded content to $name page.");
         $notifications->pushNotification();
     }
 
@@ -184,7 +184,7 @@ class paging extends cache
 
         $profiler = new profiler();
 
-        $notifications = new notifications("Paging", $profiler->name . " has updated content of $name page.");
+        $notifications = new notifications("Pages", $profiler->name . " has updated content of $name page.");
         $notifications->pushNotification();
     }
 
@@ -221,7 +221,7 @@ class paging extends cache
 
         $profiler = new profiler();
 
-        $notifications = new notifications("Paging", $profiler->name . " has created new page: $name.");
+        $notifications = new notifications("Pages", $profiler->name . " has created new page: $name.");
         $notifications->pushNotification();
 
         return "OK";
@@ -236,7 +236,7 @@ class paging extends cache
 
         $profiler = new profiler();
 
-        $notifications = new notifications("Paging", $profiler->name . " has deleted page with ID: $id.", "high");
+        $notifications = new notifications("Pages", $profiler->name . " has deleted page with ID: $id.", "high");
         $notifications->pushNotification();
 
         return "Page deleted with id: $id";
