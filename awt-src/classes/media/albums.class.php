@@ -9,7 +9,7 @@ class albums {
 
     private object $database;
     private object $mysqli;
-    protected array $albums;
+    protected array $albums = array();
 
     public function __construct()
     {
@@ -34,12 +34,13 @@ class albums {
         $stmt->close();
 
         foreach ($fetched as $key => $value) {
-            $this->albums[$value['id']] = $value['name'];
+            $this->albums[$value['id']]["name"] = $value['name'];
         }
 
+        return $this->albums;
     }
 
-    public function deleteAlbum($id) {
+    public function deleteAlbum(string $id) {
         $stmt = $this->mysqli->prepare("DELETE FROM `awt_albums` WHERE `id` = ?;");
         $stmt->bind_param("s", $id);
         $stmt->execute();
@@ -49,7 +50,7 @@ class albums {
     }
 
 
-    public function createAlbum($name) {
+    public function createAlbum(string $name) {
         $stmt = $this->mysqli->prepare("INSERT INTO `awt_albums` (`name`) VALUES (?);");
         $stmt->bind_param("s", $name);
         $stmt->execute();

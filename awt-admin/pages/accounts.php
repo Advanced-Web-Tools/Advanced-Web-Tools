@@ -41,6 +41,6 @@ $profiler = new profiler();
             <option value="1">Moderator</option>
             <option value="2" selected>Author</option>
         </select>
-        <button type="button" onclick="createAccount('.account-list');">Create new account</button>
+        <button type="button" onclick="createAccount('.account-list');" class="button">Create new account</button>
     </div>
 <?php endif; ?>

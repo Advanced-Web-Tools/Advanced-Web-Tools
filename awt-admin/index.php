@@ -1,37 +1,38 @@
 <?php
 
-    define('DASHBOARD', 1);
-    
-    include '../awt-config.php';
-    include_once JOBS.'loaders'.DIRECTORY_SEPARATOR.'awt-navbarLoader.php';
-    include_once JOBS.'awt-domainBuilder.php';
-    include_once FUNCTIONS.'awt-navbar.fun.php';
-    include_once JOBS.'loaders'.DIRECTORY_SEPARATOR.'awt-pluginLoader.php';
+define('DASHBOARD', 1);
+
+include '../awt-config.php';
+include_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-navbarLoader.php';
+include_once JOBS . 'awt-domainBuilder.php';
+include_once FUNCTIONS . 'awt-navbar.fun.php';
+include_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-pluginLoader.php';
 
 
-    use admin\authentication;
-    use admin\profiler;
-    $check = new authentication;
+use admin\authentication;
+use admin\profiler;
 
-    if(!$check->checkAuthentication()) {
-        header("Location: ./login.php");
-        exit();
-    }
+$check = new authentication;
 
-    use paging\paging;
+if (!$check->checkAuthentication()) {
+    header("Location: ./login.php");
+    exit();
+}
 
-    if(!isset($_GET['page'])) {
-        header('Location: ./?page=Dashboard');
-        exit();
-    }
-    
+use paging\paging;
 
-    $profiler = new profiler;
-    $profile = $profiler->getProfile();
+if (!isset($_GET['page'])) {
+    header('Location: ./?page=Dashboard');
+    exit();
+}
 
-    
-    $paging = new paging($pluginPages);
-    
+
+$profiler = new profiler;
+$profile = $profiler->getProfile();
+
+
+$paging = new paging($pluginPages);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,14 +47,12 @@
 </head>
 
 <body>
-    <nav class="top-nav">
-        <div class="profiler">
-            <h3>Welcome <?php echo $profile['fname']. " ". $profile['lname'];?></h3>
-            <h5>Username: <?php echo $profile['name']; ?></h5>
-        </div>
-    </nav>
     <section class="main-section">
         <nav class="main-navbar">
+            <div class="profiler">
+                <h3>Welcome <?php echo $profile['fname'] . " " . $profile['lname']; ?></h3>
+                <h5>Username: <?php echo $profile['name']; ?></h5>
+            </div>
             <?php navbarLoader($navbar); ?>
         </nav>
         <section class="page">

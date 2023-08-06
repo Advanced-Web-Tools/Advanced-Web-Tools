@@ -13,7 +13,7 @@ $widget = new awtWidgets();
 
     .notification-widget {
         width: 330px;
-        height: 400px;
+        height: 360px;
         border-radius: 10px;
         padding: 10px;
         overflow-y: auto;

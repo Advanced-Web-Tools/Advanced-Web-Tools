@@ -16,7 +16,7 @@ $(document).ready(function () {
         $.each(response, function (index, value) {
             var plugin = container.find('.plugin#id' + value.id);
             if (!plugin.length) {
-                var pluginList = '<div class="plugin" id="id' + value.id + '">';
+                var pluginList = '<div class="plugin shadow" id="id' + value.id + '">';
                 if (value.icon != null && value.icon != '') {
                     if (value.icon.endsWith('.svg')) {
                         pluginList += '<div class="plugin-header"> <img src="../awt-content/plugins/' + value.name + '/data/icons/' + value.icon + '" alt="icon" class="svg">';
@@ -32,18 +32,18 @@ $(document).ready(function () {
                 }
                 pluginList += '<div class="plugin-header-name"><h2 class="name">' + value.name + ' v' + value.version + '</h2><p class="description">' + value.description + '</p></div></div><form class="action" method="post" action="./jobs/plugins.php?id=' + value.id + '&name=' + value.name + '">';
                 if (value.status === 1) {
-                    pluginList += '<button type="submit" value="0" name="action" id="red"' + disabled + '>Disable</button>';
+                    pluginList += '<button class="button" type="submit" value="0" name="action" id="red"' + disabled + '>Disable</button>';
                 } else {
-                    pluginList += '<button type="submit" value="1" name="action" id="green"' + disabled + '>Enable</button>';
+                    pluginList += '<button class="button" type="submit" value="1" name="action" id="green"' + disabled + '>Enable</button>';
                 }
                 if (value.xml.requiresAuthorization !== undefined) {
                     if (value.xml.requiresAuthorization === 'true') {
-                        pluginList += '<button type="submit" value="authorize=' + value.xml.authorizationFile + '" name="action" id="green">Allow Database Access</button>';
+                        pluginList += '<button class="button" type="submit" value="authorize=' + value.xml.authorizationFile + '" name="action" id="green">Allow Database Access</button>';
                     } else {
-                        pluginList += '<button type="submit" value="unauthorize=' + value.xml.authorizationFile + '" name="action" id="red">Disallow Database Access</button>';
+                        pluginList += '<button class="button" type="submit" value="unauthorize=' + value.xml.authorizationFile + '" name="action" id="red">Disallow Database Access</button>';
                     }
                 }
-                pluginList += '<button type="submit" value="' + value.name + '=' + value.id + '" name="uninstall">Uninstall</button></form></div>';
+                pluginList += '<button class="button" type="submit" value="' + value.name + '=' + value.id + '" name="uninstall">Uninstall</button></form></div>';
 
                 container.append(pluginList);
             }

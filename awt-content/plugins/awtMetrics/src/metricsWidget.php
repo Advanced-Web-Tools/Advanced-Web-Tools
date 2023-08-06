@@ -2,20 +2,13 @@
 
 $widget = new awtMetrics();
 
-$total = $widget->getMetricsTotal();
-$unique = $widget->getMetricsUnique();
-$mostVisited = $widget->getMostVisited();
-
-
 $visits = $widget->getMetricsTodayAll();
 $uniqueToday = $widget->getMetricsTodayUnique();
 $mostVisitedToday = $widget->getMostVisitedToday();
 
-if($mostVisited !== false && count($mostVisited) != 0) {
-    $mostVisited = $mostVisited[0]["url"];
+if($mostVisitedToday !== false && count($mostVisitedToday) != 0) {
     $mostVisitedToday = $mostVisitedToday[0]["url"];
 } else {
-    $mostVisited = "Not enough data.";
     $mostVisitedToday = "Not enough data.";
 }
 
@@ -23,29 +16,14 @@ if($mostVisited !== false && count($mostVisited) != 0) {
 
 <div class="metrics-widgets-group">
     <div class="metrics-widget shadow">
-        <h3>Total number of visits</h3>
-        <p><?php echo $total ?></p>
-    </div>
-    <div class="metrics-widget shadow">
-        <h3>Total number of unique visitors</h3>
-        <p><?php echo $unique ?></p>
-    </div>
-    <div class="metrics-widget shadow">
-        <h3>Most visited page</h3>
-        <p><?php echo $mostVisited ?></p>
-    </div>
-</div>
-
-<div class="metrics-widgets-group today">
-    <div class="metrics-widget shadow today">
         <h3>Number of visits today</h3>
         <p><?php echo $visits ?></p>
     </div>
-    <div class="metrics-widget shadow today">
+    <div class="metrics-widget shadow">
         <h3>Number of unique visitors today</h3>
         <p><?php echo $uniqueToday ?></p>
     </div>
-    <div class="metrics-widget shadow today">
+    <div class="metrics-widget shadow">
         <h3>Most visited page today</h3>
         <p><?php echo $mostVisitedToday ?></p>
     </div>

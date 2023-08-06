@@ -19,7 +19,7 @@ function fetchAccounts(container) {
             html += "<div class='account shadow'><span><h4>" + value.firstname + " " + value.lastname + "</h4>";
             html += "<p>@" + value.username + "</p>";
             var params = value.id+",'"+container+"'";
-            html += '</span><span><button onclick="deleteAccount('+params+');">Delete</button>';
+            html += '</span><span><button class="button" id="red" onclick="deleteAccount('+params+');">Delete</button>';
             html += "</span></div>";
         });
 

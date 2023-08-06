@@ -29,21 +29,17 @@ body {
     display: grid;
     grid-template-columns: 150px auto;
     grid-template-rows: auto;
+    gap: 10px;
 }
 
-.top-nav {
+.profiler {
     padding: 10px 0;
-    width: 100vw;
-    background: #000;
-    color: var(--secondary-text-color);
+    color: #fff;
     font-size: 13px;
-}
-
-.top-nav .profiler {
     margin: 0 10px;
 }
 
-.top-nav .profiler * {
+.profiler * {
     margin: 0;
 }
 
@@ -58,13 +54,64 @@ body {
 }
 
 *.hidden {
-    display: none;
+    display: none !important;
+}
+
+*.hidden *{
+    display: none !important;
 }
 
 *.shadow {
     -webkit-box-shadow: 14px 10px 38px 1px rgba(0,0,0,0.59);
     -moz-box-shadow: 14px 10px 38px 1px rgba(0,0,0,0.59);
     box-shadow: 14px 10px 38px 1px rgba(0,0,0,0.59);
+}
+
+.input {
+    width: 350px;
+    height: 32px;
+    padding: 0 10px;
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.button {
+    background: var(--primary-color);
+    padding: 7px 15px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: 0.3s;
+    border: 1px solid var(--primary-color);
+}
+
+.button:hover {
+    color: var(--primary-color);
+    background: #fff;
+}
+
+#green {
+    background: #00563B;
+    border: 1px solid #00563B;
+}
+
+#green:enabled:hover:not([disabled]) {
+    background: #FFF;
+    color: #00563B;
+}
+
+#red {
+    background: #FF0800;
+    border: 1px solid #FF0800;
+}
+
+#red:enabled:hover:not([disabled]) {
+    background: #FFF;
+    color: #FF0800;
 }
 
 .overlay {

@@ -34,8 +34,8 @@ $theme->getActiveTheme();
 <section class="editor">
     <div class="top-menu">
         <div class="action-buttons">
-            <button type="button" onclick="publishContent('<?php echo $_GET['pageName'];?>');">Publish</button>
-            <button type="button" onclick="publishContentPreview('<?php echo $_GET['pageName'];?>');">Preview</button>
+            <button type="button" onclick="publishContent('<?php echo $_GET['pageName'];?>');" class="button">Publish</button>
+            <button type="button" onclick="publishContentPreview('<?php echo $_GET['pageName'];?>');" class="button">Preview</button>
         </div>
     </div>
     <div class="stage">

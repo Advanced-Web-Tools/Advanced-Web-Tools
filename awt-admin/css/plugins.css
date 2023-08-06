@@ -135,6 +135,8 @@
 
 .plugin-list {
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
     gap: 20px;
 }
 
@@ -145,16 +147,16 @@
 }
 
 .plugin {
-    height: 200px;
-    width: auto;
+    height: 300px;
+    min-width: 300px;
+    max-width: 500px;
     padding: 5px;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     border-radius: 10px;
     padding: 20px;
-    background: var(--primary-color);
-    color: var(--secondary-text-color);
+    background: #fff;
 }
 
 .plugin .plugin-header {
@@ -179,9 +181,6 @@
     justify-self: center;
 }
 
-.plugin .svg {
-    filter: var(--icon-filter);
-}
 
 .plugin h2 {
     font-size: 18px;
@@ -199,9 +198,7 @@
 }
 
 .plugin button {
-    background: var(--secondary-color);
     padding: 13px 30px;
-    border: 1px solid var(--secondary-color);
     color: var(--secondary-text-color);
     font-size: 15px;
     cursor: pointer;
@@ -217,8 +214,6 @@
 
 .plugin button:enabled:hover:not([disabled]) {
     background: var(--background-color);
-    border: 1px solid var(--secondary-color);
-    color: var(---secondary-text-color);
     font-size: 15px;
 }
 
@@ -231,24 +226,4 @@
 .plugin button:disabled {
     cursor: default;
     filter: brightness(2);
-}
-
-#green {
-    background: #00563B;
-    border: 1px solid #00563B;
-}
-
-#green:enabled:hover:not([disabled]) {
-    background: #FFF;
-    color: #00563B;
-}
-
-#red {
-    background: #FF0800;
-    border: 1px solid #FF0800;
-}
-
-#red:enabled:hover:not([disabled]) {
-    background: #FFF;
-    color: #FF0800;
 }
