@@ -2,8 +2,10 @@
 
 namespace plugins;
 
+use admin\profiler;
 use database\databaseConfig;
 use content\writeXml;
+use notifications\notifications;
 use XMLReader;
 
 
@@ -71,19 +73,24 @@ class plugins
         return $this->info;
     }
 
-    public function changeStatus($update, $value)
+    public function changeStatus(int $id, string $value)
     {
-        if ($update == '' || $value == '') return false;
+        if ($id == '' || $value == '') return false;
 
         $stmt = $this->mysqli->prepare('UPDATE `awt_plugins` SET `status` = ? WHERE `id` = ?;');
-        $stmt->bind_param('ss', $value, $update);
+        $stmt->bind_param('ss', $value, $id);
         $stmt->execute();
         $stmt->close();
+
+        $profiler = new profiler;
+        $notifications = new notifications("Plugins", $profiler->name. " has changed plugins status with ID: $id to  $value", "notice");
+        $notifications->pushNotification();
+
         return true;
     }
 
 
-    public function authorizeDatabase($action, $file, $name)
+    public function authorizeDatabase(string $action, string $file, string $name)
     {
         $value = 'true';
 

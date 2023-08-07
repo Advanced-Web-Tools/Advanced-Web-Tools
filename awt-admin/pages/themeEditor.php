@@ -18,7 +18,7 @@
 </div>
 <div class="settings">
     <div class="actions">
-        <button type="button" onclick="saveChanges('<?php echo $_GET['page']; ?>')">Save</button>
+        <button type="button" onclick="saveChanges('<?php echo $_GET['page']; ?>')" class="button">Save</button>
     </div>
     <?php include_once THEME_DIR . "settings.php"; ?>
 </div>

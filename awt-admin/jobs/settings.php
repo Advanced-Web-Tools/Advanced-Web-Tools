@@ -23,7 +23,7 @@ $settings = new settings;
 if(isset($_GET['name'])) {
     if(!isset($_POST['value'])) $_POST['value'] = 'false';
     if($_POST['value'] == 'on') $_POST['value'] = 'true';
-    $settings->setSetting($_GET['name'], $_POST['value'], $_POST['applied_when']);
+    $settings->setSetting($_GET['name'], $_POST['value']);
     header("Location: ../?page=Settings");
     exit();
 }

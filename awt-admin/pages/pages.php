@@ -10,8 +10,8 @@ defined('ALL_CONFIG_LOADED') or die("An error has occured");
 <section>
 
     <div class="emptyPageContainer">
-        <input type="text" class="pageName" />
-        <button type="button" onclick="createEmptyPage('.pageName', '<?php echo HOSTNAME; ?>')">Create</button>
+        <input type="text" class="input" class="pageName" placeholder="Page name"/>
+        <button type="button" class="button" onclick="createEmptyPage('.pageName', '<?php echo HOSTNAME; ?>')">Create</button>
     </div>
     <div class="pages">
     </div>

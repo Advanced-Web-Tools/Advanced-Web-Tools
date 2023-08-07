@@ -3,7 +3,7 @@
 
 define('WEB_NAME', "AWT Development");
 
-define('AWT_VERSION', "23.7a");
+define('AWT_VERSION', "23.8a");
 
 define("CONTACT_EMAIL", "mycontact@mail.com");
 
@@ -26,6 +26,8 @@ define("THEMES", CONTENT.'themes'.DIRECTORY_SEPARATOR);
 define("PLUGINS", CONTENT.'plugins'.DIRECTORY_SEPARATOR);
 
 include_once JOBS.'loaders'.DIRECTORY_SEPARATOR.'awt-autoLoader.php';
+include_once SRC.'vendor'.DIRECTORY_SEPARATOR.'composer'.DIRECTORY_SEPARATOR.'autoload.php';
+
 include_once JOBS.'awt-Settings.php';
 
 //Safe switch

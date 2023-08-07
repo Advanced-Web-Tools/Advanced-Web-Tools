@@ -65,18 +65,12 @@
     width: 150px;
     padding: 10px;
     margin: 0 auto;
-    border: none;
     cursor: pointer;
-}
-
-.create-new-account button {
-    background: var(--primary-color);
-    color: #fff;
-    border-radius: 5px;
 }
 
 .create-new-account select {
     background: var(--secondary-color-variant);
     color: #fff;
     border-radius: 5px;
+    border: none;
 }

@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<plugin>
-    <name>floatingEditor</name>
-    <version>0.0.1</version>
-    <description>Floating Editor provides easy access to settings on the public page.</description>
-    <icon>pen-to-square-regular.svg</icon>
-</plugin>

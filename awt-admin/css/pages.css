@@ -1,15 +1,29 @@
-.table {
-    display: grid;
-    grid-template-columns: repeat(5, 100px);
-    gap: 20px;
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
+.page  {
+    padding: 10px;
+    margin: 10px 0;
 }
 
+.table {
+    margin: 10px 0;
+    display: grid;
+    grid-auto-flow: row;
+    gap: 20px;
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;  
+    width: auto;
+}
+
+
 .table-row {
-    display: contents;
+    display: grid;
+    grid-template-columns: repeat(5, 20%);
+    align-items: center;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
     text-align: center;
 }
+
 
 .table-header {
     text-align: center;
@@ -27,4 +41,21 @@
     align-items: center;
     justify-content: center;
     gap: 10px;
+}
+
+.table-cell.actions-cell a{
+    text-decoration: none;
+    color: #fff;
+    background: var(--primary-color);
+    padding: 7px 15px;
+    border-radius: 5px;
+    font-size: 13px;
+}
+
+
+.input {
+    height: auto;
+    font-size: 13px;
+    padding: 7px 15px;
+    border-radius: 5px;
 }

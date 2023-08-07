@@ -20,6 +20,7 @@ include_once JOBS.'awt-domainBuilder.php';
 include_once FUNCTIONS . 'awt-dependenciesLoader.fun.php';
 include_once FUNCTIONS . 'awt-enginesLoader.fun.php';
 include_once FUNCTIONS . 'awt-pluginBlocks.fun.php';
+include_once FUNCTIONS . 'awt-dashboardWidgetsLoader.fun.php';
 include_once FUNCTIONS . 'awt-pluginsLoader.fun.php';
 
 $plugins = new plugins();
@@ -32,8 +33,8 @@ include_once PLUGINS . 'awtDefaultBlocks' . DIRECTORY_SEPARATOR . 'plugin.main.p
 if(USE_PLUGINS == 'true') loadAllPlugins();
 
 ob_start();
-
 dependenciesLoader();
+
 enginesLoader('start');
 
 ob_end_clean();

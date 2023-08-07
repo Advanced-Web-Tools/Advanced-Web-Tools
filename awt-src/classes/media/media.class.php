@@ -4,6 +4,7 @@ namespace media;
 
 
 use database\databaseConfig;
+use Exception;
 use media\albums;
 
 class media {
@@ -76,6 +77,71 @@ class media {
         return $imageInfo !== false && in_array($imageInfo['mime'], ['image/jpeg', 'image/png', 'image/gif']);
     }
     
+    public function getMedia() {
+        $stmt = $this->mysqli->prepare("SELECT `id`, `file_type`, `file` FROM `awt_media`;");
+        $stmt->execute();
+        $fetched = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $fetched;
+    }
+
+    public function deleteMedia(string $id) {
+        $stmt = $this->mysqli->prepare("SELECT `file_type`, `file` FROM `awt_media` WHERE `id` = ?;");
+        $stmt->bind_param("s", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($row = $result->fetch_assoc()) {
+            $fileType = $row["file_type"];
+            $file = UPLOADS . $fileType . '/' . $row["file"];
     
+            $stmt->close();
+            $stmt = $this->mysqli->prepare("DELETE FROM `awt_media` WHERE `id` = ?;");
+            $stmt->bind_param("s", $id);
+            $stmt->execute();
+    
+            try {
+                unlink($file);
+                return true;
+            } catch (Exception) {
+                return false;
+            }
+            
+        } else {
+            $stmt->close();
+            return false;
+        }
+    }
+
+    public function moveToAlbum(string $mediaId, string $albumId) {
+        $stmt = $this->mysqli->prepare("UPDATE `awt_media` SET `album_id` = ? WHERE `id` = ?;");
+        $stmt->bind_param("ss", $albumId, $mediaId);
+        $stmt->execute();
+    }
+
+
+    public function getMediaFromAlbum(string $albumId) {
+        
+        if($albumId == "all") {
+            $stmt = $this->mysqli->prepare("SELECT `id`, `file_type`, `file` FROM `awt_media`;");
+        } else {
+            $stmt = $this->mysqli->prepare("SELECT `id`, `file_type`, `file` FROM `awt_media` WHERE `album_id` = ?;");
+            $stmt->bind_param("s", $albumId);
+        }
+
+        $stmt->execute();
+        $fetched = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+        $stmt->close();
+
+        return $fetched;
+    }
+    
+    public function globallyRemoveFromAlbum(string $albumId) {
+        $stmt = $this->mysqli->prepare("UPDATE `awt_media` SET `album_id` = NULL WHERE `album_id` = ?;");
+        $stmt->bind_param("s", $albumId);
+        $stmt->execute();
+        $stmt->close();
+    }
 
 }

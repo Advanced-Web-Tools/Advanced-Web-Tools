@@ -49,7 +49,7 @@ function createTable(elementId, jsonData, link) {
   var table = $('<div>').addClass('table');
 
   // Create table header
-  var headerRow = $('<div>').addClass('table-row');
+  var headerRow = $('<div>').addClass('table-row shadow');
   Object.keys(jsonData[0]).forEach(function(column) {
     if (!excludedColumns.includes(column)) {
       var headerCell = $('<div>').addClass('table-cell header-cell').text(column);
@@ -64,7 +64,7 @@ function createTable(elementId, jsonData, link) {
   table.append(headerRow);
 
   jsonData.forEach(function(rowData) {
-    var dataRow = $('<div>').addClass('table-row');
+    var dataRow = $('<div>').addClass('table-row shadow');
     Object.entries(rowData).forEach(function([column, value]) {
       if (!excludedColumns.includes(column)) {
         var dataCell = $('<div>').addClass('table-cell data-cell').text(value);
@@ -82,7 +82,9 @@ function createTable(elementId, jsonData, link) {
     editLink.attr('target', "_blank");
     liveLink.attr('target', "_blank");
     previewLink.attr('target', "_blank");
-    var deleteButton = $('<button>').text('Delete').on('click', function() {
+    var deleteButton = $('<button>').text('Delete');
+    deleteButton.addClass('button')
+    deleteButton.on('click', function() {
       deletePage(pageId, elementId);
     });
 

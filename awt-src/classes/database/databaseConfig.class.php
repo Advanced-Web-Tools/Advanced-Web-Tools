@@ -3,6 +3,7 @@
 namespace database;
 
 use mysqli;
+use notifications\notifications;
 
 final class databaseConfig
 {
@@ -33,6 +34,8 @@ final class databaseConfig
         CLASSES.'settings'.DIRECTORY_SEPARATOR.'settings.class.php',
         CLASSES.'media'.DIRECTORY_SEPARATOR.'albums.class.php',
         CLASSES.'media'.DIRECTORY_SEPARATOR.'media.class.php',
+        CLASSES.'notifications'.DIRECTORY_SEPARATOR.'notifications.class.php',
+        CLASSES.'updater'.DIRECTORY_SEPARATOR.'notifications.class.php',
     );
 
     private object $mysqli;
@@ -93,19 +96,21 @@ final class databaseConfig
         if ($this->allow == 1) {
             return $this->mysqli;
         } else {
+            $notification = new notifications("Database", $this->getCaller(). " Tried to access database.", "incident");
+            $notification->pushNotification();
             return false;
         }
     }
 
     public function getCaller()
     {   
-        if ($this->allow == 0) return false;
         return $this->caller;
     }
 
     public function getSecretKey()
     {
         if ($this->allow == 0) return false;
+        
         $cut = rand(10, databaseConfig::$keyLength - 10);
         $string = substr(databaseConfig::$key, $cut, databaseConfig::$keyLength);
         return $string;
@@ -114,6 +119,9 @@ final class databaseConfig
     public function authorizeUsage($action, $file, $hash, $key = '')
     {   
         if ($this->allow == 0) return false;
+        
+        $notification = new notifications("Database", "$action for $file", "notice");
+        $notification->pushNotification();
 
         if($key == '') $key = $this->getSecretKey();
 
@@ -135,4 +143,21 @@ final class databaseConfig
 
         return false;
     }
+
+    public function checkForTable(string $tableName) {
+        if ($this->allow == 0) return false;
+    
+        $query = "SELECT * FROM " . $this->mysqli->real_escape_string($tableName) . ";";
+    
+        $stmt = $this->mysqli->prepare($query);
+        if (!$stmt) {
+            return false;
+        }
+    
+        $result = $stmt->execute();
+        $stmt->close();
+    
+        return $result;
+    }
+    
 }

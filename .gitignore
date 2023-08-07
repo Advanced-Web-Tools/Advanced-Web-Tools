@@ -3,6 +3,7 @@
 
 # Ignore .vscode folder
 .vscode/
+.vs
 
 # Ignore .VSCodeCounter folder (if needed)
 .VSCodeCounter/
