@@ -68,12 +68,12 @@ class plugins
         }
     }
 
-    public function getPlugins()
+    public function getPlugins() : array
     {
         return $this->info;
     }
 
-    public function changeStatus(int $id, string $value)
+    public function changeStatus(int $id, string $value) : bool
     {
         if ($id == '' || $value == '') return false;
 

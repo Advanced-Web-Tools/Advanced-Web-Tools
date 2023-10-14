@@ -9,30 +9,56 @@ function fetchBlocks(element) {
       getBlocks: 1
     },
     success: function (response) {
-      console.log('AJAX request succeeded.');
-      console.log(response);
-
       try {
         var parsedResponse = JSON.parse(response);
-        if (Array.isArray(parsedResponse)) {
-          parsedResponse.forEach(function (block) {
-            // Create a new child element
-            var childElement = $('<div>');
+        console.log(parsedResponse);
 
-            // Create a <p> or <h5> tag for each item in the parsed response array
-            var itemElement = $('<p>').text(block); // or $('<h5>').text(block);
+        if (parsedResponse && typeof parsedResponse === 'object') {
+          for (var category in parsedResponse) {
+            if (Array.isArray(parsedResponse[category])) {
+              // Create a label for the category
+              var categoryLabel = $('<h4>').text(category);
+              categoryLabel.addClass(category.replace(/ /g, '-'));
 
-            // Append the item element to the child element
-            childElement.append(itemElement);
+              // Create a container div for the category and its child elements
+              var categoryContainer = $('<div>').addClass('category-container');
+              // Append the category label to the container
+              categoryContainer.append(categoryLabel);
+              categoryLabel.append('<i class="fa-solid fa-layer-group" style="margin-left: 20px;"></i>');
 
-            // Attach onclick event to the child element
-            childElement.click(function () {
-              getBlock(block);
-            });
 
-            // Append the child element to the specified parent element
-            $(element).append(childElement);
-          });
+              // Iterate through the blocks in the category
+              parsedResponse[category].forEach(function (block) {
+                // Create a new child element
+                var childElement = $('<div>').addClass('block-item hidden ' + category.replace(/ /g, '-'));
+
+                // Create a <p> tag for each item in the parsed response array
+                var itemElement = $('<p>').text(block.name);
+
+                // Append the item element to the child element
+                childElement.append(itemElement);
+
+                // Attach onclick event to the child element
+                childElement.click(function () {
+                  getBlock(block.name);
+                });
+
+                // Append the child element to the category container
+                categoryContainer.append(childElement);
+              });
+
+              // Append the category container to the specified parent element
+              $(element).append(categoryContainer);
+
+              // Add a click event to toggle the visibility of child elements
+              categoryLabel.click(function (catClass) {
+                return function () {
+                  console.log(catClass);
+                  $('.category-container .block-item.' + catClass).toggleClass('hidden');
+                }
+              }(category.replace(" ", "-")));
+            }
+          }
 
           // Make the blocks stackable inside the preview element
           $('.pageSection').children().each(function () {
@@ -41,7 +67,7 @@ function fetchBlocks(element) {
             }
           });
         } else {
-          console.log('Parsed response is not an array.');
+          console.log('Parsed response is not in the expected format.');
         }
       } catch (error) {
         console.log('Error parsing the response as JSON.');
@@ -137,6 +163,10 @@ function setDefaultOptions($block, defaultStyle) {
   var defaultWidth = defaultStyle ? defaultStyle.match(/width:\s*((?:[^;]+)*)/) : null;
   var defaultHeight = defaultStyle ? defaultStyle.match(/height:\s*((?:[^;]+)*)/) : null;
   var defaultBackgroundColor = defaultStyle ? defaultStyle.match(/background:\s*([^;]+);/) : null;
+  var backgroundImage = defaultStyle ? defaultStyle.match(/background-image:\s*([^;]+);/) : null;
+  var backgroundPosition = defaultStyle ? defaultStyle.match(/background-position:\s*([^;]+);/) : null;
+  var backgroundRepeat = defaultStyle ? defaultStyle.match(/background-repeat:\s*([^;]+);/) : null;
+  var borderRadius = defaultStyle ? defaultStyle.match(/border-radius:\s*([^;]+);/) : null;
   defaultBackgroundColor = defaultBackgroundColor ? defaultBackgroundColor[1] : null;
   defaultBackgroundColor = rgbToHex(defaultBackgroundColor);
   var options = '<p>Block options:</p>';
@@ -144,11 +174,37 @@ function setDefaultOptions($block, defaultStyle) {
   options += '<input type="text" class="padding-input" value="' + (defaultPadding ? defaultPadding[1] : '') + '" placeholder="Padding">';
   options += '<input type="text" class="width-input" value="' + (defaultWidth ? defaultWidth[1] : '') + '" placeholder="Width">';
   options += '<input type="text" class="height-input" value="' + (defaultHeight ? defaultHeight[1] : '') + '" placeholder="Height">';
+  options += '<input type="text" class="border-radius-input" value="' + (borderRadius ? borderRadius[1] : '') + '" placeholder="Border radius">';
   options += '<label for="background-color">Background color:</label>';
   options += '<input type="color" class="background-color-input" id="background-color" value="' + (defaultBackgroundColor ? defaultBackgroundColor : '') + '" placeholder="Background Color">';
+  options += '<label for="background-image">Background image:</label>';
+  options += '<select class="background-image" id="background-image">';
+  options += '<option value="none">Select image</option>';
+  options += '</select>';
+  options += '<label for="background-position">Background position:</label>';
+  options += '<select class="background-position" id="background-position" value="' + (backgroundPosition ? backgroundPosition[1] : 'Center') + '">';
+  options += '<option value="center">Center</option>';
+  options += '<option value="top">Top</option>';
+  options += '<option value="bottom">Bottom</option>';
+  options += '<option value="left">Left</option>';
+  options += '<option value="right">Right</option>';
+  options += '</select>';
+  options += '<label for="background-repeat">Background repeat:</label>';
+  options += '<select class="background-repeat" id="background-repeat" value="' + (backgroundRepeat ? backgroundRepeat[1] : 'Repeat') + '">';
+  options += '<option value="repeat">Repeat</option>';
+  options += '<option value="no-repeat">No-repeat</option>';
+  options += '</select>';
+  options += '<label for="background-size">Background size:</label>';
+  options += '<select class="background-size" id="background-repeat">';
+  options += '<option value="cover">Cover</option>';
+  options += '<option value="contain">Contain</option>';
+  options += '<option value="fill">Fill</option>';
+  options += '</select>';
   options += '<button class="parent-selection">Select Parent</button>';
   options += '<button class="delete-block">Delete Block</button>';
   $(".block-options").html(options);
+
+  options = "";
 
   $(".margin-input").on("input", function () {
     $block.css("margin", $(this).val());
@@ -170,6 +226,11 @@ function setDefaultOptions($block, defaultStyle) {
     $block.css("background", $(this).val());
   });
 
+
+  $(".border-radius-input").on("input", function () {
+    $block.css("border-radius", $(this).val());
+  });
+
   $(".parent-selection").on("click", function () {
     BlockOptions($block.parent());
   });
@@ -178,6 +239,60 @@ function setDefaultOptions($block, defaultStyle) {
     $selection = $block.closest().parent();
     $block.remove();
   });
+
+  $(".background-position").change(function () {
+    $block.css("background-position", $(this).val());
+  });
+
+  $(".background-repeat").change(function () {
+    $block.css("background-repeat", $(this).val());
+  });
+
+  $(".background-size").change(function () {
+    $block.css("background-size", $(this).val());
+  });
+
+
+  $.ajax({
+    url: '../api.php',
+    type: 'POST',
+    data: {
+      request: "media",
+      data: 0,
+      type: 'fetchAll',
+    },
+    error: function (xhr, status, error) {
+      console.log(error);
+    }
+  }).done(function (response) {
+
+    response = JSON.parse(response);
+
+    if (response != null) {
+      var updatedOptions = ""; // Create a new variable to store the updated options
+
+      $.each(response, function (key, value) {
+        if (value.file_type == "image") {
+          updatedOptions += "<option value='" + value.file + "'>" + value.name + "</option>";
+        }
+      });
+
+      var imgLink = backgroundImage ? backgroundImage[1] : 'Select image';
+
+      imgLink = imgLink.replace("url(", '');
+      imgLink = imgLink.replace(")", '');
+
+      $(".background-image").append(updatedOptions);
+      // $(".background-image option[value=" + imgLink + "]").attr('selected', 'selected');
+      $(".background-image").change(function () {
+
+        var selectedValue = $(".background-image").val();
+        $block.css("background-image", "url(" + selectedValue + ")");
+      });
+
+    }
+  });
+
 
 }
 
@@ -189,10 +304,12 @@ function setGridOptions($block, defaultStyle) {
   var defaultJustifyContent = defaultStyle ? defaultStyle.match(/justify-content:\s*(\S+);/) : null;
   var defaultAlignItems = defaultStyle ? defaultStyle.match(/align-items:\s*(\S+);/) : null;
   var defaultPlaceContent = defaultStyle ? defaultStyle.match(/place-content:\s*(\S+);/) : null;
+  var defaultGap = defaultStyle ? defaultStyle.match(/gap:\s*(\S+);/) : null;
 
   var options = '<p>Grid options</p>';
   options += '<input type="text" class="grid-template-columns-input" value="' + (defaultGridTemplateColumns ? defaultGridTemplateColumns[1] : '') + '" placeholder="Grid Template Columns">';
   options += '<input type="text" class="grid-template-rows-input" value="' + (defaultGridTemplateRows ? defaultGridTemplateRows[1] : '') + '" placeholder="Grid Template Rows">';
+  options += '<input type="text" class="grid-gap-input" value="' + (defaultGap ? defaultGap[1] : '') + '" placeholder="Gap">';
   options += '<select class="grid-flow-select">';
   options += '<option value="row" ' + (defaultGridFlow && defaultGridFlow[1] === "row" ? 'selected' : '') + '>Grid Flow: Row</option>';
   options += '<option value="column" ' + (defaultGridFlow && defaultGridFlow[1] === "column" ? 'selected' : '') + '>Grid Flow: Column</option>';
@@ -224,6 +341,10 @@ function setGridOptions($block, defaultStyle) {
 
   $(".grid-template-rows-input").on("input", function () {
     $block.css("grid-template-rows", $(this).val());
+  });
+
+  $(".grid-gap-input").on("input", function () {
+    $block.css("gap", $(this).val());
   });
 
   $(".grid-flow-select").on("change", function () {
@@ -341,13 +462,76 @@ function ListOptions($block, defaultStyle) {
   });
 }
 
+function mediaOptions($block, defaultStyle) {
+
+  var src = $block.attr("src");
+
+  var options = "<p>Media options</p>";
+
+  options += "<select id='selectMediaFile'>";
+
+  options += "<option value='none'>Select Image</option>";
+
+  fetchMediaFiles(options, function (updatedOptions) {
+    options += updatedOptions;
+
+    options += "</select>";
+
+    $(".block-options").append(options);
+
+    $("#selectMediaFile").change(function () {
+      var selectedValue = $(this).val();
+      $block.attr("src", selectedValue);
+    });
+  });
+}
+
+
+function isMedia($block) {
+  var allowedTags = ["audio", "video", "source", "track", "img", "source"];
+
+  var tagName = $block.prop("tagName").toLowerCase();
+  return allowedTags.includes(tagName);
+}
+
+
+function fetchMediaFiles(options, callback) {
+  $.ajax({
+    url: '../api.php',
+    type: 'POST',
+    data: {
+      request: "media",
+      data: 0,
+      type: 'fetchAll',
+    },
+    error: function (xhr, status, error) {
+      console.log(error);
+    }
+  }).done(function (response) {
+
+    response = JSON.parse(response);
+
+    if (response != null) {
+      var updatedOptions = ""; // Create a new variable to store the updated options
+
+      $.each(response, function (key, value) {
+        if (value.file_type == "image") {
+          updatedOptions += "<option value='" + value.file + "'>" + value.name + "</option>";
+        }
+      });
+
+      // Call the callback with the updated options
+      callback(updatedOptions);
+    }
+  });
+}
 
 function hasTextChild($block) {
   var allowedTags = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "a", "strong", "em", "b", "i", "u", "li"];
 
   return $block
     .find("*")
-    .filter(function() {
+    .filter(function () {
       var tagName = this.tagName.toLowerCase();
       return allowedTags.includes(tagName) || this.nodeType === 3 && $.trim(this.nodeValue).length > 0;
     });
@@ -375,6 +559,10 @@ function BlockOptions(element) {
 
   if (hasListChild($block).length > 0) {
     ListOptions($block, defaultStyle);
+  }
+
+  if (isMedia($block)) {
+    mediaOptions($block, defaultStyle);
   }
 
   if ($block.attr("id") === "grid-block") {
@@ -417,44 +605,40 @@ function updateBlockPositions() {
 }
 
 function publishContent(name) {
-  var htmlContent = $('.pageSection').html();
-    
+  var $pageSection = $('.pageSection');
+  var htmlContent = $pageSection.last().prop('outerHTML');
   $.ajax({
     url: './jobs/pageEditor.php',
     type: 'POST',
     data: {
       htmlContent: htmlContent,
-      name : name,
+      name: name,
       pageStatus: "live"
     },
-    success: function(response) {
-      console.log('AJAX request succeeded.');
-      console.log(response);
+    success: function (response) {
     },
-    error: function(xhr, status, error) {
-      console.log('AJAX request failed.');
+    error: function (xhr, status, error) {
       console.log(error);
     }
   });
 }
 
+
 function publishContentPreview(name) {
-  var htmlContent = $('.pageSection').html();
-    
+  var $pageSection = $('.pageSection');
+  var htmlContent = $pageSection.prop('outerHTML');
+
   $.ajax({
     url: './jobs/pageEditor.php',
     type: 'POST',
     data: {
       htmlContent: htmlContent,
-      name : name,
+      name: name,
       pageStatus: "preview"
     },
-    success: function(response) {
-      console.log('AJAX request succeeded.');
-      console.log(response);
+    success: function (response) {
     },
-    error: function(xhr, status, error) {
-      console.log('AJAX request failed.');
+    error: function (xhr, status, error) {
       console.log(error);
     }
   });
@@ -473,16 +657,16 @@ $(document).ready(function () {
     }
   });
 
-  $('.pageSection .block').each(function() {
+  $('.pageSection .block').each(function () {
     var $block = $(this);
-  
-    $block.on('click', function() {
+
+    $block.on('click', function () {
       BlockOptions($block);
     });
-    
+
     hasTextChild($block).attr('contenteditable', 'true');
 
-    $block.find('.block').on('click', function(e) {
+    $block.find('.block').on('click', function (e) {
       e.stopPropagation();
       BlockOptions($block);
     });
@@ -512,6 +696,8 @@ $(document).ready(function () {
     BlockOptions(this);
     fetchBlocks('.editor-tools');
   });
+
+
 
   fetchBlocks('.editor-tools');
 });

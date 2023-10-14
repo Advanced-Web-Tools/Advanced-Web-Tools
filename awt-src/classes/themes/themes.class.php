@@ -4,6 +4,7 @@ namespace themes;
 
 use database\databaseConfig;
 use admin\profiler;
+use notifications\notifications;
 
 class themes extends modules
 {
@@ -141,6 +142,9 @@ class themes extends modules
             $stmt = $this->mysqli->prepare("UPDATE `awt_themes` SET `active` = ? WHERE `id` = ?;");
             $stmt->bind_param("ss", $status, $id);
             $stmt->execute();
+            
+            $notification = new notifications("Themes", $profiler->name . " has changed sites theme.", "notice");
+            $notification->pushNotification();
 
             return true;
 

@@ -1,8 +1,9 @@
 <?php
 
 use database\databaseConfig;
+use api\api;
 
-class awtMetrics
+class awtMetrics extends api
 {
     private object $mysqli;
     private object $database;
@@ -14,7 +15,10 @@ class awtMetrics
     public array $metrics;
 
     public function __construct()
-    {
+    {   
+
+        parent::__construct();
+
         $this->database = new databaseConfig;
 
         if ($this->auth = $this->database->checkAuthority() == 1) {
@@ -145,4 +149,17 @@ class awtMetrics
         $stmt->close();
         return $result;
     }
+
+
+    public function Api() : void {
+        parent::Api();
+
+        if($this->checkForData()) {
+            if(isset($_POST["type"]) && $_POST["type"] == "most_visited_today") die(json_encode($this->getMostVisitedToday()));
+        } else {
+            die("No data set!");
+        }
+
+    }
+
 }

@@ -2,4 +2,4 @@
 
 $metrics = new awtMetrics;
 
-if(!defined('DASHBOARD') && !defined('JOB')) $metrics->startMetrics();
+if(!defined('DASHBOARD') && !defined('JOB') && !defined('API')) $metrics->startMetrics();

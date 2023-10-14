@@ -10,7 +10,7 @@ class sessionHandler
     private $keyConfig;
     private $key;
 
-    public function sessionHandler()
+    public function sessionHandler() : bool
     {
         $this->time = time();
 
@@ -82,6 +82,8 @@ class sessionHandler
                 }
             }
         }
+
+        return true;
     }
 
     public function sessionRemover($name)
@@ -154,7 +156,7 @@ class sessionHandler
     //     }
     // }
 
-    protected function sessionClearing()
+    protected function sessionClearing() : void
     {
 
         foreach ($_SESSION as $key) {
@@ -172,7 +174,7 @@ class sessionHandler
         
     }
 
-    public function sessionDumper()
+    public function sessionDumper() : void
     {
         var_dump($_SESSION);
     }

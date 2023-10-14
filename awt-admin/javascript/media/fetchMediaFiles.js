@@ -16,19 +16,19 @@ function fetchMediaFiles(container, hostname) {
                 html += "<div class='media'>";
 
                 if (value.file_type == "image") {
-                    html += "<img class='file' id='" + value.id + "' src='" + hostname + "awt-data/uploads/" + value.file_type + "/" + value.file + "' onclick='selectMedia(" + value.id + ")'/>";
+                    html += "<img class='file' id='" + value.id + "' src='" + value.file + "' onclick='selectMedia(" + value.id + ")'/>";
                 }
 
                 if (value.file_type == "video") {
                     html += "<video class='file'id='" + value.id + "' controls width='260px'>";
-                    html += '<source src="' + hostname + 'awt-data/uploads/' + value.file_type + '/' + value.file + '"></source>';
+                    html += '<source src="' + value.file + '"></source>';
                     html += "</video>";
                     html += "<input type='checkbox' onclick='selectMedia(" + value.id + ")'/>"
                 }
 
                 if (value.file_type == "audio") {
                     html += "<video class='file' id='" + value.id + "' controls width='260px' poster='" + hostname + "/awt-data/icons/microphone.jpg'>";
-                    html += '<source src="' + hostname + 'awt-data/uploads/' + value.file_type + '/' + value.file + '"></source>';
+                    html += '<source src="'  + value.file + '"></source>';
                     html += "</video>";
                     html += "<input type='checkbox' onclick='selectMedia(" + value.id + ")'/>"
                 }
@@ -59,19 +59,19 @@ function fetchMediaFilesAlbum(id, container, hostname) {
                 html += "<div class='media'>";
 
                 if (value.file_type == "image") {
-                    html += "<img class='file' id='" + value.id + "' src='" + hostname + "awt-data/uploads/" + value.file_type + "/" + value.file + "' onclick='selectMedia(" + value.id + ")'/>";
+                    html += "<img class='file' id='" + value.id + "' src='" + value.file + "' onclick='selectMedia(" + value.id + ")'/>";
                 }
 
                 if (value.file_type == "video") {
                     html += "<video class='file'id='" + value.id + "' controls width='260px'>";
-                    html += '<source src="' + hostname + 'awt-data/uploads/' + value.file_type + '/' + value.file + '"></source>';
+                    html += '<source src="' + value.file + '"></source>';
                     html += "</video>";
                     html += "<input type='checkbox' onclick='selectMedia(" + value.id + ")'/>"
                 }
 
                 if (value.file_type == "audio") {
                     html += "<video class='file' id='" + value.id + "' controls width='260px' poster='" + hostname + "/awt-data/icons/microphone.jpg'>";
-                    html += '<source src="' + hostname + 'awt-data/uploads/' + value.file_type + '/' + value.file + '"></source>';
+                    html += '<source src="'  + value.file + '"></source>';
                     html += "</video>";
                     html += "<input type='checkbox' onclick='selectMedia(" + value.id + ")'/>"
                 }

@@ -22,7 +22,7 @@ if (!$check->checkAuthentication()) {
 
 $paging = new paging(array());
 
-if(isset($_POST['getBlocks'])) echo json_encode($loadedBlocks);
+if(isset($_POST['getBlocks'])) echo json_encode($pluginBlocks);
 
 if(isset($_POST['getBlock'])) include_once getBlockPath($_POST['getBlock']);
 

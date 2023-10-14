@@ -187,7 +187,7 @@ class themeInstaller extends fileScanner {
             $profiler = new profiler;
             $notifications = new notifications("Installer", $profiler->name. " has installed new theme: $name", "important");
             $notifications->pushNotification();
-
+            
             return $name." was installed succesfully! You can reload now or wait 5 seconds.";
         }
 

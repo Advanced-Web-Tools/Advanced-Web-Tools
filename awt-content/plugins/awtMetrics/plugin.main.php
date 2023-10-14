@@ -13,7 +13,9 @@ $src = PLUGINS.'awtMetrics'.DIRECTORY_SEPARATOR.'src'.DIRECTORY_SEPARATOR;
 $enginePath = $src.'awtMetrics.php';
 $dependenciesPath = $src.'awtMetrics.class.php';
 
-addDependencie('low', $name, $dependenciesPath, $version);
+include_once $dependenciesPath;
+
+addDependencie('high', $name, $dependenciesPath, $version);
 
 addEngine($name, $enginePath, $version, 'start');
 
@@ -26,6 +28,20 @@ addEngine($name, $enginePath, $version, 'start');
 
 //     array_push($navbar, $metrics);
 // }
+
+$collection = "Metrics Blocks";
+createBlockCollection($collection);
+
+$defaultPath = PLUGINS.$name.DIRECTORY_SEPARATOR."src".DIRECTORY_SEPARATOR."blocks".DIRECTORY_SEPARATOR;
+
+$tester = array("name" => "Metrics", "path" => $defaultPath."most-visited.php");
+
+addBlock($tester, $collection);
+
+if(isset($api_executors)) {
+    addToApiExecution("getViewes", $class = new awtMetrics);
+}
+
 
 if(!$settings->checkIfSettingExists("Show Metrics widgets")) {
     $settings->createSetting("Show Metrics widgets", "true");

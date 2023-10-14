@@ -120,7 +120,8 @@ final class databaseConfig
     {   
         if ($this->allow == 0) return false;
         
-        $notification = new notifications("Database", "$action for $file", "notice");
+        $content = ucfirst($action);
+        $notification = new notifications("Database", "$content for $file", "notice");
         $notification->pushNotification();
 
         if($key == '') $key = $this->getSecretKey();

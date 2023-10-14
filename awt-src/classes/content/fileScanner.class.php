@@ -1,6 +1,7 @@
 <?php
 
 namespace content;
+use notifications\notifications;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -28,9 +29,13 @@ class fileScanner {
 
         foreach ($code as $key => $value) {
             if (strpos($value, 'file(') !== false) {
+                $notifications = new notifications("File scanner", "Possible malicious code was found in $file on line ". $key + 1 .". Function file() was found!", "incident");
+                $notifications->pushNotification();
                 return 'Forbiden usage of file() function in ' . $file . ' on line: ' . $key + 1 . ' you should reconsider usage of this plugin or theme!';
             }
             if (strpos($value, 'Reflection(') !== false) {
+                $notifications = new notifications("File scanner", "Possible malicious code was found in $file on line ". $key + 1 .". Function Reflection() was found!", "incident");
+                $notifications->pushNotification();
                 return 'Forbiden usage of Reflector class in ' . $file . ' on line: ' . $key + 1  . ' you should reconsider usage of this plugin or theme!';
             }
         }

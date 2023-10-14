@@ -25,10 +25,10 @@ define("CONTENT", ROOT.DIRECTORY_SEPARATOR.'awt-content'.DIRECTORY_SEPARATOR);
 define("THEMES", CONTENT.'themes'.DIRECTORY_SEPARATOR);
 define("PLUGINS", CONTENT.'plugins'.DIRECTORY_SEPARATOR);
 
-include_once JOBS.'loaders'.DIRECTORY_SEPARATOR.'awt-autoLoader.php';
-include_once SRC.'vendor'.DIRECTORY_SEPARATOR.'composer'.DIRECTORY_SEPARATOR.'autoload.php';
+require_once JOBS.'loaders'.DIRECTORY_SEPARATOR.'awt-autoLoader.php';
+require_once SRC.'vendor'.DIRECTORY_SEPARATOR.'composer'.DIRECTORY_SEPARATOR.'autoload.php';
 
-include_once JOBS.'awt-Settings.php';
+require_once JOBS.'awt-Settings.php';
 
 //Safe switch
 define("ACCESS_ALLOWED", 1);
