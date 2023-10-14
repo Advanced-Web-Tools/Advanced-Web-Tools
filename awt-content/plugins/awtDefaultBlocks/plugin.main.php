@@ -14,7 +14,7 @@ $listBlock = array("name" => "List", "path" => $defaultPath."listBlock.html");
 $spacer = array("name" => "Space", "path" => $defaultPath."spacerBlock.html");
 $emptyBlock = array("name" => "Empty Block", "path" => $defaultPath."emptyblock.html");
 $grid = array("name" => "Grid", "path" => $defaultPath."gridBlock.html");
-
+$imageBlock = array("name" => "Image", "path" => $defaultPath."mediaBlock.html");
 
 addBlock($title, $collection);
 addBlock($paragraph, $collection);
@@ -22,3 +22,4 @@ addBlock($listBlock, $collection);
 addBlock($spacer, $collection);
 addBlock($emptyBlock, $collection);
 addBlock($grid, $collection);
+addBlock($imageBlock, $collection);

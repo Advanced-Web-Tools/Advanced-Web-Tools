@@ -206,8 +206,8 @@ class paging extends cache
 
     public function createEmptyPage(string $name)
     {
-        $content_1 = "";
-        $content_2 = "";
+        $content_1 = "<div class='pageSection'>";
+        $content_2 = "</div>";
         $status = "preview";
         $override = 0;
 

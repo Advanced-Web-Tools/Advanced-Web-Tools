@@ -20,7 +20,7 @@ if (!defined("THEME_NAME")) {
 
 <?php $theme->loadModule("Menu"); ?>
 
-<div class="pageSection" style="margin-top: 80px; overflow-x: hidden;">
+<div class="scene" style="overflow-x: hidden; z-index: 0; position: relative;">
     <?php
     if (isset($_GET['editPage'])) {
         $paging->loadPageEdit($_GET['editPage']);
@@ -30,6 +30,7 @@ if (!defined("THEME_NAME")) {
         $paging->loadPage($_GET['page'], "name");
     }
     ?>
+
 </div>
 <?php
 $theme->loadModulesByOrder(THEME_DIR . "customPage.xml"); 

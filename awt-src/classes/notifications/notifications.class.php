@@ -24,6 +24,18 @@ class notifications {
 
     }
 
+    public function lateConstruct(string $caller = "", string $content = "", string $importance = "low") {
+        $this->caller = $caller;
+        $this->content = $content;
+        $this->importance = $importance;
+
+        $this->database = new databaseConfig();
+
+        $this->database->checkAuthority() == 1 or die("Fatal error database access for " . $this->database->getCaller() . " was denied");
+
+        $this->mysqli = $this->database->getConfig();
+    }
+
     public function createNotification(string $caller, string $content, string $importance)
     {
         $this->caller = $caller;

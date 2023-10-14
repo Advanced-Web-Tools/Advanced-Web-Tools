@@ -13,7 +13,7 @@ $theme->getActiveTheme();
 
 ?>
 <!-- Include jQuery library -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="../awt-src/vendor/jQuery/jquery.min.js"></script>
 
 <!-- Include jQuery UI library -->
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
@@ -34,14 +34,16 @@ $theme->getActiveTheme();
 <section class="editor">
     <div class="top-menu">
         <div class="action-buttons">
-            <button type="button" onclick="publishContent('<?php echo $_GET['pageName'];?>');" class="button">Publish</button>
-            <button type="button" onclick="publishContentPreview('<?php echo $_GET['pageName'];?>');" class="button">Preview</button>
+            <button type="button" onclick="publishContent('<?php echo $_GET['pageName']; ?>');"
+                class="button">Publish</button>
+            <button type="button" onclick="publishContentPreview('<?php echo $_GET['pageName']; ?>');"
+                class="button">Preview</button>
         </div>
     </div>
     <div class="stage">
         <div class="preview">
             <?php
-                $theme->loadThemePage("customPage.page");
+            $theme->loadThemePage("customPage.page");
             ?>
         </div>
         <div class="editor-tools">
@@ -50,3 +52,12 @@ $theme->getActiveTheme();
         </div>
     </div>
 </section>
+
+<script>
+    $(document).ready(function () {
+        $('a').on('click', function (e) {
+            $(this).prop('disabled', true);
+            e.preventDefault();
+        });
+    });
+</script>

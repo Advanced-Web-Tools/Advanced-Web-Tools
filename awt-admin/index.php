@@ -43,7 +43,7 @@ $paging = new paging($pluginPages);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/navbar.css">
-    <script src="https://kit.fontawesome.com/9623f60d76.js" crossorigin="anonymous"></script>
+    <link href="../awt-src/vendor/fontawesome-free-6.4.2-web/css/all.css" rel="stylesheet">
 </head>
 
 <body>

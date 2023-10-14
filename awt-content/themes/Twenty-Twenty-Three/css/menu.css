@@ -4,6 +4,7 @@
     padding: 20px 0;
     background: var(--primary-color-variant);
     top: 0;
+    z-index: 10;
     position: fixed;
     transition: 0.5s ease all;
 }

@@ -5,6 +5,7 @@ namespace settings;
 use admin\profiler;
 use cache\cache;
 use database\databaseConfig;
+use notifications\notifications;
 
 class settings
 {
@@ -30,7 +31,8 @@ class settings
         
     }
 
-    public function fetchSettings() {
+    public function fetchSettings() : void
+    {
         $stmt = $this->mysqli->prepare("SELECT * FROM `awt_settings` ORDER BY `id` ASC;");
         $stmt->execute();
         $this->allSettings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
@@ -58,6 +60,9 @@ class settings
 
         if ($perm = $this->getSettingsValue($name) !== false) {
 
+            $notifications = new notifications("Settings", $this->profiler->name. " has changed setting: $name to $value ", "notice");
+            $notifications->pushNotification();
+
             if (!$this->profiler->checkPermissions($perm)) return false;
 
             $stmt = $this->mysqli->prepare("UPDATE `awt_settings` SET `value` = ?, `required_permission_level` = ? WHERE `name` = ?;");
@@ -78,6 +83,9 @@ class settings
         $stmt->bind_param('ssi', $name, $value, $this->profiler->permissionLevel);
         $stmt->execute();
         $stmt->close();
+
+        $notifications = new notifications("Settings", "New setting created $name $value ", "notice");
+        $notifications->pushNotification();
 
         return true;
     }

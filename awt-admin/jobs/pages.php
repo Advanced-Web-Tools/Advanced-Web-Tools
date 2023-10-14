@@ -19,7 +19,6 @@ if (!$check->checkAuthentication()) {
 }
 
 $pages = new paging(array());
-
 if(isset($_POST['getPages'])) echo json_encode($pages->getAllPages());
-if(isset($_POST['createEmpty']) && isset($_POST['name'])) echo json_encode($pages->createEmptyPage($_POST['name']));
+if(isset($_POST['createEmpty']) && isset($_POST['name'])) die(json_encode($pages->createEmptyPage($_POST['name'])));
 if(isset($_POST['deletePage']) && isset($_POST['id']) && $profiler->checkPermissions(0)) echo json_encode($pages->deletePage($_POST['id']));

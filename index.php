@@ -4,13 +4,14 @@ if (!file_exists('./awt-config.php')) {
    exit();
 }
 
+
 require_once './awt-config.php';
 
 
 //Crucial jobs
 
-include_once JOBS.'awt-domainBuilder.php';
-include_once JOBS.'loaders'.DIRECTORY_SEPARATOR.'awt-pluginLoader.php';
+require_once JOBS.'awt-domainBuilder.php';
+require_once JOBS.'loaders'.DIRECTORY_SEPARATOR.'awt-pluginLoader.php';
 
 
 use admin\authentication;
@@ -18,7 +19,7 @@ use admin\authentication;
 $admin = new authentication;
 
 
-include_once JOBS.'loaders'.DIRECTORY_SEPARATOR.'awt-themesLoader.php';
+require_once JOBS.'loaders'.DIRECTORY_SEPARATOR.'awt-themesLoader.php';
 
 enginesLoader('end');
 
