@@ -1,7 +1,19 @@
 # Advanced Web Tools
 
+[![Download](https://img.shields.io/badge/Download-Latest-blue.svg)](https://github.com/ElStefanos/Advanced-Web-Tools/releases/latest)
+
 ## Description
 Advanced Web Tools is a PHP-based Content Management System (CMS) project with a clear mission—to evolve into the fastest, most feature-rich, and developer-friendly CMS available. With a focus on speed, advanced functionality, and strict security measures, Advanced Web Tools CMS aims to redefine the standards of effective web content management.
+This is self-hosted software that is free for anyone to install. 
+
+<br>
+
+> **Warning!**<br>
+> **Advanced Web Tools** is under active development but is currently very much beta software. This means that there may be stability or security issues and it is not yet recommended for use in active production environments!
+> There may be breaking changes at any time. Be careful and make sure you read changelogs before updates!
+
+<br>
+
 
 ## Features
 
@@ -19,7 +31,7 @@ Advanced Web Tools is a PHP-based Content Management System (CMS) project with a
 
 Installing Advanced Web Tools CMS is a breeze. Following these steps:
 
-1. **Download**: Obtain the latest release from our [GitHub repository](https://github.com/ElStefanos/Advanced-Web-Tools/releases/).
+1. **Download**: Obtain the latest release from our [GitHub repository](https://github.com/ElStefanos/Advanced-Web-Tools/releases/latest).
 
 2. **Extract**: Unzip the downloaded file to your desired location on your server.
 
@@ -35,7 +47,7 @@ We welcome and appreciate contributions from the community! If you're interested
 
 ### Reporting Issues
 
-If you encounter any bugs, issues, or have suggestions for improvements, please open an issue on our [GitHub repository](https://github.com/ElStefanos/Advanced-Web-Tools/releases/). Provide detailed information about the problem or enhancement you're proposing.
+If you encounter any bugs, issues, or have suggestions for improvements, please open an issue on our [GitHub repository](https://github.com/ElStefanos/Advanced-Web-Tools/). Provide detailed information about the problem or enhancement you're proposing.
 
 ### Code Contributions
 
@@ -50,6 +62,6 @@ Improvements to the documentation are always valuable. If you find areas that ne
 
 ### Feature Requests
 
-If you have ideas for new features, share them by opening a feature request on our [GitHub repository](https://github.com/ElStefanos/Advanced-Web-Tools/releases/). We'd love to hear your thoughts.
+If you have ideas for new features, share them by opening a feature request on our [GitHub repository](https://github.com/ElStefanos/Advanced-Web-Tools/). We'd love to hear your thoughts.
 
 Thank you for considering contributing to Advanced Web Tools CMS! Together, we can make it even better.
