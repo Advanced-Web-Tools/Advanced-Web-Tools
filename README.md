@@ -8,7 +8,7 @@ This is self-hosted software that is free for anyone to install.
 
 <br>
 
-> **Warning!**<br>
+> **⚠️ Warning!**<br>
 > **Advanced Web Tools** is under active development but is currently very much in alpha stage. This means that there may be stability or security issues and it is not yet recommended for use in active production environments!
 > There may be breaking changes at any time. Be careful and make sure you read changelogs before updates!
 
