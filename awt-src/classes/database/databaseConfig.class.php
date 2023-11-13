@@ -7,17 +7,16 @@ use notifications\notifications;
 
 final class databaseConfig
 {
-    private static string $hostname = "";
-    private static string $database = "";
-    private static string $username = "";
-    private static string $password = "";
-    private static string $key = "";
+    private static string $hostname = "localhost";
+    private static string $database = "awt_development";
+    private static string $username = "admin";
+    private static string $password = "Hektor011!";
+    private static string $key = "f504b7626bb37e15978130f4ebbb32fc4307a4be18d96484d677cd80882c678beb62090da401a9480701ce7b59918526adf656210a9d7a703a1dc218b10d14d4";
     private static int $keyLength;
     private $authorized;
     private string $fileHash;
     private $caller;
     private int $allow;
-
     private static array $allowedCallers = array(
         JOBS.'loaders'.DIRECTORY_SEPARATOR.'awt-autoLoader.php',
         ROOT . DIRECTORY_SEPARATOR . 'index.php',
