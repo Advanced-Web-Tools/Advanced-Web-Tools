@@ -26,17 +26,18 @@ include_once FUNCTIONS . 'awt-pluginsLoader.fun.php';
 
 $plugins = new plugins();
 
-$plugins = $plugins->getPlugins();
-
-include_once PLUGINS . 'defaultdashboardNavigation' . DIRECTORY_SEPARATOR . 'plugin.main.php';
+include_once PLUGINS . 'defaultDashboardNavigation' . DIRECTORY_SEPARATOR . 'plugin.main.php';
 include_once PLUGINS . 'awtDefaultBlocks' . DIRECTORY_SEPARATOR . 'plugin.main.php';
+
+$plugins = $plugins->getPlugins();
 
 if (USE_PLUGINS == 'true')
     loadAllPlugins();
 
-ob_start();
+// ob_start();
+
 dependenciesLoader();
 
 enginesLoader('start');
 
-ob_end_clean();
+// ob_end_clean();

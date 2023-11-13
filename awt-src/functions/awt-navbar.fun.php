@@ -1,7 +1,8 @@
 <?php
 
 function navbarLoader($navbar)
-{   
+{    
+
     if (isset($navbar['end'])) {
         $end[] = $navbar['end'];
         unset($navbar['end']);

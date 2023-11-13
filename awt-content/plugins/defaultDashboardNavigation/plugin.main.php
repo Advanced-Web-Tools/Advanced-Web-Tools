@@ -6,9 +6,10 @@ $nav = new navbar;
 $logout = new navbar;
 $settings = new navbar;
 
-if (defined('DASHBOARD') || checkForPlugin('floatingEditor', '0.0.1') == true) {
+if (!defined('DASHBOARD') || !checkForPlugin('floatingEditor', '0.0.1') == true) {
 
     $location = HOSTNAME . 'awt-content/plugins/defaultDashboardNavigation/data/icons/';
+
     $nav->addItem(array('icon' => $location . 'house-solid.svg', 'name' => 'Dashboard', 'link' => HOSTNAME . 'awt-admin/?page=Dashboard', 'permission' => 2));
     $nav->addItem(array('icon' => $location . 'file-lines-solid.svg', 'name' => 'Pages', 'link' => HOSTNAME . 'awt-admin/?page=Pages', 'permission' => 2));
     $nav->addItem(array('icon' => $location . 'brush-solid.svg', 'name' => 'Themes', 'link' => HOSTNAME . 'awt-admin/?page=Themes', 'permission' => 0));
