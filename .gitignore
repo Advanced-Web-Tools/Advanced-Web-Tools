@@ -1,14 +1,10 @@
-# Ignore files ending with _cached.html
+
 *_cached.html
 
-# Ignore .vscode folder
 .vscode/
 .vs
 
-# Ignore .VSCodeCounter folder (if needed)
 .VSCodeCounter/
-
-# Ignore databaseConfig.class.php
 
 /awt-data/temp/*
 /awt-data/uploads/image
