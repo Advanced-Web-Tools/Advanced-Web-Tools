@@ -1,12 +1,12 @@
 <?php
 
-namespace update;
+namespace store;
 
 use content\pluginInstaller;
 
 use ZipArchive;
 
-class update {
+class store {
 
     private object $settings;
 
