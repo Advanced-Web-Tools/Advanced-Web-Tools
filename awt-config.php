@@ -5,7 +5,7 @@ define('WEB_NAME', "");
 
 define('AWT_VERSION', "");
 
-define("CONTACT_EMAIL", "mycontact@mail.com");
+define("CONTACT_EMAIL", "");
 
 //File paths
 define("ROOT", __DIR__);
