@@ -4,7 +4,6 @@ if (!file_exists('./awt-config.php')) {
    exit();
 }
 
-
 require_once './awt-config.php';
 
 

@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<plugin>
+    <name>floatingNavigation</name>
+    <version>0.0.1</version>
+    <description>Floating Navigation provides easy navigation on the public page.</description>
+    <icon>pen-to-square-regular.svg</icon>
+</plugin>

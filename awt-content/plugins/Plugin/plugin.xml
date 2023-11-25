@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<plugin>
+  <name>Plugin</name>
+  <version>0.0.1</version>
+  <description>Plugin Tutorial </description>
+  <icon>espaol-svgrepo-com.svg</icon>
+</plugin>

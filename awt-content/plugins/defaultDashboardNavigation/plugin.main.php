@@ -6,7 +6,7 @@ $nav = new navbar;
 $logout = new navbar;
 $settings = new navbar;
 
-if (!defined('DASHBOARD') || !checkForPlugin('floatingEditor', '0.0.1') == true) {
+if (defined('DASHBOARD') || checkForPlugin('floatingEditor', '0.0.1') == true) {
 
     $location = HOSTNAME . 'awt-content/plugins/defaultDashboardNavigation/data/icons/';
 

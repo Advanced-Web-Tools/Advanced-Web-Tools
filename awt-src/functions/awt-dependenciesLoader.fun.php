@@ -1,6 +1,6 @@
 <?php
 
-function addDependencie($priority, $name, $path, $version = '')
+function addDependency($priority, $name, $path, $version = '')
 {
     global $dependencies;
     $dependencies[$priority][] = array('name' => $name, 'path' => $path, 'version' => $version);
