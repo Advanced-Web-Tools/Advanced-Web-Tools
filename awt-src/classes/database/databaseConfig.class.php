@@ -34,7 +34,7 @@ final class databaseConfig
         CLASSES.'media'.DIRECTORY_SEPARATOR.'albums.class.php',
         CLASSES.'media'.DIRECTORY_SEPARATOR.'media.class.php',
         CLASSES.'notifications'.DIRECTORY_SEPARATOR.'notifications.class.php',
-        CLASSES.'updater'.DIRECTORY_SEPARATOR.'notifications.class.php',
+        CLASSES.'store'.DIRECTORY_SEPARATOR.'store.class.php',
     );
 
     private object $mysqli;

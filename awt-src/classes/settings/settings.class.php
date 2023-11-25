@@ -33,7 +33,7 @@ class settings
 
     public function fetchSettings() : void
     {
-        $stmt = $this->mysqli->prepare("SELECT * FROM `awt_settings` ORDER BY `id` ASC;");
+        $stmt = $this->mysqli->prepare("SELECT * FROM `awt_settings` ORDER BY CASE WHEN `category` IS NULL THEN 1 ELSE 0 END, `category`; ;");
         $stmt->execute();
         $this->allSettings = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
         $stmt->close();

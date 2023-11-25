@@ -92,6 +92,7 @@ body {
     transition: 0.3s;
     border: 1px solid var(--primary-color);
     text-decoration: none;
+    font-family: 'Poppins', sans-serif;
 }
 
 .button:hover {

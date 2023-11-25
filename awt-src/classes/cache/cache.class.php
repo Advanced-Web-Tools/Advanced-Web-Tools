@@ -24,11 +24,14 @@ class cache extends SessionHandler
     }
 
     public function scanCacheDirectory()
-    {
-        $this->files = scandir($this->location);
-        unset($this->files[0]);
-        unset($this->files[1]);
-        return $this->files;
+    {   
+        if(is_dir($this->location)) {
+            $this->files = scandir($this->location);
+            unset($this->files[0]);
+            unset($this->files[1]);
+            return $this->files;
+        }
+        return false;
     }
 
 

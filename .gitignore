@@ -6,13 +6,13 @@
 
 .VSCodeCounter/
 
-/awt-data/temp/*
-/awt-data/uploads/image
-/awt-data/uploads/audio
-/awt-data/uploads/documents
-/awt-data/uploads/video
-/awt-src/classes/database/databaseConfig.class.php
-/awt-content/plugins/awtDashboardWidgets
-./awt-config.php
+awt-data/uploads/image
+awt-data/uploads/audio
+awt-data/uploads/documents
+awt-data/uploads/video
+awt-src/classes/database/databaseConfig.class.php
+awt-content/plugins/awtDashboardWidgets
 awt-config.php
-/awt-content/plugins
+awt-config.php
+awt-content/plugins
+awt-content/themes/*
