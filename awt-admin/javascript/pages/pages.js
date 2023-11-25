@@ -74,10 +74,10 @@ function createTable(elementId, jsonData, link) {
     var liveLink = $('<a>').attr('href', link + '?page=' + pageName + "&custom").text('Visit');
     var previewLink = $('<a>').attr('href', link + '?page=' + pageName + "&custom&preview=" + token).text('Preview');
     editLink.attr('target', "_blank");
-    editLink.attr('rel', "noreferrer");
     liveLink.attr('target', "_blank");
-    liveLink.attr('rel', "noreferrer");
     previewLink.attr('target', "_blank");
+    editLink.attr('rel', "noreferrer");
+    liveLink.attr('rel', "noreferrer");
     previewLink.attr('rel', "noreferrer");
     var deleteButton = $('<button>').text('Delete');
     deleteButton.addClass('button')

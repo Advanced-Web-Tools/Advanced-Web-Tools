@@ -91,6 +91,7 @@ body {
     font-size: 13px;
     transition: 0.3s;
     border: 1px solid var(--primary-color);
+    text-decoration: none;
 }
 
 .button:hover {
