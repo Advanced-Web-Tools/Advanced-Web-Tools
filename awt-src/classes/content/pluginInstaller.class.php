@@ -7,7 +7,7 @@ use database\databaseConfig;
 use notifications\notifications;
 use admin\profiler;
 
-class pluginInstaller extends fileScanner{
+class pluginInstaller extends fileScanner {
 
     private object $database;
     private object $mysqli;
@@ -37,10 +37,14 @@ class pluginInstaller extends fileScanner{
 
         move_uploaded_file($_FILES["file"]["tmp_name"], $target_file);
 
-        $zip = new ZipArchive;
         $folderName = substr(hash('SHA512', $_FILES['file']['name']), 0, 10);
+
         $folder = TEMP . $folderName;
-        if (!file_exists($folder)) mkdir($folder);
+
+        if (!is_dir($folder)) mkdir($folder, 0755);
+
+        $zip = new ZipArchive;
+
         $zip->open($target_file);
         $zip->extractTo($folder);
         $zip->close();
