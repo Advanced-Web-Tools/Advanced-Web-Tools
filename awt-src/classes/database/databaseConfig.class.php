@@ -7,11 +7,11 @@ use notifications\notifications;
 
 final class databaseConfig
 {
-    private static string $hostname = "localhost";
-    private static string $database = "awt_development";
-    private static string $username = "admin";
-    private static string $password = "Hektor011!";
-    private static string $key = "4ed7de97ff471a45b5e1338e7491a6093ebd2005cf581ff25495927d3c20794b68a68f9883c5c74011d3f0aa20cfa66fcc08ebe14a9ca99f272d0284842a01d6";
+    private static string $hostname = "";
+    private static string $database = "";
+    private static string $username = "";
+    private static string $password = "";
+    private static string $key = "";
     private static int $keyLength;
     private $authorized;
     private string $fileHash;
