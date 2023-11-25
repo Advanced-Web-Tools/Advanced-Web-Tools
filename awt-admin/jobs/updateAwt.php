@@ -14,13 +14,13 @@ $check = new authentication;
 $profiler = new profiler;
 $admin = new admin;
 
-if ($profiler->checkPermissions(0)) {
+if($profiler->checkPermissions(0)) {
     $update = new store("getLatestAWTVersion", "Advanced Web Tools", "AWT");
 
     $update->updateAWTVersion();
-    header("Location: " . HOSTNAME . "awt-admin/index.php?page=Settings&status=update_succesfull");
+    header("Location: ". HOSTNAME ."/awt-admin/index.php?page=settings&status=update_succesfull");
     exit();
 }
 
-header("Location: " . HOSTNAME . "awt-admin/index.php?page=Settings&status=not_allowed");
+header("Location: ". HOSTNAME ."/awt-admin/index.php?page=settings&status=not_allowed");
 exit();
