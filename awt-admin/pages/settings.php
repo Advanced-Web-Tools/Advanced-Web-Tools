@@ -18,7 +18,9 @@ $health = $siteHealth->getHealth();
 </script>
 <link rel="stylesheet" href="./css/settings.css">
 <section>
-  <div id="formsContainer"></div>
+
+  <div id="formsContainer">
+  </div>
   <div class="site-health shadow">
     <div class="notices">
       <h3>Notices</h3>
@@ -44,7 +46,7 @@ $health = $siteHealth->getHealth();
       <button class="button" onclick="switchView('.notices-overview', '.incidents-overview');">Incidents</button>
       <button class="button" onclick="switchView('.incidents-overview', '.notices-overview');">Notices</button>
     </div>
-    <div class="incidents-overview">
+    <div class="incidents-overview hidden">
       <?php foreach ($siteHealth->incidents as $key => $value) : ?>
         <div class="incident">
           <h4><?php echo $value['caller']; ?></h4>
@@ -61,6 +63,11 @@ $health = $siteHealth->getHealth();
           <p><?php echo $value['time']; ?></p>
         </div>
       <?php endforeach; ?>
+    </div>
+    <div class="updater">
+        <h3>Check for updates</h3>
+        <p>Current version: <?php echo AWT_VERSION ?></p>
+        <a class="button" href="./jobs/updateAwt.php">Update AWT</a>
     </div>
   </div>
   <script>

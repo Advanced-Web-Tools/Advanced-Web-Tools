@@ -7,7 +7,7 @@ use database\databaseConfig;
 use notifications\notifications;
 use admin\profiler;
 
-class pluginInstaller extends fileScanner {
+class pluginInstaller extends fileScanner{
 
     private object $database;
     private object $mysqli;

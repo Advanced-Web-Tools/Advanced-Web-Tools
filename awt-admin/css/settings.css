@@ -104,7 +104,7 @@ input:checked+.slider:before {
   background: #fff;
   border-radius: 10px;
   width: 710px;
-  max-height: fit-content;
+  height: fit-content;
   justify-content: center;
   align-items: flex-start;
 }
@@ -184,4 +184,13 @@ input:checked+.slider:before {
 
 .notices-overview .notice {
   background: orange;
+}
+
+.site-health .updater {
+  width: 100%;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  
 }

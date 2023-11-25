@@ -3,7 +3,7 @@
 
 define('WEB_NAME', "AWT Development");
 
-define('AWT_VERSION', "23.8a");
+define('AWT_VERSION', "23.11a");
 
 define("CONTACT_EMAIL", "mycontact@mail.com");
 
