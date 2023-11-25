@@ -90,6 +90,8 @@ class store {
 
         $zip->deleteName("awt-src/classes/database/");
 
+        $zip->deleteName("awt-config.php");
+
         $zip->extractTo(ROOT);
 
         $zip->close();
