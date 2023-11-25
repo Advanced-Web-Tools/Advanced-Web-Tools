@@ -1,9 +1,9 @@
 <?php
 //Info
 
-define('WEB_NAME', "AWT Development");
+define('WEB_NAME', "");
 
-define('AWT_VERSION', "23.11a");
+define('AWT_VERSION', "");
 
 define("CONTACT_EMAIL", "mycontact@mail.com");
 
