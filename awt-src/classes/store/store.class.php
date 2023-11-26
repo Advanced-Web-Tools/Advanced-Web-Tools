@@ -43,7 +43,7 @@ class store
         $this->type = $type;
 
 
-        $this->url = "http://marketplace.advanced-web-tools.com/";
+        $this->url = "http://store.advancedwebtools.com/";
 
         $this->data = ['api' => $this->api, 'package' => $this->package, 'type' => $this->type];
     }
@@ -77,15 +77,6 @@ class store
         $this->sendRequest();
         $this->response = json_decode($this->response, true);
 
-        /*
-
-            THIS IS TEMPORARY SOLUTION UNTIL WE GET DOMAIN FOR AWT
-
-        */
-
-        $this->response[0]["path"] = "https://github.com/ElStefanos/Advanced-Web-Tools/releases/download/latest/release.zip";
-        $this->response[0]['version'] = "v23.12";
-
         file_put_contents(TEMP . DIRECTORY_SEPARATOR . "update.zip", fopen($this->response[0]["path"], 'r'));
 
         $zip = new ZipArchive();
@@ -109,16 +100,6 @@ class store
     }
 
     private function updateTheme()
-    {
-
-    }
-
-    private function createTable()
-    {
-
-    }
-
-    private function modifyTable()
     {
 
     }

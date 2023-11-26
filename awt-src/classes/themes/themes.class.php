@@ -50,7 +50,8 @@ class themes extends modules
     }
 
     public function loadTheme()
-    {
+    {   
+        global $builtInPages;
         global $theme;
         global $dependencies;
         global $engines;

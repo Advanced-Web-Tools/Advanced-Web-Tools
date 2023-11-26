@@ -36,4 +36,23 @@ class menu {
         return array_filter(explode("NEW_LINK", $this->activeMenu['items']));
     }
 
+    public function createMenu(string $name, string $items)
+    {   
+        $active = 0;
+        $stmt = $this->mysqli->prepare("INSERT INTO `awt_menus`(`name`, `items`, `active`) VALUES ('?','?','?')';");
+        $stmt->bind_param("sss", $name, $items, $active);
+        $stmt->execute();
+    }
+
+    public function updateMenu(string $name, string $items, string $active)
+    {   
+        $stmt = $this->mysqli->prepare("UPDATE  `awt_menus` SET `items` = ? , `active` = ? WHERE `name` = ?");
+        $stmt->bind_param("sss", $items, $active, $name);
+        $stmt->execute();
+    }
+
+    public function retrieveAllMenus() {
+        return $this->menus;
+    }
+
 }

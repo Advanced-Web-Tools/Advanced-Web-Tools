@@ -15,6 +15,7 @@ $dashboardWidgets = array();
 $loadedPlugins = array();
 $pluginBlocks = array();
 $loadedBlocks = array();
+$builtInPages = array();
 
 include_once JOBS . 'awt-domainBuilder.php';
 include_once FUNCTIONS . 'awt-Api.fun.php';
