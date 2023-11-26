@@ -29,11 +29,13 @@ class paging extends cache
             'Pages' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'pages.php',
             'Media' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'media.php',
             'pageEditor' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'pageEditor.php',
+            'Menus' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'menus.php',
         );
 
         $this->pluginPages = $pluginPages;
 
-        if (isset($_GET['page'])) echo "<title>" . WEB_NAME . " | " . $_GET['page'] . "</title>";
+        if (isset($_GET['page']))
+            echo "<title>" . WEB_NAME . " | " . $_GET['page'] . "</title>";
 
         $this->database = new databaseConfig;
 
@@ -44,8 +46,10 @@ class paging extends cache
 
     public function addBuiltInPage(string $name, string $path, string $description = '')
     {
+        global $builtInPages;
         $this->pages[$name]['path'] = $path;
         $this->pages[$name]['description'] = $description;
+        $builtInPages[] = array('name'=> $name, 'builtIn' => true);
     }
 
     public function getPage(bool $selfCalled = false, string $varName = '')
@@ -76,7 +80,8 @@ class paging extends cache
         if ($stmt->num_rows == 1) {
 
             echo $result['content_1'] . $result['content_2'];
-            if ($this->cacheEnabled) $this->writePageCache($_GET['page'],  $result['content_1'] . $result['content_2']);
+            if ($this->cacheEnabled)
+                $this->writePageCache($_GET['page'], $result['content_1'] . $result['content_2']);
 
             $stmt->close();
             return 1;
@@ -163,11 +168,11 @@ class paging extends cache
 
         $page_length = strlen($page);
 
-        $page =  str_replace("ui-sortable-handle", "", $page);
-        $page =  str_replace("ui-sortable", "", $page);
-        $page =  str_replace("ui-sortable", "", $page);
-        $page =  str_replace('contenteditable="true"', "", $page);
-        $page =  str_replace('selected', "", $page);
+        $page = str_replace("ui-sortable-handle", "", $page);
+        $page = str_replace("ui-sortable", "", $page);
+        $page = str_replace("ui-sortable", "", $page);
+        $page = str_replace('contenteditable="true"', "", $page);
+        $page = str_replace('selected', "", $page);
 
         if ($page_length > 16777215) {
             $content_1 = substr($page, 0, 16777214);
@@ -242,7 +247,8 @@ class paging extends cache
         return "Page deleted with id: $id";
     }
 
-    public function loadPageEdit(int $id) {
+    public function loadPageEdit(int $id)
+    {
 
         $result = array();
 
@@ -263,7 +269,7 @@ class paging extends cache
             die("Page does not exist");
         }
     }
-    
+
     public function loadPage($page, string $mode = "id")
     {
         $result = array();
@@ -317,5 +323,13 @@ class paging extends cache
         } else {
             die("Page does not exist");
         }
+    }
+
+    public function getEveryPage()
+    {   
+        global $builtInPages;
+        $result = $this->getAllPages();
+        $result = array_merge($builtInPages, $result);
+        return $result;
     }
 }

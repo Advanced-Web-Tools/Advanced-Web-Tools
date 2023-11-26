@@ -1,0 +1,34 @@
+.menu-options {
+    background: #fff;
+    width: fit-content;
+    border-radius: 7px;
+    padding: 20px;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.options-container .option-container {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    height: 32px;
+}
+
+.options-container .option-container select {
+    height: 100%;
+    border: none;
+    border-radius: 5px;
+}
+
+.options-container .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
