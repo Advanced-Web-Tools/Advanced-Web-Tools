@@ -81,7 +81,8 @@ body {
     box-sizing: border-box;
 }
 
-.button {
+.button,
+.button:disabled:hover {
     background: var(--primary-color);
     padding: 7px 15px;
     color: #fff;
@@ -99,6 +100,11 @@ body {
     color: var(--primary-color);
     background: #fff;
 }
+
+.button:disabled:hover {
+    cursor: default;
+}
+ 
 
 #green {
     background: #00563B;

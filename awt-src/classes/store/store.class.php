@@ -78,21 +78,36 @@ class store
         $this->sendRequest();
         $this->response = json_decode($this->response, true);
 
-        file_put_contents(TEMP . DIRECTORY_SEPARATOR . "update.zip", fopen($this->response[0]["path"], 'r'));
 
-        $zip = new ZipArchive();
+        if($versionCompare = version_compare(AWT_VERSION, $this->response[0]["version"]) == -1) {
+            file_put_contents(TEMP . DIRECTORY_SEPARATOR . "update.zip", fopen($this->response[0]["path"], 'r'));
 
-        $zip->open(TEMP . DIRECTORY_SEPARATOR . 'update.zip');
+            $zip = new ZipArchive();
+    
+            $zip->open(TEMP . DIRECTORY_SEPARATOR . 'update.zip');
+    
+            $zip->extractTo(ROOT);
+    
+            $zip->close();
+    
+            $this->updateDatabase();
+    
+            $this->updateConfigFile();
+    
+            unlink(TEMP . DIRECTORY_SEPARATOR . 'update.zip');
+        }
+    }
 
-        $zip->extractTo(ROOT);
+    public function checkAWTVersion() {
+        $this->data['api'] = "getLatestAWTVersion";
 
-        $zip->close();
+        $this->sendRequest();
+        $this->response = json_decode($this->response, true);
 
-        $this->updateDatabase();
-
-        $this->updateConfigFile();
-
-        unlink(TEMP . DIRECTORY_SEPARATOR . 'update.zip');
+        $versionCompare = version_compare(AWT_VERSION, $this->response[0]["version"]);
+        $return['version_compare'] = $versionCompare;
+        $return['latest'] = $this->response[0]['version'];
+        return  $return;
     }
 
     private function updatePlugin()

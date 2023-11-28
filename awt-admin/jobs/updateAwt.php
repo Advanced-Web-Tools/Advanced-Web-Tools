@@ -19,13 +19,16 @@ if (!$check->checkAuthentication()) {
     exit();
 }
 
-if($profiler->checkPermissions(0)) {
+if(isset($_POST["versionCompare"])) {
+    $update = new store("getLatestAWTVersion", "Advanced Web Tools", "AWT");
+    die(json_encode($update->checkAWTVersion()));
+}
+
+if($profiler->checkPermissions(0) && isset($_POST["updateAwt"])) {
     $update = new store("getLatestAWTVersion", "Advanced Web Tools", "AWT");
 
     $update->updateAWTVersion();
-    header("Location: ". HOSTNAME ."/awt-admin/index.php?page=Settings&status=update_succesfull");
-    exit();
+    die("AWT was updated!");
 }
 
-header("Location: ". HOSTNAME ."/awt-admin/index.php?page=Settings&status=not_allowed");
-exit();
+die("Error has occured! Check if you are an administrator!");
