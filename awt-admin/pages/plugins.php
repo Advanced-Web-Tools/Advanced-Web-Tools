@@ -15,8 +15,10 @@ if (!$check->checkAuthentication()) {
 ?>
 
 <link rel="stylesheet" href="./css/plugins.css">
+<link rel="stylesheet" href="./css/store.css">
 <script src="./javascript/plugins/installer.js"></script>
 <script src="./javascript/plugins/pluginList.js"></script>
+<script src="./javascript/store/search.js"></script>
 <section>
     <div class="upload hidden">
         <div class="upload-header">
@@ -40,8 +42,11 @@ if (!$check->checkAuthentication()) {
     </div>
 </section>
 <section class="add-plugins">
-    <input type="text" placeholder="Search in the store...">
-    <button onclick="openClose('.upload');">Add new plugin</button>
+    <input type="text" onkeyup="searchPackage(this, '.store-search', 'plugin');" placeholder="Search in the store..." class="input">
+    <button onclick="openClose('.upload');" class="button">Add new plugin</button>
+    <div class="store-search">
+    
+    </div>
 </section>
 <section>
     <div class="plugin-list">

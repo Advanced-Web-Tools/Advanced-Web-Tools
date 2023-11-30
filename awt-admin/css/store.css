@@ -1,0 +1,15 @@
+.store-search {
+    width: 100%;
+    height: fit-content;
+    max-height: 200px;
+    border-radius: 0 0 10px 10px;
+    background: #fff;
+    margin: 0 0 20px 0;
+}
+
+.store-search .search-item {
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
