@@ -47,7 +47,7 @@ class store
         $this->type = $type;
 
 
-        $this->url = "https://store.advancedwebtools.com/";
+        $this->url = "https://store.advancedwebtools.com/api.php";
 
         $this->data = ['api' => $this->api, 'package' => $this->package, 'type' => $this->type];
 
