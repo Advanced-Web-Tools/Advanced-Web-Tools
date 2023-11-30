@@ -1,10 +1,19 @@
 <?php
-defined('DASHBOARD') or die("You should not do that..");
+
+defined('DASHBOARD') or  die("You should not do that..");
 defined('ALL_CONFIG_LOADED') or die("An error has occured");
 
-use admin\profiler;
+use admin\{authentication, profiler};
 
-$profiler = new profiler();
+$check = new authentication;
+
+if (!$check->checkAuthentication()) {
+    header("Location: ./login.php");
+    exit();
+}
+
+$profiler = new profiler;
+
 ?>
 
 <script src="./javascript/accounts/accounts.js"></script>
