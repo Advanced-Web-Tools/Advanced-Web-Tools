@@ -14,6 +14,8 @@ if (!$check->checkAuthentication()) {
 
 ?>
 <link rel="stylesheet" href="./css/themes.css">
+<link rel="stylesheet" href="./css/store.css">
+<script src="./javascript/store/search.js"></script>
 <section>
     <div class="upload hidden">
         <div class="upload-header">
@@ -37,8 +39,11 @@ if (!$check->checkAuthentication()) {
     </div>
 </section>
 <section class="add-themes">
-    <input type="text" placeholder="Search in the store...">
-    <button onclick="openClose('.upload');">Add new theme</button>
+    <input type="text" onkeyup="searchPackage(this, '.store-search', 'theme');" placeholder="Search in the store..." class='input'>
+    <button onclick="openClose('.upload');"  class="button" >Add new theme</button>
+    <div class="store-search">
+
+    </div>
 </section>
 <div class="themesList">
 

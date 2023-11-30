@@ -3,6 +3,7 @@
 namespace store;
 
 use content\pluginInstaller;
+use content\themeInstaller;
 use themes\themes;
 
 use database\databaseConfig;
@@ -17,6 +18,8 @@ class store
     private object $database;
 
     private object $mysqli;
+
+    private themeInstaller $themeInstaller;
 
     private pluginInstaller $pluginInstaller;
 
@@ -49,6 +52,8 @@ class store
         $this->data = ['api' => $this->api, 'package' => $this->package, 'type' => $this->type];
 
         $this->pluginInstaller = new pluginInstaller();
+
+        $this->themeInstaller = new themeInstaller();
     }
 
     private function sendRequest()
@@ -162,6 +167,17 @@ class store
         file_put_contents($path, fopen($downloadPath, 'r'));
 
         $return = $this->pluginInstaller->installFromStore($path);
+
+        return $return;
+    }
+
+    public function installTheme(string $downloadPath)
+    {
+        $shortName = substr(hash('SHA512', $downloadPath), 0, 10);
+        $path = TEMP . DIRECTORY_SEPARATOR . $shortName . ".zip";
+        file_put_contents($path, fopen($downloadPath, 'r'));
+
+        $return = $this->themeInstaller->installFromStore($path);
 
         return $return;
     }
