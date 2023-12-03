@@ -3,6 +3,8 @@
 namespace store;
 
 use content\pluginInstaller;
+use content\themeInstaller;
+use themes\themes;
 
 use database\databaseConfig;
 use ReflectionClass;
@@ -16,6 +18,8 @@ class store
     private object $database;
 
     private object $mysqli;
+
+    private themeInstaller $themeInstaller;
 
     private pluginInstaller $pluginInstaller;
 
@@ -43,9 +47,13 @@ class store
         $this->type = $type;
 
 
-        $this->url = "https://store.advancedwebtools.com/";
+        $this->url = "https://store.advancedwebtools.com/api.php";
 
         $this->data = ['api' => $this->api, 'package' => $this->package, 'type' => $this->type];
+
+        $this->pluginInstaller = new pluginInstaller();
+
+        $this->themeInstaller = new themeInstaller();
     }
 
     private function sendRequest()
@@ -66,9 +74,19 @@ class store
 
     public function searchPackage()
     {
+
+
         $this->sendRequest();
 
-        return $this->response;
+        if ($this->type != '') {
+
+            $result = $this->checkIfInstalled();
+
+        } else {
+            return false;
+        }
+
+        return $result;
     }
 
     public function updateAWTVersion()
@@ -78,21 +96,102 @@ class store
         $this->sendRequest();
         $this->response = json_decode($this->response, true);
 
-        file_put_contents(TEMP . DIRECTORY_SEPARATOR . "update.zip", fopen($this->response[0]["path"], 'r'));
 
-        $zip = new ZipArchive();
+        if ($versionCompare = version_compare(AWT_VERSION, $this->response[0]["version"]) == -1) {
+            file_put_contents(TEMP . DIRECTORY_SEPARATOR . "update.zip", fopen($this->response[0]["path"], 'r'));
 
-        $zip->open(TEMP . DIRECTORY_SEPARATOR . 'update.zip');
+            $zip = new ZipArchive();
 
-        $zip->extractTo(ROOT);
+            $zip->open(TEMP . DIRECTORY_SEPARATOR . 'update.zip');
 
-        $zip->close();
+            $zip->extractTo(ROOT);
 
-        $this->updateDatabase();
+            $zip->close();
 
-        $this->updateConfigFile();
+            $this->updateDatabase();
 
-        unlink(TEMP . DIRECTORY_SEPARATOR . 'update.zip');
+            $this->updateConfigFile();
+
+            unlink(TEMP . DIRECTORY_SEPARATOR . 'update.zip');
+        }
+    }
+
+    public function checkAWTVersion()
+    {
+        $this->data['api'] = "getLatestAWTVersion";
+
+        $this->sendRequest();
+        $this->response = json_decode($this->response, true);
+
+        $versionCompare = version_compare(AWT_VERSION, $this->response[0]["version"]);
+        $return['version_compare'] = $versionCompare;
+        $return['latest'] = $this->response[0]['version'];
+        return $return;
+    }
+
+
+    public function installPlugin(string $downloadPath)
+    {
+
+        $shortName = substr(hash('SHA512', $downloadPath), 0, 10);
+        $path = TEMP . DIRECTORY_SEPARATOR . $shortName . ".zip";
+        file_put_contents($path, fopen($downloadPath, 'r'));
+
+        $return = $this->pluginInstaller->installFromStore($path);
+
+        return $return;
+    }
+
+    public function installTheme(string $downloadPath)
+    {
+        $shortName = substr(hash('SHA512', $downloadPath), 0, 10);
+        $path = TEMP . DIRECTORY_SEPARATOR . $shortName . ".zip";
+        file_put_contents($path, fopen($downloadPath, 'r'));
+
+        $return = $this->themeInstaller->installFromStore($path);
+
+        return $return;
+    }
+
+    public function searchStore()
+    {
+        $this->sendRequest();
+        return $this->checkIfInstalled();
+        ;
+    }
+
+
+    private function checkIfInstalled()
+    {
+
+        global $plugins;
+        $theme = new themes();
+        $listThemes = $theme->getThemes();
+
+        $result = json_decode($this->response, true);
+
+        foreach ($result as $resKey => $res) {
+
+            if (!version_compare(AWT_VERSION, $res['awt_version'], ">=")) {
+                unset($result[$resKey]);
+                continue;
+            }
+
+            foreach ($plugins as $key => $plugin) {
+                if (strtolower(str_replace(' ', '', $res['name'])) == strtolower(str_replace(' ', '', $plugin['name']))) {
+                    $result[$resKey]['installed'] = true;
+                }
+            }
+
+            foreach ($listThemes as $key => $theme) {
+                if (strtolower(str_replace(' ', '', $res['name'])) == strtolower(str_replace(' ', '', $theme['name']))) {
+                    $result[$resKey]['installed'] = true;
+                }
+            }
+
+        }
+
+        return json_encode($result, JSON_PRETTY_PRINT);
     }
 
     private function updatePlugin()
@@ -138,13 +237,14 @@ class store
         return null;
     }
 
-    private function updateDatabase() {
+    private function updateDatabase()
+    {
 
-        if(file_exists(ROOT . DIRECTORY_SEPARATOR .'awt-database.sql')) {
+        if (file_exists(ROOT . DIRECTORY_SEPARATOR . 'awt-database.sql')) {
             $db = new databaseConfig();
             $db->checkAuthority();
             $mysql = $db->getConfig();
-            $sql = file_get_contents(ROOT . DIRECTORY_SEPARATOR .'awt-database.sql');
+            $sql = file_get_contents(ROOT . DIRECTORY_SEPARATOR . 'awt-database.sql');
             $mysql->multi_query($sql);
         }
 
@@ -173,7 +273,8 @@ class store
         file_put_contents($file, implode("", $lines));
     }
 
-    private function updateConfigFile() {
+    private function updateConfigFile()
+    {
         $this->replaceFileContent(ROOT . DIRECTORY_SEPARATOR . 'awt-config.php', 'define(\'WEB_NAME\', "");', 'define("WEB_NAME", "' . WEB_NAME . '");');
 
         $this->replaceFileContent(ROOT . DIRECTORY_SEPARATOR . 'awt-config.php', 'define(\'AWT_VERSION\', "");', 'define("AWT_VERSION", "' . $this->response[0]['version'] . '");');

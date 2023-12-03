@@ -226,3 +226,12 @@ input:checked+.slider:before {
   gap: 10px;
   align-items: center;
 }
+
+.site-health .updater #current-version {
+  width: 49%;
+  align-self: flex-start;
+}
+
+.site-health .updater #latest-version {
+  width: 49%;
+}

@@ -1,0 +1,235 @@
+.store-search {
+    width: 100%;
+    height: fit-content;
+    max-height: 200px;
+    border-radius: 0 0 10px 10px;
+    background: #fff;
+    margin: 0 0 20px 0;
+}
+
+.store-search .search-item {
+    padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+.store {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+}
+
+.store .search-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    height: 32px;
+    gap: 5px;
+}
+
+.store .search-container button {
+    height: 100%;
+}
+
+.store-front {
+    width: 95%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 40px auto;
+}
+
+.store-front .type {
+    width: 90%;
+    text-transform: capitalize;
+}
+
+.store-card {
+    min-width: 350px;
+    max-width: 24%;
+    height: 250px;
+    background: #fff;
+    border-radius: 10px;
+    color: #000;
+    text-decoration: none;
+    background-size: cover;
+    transition: 0.3s;
+}
+
+.store-card:hover {
+    cursor: pointer;
+    scale: 1.05;
+}
+
+.store-card .store-info {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: end;
+}
+
+.store-card .store-info.background {
+    color: #fff;
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 22%, rgba(0, 0, 0, 1) 100%);
+}
+
+.store-card .store-info .wrapper {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    margin: 10px;
+    align-items: center;
+    gap: 5px;
+}
+
+.store-card .store-info .wrapper img {
+    margin: 0 10px;
+    height: 40px;
+}
+
+.store-card .store-title {
+    font-size: 20px;
+    margin: 0 10px;
+}
+
+.store-card .store-description {
+    font-size: 15px;
+    width: 100%;
+    max-height: 50px;
+    margin: 5px 10px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: wrap;
+
+}
+
+.store-card .store-publisher {
+    font-size: 13px;
+    width: 100%;
+    margin: 5px 10px;
+    font-weight: bold;
+}
+
+
+.store-front .store-container {
+    width: 95%;
+    margin: 20px auto;
+}
+
+.store-container .store-header {
+    width: 100%;
+    height: 400px;
+    background: rgba(32, 33, 36, 1);
+    border-radius: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row-reverse;
+}
+
+.store-header .header-image {
+    display: block;
+    margin: 0 17px;
+    width: 60%;
+    height: 100%;
+    box-shadow: inset 0px 0px 70px 100px rgba(32, 33, 36, 1);
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+.store-header .header-info {
+    color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    width: 30%;
+    height: 80%;
+    margin: auto 0;
+}
+
+.header-info .icon {
+    height: 100px;
+    margin: 0 10px;
+    align-self: start;
+}
+
+.header-info .title {
+    width: 70%;
+    font-size: 35px;
+    align-self: start;
+    margin: 0;
+}
+
+.header-info .publisher {
+    color: var(--primary-color);
+    width: 100%;
+    padding: 0;
+    margin: 0 10px;
+}
+
+.header-info button {
+    margin: 0 10px;
+    width: 200px;
+    align-self: end;
+}
+
+.store-container .store-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    width: 85%;
+    margin: 10px auto;
+    gap: 10px;
+}
+
+.store-gallery .gallery-title {
+    font-size: 25px;
+    width: 100%;
+}
+
+.store-gallery .gallery-item {
+    max-width: 350px;
+    border-radius: 10px;
+    background: #252525;
+    transition: 0.3s;
+}
+
+.store-gallery .gallery-item:hover {
+    scale: 1.1;
+}
+
+.store-container .store-description {
+    display: flex;
+    flex-wrap: wrap;
+    width: 85%;
+    margin: 20px auto;
+    gap: 10px;
+    color: #000;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.store-description .description-title {
+    font-size: 25px;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.store-description .description {
+    height: fit-content;
+    color: #252525;
+    width: 100%;
+}
+
+.store-description .package-info {
+    border: 1px solid #252525;
+    border-radius: 10px;
+    margin: 50px 0;
+    padding: 20px 30px;
+}

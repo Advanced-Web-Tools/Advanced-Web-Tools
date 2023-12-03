@@ -1,19 +1,23 @@
 <?php
 
 namespace content;
+
 use ZipArchive;
 use XMLReader;
 use database\databaseConfig;
 use notifications\notifications;
 use admin\profiler;
+use Exception;
 
-class pluginInstaller extends fileScanner{
+class pluginInstaller extends fileScanner
+{
 
     private object $database;
     private object $mysqli;
     private object $xml;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->database = new databaseConfig;
 
         $this->database->checkAuthority() == 1 or die("Fatal error database access for " . $this->database->getCaller() . " was denied");
@@ -41,7 +45,8 @@ class pluginInstaller extends fileScanner{
 
         $folder = TEMP . $folderName;
 
-        if (!is_dir($folder)) mkdir($folder, 0755);
+        if (!is_dir($folder))
+            mkdir($folder, 0755);
 
         $zip = new ZipArchive;
 
@@ -141,9 +146,10 @@ class pluginInstaller extends fileScanner{
     }
 
     public function installerAction($action, $path, $name)
-    {   
-        if(!is_dir(TEMP . $path)) return "Unexpected error has occured. Please try again later.";
-        
+    {
+        if (!is_dir(TEMP . $path))
+            return "Unexpected error has occured. Please try again later.";
+
         if ($action == 'cancel') {
             $this->rrmdir(TEMP . $path);
             return "Installation was canceled. You can reload now or wait 5 seconds.";
@@ -158,10 +164,14 @@ class pluginInstaller extends fileScanner{
                     continue;
                 }
                 if ($this->xml->name != 'plugin' && $this->xml->name != '#text') {
-                    if ($this->xml->name == 'name') $name = $this->xml->readString();
-                    if ($this->xml->name == 'icon') $icon = $this->xml->readString();
-                    if ($this->xml->name == 'version') $version = $this->xml->readString();
-                    if ($this->xml->name == 'description') $description = $this->xml->readString();
+                    if ($this->xml->name == 'name')
+                        $name = $this->xml->readString();
+                    if ($this->xml->name == 'icon')
+                        $icon = $this->xml->readString();
+                    if ($this->xml->name == 'version')
+                        $version = $this->xml->readString();
+                    if ($this->xml->name == 'description')
+                        $description = $this->xml->readString();
                 }
             }
 
@@ -173,10 +183,10 @@ class pluginInstaller extends fileScanner{
             $this->moveDirectory(TEMP . $path, PLUGINS . $name);
 
             $profiler = new profiler;
-            $notifications = new notifications("Installer", $profiler->name. " has installed new plugin: $name", "important");
+            $notifications = new notifications("Installer", $profiler->name . " has installed new plugin: $name", "important");
             $notifications->pushNotification();
 
-            return $name." was installed succesfully! You can reload now or wait 5 seconds.";
+            return $name . " was installed succesfully! You can reload now or wait 5 seconds.";
         }
 
         return "Invalid operation";
@@ -184,17 +194,72 @@ class pluginInstaller extends fileScanner{
 
     public function removePlugin($name, $id)
     {
-        $this->rrmdir(PLUGINS.$name);
-        unlink(PLUGINS.$name);
+        $this->rrmdir(PLUGINS . $name);
+        unlink(PLUGINS . $name);
         $stmt = $this->mysqli->prepare("DELETE FROM `awt_plugins` WHERE `id` = ? AND `name` = ?;");
         $stmt->bind_param("is", $id, $name);
         $stmt->execute();
         $stmt->close();
 
         $profiler = new profiler;
-        $notifications = new notifications("Installer", $profiler->name. " has removed plugin: $name", "important");
+        $notifications = new notifications("Installer", $profiler->name . " has removed plugin: $name", "important");
         $notifications->pushNotification();
 
         return true;
+    }
+
+
+
+    public function installFromStore(string $path)
+    {
+
+        try {
+            $zip = new ZipArchive;
+
+            $zip->open($path);
+
+
+            $newPath = TEMP . substr(hash("SHA512", $path), 0, 10);
+            mkdir($newPath);
+
+            $zip->extractTo($newPath);
+
+            $this->xml = new XMLReader;
+            $this->xml->open($newPath . DIRECTORY_SEPARATOR . 'plugin.xml');
+
+            while ($this->xml->read()) {
+                if ($this->xml->nodeType == XMLReader::END_ELEMENT) {
+                    continue;
+                }
+                if ($this->xml->name != 'plugin' && $this->xml->name != '#text') {
+                    if ($this->xml->name == 'name')
+                        $name = $this->xml->readString();
+                    if ($this->xml->name == 'icon')
+                        $icon = $this->xml->readString();
+                    if ($this->xml->name == 'version')
+                        $version = $this->xml->readString();
+                    if ($this->xml->name == 'description')
+                        $description = $this->xml->readString();
+                }
+            }
+
+            $this->xml->close();
+            $status = 0;
+            $stmt = $this->mysqli->prepare("INSERT INTO `awt_plugins` (`name`, `icon`, `version`, `description`, `status`) VALUES (?, ?, ?, ?, ?);");
+            $stmt->bind_param("ssssi", $name, $icon, $version, $description, $status);
+            $stmt->execute();
+            $this->moveDirectory($newPath, PLUGINS . $name);
+
+            $profiler = new profiler;
+            $notifications = new notifications("Installer", $profiler->name . " has installed new plugin: $name", "important");
+            $notifications->pushNotification();
+
+            unlink($path);
+
+            return true;
+
+        } catch (Exception $e) {
+            return false;
+        }
     }
 }

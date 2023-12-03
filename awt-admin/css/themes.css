@@ -1,34 +1,9 @@
 .add-themes {
+    width: fit-content;
     margin: 40px 0 0 0;
-    height: 100px;
-}
-
-.add-themes input {
-    width: 350px;
-    height: 50px;
-    padding: 0 10px;
-    border: 1px solid var(--primary-color);
+    height: fit-content;
+    background: #fff;
     border-radius: 10px;
-    outline: none;
-    box-sizing: border-box;
-}
-
-.add-themes button {
-    padding: 15px 30px;
-    margin: 0 20px;
-    background: var(--primary-color);
-    color: var(--secondary-text-color);
-    font-weight: 600;
-    font-size: 15px;
-    border: 1px solid var(--primary-color-variant);
-    border-radius: 10px;
-    cursor: pointer;
-    transition: 0.3s ease all;
-}
-
-.add-themes button:hover {
-    background: var(--seconadry-text-color);
-    color: var(--primary-color);
 }
 
 .upload {

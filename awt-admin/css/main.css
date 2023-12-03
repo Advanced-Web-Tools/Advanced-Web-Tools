@@ -25,7 +25,7 @@ body {
     flex-wrap: wrap;
     flex-flow: column;
     height: 100%;
-    background: #FFF9F9;
+    background: #F2F2F2;
     overflow-y: hidden;
 }
 
@@ -79,9 +79,11 @@ body {
     border-radius: 5px;
     outline: none;
     box-sizing: border-box;
+    background: #fff;
 }
 
-.button {
+.button,
+.button:disabled:hover {
     background: var(--primary-color);
     padding: 7px 15px;
     color: #fff;
@@ -98,6 +100,21 @@ body {
 .button:hover {
     color: var(--primary-color);
     background: #fff;
+}
+
+.button:disabled:hover {
+    cursor: default;
+}
+ 
+.select {
+    font-family: 'Poppins', sans-serif;
+    background: var(--primary-color);
+    color: #fff;
+    height: 100%;
+    border: none;
+    border-radius: 5px;
+    padding: 0 20px 0 5px;
+    cursor: pointer;
 }
 
 #green {

@@ -3,6 +3,7 @@
 namespace database;
 
 use mysqli;
+use mysqli_sql_exception;
 use notifications\notifications;
 
 final class databaseConfig
@@ -18,23 +19,23 @@ final class databaseConfig
     private $caller;
     private int $allow;
     private static array $allowedCallers = array(
-        JOBS.'loaders'.DIRECTORY_SEPARATOR.'awt-autoLoader.php',
+        JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-autoLoader.php',
         ROOT . DIRECTORY_SEPARATOR . 'index.php',
-        JOBS.'loaders'.DIRECTORY_SEPARATOR.'awt-themesLoader.php',
-        CLASSES.'admin'.DIRECTORY_SEPARATOR.'admin.class.php',
-        CLASSES.'admin'.DIRECTORY_SEPARATOR.'authentication.class.php',
-        CLASSES.'admin'.DIRECTORY_SEPARATOR.'profiler.class.php',
-        CLASSES.'plugins'.DIRECTORY_SEPARATOR.'plugins.class.php',
-        CLASSES.'themes'.DIRECTORY_SEPARATOR.'themes.class.php',
-        CLASSES.'menu'.DIRECTORY_SEPARATOR.'menu.class.php',
-        CLASSES.'content'.DIRECTORY_SEPARATOR.'pluginInstaller.class.php',
-        CLASSES.'content'.DIRECTORY_SEPARATOR.'themeInstaller.class.php',
-        CLASSES.'paging'.DIRECTORY_SEPARATOR.'paging.class.php',
-        CLASSES.'settings'.DIRECTORY_SEPARATOR.'settings.class.php',
-        CLASSES.'media'.DIRECTORY_SEPARATOR.'albums.class.php',
-        CLASSES.'media'.DIRECTORY_SEPARATOR.'media.class.php',
-        CLASSES.'notifications'.DIRECTORY_SEPARATOR.'notifications.class.php',
-        CLASSES.'store'.DIRECTORY_SEPARATOR.'store.class.php',
+        JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-themesLoader.php',
+        CLASSES . 'admin' . DIRECTORY_SEPARATOR . 'admin.class.php',
+        CLASSES . 'admin' . DIRECTORY_SEPARATOR . 'authentication.class.php',
+        CLASSES . 'admin' . DIRECTORY_SEPARATOR . 'profiler.class.php',
+        CLASSES . 'plugins' . DIRECTORY_SEPARATOR . 'plugins.class.php',
+        CLASSES . 'themes' . DIRECTORY_SEPARATOR . 'themes.class.php',
+        CLASSES . 'menu' . DIRECTORY_SEPARATOR . 'menu.class.php',
+        CLASSES . 'content' . DIRECTORY_SEPARATOR . 'pluginInstaller.class.php',
+        CLASSES . 'content' . DIRECTORY_SEPARATOR . 'themeInstaller.class.php',
+        CLASSES . 'paging' . DIRECTORY_SEPARATOR . 'paging.class.php',
+        CLASSES . 'settings' . DIRECTORY_SEPARATOR . 'settings.class.php',
+        CLASSES . 'media' . DIRECTORY_SEPARATOR . 'albums.class.php',
+        CLASSES . 'media' . DIRECTORY_SEPARATOR . 'media.class.php',
+        CLASSES . 'notifications' . DIRECTORY_SEPARATOR . 'notifications.class.php',
+        CLASSES . 'store' . DIRECTORY_SEPARATOR . 'store.class.php',
     );
 
     private object $mysqli;
@@ -43,7 +44,8 @@ final class databaseConfig
 
     public function __construct()
     {
-        databaseConfig::$keyLength = strlen(databaseConfig::$key);;
+        databaseConfig::$keyLength = strlen(databaseConfig::$key);
+        ;
 
         $this->mysqli = new mysqli(databaseConfig::$hostname, databaseConfig::$username, databaseConfig::$password, databaseConfig::$database);
 
@@ -56,10 +58,10 @@ final class databaseConfig
     {
         $this->caller = debug_backtrace();
         $this->caller = $this->caller[0]['file'];
-        
+
 
         if (!in_array($this->caller, databaseConfig::$allowedCallers)) {
-            
+
             $this->fileHash = hash_file('SHA512', $this->caller);
 
             $this->stmt = $this->mysqli->prepare("SELECT * FROM `awt_access_authorization` WHERE `fileName` = ? AND `fileHash` = ?");
@@ -91,41 +93,44 @@ final class databaseConfig
     }
 
     public function getConfig()
-    {   
+    {
         if ($this->allow == 1) {
             return $this->mysqli;
         } else {
-            $notification = new notifications("Database", $this->getCaller(). " Tried to access database.", "incident");
+            $notification = new notifications("Database", $this->getCaller() . " Tried to access database.", "incident");
             $notification->pushNotification();
             return false;
         }
     }
 
     public function getCaller()
-    {   
+    {
         return $this->caller;
     }
 
     public function getSecretKey()
     {
-        if ($this->allow == 0) return false;
-        
+        if ($this->allow == 0)
+            return false;
+
         $cut = rand(10, databaseConfig::$keyLength - 10);
         $string = substr(databaseConfig::$key, $cut, databaseConfig::$keyLength);
         return $string;
     }
 
     public function authorizeUsage($action, $file, $hash, $key = '')
-    {   
-        if ($this->allow == 0) return false;
-        
+    {
+        if ($this->allow == 0)
+            return false;
+
         $content = ucfirst($action);
         $notification = new notifications("Database", "$content for $file", "notice");
         $notification->pushNotification();
 
-        if($key == '') $key = $this->getSecretKey();
+        if ($key == '')
+            $key = $this->getSecretKey();
 
-        if($action == 'authorize') {
+        if ($action == 'authorize') {
             $stmt = $this->mysqli->prepare("INSERT INTO `awt_access_authorization` (`fileName`, `fileHash`, `uniqueKey`) VALUES (?, ?, ?);");
             $stmt->bind_param('sss', $file, $hash, $key);
             $stmt->execute();
@@ -133,7 +138,7 @@ final class databaseConfig
             return true;
         }
 
-        if($action == 'unauthorize') {
+        if ($action == 'unauthorize') {
             $stmt = $this->mysqli->prepare("DELETE FROM `awt_access_authorization` WHERE `fileHash` = ?;");
             $stmt->bind_param('s', $hash);
             $stmt->execute();
@@ -144,20 +149,21 @@ final class databaseConfig
         return false;
     }
 
-    public function checkForTable(string $tableName) {
-        if ($this->allow == 0) return false;
-    
-        $query = "SELECT * FROM " . $this->mysqli->real_escape_string($tableName) . ";";
-    
-        $stmt = $this->mysqli->prepare($query);
-        if (!$stmt) {
+    public function checkForTable(string $tableName)
+    {
+        try {
+            $res = $this->mysqli->query("SELECT 1 FROM $tableName");
+            if ($res !== false) {
+                return true; 
+            } else {
+                return false; 
+            }
+        } catch (mysqli_sql_exception $ex) {
             return false;
         }
-    
-        $result = $stmt->execute();
-        $stmt->close();
-    
-        return $result;
     }
     
+
+
+
 }
