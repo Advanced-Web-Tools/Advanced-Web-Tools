@@ -67,6 +67,8 @@ function loadStore(container, store) {
 }
 
 function createStorePage(json) {
+
+    $("body").css("background", "#fff");
     json = json[0];
     var container = $("<div class='store-container'></div>");
     var header = $("<div class='store-header'></div>");
