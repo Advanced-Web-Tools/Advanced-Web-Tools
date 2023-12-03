@@ -32,7 +32,7 @@
     color: var(--text-color-variant);
 }
 
-@media only screen and (max-width: 450px) {
+@media(max-width: 450px) {
     .main-navigation {
         height: 60px;
         display: grid;

@@ -15,6 +15,7 @@ body {
     padding: 0;
     margin: 0;
     height: 100vh;
+    width: 100vw;
 }
 
 .editor {
@@ -22,7 +23,7 @@ body {
     grid-template-rows: 50px auto;
     grid-template-columns: 100%;
     width: 100vw;
-    height: 100%;
+    height: 100vh;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
@@ -42,28 +43,27 @@ body {
 }
 
 .top-menu {
-    background: #f2f2f2;
+    background: #fff;
+    border-bottom: 1px solid #000;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 10px;
 }
 
 .block:hover {
-    border: solid 1px #d4d4d4;
+    border: solid 2px #d4d4d4;
 }
 
 .preview {
     width: 100%;
 }
 
-/* ===== Scrollbar CSS ===== */
-/* Firefox */
 * {
     scrollbar-width: none;
     scrollbar-color: #0080c0 #ffffff;
 }
 
-/* Chrome, Edge, and Safari */
 *::-webkit-scrollbar {
     width: 16px;
 }
@@ -81,7 +81,8 @@ body {
 .editor-tools {
     width: auto;
     padding: 10px;
-    background: #f2f2f2;
+    background: #fff;
+    border-left: 1px solid #000;
     display: flex;
     justify-content: flex-end;
     flex-wrap: nowrap;
@@ -103,6 +104,7 @@ body {
 
 .block-options input {
     border: none;
+    background: #f2f2f2;
     margin: 3px 0;
     padding: 5px;
     border-radius: 5px;
@@ -237,4 +239,47 @@ select::-ms-expand {
     border-width: 2px 2px 2px 5px;
     border-color: #0080c0;
     margin: 0 0.5%;
+}
+
+.block-options .input-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 25px;
+    justify-content: center;
+}
+
+.block-options .input-group i {
+    width: fit-content;
+    height: fit-content;
+    text-align: center;
+    margin: -10px 40%;
+}
+
+.block-options .input-group:hover {
+    cursor: pointer;
+}
+
+.block-options .input-group i.active {
+    color: var(--primary-color);
+}
+
+.block-options #margin, .block-options #padding {
+    width: 60px;
+}
+
+.viewport-actions {
+    justify-self: flex-end;
+    width: 20px;
+    text-align: center;
+    font-size: 30px;
+}
+
+.viewport-actions i {
+    color: rgba(0, 0, 0, 0.5);
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.viewport-actions i.active {
+    color: var(--primary-color);
 }

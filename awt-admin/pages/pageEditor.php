@@ -12,19 +12,24 @@ $theme->getThemes();
 $theme->getActiveTheme();
 
 ?>
-<!-- Include jQuery library -->
 <script src="../awt-src/vendor/jQuery/jquery.min.js"></script>
-
-<!-- Include jQuery UI library -->
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
-
-<!-- Include jQuery UI CSS -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-</head>
 <script src="./javascript/themeEditor/hidenav.js">
 </script>
 <script src="./javascript/pageEditor/pageEditor.js">
 </script>
+<script src="./javascript/pageEditor/defaultOptions.js">
+</script>
+<script src="./javascript/pageEditor/textOptions.js">
+</script>
+<script src="./javascript/pageEditor/listOptions.js">
+</script>
+<script src="./javascript/pageEditor/mediaOptions.js">
+</script>
+<script src="./javascript/pageEditor/gridOptions.js">
+</script>
+
 <link rel="stylesheet" href="./css/pageEditor.css">
 
 <div class="dialog">
@@ -38,6 +43,9 @@ $theme->getActiveTheme();
                 class="button">Publish</button>
             <button type="button" onclick="publishContentPreview('<?php echo $_GET['pageName']; ?>');"
                 class="button">Preview</button>
+        </div>
+        <div class="viewport-actions">
+            <i onclick="changeViewPort(this)" class="fa-solid fa-mobile-button"></i>
         </div>
     </div>
     <div class="stage">
