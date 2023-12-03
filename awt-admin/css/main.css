@@ -106,6 +106,16 @@ body {
     cursor: default;
 }
  
+.select {
+    font-family: 'Poppins', sans-serif;
+    background: var(--primary-color);
+    color: #fff;
+    height: 100%;
+    border: none;
+    border-radius: 5px;
+    padding: 0 20px 0 5px;
+    cursor: pointer;
+}
 
 #green {
     background: #00563B;

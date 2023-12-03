@@ -74,46 +74,17 @@ class store
 
     public function searchPackage()
     {
-        global $plugins;
-        $theme = new themes();
 
-        $listThemes = $theme->getThemes();
 
         $this->sendRequest();
 
         if ($this->type != '') {
 
-            $result = json_decode($this->response, true);
+            $result = $this->checkIfInstalled();
 
-            foreach ($result as $resKey => $res) {
-
-                if(!version_compare(AWT_VERSION, $res['awt_version'], ">=")) {
-                    unset($result[$resKey]);
-                    continue;
-                }
-
-                if($this->type == "plugin") {
-                    foreach ($plugins as $key => $plugin) {
-                        if (strtolower(str_replace(' ', '', $res['name'])) == strtolower(str_replace(' ', '', $plugin['name']))) {
-                            $result[$resKey]['installed'] = true;
-                        }
-                    }
-                }
-
-                if($this->type == "theme") {
-                    foreach ($listThemes as $key => $theme) {
-                        if (strtolower(str_replace(' ', '', $res['name'])) == strtolower(str_replace(' ', '', $theme['name']))) {
-                            $result[$resKey]['installed'] = true;
-                        }
-                    }
-                }
-
-            }
         } else {
             return false;
         }
-
-        $result = json_encode($result);
 
         return $result;
     }
@@ -182,6 +153,46 @@ class store
         return $return;
     }
 
+    public function searchStore()
+    {
+        $this->sendRequest();
+        return $this->checkIfInstalled();
+        ;
+    }
+
+
+    private function checkIfInstalled()
+    {
+
+        global $plugins;
+        $theme = new themes();
+        $listThemes = $theme->getThemes();
+
+        $result = json_decode($this->response, true);
+
+        foreach ($result as $resKey => $res) {
+
+            if (!version_compare(AWT_VERSION, $res['awt_version'], ">=")) {
+                unset($result[$resKey]);
+                continue;
+            }
+
+            foreach ($plugins as $key => $plugin) {
+                if (strtolower(str_replace(' ', '', $res['name'])) == strtolower(str_replace(' ', '', $plugin['name']))) {
+                    $result[$resKey]['installed'] = true;
+                }
+            }
+
+            foreach ($listThemes as $key => $theme) {
+                if (strtolower(str_replace(' ', '', $res['name'])) == strtolower(str_replace(' ', '', $theme['name']))) {
+                    $result[$resKey]['installed'] = true;
+                }
+            }
+
+        }
+
+        return json_encode($result, JSON_PRETTY_PRINT);
+    }
 
     private function updatePlugin()
     {

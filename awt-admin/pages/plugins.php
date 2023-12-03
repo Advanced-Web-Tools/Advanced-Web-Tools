@@ -19,6 +19,7 @@ if (!$check->checkAuthentication()) {
 <script src="./javascript/plugins/installer.js"></script>
 <script src="./javascript/plugins/pluginList.js"></script>
 <script src="./javascript/store/search.js"></script>
+<script src="./javascript/store/installation.js"></script>
 <section>
     <div class="upload hidden">
         <div class="upload-header">

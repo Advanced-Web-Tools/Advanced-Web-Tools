@@ -16,6 +16,7 @@ if (!$check->checkAuthentication()) {
 <link rel="stylesheet" href="./css/themes.css">
 <link rel="stylesheet" href="./css/store.css">
 <script src="./javascript/store/search.js"></script>
+<script src="./javascript/store/installation.js"></script>
 <section>
     <div class="upload hidden">
         <div class="upload-header">

@@ -3,8 +3,6 @@ function searchPackage(input, container, type) {
 
     if (!search) return;
 
-    console.log(search);
-
     $.ajax({
         url: './jobs/store.php',
         type: 'POST',
@@ -21,69 +19,73 @@ function searchPackage(input, container, type) {
 
         jsonArray = JSON.parse(JSON.parse(response));
         console.log(jsonArray);
-    
+
         $(container).html("");
-    
+
         $.each(jsonArray, function (index, item) {
             var name = item.name;
-    
+
             var html = "<div class='search-item'>";
             html += "<p>" + name + "</p>";
 
-            if(type == "plugin") {
-                var button = "<button class='button' onclick='installPlugin(this, \""+ item.path +"\");' >Install <i class=\"fa-solid fa-download\"></i></button>";
+            if (type == "plugin") {
+                var button = "<button class='button' onclick='installPlugin(this, \"" + item.path + "\");' >Install <i class=\"fa-solid fa-download\"></i></button>";
             } else {
-                var button = "<button class='button' onclick='installTheme(this, \""+ item.path +"\");' >Install <i class=\"fa-solid fa-download\"></i></button>";
+                var button = "<button class='button' onclick='installTheme(this, \"" + item.path + "\");' >Install <i class=\"fa-solid fa-download\"></i></button>";
             }
 
-            if(item.installed && item.installed === true) {
+            if (item.installed && item.installed === true) {
                 button = "<button class='button' id='green' disabled >Installed <i class=\"fa-solid fa-check\"></i></button>";
             }
 
             html += button;
             html += "</div>";
-    
+
             $(container).append(html);
         });
     });
-    
+
 }
 
+function searchStore(input, select, container) {
+    input = $(input).val();
 
-function installPlugin(caller, link) {
+    select = $(select).val();
+
     $.ajax({
         url: './jobs/store.php',
         type: 'POST',
         data: {
-            installPlugin: link,
-        },
-        success: function() {
-            $(caller).html('Installing... <i class="fa-solid fa-spinner fa-spin-pulse"></i>');
+            searchStore: input,
+            type: select,
         },
         error: function () {
             console.log('AJAX request failed.');
         }
     }).done(function (response) {
-        $(caller).html('Reload required <i class="fa-solid fa-rotate-right"></i>');
-        $(caller).attr("onclick", "window.location.reload()");
+        const json = JSON.parse(JSON.parse(response));
+        const html = createCards(json);
+        $(container).html(html);
     });
+
 }
 
-function installTheme(caller, link) {
+function loadPage(container) {
     $.ajax({
         url: './jobs/store.php',
         type: 'POST',
         data: {
-            installTheme: link,
-        },
-        success: function() {
-            $(caller).html('Installing... <i class="fa-solid fa-spinner fa-spin-pulse"></i>');
+            searchStore: "",
+            type: "*",
         },
         error: function () {
             console.log('AJAX request failed.');
         }
     }).done(function (response) {
-        $(caller).html('Reload required <i class="fa-solid fa-rotate-right"></i>');
-        $(caller).attr("onclick", "window.location.reload()");
+        const json = JSON.parse(JSON.parse(response));
+        var html = "<div class='container'>";
+        html = createCardsCategory(json, "theme");
+        html += createCardsCategory(json, "plugin");
+        $(container).html(html);
     });
 }

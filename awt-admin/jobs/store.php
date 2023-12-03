@@ -47,3 +47,9 @@ if(isset($_POST["installTheme"]) && $profiler->checkPermissions(0)) {
     die(json_encode($store->installPlugin($_POST["installPlugin"])));
 
 }
+
+if(isset($_POST["searchStore"]) && $profiler->checkPermissions(1)) {
+    $store = new Store("searchStoreFront", $_POST['searchStore'], $_POST['type']);
+
+    die(json_encode($store->searchStore()));
+}
