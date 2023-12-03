@@ -78,15 +78,7 @@ async function createStorePage(json) {
     var headerImage = $("<div class='header-image'></div>").css("background-image", "url('" + json.image + "')");
     var installButton = $("<button></button>").html("Install <i class=\"fa-solid fa-download\"></i>").addClass("button");
 
-    if (json.installed) {
-        installButton.html("Installed <i class=\"fa-solid fa-check\"></i>").attr("id", "green").attr("disabled", "disabled");
-    } else {
-        if (json.type === "theme") {
-            installButton.attr("onclick", "installTheme(this, '" + json.path + "')");
-        } else {
-            installButton.attr("onclick", "installPlugin(this, '" + json.path + "')");
-        }
-    }
+
 
     var infoContainer = $("<div class='header-info'></div>");
 
@@ -99,14 +91,24 @@ async function createStorePage(json) {
 
     const factor = 0.3;
 
+
     color[0] = Math.floor(color[0] * (1 - factor));
     color[1] = Math.floor(color[1] * (1 - factor));
     color[2] = Math.floor(color[2] * (1 - factor));
 
     header.css("background", "rgba(" + color + ")");
     
-    headerImage.css("box-shadow", "inset 0px 0px 70px 100px rgba(" + color + ")")
+    headerImage.css("box-shadow", "inset 0px 0px 70px 80px rgba(" + color + ", 1)");
     
+    if (json.installed) {
+        installButton.html("Installed <i class=\"fa-solid fa-check\"></i>").attr("id", "green").attr("disabled", "disabled");
+    } else {
+        if (json.type === "theme") {
+            installButton.attr("onclick", "installTheme(this, '" + json.path + "')");
+        } else {
+            installButton.attr("onclick", "installPlugin(this, '" + json.path + "')");
+        }
+    }
 
     infoContainer.append(icon);
     infoContainer.append(headerTitle);
