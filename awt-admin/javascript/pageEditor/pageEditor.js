@@ -293,6 +293,7 @@ $(document).ready(function () {
     $selection = $('.pageSection');
     $("*").removeClass('selected');
     $(".pageSection").addClass('selected');
+    detectEmpty();
   });
 
   $(".pageSection").on("click", function (event) {
@@ -306,17 +307,15 @@ $(document).ready(function () {
     }
 
     // Process the click event on .pageSection here
+    detectEmpty();
     BlockOptions(this);
     fetchBlocks('.editor-tools');
   });
-
-
 
   fetchBlocks('.editor-tools');
 });
 
 var shrinkenView = false;
-
 
 function changeViewPort(caller) {
   var $preview = $('.preview');
@@ -342,3 +341,17 @@ function changeViewPort(caller) {
     $(caller).removeClass("active");
   }
 }
+
+function detectEmpty() {
+  $('.pageSection').find('.block').each(function (index, block) {
+    if ($(block).children().length == 0 && $(block).text().trim().length == 0 && $(block).is("div")) {
+      if($(block).hasClass("empty") == false) $(block).addClass("empty");
+    } else {
+      $(block).removeClass("empty");
+    }
+  });
+}
+
+$(document).ready(function () {
+  detectEmpty();
+});

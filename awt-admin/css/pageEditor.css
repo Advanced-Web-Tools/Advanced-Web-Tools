@@ -283,3 +283,26 @@ select::-ms-expand {
 .viewport-actions i.active {
     color: var(--primary-color);
 }
+
+.block.empty {
+    border: 2px solid var(--primary-color);
+    width: 95% !important;
+    height: 50px !important;
+    margin: 10px auto !important;
+    border-radius: 0 !important;
+    background: url('../../awt-data/icons/plus-solid.svg') no-repeat center;
+    background-size: contain;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.block.empty:hover {
+    scale: 1.05;
+}
+
+.block.empty.selected {
+    width: 100% !important;
+    margin: 10px 0;
+    height: 80px !important;
+}
+
