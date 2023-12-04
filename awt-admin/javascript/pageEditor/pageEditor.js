@@ -1,6 +1,14 @@
 
 var $selection = $(".pageSection");
 
+var shrinkenView = false;
+
+var movingBlocks = false;
+
+var selectedElement = false;
+
+var blockPositions = []; // Array to store the positions of blocks
+
 function fetchBlocks(element) {
   $.ajax({
     url: './jobs/pageEditor.php',
@@ -11,7 +19,6 @@ function fetchBlocks(element) {
     success: function (response) {
       try {
         var parsedResponse = JSON.parse(response);
-        console.log(parsedResponse);
 
         if (parsedResponse && typeof parsedResponse === 'object') {
           for (var category in parsedResponse) {
@@ -53,7 +60,6 @@ function fetchBlocks(element) {
               // Add a click event to toggle the visibility of child elements
               categoryLabel.click(function (catClass) {
                 return function () {
-                  console.log(catClass);
                   $('.category-container .block-item.' + catClass).toggleClass('hidden');
                 }
               }(category.replace(" ", "-")));
@@ -80,10 +86,9 @@ function fetchBlocks(element) {
   });
 }
 
-var blockPositions = []; // Array to store the positions of blocks
+
 
 function getBlock(name) {
-  console.log($selection);
   $.ajax({
     url: './jobs/pageEditor.php',
     type: 'POST',
@@ -91,47 +96,26 @@ function getBlock(name) {
       getBlock: name
     },
     success: function (response) {
-      console.log('AJAX request succeeded.');
       $selection.append(response);
 
       // Make all elements with class "block" sortable within .pageSection
-      $(".pageSection").sortable({
-        items: ".block",
-        cancel: 'input,textarea,button,select,option,[contenteditable]',
-        update: function (event, ui) {
-          // Update the block positions array
-          updateBlockPositions();
-        }
-      });
 
       // Make each text element within .block editable
       hasTextChild($(".block")).attr("contenteditable", "true");
-
+      
       // Attach BlockOptions function to click event of block and its direct children
       $(".block").on("click", function () {
         BlockOptions($(this));
       }).children().on("click", function (e) {
         e.stopPropagation(); // Prevent event bubbling to the parent block
       });
-
-      // Check if the parent element has the ID "grid-block"
-      if ($("#grid-block").length > 0) {
-        // Make the grid elements sortable within the grid block
-        $(".block#grid-block").sortable({
-          items: "> .block",
-          handle: ".handle",
-          update: function (event, ui) {
-            // Update the grid positions array
-            updateGridPositions();
-          }
-        });
-      }
     },
     error: function (xhr, status, error) {
       console.log('AJAX request failed.');
       console.log(error);
     }
   });
+  
 }
 
 
@@ -199,15 +183,6 @@ function BlockOptions(element) {
       BlockOptions(this);
     });
   });
-
-  $block.sortable({
-    items: "> .block",
-    handle: ".handle",
-    update: function (event, ui) {
-      // Update the block positions array
-      updateBlockPositions();
-    }
-  });
 }
 
 function updateBlockPositions() {
@@ -219,7 +194,17 @@ function updateBlockPositions() {
 
 function publishContent(name) {
   var $pageSection = $('.pageSection');
-  var htmlContent = $pageSection.last().prop('outerHTML');
+  
+  // Clone the page section to avoid modifying the actual content
+  var $clonedPageSection = $pageSection.clone();
+
+  // Remove the specified elements from the cloned page section
+  $clonedPageSection.find(".block.empty.replacable").remove();
+  $pageSection.find(".block.empty.replacable").remove();
+
+  // Get the HTML content of the modified page section
+  var htmlContent = $clonedPageSection.last().prop('outerHTML');
+
   $.ajax({
     url: './jobs/pageEditor.php',
     type: 'POST',
@@ -229,6 +214,7 @@ function publishContent(name) {
       pageStatus: "live"
     },
     success: function (response) {
+      // Handle the success response if needed
     },
     error: function (xhr, status, error) {
       console.log(error);
@@ -239,7 +225,15 @@ function publishContent(name) {
 
 function publishContentPreview(name) {
   var $pageSection = $('.pageSection');
-  var htmlContent = $pageSection.prop('outerHTML');
+  
+  // Clone the page section to avoid modifying the actual content
+  var $clonedPageSection = $pageSection.clone();
+
+  // Remove the specified elements from the cloned page section
+  $clonedPageSection.find(".block.empty.replacable").remove();
+
+  // Get the HTML content of the modified page section
+  var htmlContent = $clonedPageSection.last().prop('outerHTML');
 
   $.ajax({
     url: './jobs/pageEditor.php',
@@ -257,65 +251,6 @@ function publishContentPreview(name) {
   });
 }
 
-$(document).ready(function () {
-  var ignorePreviewClick = false;
-  $selection = $('.pageSection');
-
-  $(".pageSection").sortable({
-    items: ".block",
-    cancel: 'input,textarea,button,select,option,[contenteditable]',
-    update: function (event, ui) {
-      // Update the block positions array
-      updateBlockPositions();
-    }
-  });
-
-  $('.pageSection .block').each(function () {
-    var $block = $(this);
-
-    $block.on('click', function () {
-      BlockOptions($block);
-    });
-
-    hasTextChild($block).attr('contenteditable', 'true');
-
-    $block.find('.block').on('click', function (e) {
-      e.stopPropagation();
-      BlockOptions($block);
-    });
-  });
-
-  $(".preview").click(function () {
-    if (ignorePreviewClick) {
-      ignorePreviewClick = false; // Reset the flag
-      return; // Ignore the click event
-    }
-    $selection = $('.pageSection');
-    $("*").removeClass('selected');
-    $(".pageSection").addClass('selected');
-    detectEmpty();
-  });
-
-  $(".pageSection").on("click", function (event) {
-    // Check if the clicked element is a child of .pageSection
-    if (
-      $(event.target).closest(".pageSection").length > 0 &&
-      !$(event.target).is(".preview")
-    ) {
-      ignorePreviewClick = true; // Set the flag to ignore the next preview click event
-      return; // Ignore the click event for the parent .pageSection element
-    }
-
-    // Process the click event on .pageSection here
-    detectEmpty();
-    BlockOptions(this);
-    fetchBlocks('.editor-tools');
-  });
-
-  fetchBlocks('.editor-tools');
-});
-
-var shrinkenView = false;
 
 function changeViewPort(caller) {
   var $preview = $('.preview');
@@ -343,7 +278,7 @@ function changeViewPort(caller) {
 }
 
 function detectEmpty() {
-  $('.pageSection').find('.block').each(function (index, block) {
+  $('.preview').find('.block').each(function (index, block) {
     if ($(block).children().length == 0 && $(block).text().trim().length == 0 && $(block).is("div")) {
       if($(block).hasClass("empty") == false) $(block).addClass("empty");
     } else {
@@ -352,6 +287,143 @@ function detectEmpty() {
   });
 }
 
+
+function trackMouseBetweenBlocks() {
+  var $blocks = $('.pageSection .block');
+  var $newBlock = null;
+  var $currentElement = null;
+
+  $blocks.on('mouseenter', function() {
+    $currentElement = $(this);
+
+    if(movingBlocks) {
+      $newBlock.remove();
+      return;
+    }
+    // Check if there is a previous or next sibling
+    if ($currentElement.prev('.block').length && $currentElement.next('.block').length) {
+
+      // Remove the old new block if it exists
+      if ($newBlock) {
+        $newBlock.remove();
+      }
+
+      // Create a new element
+      $newBlock = $('<div class="block replacable"></div>');
+
+      // Insert the new element after the current element
+      $currentElement.after($newBlock);
+
+      $newBlock.on("click", function(){
+
+
+      });
+
+    } else {
+    }
+  });
+
+  $blocks.on('mouseleave', function() {
+    if ($currentElement && $currentElement.next('.block').length && $currentElement.next('.block').hasClass('new-block')) {
+      $currentElement = null;
+    }
+
+    // Remove the new block if the mouse exits the current element
+  });
+
+  $('.pageSection').on('mouseenter', '.new-block', function() {
+    // Prevent removing the new block when entering between two new blocks
+    if ($currentElement) {
+      $currentElement = null;
+    }
+  });
+
+  $('.preview').on('mouseleave', '.new-block', function() {
+    // Remove the new block when leaving the space between two new blocks
+    if ($newBlock) {
+      $newBlock.remove();
+    }
+  })
+
+  $(".preview").on("DOMSubtreeModified", function (event) {
+    if(movingBlocks) $newBlock.remove();
+  });
+
+}
+
+
+
 $(document).ready(function () {
-  detectEmpty();
+  var ignorePreviewClick = false;
+  $selection = $('.pageSection');
+
+  $(".pageSection").sortable({
+    items: ".block",
+    scroll: true,
+    axis: 'y',
+    containment: "parent",
+    tolerance: "pointer",
+    cancel: 'input,textarea,button,select,option,[contenteditable]',
+    start: function(event, ui) {
+      movingBlocks = true;
+    },
+    update: function (event, ui) {
+      // Update the block positions array
+      updateBlockPositions();
+    },
+    stop: function(event, ui) {
+      movingBlocks = false;
+    }
+  });
+
+  $('.pageSection .block').each(function () {
+    var $block = $(this);
+
+    $block.on('click', function () {
+      BlockOptions($block);
+    });
+
+    hasTextChild($block).attr('contenteditable', 'true');
+
+    $block.find('.block').on('click', function (e) {
+      e.stopPropagation();
+      BlockOptions($block);
+    });
+  });
+
+  $(".preview").click(function () {
+    if (ignorePreviewClick) {
+      ignorePreviewClick = false; // Reset the flag
+      return; // Ignore the click event
+    }
+    $selection = $('.pageSection');
+    $("*").removeClass('selected');
+    $(".pageSection").addClass('selected');
+    if($selection.find(".selected").length === 0) selectedElement = true;
+  });
+
+  $(".pageSection").on("click", function (event) {
+    // Check if the clicked element is a child of .pageSection
+    if (
+      $(event.target).closest(".pageSection").length > 0 &&
+      !$(event.target).is(".preview")
+    ) {
+      ignorePreviewClick = true; // Set the flag to ignore the next preview click event
+      return; // Ignore the click event for the parent .pageSection element
+    }
+
+    // Process the click event on .pageSection here
+    BlockOptions(this);
+    fetchBlocks('.editor-tools');
+  });
+
+  $(".preview").on("DOMSubtreeModified", function (event) {
+    detectEmpty();
+  });
+
+
+  fetchBlocks('.editor-tools');
+  trackMouseBetweenBlocks();
 });
+
+
