@@ -32,6 +32,14 @@ $theme->getActiveTheme();
 
 <link rel="stylesheet" href="./css/pageEditor.css">
 
+<div class="floating-blocks hidden">
+    <div class="header">
+        <p onclick="$(this).parent().parent().addClass('hidden')"><i class="fa-regular fa-circle-xmark"></i></p>
+    </div>
+    <div class="block-container">
+
+    </div>
+</div>
 <div class="dialog">
 
 </div>

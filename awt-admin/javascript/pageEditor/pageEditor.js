@@ -9,7 +9,24 @@ var selectedElement = false;
 
 var blockPositions = []; // Array to store the positions of blocks
 
-function fetchBlocks(element) {
+var ctrlPressed = false;
+
+var ignoreSave = true;
+
+var updatingFromHistory = false;
+
+var pageHistory = [];
+var currentIndex = -1;
+
+var floatingBlockSelectorActive = false;
+
+var ignorePreviewClick = false;
+
+
+function fetchBlocks(element, replacable = null) {
+
+  $(element).find('.category-container').remove();
+
   $.ajax({
     url: './jobs/pageEditor.php',
     type: 'POST',
@@ -47,7 +64,7 @@ function fetchBlocks(element) {
 
                 // Attach onclick event to the child element
                 childElement.click(function () {
-                  getBlock(block.name);
+                  getBlock(block.name, replacable);
                 });
 
                 // Append the child element to the category container
@@ -88,7 +105,7 @@ function fetchBlocks(element) {
 
 
 
-function getBlock(name) {
+function getBlock(name, replacable = null) {
   $.ajax({
     url: './jobs/pageEditor.php',
     type: 'POST',
@@ -96,11 +113,14 @@ function getBlock(name) {
       getBlock: name
     },
     success: function (response) {
-      $selection.append(response);
 
-      // Make all elements with class "block" sortable within .pageSection
+      if(replacable !== null) {
+        $(replacable).replaceWith(response);
+      } else {
+        $selection.append(response);
+      }
 
-      // Make each text element within .block editable
+
       hasTextChild($(".block")).attr("contenteditable", "true");
       
       // Attach BlockOptions function to click event of block and its direct children
@@ -295,18 +315,25 @@ function trackMouseBetweenBlocks() {
 
   $blocks.on('mouseenter', function() {
     $currentElement = $(this);
+    if($currentElement.attr("id") === "grid-block") return;
 
+    if($currentElement.parent().attr("id") === "grid-block") return;
+
+    if(floatingBlockSelectorActive) return;
+    
+    ignoreSave = true;
     if(movingBlocks) {
       $newBlock.remove();
       return;
     }
     // Check if there is a previous or next sibling
     if ($currentElement.prev('.block').length && $currentElement.next('.block').length) {
-
+      
       // Remove the old new block if it exists
       if ($newBlock) {
         $newBlock.remove();
       }
+
 
       // Create a new element
       $newBlock = $('<div class="block replacable"></div>');
@@ -315,11 +342,10 @@ function trackMouseBetweenBlocks() {
       $currentElement.after($newBlock);
 
       $newBlock.on("click", function(){
-
-
+        floatingBlockSelectorActive = true;
+        floatingBlocks($newBlock);
       });
 
-    } else {
     }
   });
 
@@ -352,9 +378,19 @@ function trackMouseBetweenBlocks() {
 }
 
 
+function updateFromHistory() {
+  updatingFromHistory = true;
+  if(currentIndex !== 0) $('.pageSection').html(pageHistory[currentIndex - 1]);
+  createEditableLayout();
+}
 
-$(document).ready(function () {
-  var ignorePreviewClick = false;
+function saveToHistory() {
+  var content = $(".pageSection").html();
+  pageHistory.push(content);
+  currentIndex++;
+}
+
+function createEditableLayout() {
   $selection = $('.pageSection');
 
   $(".pageSection").sortable({
@@ -415,15 +451,57 @@ $(document).ready(function () {
     // Process the click event on .pageSection here
     BlockOptions(this);
     fetchBlocks('.editor-tools');
+
+    
+  });
+}
+
+
+function floatingBlocks(caller) {
+  $('.floating-blocks').removeClass('hidden');
+  fetchBlocks('.floating-blocks .block-container', caller);
+  $('.floating-blocks').draggable();
+}
+
+$(document).ready(function () {
+  
+  createEditableLayout();
+  
+  $(".floating-blocks").on("DOMSubtreeModified", function (event) {
+    if($('.floating-blocks').hasClass('hidden')) {
+      floatingBlockSelectorActive = false;
+    } else {
+      floatingBlockSelectorActive = true;
+    }
+    console.log("change");
   });
 
   $(".preview").on("DOMSubtreeModified", function (event) {
     detectEmpty();
   });
+  
+  $(document).bind("keydown", function(event){
+    if(event.key === "Delete" || event.keyCode === 46) $(".selected").remove();
+    if(event.ctrlKey) ctrlPressed = true;
+  });
 
+  $(document).bind("keyup", function(event){
+    // if(ctrlPressed && event.key === "z") {
+    //   updateFromHistory();
+    // } 
+    if(event.ctrlKey) ctrlPressed = false;
+  });
+
+  saveToHistory();
 
   fetchBlocks('.editor-tools');
   trackMouseBetweenBlocks();
+
+  $(".preview").on("DOMSubtreeModified", function (event) {
+  //   if(!updatingFromHistory && !ignoreSave) saveToHistory();
+  //   updatingFromHistory = false;
+  //   ignoreSave = false;
+  });
 });
 
 

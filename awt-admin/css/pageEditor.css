@@ -7,7 +7,7 @@ body {
     grid-template-columns: auto auto !important;
 }
 
-* {
+.preview * {
     position: relative !important;
 }
 
@@ -51,9 +51,10 @@ body {
     padding: 10px;
 }
 
-/* .block:hover {
+.block:hover {
     border: solid 2px grey;
-} */
+    filter: brightness(1.1);
+}
 
 .preview {
     width: 100%;
@@ -347,6 +348,18 @@ select::-ms-expand {
     cursor: grabbing !important;
 }
 
+.floating-blocks {
+    position: absolute;
+    float: left;
+    z-index: 10;
+    top: 100px;
+    width: 300px;
+    left: 50px;
+    background: #fff;
+    padding: 10px;
+    border-radius: 10px;
+}
+
 @keyframes createSelector {
     0% {
         height: 0;
@@ -364,11 +377,16 @@ select::-ms-expand {
 }
 
 @keyframes createLineSelector {
-    from {
+    0% {
         width: 0;
     }
-    to {
-        width: 25;
+
+    50% {
+        width: 12.5%;
+    }
+
+    100% {
+        width: 25%;
     }
 
 }
