@@ -9,20 +9,9 @@ var selectedElement = false;
 
 var ctrlPressed = false;
 
-var ignoreSave = true;
-
-var updatingFromHistory = false;
-
-var pageHistory = [];
-var currentIndex = -1;
-
 var floatingBlockSelectorActive = false;
 
 var ignorePreviewClick = false;
-
-var $clipBoard = null;
-
-var currentMousePos = { x: -1, y: -1 };
 
 function fetchBlocks(element, replacable = null, callback = null) {
 
@@ -91,6 +80,8 @@ function fetchBlocks(element, replacable = null, callback = null) {
 
 
 function getBlock(name, replacable = null) {
+
+
   $.ajax({
     url: './jobs/pageEditor.php',
     type: 'POST',
@@ -105,6 +96,8 @@ function getBlock(name, replacable = null) {
         $selection.append(response);
       }
 
+      saveToHistory();
+
       hasTextChild($(".block")).attr("contenteditable", "true");
       
       $(".block").on("click", function (e) {
@@ -112,6 +105,7 @@ function getBlock(name, replacable = null) {
       }).children().on("click", function (e) {
         e.stopPropagation();
       });
+
     },
     error: function (xhr, status, error) {
       console.log('AJAX request failed.');
@@ -119,6 +113,7 @@ function getBlock(name, replacable = null) {
     }
   });
   
+
 }
 
 
@@ -210,65 +205,6 @@ function findNearestElement(x, y) {
   });
 
   return nearestElement;
-}
-
-function paste() {
-
-  if($('.selected') && !$('.selected').hasClass('.pageSection')) {
-    $clipBoard.removeClass('selected');
-    $clipBoard.click(function (event) {
-      event.stopPropagation();
-      BlockOptions(this);
-    });
-    $('.selected').append($clipBoard);
-    $clipBoard = $clipBoard.clone();
-    return;
-  }
-  
-
-  var $contextMenu = $('.context-menu');
-  var contextOffset = $contextMenu.offset();
-  var nearestBlock = null;
-  var minDistance = Number.MAX_VALUE;
-
-  var $blocks = $('.block').not($contextMenu);
-
-  $blocks.each(function () {
-    var $block = $(this);
-    var blockOffset = $block.offset();
-    var blockCenterX = blockOffset.left + $block.width() / 2;
-    var blockCenterY = blockOffset.top + $block.height() / 2;
-
-    var distance = Math.sqrt(
-      (contextOffset.left  - blockCenterX) ** 2 + (contextOffset.top - blockCenterY) ** 2
-    );
-
-    if (distance < minDistance) {
-      minDistance = distance;
-      nearestBlock = $block;
-    }
-  });
-
-  if (nearestBlock !== null) {
-    $clipBoard.removeClass('selected');
-    $clipBoard.click(function (event) {
-      event.stopPropagation();
-      BlockOptions(this);
-    });
-    $clipBoard.insertAfter(nearestBlock);
-    $clipBoard = $clipBoard.clone();
-  }
-}
-
-
-function cut() {
-  $clipBoard = $(".block.selected").clone();
-  $(".block.selected").remove();
-}
-
-function copy() {
-  $clipBoard = $(".block.selected").clone();
-  $('*').removeClass("selected");
 }
 
 
@@ -372,82 +308,9 @@ function detectEmpty() {
 }
 
 
-function trackMouse() {
-  var $blocks = $(".pageSection .block");
-  var $newBlock = null;
-  var $currentElement = null;
-  var timeoutId = null;
-
-  $(".pageSection").on("DOMSubtreeModified", function () {
-    $blocks = $(".pageSection .block");
-  });
-
-  $blocks.on('mouseenter', function () {
-    $currentElement = $(this);
-
-    if (floatingBlockSelectorActive) return;
-
-    ignoreSave = true;
-    if (movingBlocks) {
-      removeNewBlock();
-      return;
-    }
-    if ($currentElement.next('.block').hasClass("replacable")) return;
-
-    // Clear previous timeout if any
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-
-    // Check if there is a previous or next sibling
-    if ($currentElement.next('.block').length) {
-      timeoutId = setTimeout(function () {
-        removeNewBlock();
-
-        $newBlock = $('<div class="block replacable"></div>');
-        $currentElement.after($newBlock);
-
-        $newBlock.on("click", function () {
-          floatingBlockSelectorActive = true;
-          floatingBlocks($newBlock);
-        });
-
-        $currentElement.on("mouseenter", function () {
-          if (floatingBlockSelectorActive) return;
-          removeNewBlock();
-        });
-      }, 700);
-    }
-  });
-
-  $(".preview").on("DOMSubtreeModified", function (event) {
-    if (movingBlocks && $newBlock !== null) {
-      removeNewBlock();
-    }
-  });
-
-  function removeNewBlock() {
-    if ($newBlock) {
-      $newBlock.remove();
-      $newBlock = null;
-      clearTimeout(timeoutId);
-    }
-  }
-}
 
 
 
-function updateFromHistory() {
-  updatingFromHistory = true;
-  if(currentIndex !== 0) $('.pageSection').html(pageHistory[currentIndex - 1]);
-  createEditableLayout();
-}
-
-function saveToHistory() {
-  var content = $(".pageSection").html();
-  pageHistory.push(content);
-  currentIndex++;
-}
 
 function createEditableLayout() {
   $selection = $('.pageSection');
@@ -511,17 +374,6 @@ function createEditableLayout() {
   });
 }
 
-
-function floatingBlocks(caller) {
-  $('.floating-blocks').removeClass('hidden');
-  $('.floating-blocks').draggable();
-  fetchBlocks('.floating-blocks .block-container', caller, function() {
-    $(".floating-blocks").addClass('hidden');
-    $("* .block").off("mouseenter");
-    trackMouse();
-  });
-}
-
 $(document).ready(function () {
   
   createEditableLayout();
@@ -537,34 +389,12 @@ $(document).ready(function () {
   $(".preview").on("DOMSubtreeModified", function (event) {
     detectEmpty();
   });
-  
-  $(document).bind("keydown", function(event){
-    if(event.key === "Delete" || event.keyCode === 46) $(".selected").remove();
-    if(event.ctrlKey) ctrlPressed = true;
-  });
-
-  $(document).bind("keyup", function(event){
-    // if(ctrlPressed && event.key === "z") {
-    //   updateFromHistory();
-    // } 
-    if(event.ctrlKey) ctrlPressed = false;
-  });
-
-  $(document).on('contextmenu', function(event) {
-    event.preventDefault();
-    contextMenu();
-  }); 
-
-  $(document).mousemove(function(event) {
-    currentMousePos.x = event.pageX;
-    currentMousePos.y = event.pageY;
-});
 
   saveToHistory();
 
-  fetchBlocks('.editor-tools');
-  trackMouse();
+  initShortcuts();
 
+  fetchBlocks('.editor-tools');
 });
 
 

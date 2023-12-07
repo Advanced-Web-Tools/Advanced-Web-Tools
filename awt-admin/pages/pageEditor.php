@@ -29,6 +29,10 @@ $theme->getActiveTheme();
 </script>
 <script src="./javascript/pageEditor/gridOptions.js">
 </script>
+<script src="./javascript/pageEditor/shortcuts.js"></script>
+<script src="./javascript/pageEditor/clipboard.js"></script>
+<script src="./javascript/pageEditor/history.js"></script>
+<script src="./javascript/pageEditor/blockInsertion.js"></script>
 <script src="../awt-src/vendor/jQuery/jquery.nearest.min.js"></script>
 
 <link rel="stylesheet" href="./css/pageEditor.css">
