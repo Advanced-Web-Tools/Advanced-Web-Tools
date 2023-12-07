@@ -1,7 +1,22 @@
 
 var $selection = $(".pageSection");
 
-function fetchBlocks(element) {
+var shrinkenView = false;
+
+var movingBlocks = false;
+
+var selectedElement = false;
+
+var ctrlPressed = false;
+
+var floatingBlockSelectorActive = false;
+
+var ignorePreviewClick = false;
+
+function fetchBlocks(element, replacable = null, callback = null) {
+
+  $(element).find('.category-container').remove();
+
   $.ajax({
     url: './jobs/pageEditor.php',
     type: 'POST',
@@ -11,61 +26,44 @@ function fetchBlocks(element) {
     success: function (response) {
       try {
         var parsedResponse = JSON.parse(response);
-        console.log(parsedResponse);
 
         if (parsedResponse && typeof parsedResponse === 'object') {
           for (var category in parsedResponse) {
             if (Array.isArray(parsedResponse[category])) {
-              // Create a label for the category
+
               var categoryLabel = $('<h4>').text(category);
               categoryLabel.addClass(category.replace(/ /g, '-'));
 
-              // Create a container div for the category and its child elements
               var categoryContainer = $('<div>').addClass('category-container');
-              // Append the category label to the container
               categoryContainer.append(categoryLabel);
               categoryLabel.append('<i class="fa-solid fa-layer-group" style="margin-left: 20px;"></i>');
 
-
-              // Iterate through the blocks in the category
               parsedResponse[category].forEach(function (block) {
-                // Create a new child element
                 var childElement = $('<div>').addClass('block-item hidden ' + category.replace(/ /g, '-'));
 
-                // Create a <p> tag for each item in the parsed response array
                 var itemElement = $('<p>').text(block.name);
 
-                // Append the item element to the child element
                 childElement.append(itemElement);
 
                 // Attach onclick event to the child element
                 childElement.click(function () {
-                  getBlock(block.name);
+                  getBlock(block.name, replacable);
+                  if(callback !== null) callback();
                 });
 
-                // Append the child element to the category container
                 categoryContainer.append(childElement);
               });
 
-              // Append the category container to the specified parent element
               $(element).append(categoryContainer);
 
               // Add a click event to toggle the visibility of child elements
               categoryLabel.click(function (catClass) {
                 return function () {
-                  console.log(catClass);
-                  $('.category-container .block-item.' + catClass).toggleClass('hidden');
+                  $(element + ' .category-container .block-item.' + catClass).toggleClass('hidden');
                 }
               }(category.replace(" ", "-")));
             }
           }
-
-          // Make the blocks stackable inside the preview element
-          $('.pageSection').children().each(function () {
-            if ($(this).is('div') && $(this).hasClass('block')) {
-              $(this).addClass('stackable');
-            }
-          });
         } else {
           console.log('Parsed response is not in the expected format.');
         }
@@ -80,10 +78,10 @@ function fetchBlocks(element) {
   });
 }
 
-var blockPositions = []; // Array to store the positions of blocks
 
-function getBlock(name) {
-  console.log($selection);
+function getBlock(name, replacable = null) {
+
+
   $.ajax({
     url: './jobs/pageEditor.php',
     type: 'POST',
@@ -91,458 +89,53 @@ function getBlock(name) {
       getBlock: name
     },
     success: function (response) {
-      console.log('AJAX request succeeded.');
-      $selection.append(response);
 
-      // Make all elements with class "block" sortable within .pageSection
-      $(".pageSection").sortable({
-        items: ".block",
-        cancel: 'input,textarea,button,select,option,[contenteditable]',
-        update: function (event, ui) {
-          // Update the block positions array
-          updateBlockPositions();
-        }
-      });
+      if(replacable !== null) {
+        $(replacable).replaceWith(response);
+      } else {
+        $selection.append(response);
+      }
 
-      // Make each text element within .block editable
+      saveToHistory();
+
       hasTextChild($(".block")).attr("contenteditable", "true");
-
-      // Attach BlockOptions function to click event of block and its direct children
-      $(".block").on("click", function () {
+      
+      $(".block").on("click", function (e) {
         BlockOptions($(this));
       }).children().on("click", function (e) {
-        e.stopPropagation(); // Prevent event bubbling to the parent block
+        BlockOptions($(this));
+        e.stopPropagation();
       });
 
-      // Check if the parent element has the ID "grid-block"
-      if ($("#grid-block").length > 0) {
-        // Make the grid elements sortable within the grid block
-        $(".block#grid-block").sortable({
-          items: "> .block",
-          handle: ".handle",
-          update: function (event, ui) {
-            // Update the grid positions array
-            updateGridPositions();
-          }
-        });
-      }
     },
     error: function (xhr, status, error) {
       console.log('AJAX request failed.');
       console.log(error);
     }
   });
+  
+
 }
 
 
 function rgbToHex(rgbColor) {
 
   if (rgbColor === null) return;
-  // Extract the RGB components from the color string
   var rgbValues = rgbColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
   if (!rgbValues) {
     return null; // Invalid RGB color string
   }
 
-  // Convert each RGB component to hexadecimal
   var hexValues = rgbValues.slice(1).map(function (value) {
     var hex = parseInt(value, 10).toString(16);
     return hex.length === 1 ? "0" + hex : hex;
   });
 
-  // Combine the hexadecimal values
   var hexColor = "#" + hexValues.join("");
 
   return hexColor;
 }
 
-
-function setDefaultOptions($block, defaultStyle) {
-  var defaultMargin = defaultStyle ? defaultStyle.match(/margin:\s*((?:[^;]+)*)/) : null;
-  var defaultPadding = defaultStyle ? defaultStyle.match(/padding:\s*((?:[^;]+)*)/) : null;
-  var defaultWidth = defaultStyle ? defaultStyle.match(/width:\s*((?:[^;]+)*)/) : null;
-  var defaultHeight = defaultStyle ? defaultStyle.match(/height:\s*((?:[^;]+)*)/) : null;
-  var defaultBackgroundColor = defaultStyle ? defaultStyle.match(/background:\s*([^;]+);/) : null;
-  var backgroundImage = defaultStyle ? defaultStyle.match(/background-image:\s*([^;]+);/) : null;
-  var backgroundPosition = defaultStyle ? defaultStyle.match(/background-position:\s*([^;]+);/) : null;
-  var backgroundRepeat = defaultStyle ? defaultStyle.match(/background-repeat:\s*([^;]+);/) : null;
-  var borderRadius = defaultStyle ? defaultStyle.match(/border-radius:\s*([^;]+);/) : null;
-  defaultBackgroundColor = defaultBackgroundColor ? defaultBackgroundColor[1] : null;
-  defaultBackgroundColor = rgbToHex(defaultBackgroundColor);
-  var options = '<p>Block options:</p>';
-  options += '<input type="text" class="margin-input" value="' + (defaultMargin ? defaultMargin[1] : '') + '" placeholder="Margin">';
-  options += '<input type="text" class="padding-input" value="' + (defaultPadding ? defaultPadding[1] : '') + '" placeholder="Padding">';
-  options += '<input type="text" class="width-input" value="' + (defaultWidth ? defaultWidth[1] : '') + '" placeholder="Width">';
-  options += '<input type="text" class="height-input" value="' + (defaultHeight ? defaultHeight[1] : '') + '" placeholder="Height">';
-  options += '<input type="text" class="border-radius-input" value="' + (borderRadius ? borderRadius[1] : '') + '" placeholder="Border radius">';
-  options += '<label for="background-color">Background color:</label>';
-  options += '<input type="color" class="background-color-input" id="background-color" value="' + (defaultBackgroundColor ? defaultBackgroundColor : '') + '" placeholder="Background Color">';
-  options += '<label for="background-image">Background image:</label>';
-  options += '<select class="background-image" id="background-image">';
-  options += '<option value="none">Select image</option>';
-  options += '</select>';
-  options += '<label for="background-position">Background position:</label>';
-  options += '<select class="background-position" id="background-position" value="' + (backgroundPosition ? backgroundPosition[1] : 'Center') + '">';
-  options += '<option value="center">Center</option>';
-  options += '<option value="top">Top</option>';
-  options += '<option value="bottom">Bottom</option>';
-  options += '<option value="left">Left</option>';
-  options += '<option value="right">Right</option>';
-  options += '</select>';
-  options += '<label for="background-repeat">Background repeat:</label>';
-  options += '<select class="background-repeat" id="background-repeat" value="' + (backgroundRepeat ? backgroundRepeat[1] : 'Repeat') + '">';
-  options += '<option value="repeat">Repeat</option>';
-  options += '<option value="no-repeat">No-repeat</option>';
-  options += '</select>';
-  options += '<label for="background-size">Background size:</label>';
-  options += '<select class="background-size" id="background-repeat">';
-  options += '<option value="cover">Cover</option>';
-  options += '<option value="contain">Contain</option>';
-  options += '<option value="fill">Fill</option>';
-  options += '</select>';
-  options += '<button class="parent-selection">Select Parent</button>';
-  options += '<button class="delete-block">Delete Block</button>';
-  $(".block-options").html(options);
-
-  options = "";
-
-  $(".margin-input").on("input", function () {
-    $block.css("margin", $(this).val());
-  });
-
-  $(".padding-input").on("input", function () {
-    $block.css("padding", $(this).val());
-  });
-
-  $(".width-input").on("input", function () {
-    $block.css("width", $(this).val());
-  });
-
-  $(".height-input").on("input", function () {
-    $block.css("height", $(this).val());
-  });
-
-  $(".background-color-input").on("input", function () {
-    $block.css("background", $(this).val());
-  });
-
-
-  $(".border-radius-input").on("input", function () {
-    $block.css("border-radius", $(this).val());
-  });
-
-  $(".parent-selection").on("click", function () {
-    BlockOptions($block.parent());
-  });
-
-  $(".delete-block").on("click", function () {
-    $selection = $block.closest().parent();
-    $block.remove();
-  });
-
-  $(".background-position").change(function () {
-    $block.css("background-position", $(this).val());
-  });
-
-  $(".background-repeat").change(function () {
-    $block.css("background-repeat", $(this).val());
-  });
-
-  $(".background-size").change(function () {
-    $block.css("background-size", $(this).val());
-  });
-
-
-  $.ajax({
-    url: '../api.php',
-    type: 'POST',
-    data: {
-      request: "media",
-      data: 0,
-      type: 'fetchAll',
-    },
-    error: function (xhr, status, error) {
-      console.log(error);
-    }
-  }).done(function (response) {
-
-    response = JSON.parse(response);
-
-    if (response != null) {
-      var updatedOptions = ""; // Create a new variable to store the updated options
-
-      $.each(response, function (key, value) {
-        if (value.file_type == "image") {
-          updatedOptions += "<option value='" + value.file + "'>" + value.name + "</option>";
-        }
-      });
-
-      var imgLink = backgroundImage ? backgroundImage[1] : 'Select image';
-
-      imgLink = imgLink.replace("url(", '');
-      imgLink = imgLink.replace(")", '');
-
-      $(".background-image").append(updatedOptions);
-      // $(".background-image option[value=" + imgLink + "]").attr('selected', 'selected');
-      $(".background-image").change(function () {
-
-        var selectedValue = $(".background-image").val();
-        $block.css("background-image", "url(" + selectedValue + ")");
-      });
-
-    }
-  });
-
-
-}
-
-function setGridOptions($block, defaultStyle) {
-  var defaultGridTemplateColumns = defaultStyle ? defaultStyle.match(/grid-template-columns:\s*((?:[^;]+)*)/) : null;
-  var defaultGridTemplateRows = defaultStyle ? defaultStyle.match(/grid-template-rows:\s*((?:[^;]+)*)/) : null;
-
-  var defaultGridFlow = defaultStyle ? defaultStyle.match(/grid-auto-flow:\s*(\S+);/) : null;
-  var defaultJustifyContent = defaultStyle ? defaultStyle.match(/justify-content:\s*(\S+);/) : null;
-  var defaultAlignItems = defaultStyle ? defaultStyle.match(/align-items:\s*(\S+);/) : null;
-  var defaultPlaceContent = defaultStyle ? defaultStyle.match(/place-content:\s*(\S+);/) : null;
-  var defaultGap = defaultStyle ? defaultStyle.match(/gap:\s*(\S+);/) : null;
-
-  var options = '<p>Grid options</p>';
-  options += '<input type="text" class="grid-template-columns-input" value="' + (defaultGridTemplateColumns ? defaultGridTemplateColumns[1] : '') + '" placeholder="Grid Template Columns">';
-  options += '<input type="text" class="grid-template-rows-input" value="' + (defaultGridTemplateRows ? defaultGridTemplateRows[1] : '') + '" placeholder="Grid Template Rows">';
-  options += '<input type="text" class="grid-gap-input" value="' + (defaultGap ? defaultGap[1] : '') + '" placeholder="Gap">';
-  options += '<select class="grid-flow-select">';
-  options += '<option value="row" ' + (defaultGridFlow && defaultGridFlow[1] === "row" ? 'selected' : '') + '>Grid Flow: Row</option>';
-  options += '<option value="column" ' + (defaultGridFlow && defaultGridFlow[1] === "column" ? 'selected' : '') + '>Grid Flow: Column</option>';
-  options += '</select>';
-  options += '<select class="justify-content-select">';
-  options += '<option value="" selected>Justify Content</option>';
-  options += '<option value="start" ' + (defaultJustifyContent && defaultJustifyContent[1] === "start" ? 'selected' : '') + '>Start</option>';
-  options += '<option value="center" ' + (defaultJustifyContent && defaultJustifyContent[1] === "center" ? 'selected' : '') + '>Center</option>';
-  options += '<option value="end" ' + (defaultJustifyContent && defaultJustifyContent[1] === "end" ? 'selected' : '') + '>End</option>';
-  options += '</select>';
-  options += '<select class="align-items-select">';
-  options += '<option value="" selected>Align Items</option>';
-  options += '<option value="center" ' + (defaultAlignItems && defaultAlignItems[1] === "center" ? 'selected' : '') + '>Center</option>';
-  options += '<option value="stretch" ' + (defaultAlignItems && defaultAlignItems[1] === "stretch" ? 'selected' : '') + '>Stretch</option>';
-  options += '</select>';
-  options += '<select class="place-content-select">';
-  options += '<option value="" selected>Place Content</option>';
-  options += '<option value="start" ' + (defaultPlaceContent && defaultPlaceContent[1] === "start" ? 'selected' : '') + '>Start</option>';
-  options += '<option value="center" ' + (defaultPlaceContent && defaultPlaceContent[1] === "center" ? 'selected' : '') + '>Center</option>';
-  options += '<option value="end" ' + (defaultPlaceContent && defaultPlaceContent[1] === "end" ? 'selected' : '') + '>End</option>';
-  options += '</select>';
-  options += '<button class="create-child-button">New Child</button>';
-
-  $(".block-options").append(options);
-
-  $(".grid-template-columns-input").on("input", function () {
-    $block.css("grid-template-columns", $(this).val());
-  });
-
-  $(".grid-template-rows-input").on("input", function () {
-    $block.css("grid-template-rows", $(this).val());
-  });
-
-  $(".grid-gap-input").on("input", function () {
-    $block.css("gap", $(this).val());
-  });
-
-  $(".grid-flow-select").on("change", function () {
-    $block.css("grid-auto-flow", $(this).val());
-  });
-
-  $(".justify-content-select").on("change", function () {
-    $block.css("justify-content", $(this).val());
-  });
-
-  $(".align-items-select").on("change", function () {
-    $block.css("align-items", $(this).val());
-  });
-
-  $(".place-content-select").on("change", function () {
-    $block.css("place-content", $(this).val());
-  });
-}
-
-function setTextOptions($block, defaultStyle) {
-  var defaultFontSize = defaultStyle ? defaultStyle.match(/font-size:\s*(\S+);/) : null;
-  var defaultTextColor = defaultStyle ? defaultStyle.match(/color:\s*([^;]+);/) : null;
-
-  // Extract the first match from the array if available
-  defaultFontSize = defaultFontSize ? defaultFontSize[1].replace('px', '') : 15;
-  defaultTextColor = defaultTextColor ? defaultTextColor[1] : null;
-  defaultTextColor = rgbToHex(defaultTextColor);
-
-  var options = '<p>Text options:</p>';
-  options += '<input type="number" class="font-size-input" value="' + (defaultFontSize ? defaultFontSize : '') + '" placeholder="Font Size">';
-  options += '<label for="text-color">Text color:</label>';
-  options += '<input type="color" class="text-color-input" id="text-color" value="' + (defaultTextColor ? defaultTextColor : '') + '" placeholder="Text Color">';
-  options += '<div class="alignment-buttons"><button class="align-left"><i class="fa-solid fa-align-left"></i></button>';
-  options += '<button class="align-center"><i class="fa-solid fa-align-center"></i></button>';
-  options += '<button class="align-right"><i class="fa-solid fa-align-right"></i></button></div>';
-
-  $(".block-options").append(options);
-
-  $(".font-size-input").on("input", function () {
-    $selection.css("font-size", $(this).val() + "px");
-  });
-
-  $(".text-color-input").on("input", function () {
-    $selection.css("color", $(this).val());
-  });
-
-  // Set initial button states based on current text alignment
-  var currentAlignment = $block.css("text-align");
-  $(".align-left").prop("disabled", currentAlignment === "left");
-  $(".align-left").prop("disabled", currentAlignment === "");
-  $(".align-center").prop("disabled", currentAlignment === "center");
-  $(".align-right").prop("disabled", currentAlignment === "right");
-
-  // Bind click event handlers to update text alignment
-  $(".align-left").on("click", function () {
-    $block.css("text-align", "left");
-    $(".align-left").prop("disabled", true);
-    $(".align-center").prop("disabled", false);
-    $(".align-right").prop("disabled", false);
-  });
-
-  $(".align-center").on("click", function () {
-    $block.css("text-align", "center");
-    $(".align-left").prop("disabled", false);
-    $(".align-center").prop("disabled", true);
-    $(".align-right").prop("disabled", false);
-  });
-
-  $(".align-right").on("click", function () {
-    $block.css("text-align", "right");
-    $(".align-left").prop("disabled", false);
-    $(".align-center").prop("disabled", false);
-    $(".align-right").prop("disabled", true);
-  });
-}
-
-function ListOptions($block, defaultStyle) {
-  var defaultListStyle = defaultStyle ? defaultStyle.match(/list-style:\s*(\S+);/) : null;
-  defaultListStyle = defaultListStyle ? defaultListStyle[1] : "none";
-
-  var options = '<p>List options:</p>';
-  options += '<select class="list-style-select">';
-  options += '<option value="none">None</option>';
-  options += '<option value="ordered">Ordered</option>';
-  options += '<option value="unordered">Unordered</option>';
-  options += '</select>';
-  options += '<button class="add-list-item">Add Item</button>';
-  options += '<button class="remove-list-item">Remove Item</button>';
-
-  $(".block-options").append(options);
-
-  // Set the default list style option
-  $(".list-style-select").val(defaultListStyle);
-
-  // Event handler for list style selection change
-  $(".list-style-select").on("change", function () {
-    var selectedOption = $(this).val();
-    if (selectedOption === "ordered") {
-      $block.css("list-style", "ordered");
-    } else if (selectedOption === "unordered") {
-      $block.css("list-style", "unordered");
-    } else {
-      $block.css("list-style", "none");
-    }
-  });
-
-  // Event handler for adding a new list item
-  $(".add-list-item").on("click", function () {
-    var newListElement = '<li contenteditable="true">New List Item</li>';
-    $block.append(newListElement);
-  });
-
-  $(".remove-list-item").on("click", function () {
-    $block.children("li").last().remove();
-  });
-}
-
-function mediaOptions($block, defaultStyle) {
-
-  var src = $block.attr("src");
-
-  var options = "<p>Media options</p>";
-
-  options += "<select id='selectMediaFile'>";
-
-  options += "<option value='none'>Select Image</option>";
-
-  fetchMediaFiles(options, function (updatedOptions) {
-    options += updatedOptions;
-
-    options += "</select>";
-
-    $(".block-options").append(options);
-
-    $("#selectMediaFile").change(function () {
-      var selectedValue = $(this).val();
-      $block.attr("src", selectedValue);
-    });
-  });
-}
-
-
-function isMedia($block) {
-  var allowedTags = ["audio", "video", "source", "track", "img", "source"];
-
-  var tagName = $block.prop("tagName").toLowerCase();
-  return allowedTags.includes(tagName);
-}
-
-
-function fetchMediaFiles(options, callback) {
-  $.ajax({
-    url: '../api.php',
-    type: 'POST',
-    data: {
-      request: "media",
-      data: 0,
-      type: 'fetchAll',
-    },
-    error: function (xhr, status, error) {
-      console.log(error);
-    }
-  }).done(function (response) {
-
-    response = JSON.parse(response);
-
-    if (response != null) {
-      var updatedOptions = ""; // Create a new variable to store the updated options
-
-      $.each(response, function (key, value) {
-        if (value.file_type == "image") {
-          updatedOptions += "<option value='" + value.file + "'>" + value.name + "</option>";
-        }
-      });
-
-      // Call the callback with the updated options
-      callback(updatedOptions);
-    }
-  });
-}
-
-function hasTextChild($block) {
-  var allowedTags = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "a", "strong", "em", "b", "i", "u", "li"];
-
-  return $block
-    .find("*")
-    .filter(function () {
-      var tagName = this.tagName.toLowerCase();
-      return allowedTags.includes(tagName) || this.nodeType === 3 && $.trim(this.nodeValue).length > 0;
-    });
-}
-
-function hasListChild($block) {
-  return $block.find(":not(:has(*))").filter(function () {
-    var listTags = ["ul", "ol", "li", "dl", "dt", "dd"];
-    return listTags.includes(this.tagName.toLowerCase());
-  });
-}
 
 function BlockOptions(element) {
   var $block = $(element);
@@ -586,27 +179,59 @@ function BlockOptions(element) {
       BlockOptions(this);
     });
   });
+}
 
-  $block.sortable({
-    items: "> .block",
-    handle: ".handle",
-    update: function (event, ui) {
-      // Update the block positions array
-      updateBlockPositions();
+
+function quickOptions() {
+
+}
+
+function findNearestElement(x, y) {
+  let elements = $('.element');
+  let nearestElement = null;
+  let minDistance = Number.MAX_VALUE;
+
+  elements.each(function () {
+    let element = $(this);
+    let offset = element.offset();
+    let centerX = offset.left + element.width() / 2;
+    let centerY = offset.top + element.height() / 2;
+
+    let distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
+
+    if (distance < minDistance) {
+      minDistance = distance;
+      nearestElement = element;
     }
   });
+
+  return nearestElement;
 }
 
-function updateBlockPositions() {
-  blockPositions = [];
-  $(".pageSection .block").each(function () {
-    blockPositions.push($(this).attr("id"));
+
+function contextMenu() {
+  $(".context-menu").toggleClass("hidden");
+  $(".context-menu").css('top', currentMousePos.y);
+  $(".context-menu").css('left', currentMousePos.x);
+  $(".context-menu *").bind("click.context", function () { 
+    $(".context-menu").toggleClass("hidden");
+    $(".context-menu *").unbind("click.context");
   });
+
+
 }
+
 
 function publishContent(name) {
   var $pageSection = $('.pageSection');
-  var htmlContent = $pageSection.last().prop('outerHTML');
+
+  var $clonedPageSection = $pageSection.clone();
+
+  $clonedPageSection.find(".block.empty.replacable").remove();
+  $pageSection.find(".block.empty.replacable").remove();
+
+  var htmlContent = $clonedPageSection.last().prop('outerHTML');
+
   $.ajax({
     url: './jobs/pageEditor.php',
     type: 'POST',
@@ -615,8 +240,6 @@ function publishContent(name) {
       name: name,
       pageStatus: "live"
     },
-    success: function (response) {
-    },
     error: function (xhr, status, error) {
       console.log(error);
     }
@@ -624,9 +247,14 @@ function publishContent(name) {
 }
 
 
-function publishContentPreview(name) {
+function savePage(name) {
   var $pageSection = $('.pageSection');
-  var htmlContent = $pageSection.prop('outerHTML');
+  
+  var $clonedPageSection = $pageSection.clone();
+
+  $clonedPageSection.find(".block.empty.replacable").remove();
+
+  var htmlContent = $clonedPageSection.last().prop('outerHTML');
 
   $.ajax({
     url: './jobs/pageEditor.php',
@@ -644,24 +272,72 @@ function publishContentPreview(name) {
   });
 }
 
-$(document).ready(function () {
-  var ignorePreviewClick = false;
+
+function changeViewPort(caller) {
+  var $preview = $('.preview');
+
+  if (!shrinkenView) {
+    $preview.css({
+      "width": '375px',
+      "margin": 'auto auto',
+      "height": '667px',
+      "border": '2px solid #000',
+      "overflow": 'auto' // Add overflow control
+    });
+    shrinkenView = true;
+    $(caller).addClass("active");
+  } else {
+    $preview.css({
+      "width": 'auto',
+      "height": '100%',
+      "border": 'none',
+      "overflow": 'auto' // Reset overflow
+    });
+    shrinkenView = false;
+    $(caller).removeClass("active");
+  }
+}
+
+function detectEmpty() {
+  $('.preview').find('.block').each(function (index, block) {
+    if ($(block).children().length == 0 && $(block).text().trim().length == 0 && $(block).is("div")) {
+      if($(block).hasClass("empty") == false) $(block).addClass("empty");
+    } else {
+      $(block).removeClass("empty");
+    }
+  });
+}
+
+
+
+
+
+
+function createEditableLayout() {
   $selection = $('.pageSection');
 
-  $(".pageSection").sortable({
+  $(".preview").sortable({
     items: ".block",
+    scroll: true,
+    scrollSensitivity: 50,
+    cursor: "move",
+    helper: "clone",
+    tolerance: "pointer",
     cancel: 'input,textarea,button,select,option,[contenteditable]',
-    update: function (event, ui) {
-      // Update the block positions array
-      updateBlockPositions();
+    start: function(event, ui) {
+      movingBlocks = true;
+    },
+    stop: function(event, ui) {
+      movingBlocks = false;
     }
   });
 
   $('.pageSection .block').each(function () {
     var $block = $(this);
 
-    $block.on('click', function () {
+    $block.on('click', function (e) {
       BlockOptions($block);
+      e.stopPropagation();
     });
 
     hasTextChild($block).attr('contenteditable', 'true');
@@ -674,12 +350,16 @@ $(document).ready(function () {
 
   $(".preview").click(function () {
     if (ignorePreviewClick) {
-      ignorePreviewClick = false; // Reset the flag
-      return; // Ignore the click event
+      ignorePreviewClick = false;
+      return;
     }
+
     $selection = $('.pageSection');
+
     $("*").removeClass('selected');
+    
     $(".pageSection").addClass('selected');
+    if($selection.find(".selected").length === 0) selectedElement = true;
   });
 
   $(".pageSection").on("click", function (event) {
@@ -688,19 +368,34 @@ $(document).ready(function () {
       $(event.target).closest(".pageSection").length > 0 &&
       !$(event.target).is(".preview")
     ) {
-      ignorePreviewClick = true; // Set the flag to ignore the next preview click event
-      return; // Ignore the click event for the parent .pageSection element
+      ignorePreviewClick = true;
+      return;
     }
-
-    // Process the click event on .pageSection here
     BlockOptions(this);
-    fetchBlocks('.editor-tools');
+  });
+}
+
+$(document).ready(function () {
+  
+  createEditableLayout();
+  
+  $(".floating-blocks").on("DOMSubtreeModified", function (event) {
+    if($('.floating-blocks').hasClass('hidden')) {
+      floatingBlockSelectorActive = false;
+    } else {
+      floatingBlockSelectorActive = true;
+    }
   });
 
+  $(".preview").on("DOMSubtreeModified", function (event) {
+    detectEmpty();
+  });
 
+  saveToHistory();
+
+  initShortcuts();
 
   fetchBlocks('.editor-tools');
 });
-
 
 

@@ -31,6 +31,7 @@ if (!$check->checkAuthentication()) {
 
     </div>
 </section>
+<script src="https://unpkg.com/color.js@1.2.0/dist/color.js"></script>
 <script src="./javascript/store/search.js"></script>
 <script src="./javascript/store/installation.js"></script>
 <script src="./javascript/store/store.js"></script>

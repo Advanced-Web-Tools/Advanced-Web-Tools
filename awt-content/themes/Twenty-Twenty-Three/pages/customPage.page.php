@@ -17,7 +17,14 @@ if (!defined("THEME_NAME")) {
 
 
 ?>
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
 <?php $theme->loadModule("Menu"); ?>
 
 <div class="scene" style="overflow-x: hidden; z-index: 0; position: relative;">
@@ -35,3 +42,6 @@ if (!defined("THEME_NAME")) {
 <?php
 $theme->loadModulesByOrder(THEME_DIR . "customPage.xml"); 
 ?>
+</body>
+</html>
+

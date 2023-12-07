@@ -60,13 +60,13 @@ function loadStore(container, store) {
         error: function () {
             console.log('AJAX request failed.');
         }
-    }).done(function (response) {
+    }).done(async function (response) {
         const json = JSON.parse(JSON.parse(response));
-        $(container).html(createStorePage(json));
+        $(container).html( await createStorePage(json));
     });
 }
 
-function createStorePage(json) {
+async function createStorePage(json) {
 
     $("body").css("background", "#fff");
     json = json[0];
@@ -74,10 +74,32 @@ function createStorePage(json) {
     var header = $("<div class='store-header'></div>");
     var headerTitle = $("<h2></h2>").text(json.title).addClass("title");
     var headerPublisher = $("<p></p>").text("Created by: " + json.username).addClass("publisher");
-    var icon = $("<img>").attr("src", json.icon).addClass("icon");
+    var icon = $("<img>").attr("src", json.icon).addClass("icon").attr("id", "icon");
     var headerImage = $("<div class='header-image'></div>").css("background-image", "url('" + json.image + "')");
     var installButton = $("<button></button>").html("Install <i class=\"fa-solid fa-download\"></i>").addClass("button");
 
+
+
+    var infoContainer = $("<div class='header-info'></div>");
+
+
+    if (json.icon.search(".svg") !== -1) icon.addClass("svg");
+
+    var color = "";
+
+    var color = await colorjs.average(json.icon, {sample: 20});
+
+    const factor = 0.3;
+
+
+    color[0] = Math.floor(color[0] * (1 - factor));
+    color[1] = Math.floor(color[1] * (1 - factor));
+    color[2] = Math.floor(color[2] * (1 - factor));
+
+    header.css("background", "rgba(" + color + ")");
+    
+    headerImage.css("box-shadow", "inset 0px 0px 70px 80px rgba(" + color + ", 1)");
+    
     if (json.installed) {
         installButton.html("Installed <i class=\"fa-solid fa-check\"></i>").attr("id", "green").attr("disabled", "disabled");
     } else {
@@ -87,11 +109,6 @@ function createStorePage(json) {
             installButton.attr("onclick", "installPlugin(this, '" + json.path + "')");
         }
     }
-
-    var infoContainer = $("<div class='header-info'></div>");
-
-
-    if (json.icon.search(".svg") !== -1) icon.addClass("svg");
 
     infoContainer.append(icon);
     infoContainer.append(headerTitle);
@@ -122,7 +139,6 @@ function createStorePage(json) {
     descriptionPackageInfo.append("<li>Version: " + json.version + "</li>");
     descriptionPackageInfo.append("<li>Minimum AWT Version: " + json.awt_version + "</li>");
 
-    console.log(json);
 
     description.append(descriptionTitle);
     description.append(descriptionContent);

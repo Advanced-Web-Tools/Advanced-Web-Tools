@@ -82,16 +82,14 @@ body {
     background: #fff;
 }
 
-.button,
-.button:disabled:hover {
+.button {
     background: var(--primary-color);
     padding: 7px 15px;
     color: #fff;
-    border: none;
-    border-radius: 5px;
     cursor: pointer;
     font-size: 13px;
     transition: 0.3s;
+    border-radius: 5px;
     border: 1px solid var(--primary-color);
     text-decoration: none;
     font-family: 'Poppins', sans-serif;
@@ -104,6 +102,8 @@ body {
 
 .button:disabled:hover {
     cursor: default;
+    background: var(--primary-color);
+    color: #fff;
 }
  
 .select {
