@@ -19,6 +19,9 @@ function paste() {
       $('.selected').append($clipBoard);
       saveToHistory();
       $clipBoard = $clipBoard.clone();
+      $(document).off('mouseenter', '.block');
+      insertBlock();
+      $("* .replacable").remove();
       return;
     }
     
@@ -33,8 +36,8 @@ function paste() {
     $blocks.each(function () {
       var $block = $(this);
       var blockOffset = $block.offset();
-      var blockCenterX = blockOffset.left + $block.width() / 2;
-      var blockCenterY = blockOffset.top + $block.height() / 2;
+      var blockCenterX = blockOffset.left;
+      var blockCenterY = blockOffset.top;
   
       var distance = Math.sqrt(
         (contextOffset.left  - blockCenterX) ** 2 + (contextOffset.top - blockCenterY) ** 2
@@ -52,9 +55,12 @@ function paste() {
         event.stopPropagation();
         BlockOptions(this);
       });
-      $clipBoard.insertAfter(nearestBlock);
+      nearestBlock.after($clipBoard);
       saveToHistory();
       $clipBoard = $clipBoard.clone();
+      $(document).off('mouseenter', '.block');
+      $("* .replacable").remove();
+      insertBlock();  
     }
   }
   

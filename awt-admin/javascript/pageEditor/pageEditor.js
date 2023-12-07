@@ -100,9 +100,6 @@ function getBlock(name, replacable = null) {
 
       hasTextChild($(".block")).attr("contenteditable", "true");
       
-      $(document).off('mouseenter', '.block');
-      insertBlock();
-
       $(".block").on("click", function (e) {
         BlockOptions($(this));
       }).children().on("click", function (e) {
