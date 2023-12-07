@@ -229,16 +229,27 @@ body {
 }
 
 .viewport-actions {
+    display: flex;
     justify-self: flex-end;
-    width: 20px;
     text-align: center;
+    align-items: center;
+    gap: 15px;
     font-size: 30px;
 }
 
+
 .viewport-actions i {
-    color: rgba(0, 0, 0, 0.5);
+    color: rgba(0, 0, 0, 0.3);
     transition: 0.3s;
     cursor: pointer;
+}
+
+.viewport-actions button i{
+    color: inherit;
+}
+
+.viewport-actions button:hover i{
+    color: inherit;
 }
 
 .viewport-actions i.active {
@@ -247,13 +258,8 @@ body {
 
 .selected.block.empty,
 .selected .block.empty
-
 {
     border: 1px solid var(--primary-color);
-    margin-bottom: auto !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    border-radius: 0 !important;
     background: url('../../awt-data/icons/plus-solid.svg') no-repeat center;
     background-size: fill;
     cursor: pointer;

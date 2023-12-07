@@ -103,6 +103,7 @@ function getBlock(name, replacable = null) {
       $(".block").on("click", function (e) {
         BlockOptions($(this));
       }).children().on("click", function (e) {
+        BlockOptions($(this));
         e.stopPropagation();
       });
 

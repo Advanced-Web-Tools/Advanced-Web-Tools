@@ -57,8 +57,8 @@ $theme->getActiveTheme();
     <button class="button" onclick="copy()">Copy <i class="fa-regular fa-copy"></i></button>
     <button class="button" onclick="paste()">Paste <i class="fa-regular fa-paste"></i></button>
     <button class="button" onclick="cut()">Cut <i class="fa-solid fa-scissors"></i></button>
-    <button class="button">Undo <i class="fa-solid fa-rotate-left"></i></button>
-    <button class="button">Redo <i class="fa-solid fa-rotate-right"></i></button>
+    <button class="button" onclick="undo()">Undo <i class="fa-solid fa-rotate-left"></i></button>
+    <button class="button" onclick="redo()">Redo <i class="fa-solid fa-rotate-right"></i></button>
 </div>
 
 <div class="floating-blocks hidden shadow">
@@ -81,6 +81,8 @@ $theme->getActiveTheme();
             <button type="button" onclick="savePage('<?php echo $_GET['pageName']; ?>');" class="button">Save</button>
         </div>
         <div class="viewport-actions">
+            <button class="button" onclick="undo()">Undo <i class="fa-solid fa-rotate-left"></i></button>
+            <button class="button" onclick="redo()">Redo <i class="fa-solid fa-rotate-right"></i></button>
             <i onclick="changeViewPort(this)" class="fa-solid fa-mobile-button"></i>
         </div>
     </div>
