@@ -1,6 +1,5 @@
 body {
     margin: 0;
-    overflow-x: hidden;
 }
 
 .main-section {
@@ -26,8 +25,6 @@ body {
     height: 100vh;
     margin: 0;
     padding: 0;
-    overflow-x: hidden;
-    overflow-y: hidden;
 }
 
 .stage {
@@ -44,46 +41,52 @@ body {
 
 .top-menu {
     background: #fff;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid lightgray;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px;
 }
 
+.top-menu i {
+    color: lightgray;
+}
+
 .block:hover {
+    transform: translateY(-2px);
     border: solid 2px grey;
     filter: brightness(1.1);
 }
 
 .preview {
+    max-height: 100%;
     width: 100%;
-}
-
-* {
-    scrollbar-width: none;
+    scrollbar-width: 2px;
     scrollbar-color: #0080c0 #ffffff;
 }
 
-*::-webkit-scrollbar {
-    width: 16px;
+.block-options {
+    scrollbar-width: none;
 }
 
-*::-webkit-scrollbar-track {
+.block-options::-webkit-scrollbar {
+    width: none;
+}
+
+.block-options::-webkit-scrollbar-track {
     background: #ffffff;
 }
 
-*::-webkit-scrollbar-thumb {
+.block-options::-webkit-scrollbar-thumb {
     background-color: #0080c0;
     border-radius: 10px;
-    border: 3px solid #ffffff;
 }
 
 .editor-tools {
     width: auto;
     padding: 10px;
     background: #fff;
-    border-left: 1px solid #000;
+    border-left: 1px solid lightgray;
     display: flex;
     justify-content: flex-end;
     flex-wrap: nowrap;
@@ -99,13 +102,18 @@ body {
     flex-wrap: nowrap;
     flex-direction: column;
     margin: 10px 0;
-    border-top: 3px solid #fff;
+    border-top: 2px solid lightgray;
     overflow-y: auto;
+}
+
+.block-options button {
+    margin: 10px 0;
 }
 
 .block-options input {
     border: none;
     background: #f2f2f2;
+    width: auto;
     margin: 3px 0;
     padding: 5px;
     border-radius: 5px;
@@ -115,6 +123,7 @@ body {
     background: none;
     -webkit-appearance: none;
     -moz-appearance: none;
+    appearance: none;
     cursor: pointer;
     width: 25px;
     height: 25px;
@@ -131,66 +140,21 @@ body {
 
 .block-options input[type=color]::-moz-color-swatch {
     border-radius: 5px;
-    border: none;
+    border: 1px solid #000;
     width: 25px;
     height: 25px;
 }
 
-.block-options button {
-    cursor: pointer;
-    margin: 5px 0;
+.block-options select {
+    font-family: 'Poppins', sans-serif;
+    background: var(--primary-color);
+    color: #fff;
+    height: fit-content;
     border: none;
     border-radius: 5px;
-    background: #4378D5;
-    color: #fff;
-    padding: 5px;
-}
-
-select::-ms-expand {
-    display: none;
-}
-
-.block-options select:after {
-    content: '<>';
-    font: 17px "Consolas", monospace;
-    color: #333;
-    -webkit-transform: rotate(90deg);
-    -moz-transform: rotate(90deg);
-    -ms-transform: rotate(90deg);
-    transform: rotate(90deg);
-    right: 11px;
-    /*Adjust for position however you want*/
-
-    top: 18px;
-    padding: 0 0 2px;
-    border-bottom: 1px solid #999;
-    /*left line */
-
-    position: absolute;
-    pointer-events: none;
-}
-
-.block-options select {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    /* Add some styling */
-
-    display: block;
-    width: 100%;
-    max-width: 320px;
-    height: 50px;
-    float: right;
-    margin: 5px 0px;
-    padding: 0px 24px;
-    font-size: 16px;
-    line-height: 1.75;
-    color: #333;
-    background-color: #ffffff;
-    background-image: none;
-    border: 1px solid #cccccc;
-    -ms-word-break: normal;
-    word-break: normal;
+    padding: 10px 20px 10px 5px;
+    cursor: pointer;
+    margin: 10px 0;
 }
 
 .dialog {
@@ -212,10 +176,6 @@ select::-ms-expand {
     font-size: 15px;
 }
 
-.block-options .alignment-buttons button:hover {
-    filter: brightness(1.1);
-}
-
 .block-options button:disabled {
     filter: brightness(1.3) contrast(0.3);
     cursor: default;
@@ -226,22 +186,13 @@ select::-ms-expand {
 }
 
 .preview {
-    overflow-y: auto;
+    overflow-y: scroll;
 }
-
-.preview .pageSection * {
-    overflow-x: hidden;
-}
-
-.preview .pageSection {
-    overflow: auto;
-}
-
 
 .selected,
 .selected:hover {
     border-style: solid solid solid inset;
-    border-width: 2px 2px 2px 5px;
+    /* border-width: 2px 2px 2px 5px; */
     border-color: #0080c0;
 }
 
@@ -267,8 +218,14 @@ select::-ms-expand {
     color: var(--primary-color);
 }
 
-.block-options #margin, .block-options #padding {
+.block-options #margin,
+.block-options #padding
+{
     width: 60px;
+}
+
+.block-options #border-radius {
+    width: 100px;
 }
 
 .viewport-actions {
@@ -288,9 +245,8 @@ select::-ms-expand {
     color: var(--primary-color);
 }
 
-.block.empty {
+.selected.block.empty {
     border: 1px solid var(--primary-color);
-    width: 95% !important;
     margin-bottom: auto !important;
     margin-left: auto !important;
     margin-right: auto !important;
@@ -298,20 +254,19 @@ select::-ms-expand {
     background: url('../../awt-data/icons/plus-solid.svg') no-repeat center;
     background-size: fill;
     cursor: pointer;
-    transition: 0.3s;
 }
 
 .block.empty.replacable {
-    overflow: hidden;
+    background: url('../../awt-data/icons/plus-solid.svg') no-repeat center;
+    background-size: fill;
+    cursor: pointer;
+    display: block;
     text-align: center;
+    margin: auto auto;
     border: none;
-    height: 50px;
-    width: auto !important;
-    transition: 0.5s ease-in-out;
+    height: 20px;
+    width: 90% !important;
     filter: brightness(0);
-    animation: createSelector ease-in;
-    animation-duration: 0.3s;
-    animation-iteration-count: 1;
 }
 
 .block.empty.replacable:before,
@@ -340,24 +295,39 @@ select::-ms-expand {
     margin-right: -50%;
 }
 
-.block.empty.selected {
-    scale: 1.05;
-}
-
 .block.ui-sortable-helper {
-    cursor: grabbing !important;
+    position: absolute !important;
 }
 
 .floating-blocks {
     position: absolute;
     float: left;
     z-index: 10;
-    top: 100px;
+    top: 150px;
     width: 300px;
     left: 50px;
     background: #fff;
     padding: 10px;
     border-radius: 10px;
+}
+
+.context-menu {
+    position: absolute;
+    background: #fff;
+    border-radius: 5px;
+    width: 180px;
+    z-index: 1000;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.context-menu .context-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 @keyframes createSelector {
@@ -366,12 +336,12 @@ select::-ms-expand {
     }
 
     50% {
-        height: 25px;
+        height: 10px;
         width: 50%;
     }
 
     100% {
-        height: 50px;
+        height: 20px;
         width: 100%;
     }
 }

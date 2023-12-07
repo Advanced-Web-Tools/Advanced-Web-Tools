@@ -4,9 +4,12 @@ function setDefaultOptions($block, defaultStyle) {
     var defaultBackgroundColor = defaultStyle ? defaultStyle.match(/background:\s*([^;]+);/) : null;
     var backgroundImage = defaultStyle ? defaultStyle.match(/background-image:\s*([^;]+);/) : null;
     var backgroundPosition = defaultStyle ? defaultStyle.match(/background-position:\s*([^;]+);/) : null;
-    var backgroundRepeat = defaultStyle ? defaultStyle.match(/background-repeat:\s*([^;]+);/) : null;
-    var borderRadius = defaultStyle ? defaultStyle.match(/border-radius:\s*([^;]+);/) : null;
-    defaultBackgroundColor = defaultBackgroundColor ? defaultBackgroundColor[1] : null;
+
+
+    var backgroundRepeat = $block.css("background-repeat");
+    
+    
+    var defaultBackgroundColor = $block.css("background-color");
     defaultBackgroundColor = rgbToHex(defaultBackgroundColor);
     
 
@@ -22,8 +25,13 @@ function setDefaultOptions($block, defaultStyle) {
     var defaultPaddingBottom = $block.css("padding-bottom");
     var defaultPaddingLeft = $block.css("padding-left");
 
+    var borderRadiusTopL = $block.css("border-top-left-radius");
+    var borderRadiusTopR = $block.css("border-top-right-radius");
+    var borderRadiusBotR = $block.css("border-bottom-right-radius");
+    var borderRadiusBotL = $block.css("border-bottom-left-radius");
 
-    var options = '<p>Block options:</p>';
+
+    var options = '<p>Block options</p>';
 
     options += '<label for="margin">Margin:</label>';
     options += '<div class="input-group">';
@@ -41,11 +49,20 @@ function setDefaultOptions($block, defaultStyle) {
     options += '<input type="text" id="padding" class="padding-input-bottom" value="' + (defaultPaddingBottom) + '" placeholder="Bottom">';
     options += '<input type="text" id="padding" class="padding-input-left" value="' + (defaultPaddingLeft) + '" placeholder="Left">';
     options += '</div>';
+    options += '<label for="border-radius">Border radius:</label>';
+    options += '<div class="input-group">';
+    options += '<input type="text" class="border-radius-topL" id="border-radius" value="' + (borderRadiusTopL) + '" placeholder="Top Left">';
+    options += '<input type="text" class="border-radius-topR" id="border-radius" value="' + (borderRadiusTopR) + '" placeholder="Top Right">';
+    options += '<i onclick="linkInputs(this);" class="fa-solid fa-link"></i>';
+    options += '<input type="text" class="border-radius-botR" id="border-radius" value="' + (borderRadiusBotR) + '" placeholder="Bottom Left">';
+    options += '<input type="text" class="border-radius-botL" id="border-radius" value="' + (borderRadiusBotL) + '" placeholder="Bottom Right">';
+    options += '</div>';
+    options += "<p>Height & Width</p>";
     options += '<input type="text" class="width-input" value="' + (defaultWidth ? defaultWidth[1] : '') + '" placeholder="Width">';
     options += '<input type="text" class="height-input" value="' + (defaultHeight ? defaultHeight[1] : '') + '" placeholder="Height">';
-    options += '<input type="text" class="border-radius-input" value="' + (borderRadius ? borderRadius[1] : '') + '" placeholder="Border radius">';
+    options += "<p>Background settings</p>";
     options += '<label for="background-color">Background color:</label>';
-    options += '<input type="color" class="background-color-input" id="background-color" value="' + (defaultBackgroundColor ? defaultBackgroundColor : '') + '" placeholder="Background Color">';
+    options += '<input type="color" class="background-color-input" id="background-color" value="' + defaultBackgroundColor + '" placeholder="Background Color">';
     options += '<label for="background-image">Background image:</label>';
     options += '<select class="background-image" id="background-image">';
     options += '<option value="none">Select image</option>';
@@ -59,7 +76,7 @@ function setDefaultOptions($block, defaultStyle) {
     options += '<option value="right">Right</option>';
     options += '</select>';
     options += '<label for="background-repeat">Background repeat:</label>';
-    options += '<select class="background-repeat" id="background-repeat" value="' + (backgroundRepeat ? backgroundRepeat[1] : 'Repeat') + '">';
+    options += '<select class="background-repeat" id="background-repeat" value="' + backgroundRepeat + '">';
     options += '<option value="repeat">Repeat</option>';
     options += '<option value="no-repeat">No-repeat</option>';
     options += '</select>';
@@ -69,8 +86,8 @@ function setDefaultOptions($block, defaultStyle) {
     options += '<option value="contain">Contain</option>';
     options += '<option value="fill">Fill</option>';
     options += '</select>';
-    options += '<button class="parent-selection">Select Parent</button>';
-    options += '<button class="delete-block">Delete Block</button>';
+    options += '<button class="parent-selection button">Select Parent</button>';
+    options += '<button class="delete-block button">Delete Block</button>';
     $(".block-options").html(options);
 
     options = "";
@@ -121,9 +138,20 @@ function setDefaultOptions($block, defaultStyle) {
     });
 
 
-    $(".border-radius-input").on("input", function () {
-        $block.css("border-radius", $(this).val());
+    $(".border-radius-topL").on("input", function () {
+        $block.css("border-top-left-radius", $(this).val());
     });
+    $(".border-radius-topR").on("input", function () {
+        $block.css("border-top-right-radius", $(this).val());
+    });
+
+    $(".border-radius-botR").on("input", function () {
+        $block.css("border-bottom-right-radius", $(this).val());
+    });
+    $(".border-radius-botL").on("input", function () {
+        $block.css("border-bottom-left-radius", $(this).val());
+    });
+
 
     $(".parent-selection").on("click", function () {
         BlockOptions($block.parent());

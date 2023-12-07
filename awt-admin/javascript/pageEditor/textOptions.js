@@ -7,13 +7,13 @@ function setTextOptions($block, defaultStyle) {
     defaultTextColor = defaultTextColor ? defaultTextColor[1] : null;
     defaultTextColor = rgbToHex(defaultTextColor);
 
-    var options = '<p>Text options:</p>';
+    var options = '<p>Text options</p>';
     options += '<input type="number" class="font-size-input" value="' + (defaultFontSize ? defaultFontSize : '') + '" placeholder="Font Size">';
     options += '<label for="text-color">Text color:</label>';
     options += '<input type="color" class="text-color-input" id="text-color" value="' + (defaultTextColor ? defaultTextColor : '') + '" placeholder="Text Color">';
-    options += '<div class="alignment-buttons"><button class="align-left"><i class="fa-solid fa-align-left"></i></button>';
-    options += '<button class="align-center"><i class="fa-solid fa-align-center"></i></button>';
-    options += '<button class="align-right"><i class="fa-solid fa-align-right"></i></button></div>';
+    options += '<div class="alignment-buttons"><button class="align-left button"><i class="fa-solid fa-align-left"></i></button>';
+    options += '<button class="align-center button"><i class="fa-solid fa-align-center"></i></button>';
+    options += '<button class="align-right button"><i class="fa-solid fa-align-right"></i></button></div>';
 
     $(".block-options").append(options);
 

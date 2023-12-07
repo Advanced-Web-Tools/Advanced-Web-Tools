@@ -7,8 +7,6 @@ var movingBlocks = false;
 
 var selectedElement = false;
 
-var blockPositions = []; // Array to store the positions of blocks
-
 var ctrlPressed = false;
 
 var ignoreSave = true;
@@ -22,8 +20,11 @@ var floatingBlockSelectorActive = false;
 
 var ignorePreviewClick = false;
 
+var $clipBoard = null;
 
-function fetchBlocks(element, replacable = null) {
+var currentMousePos = { x: -1, y: -1 };
+
+function fetchBlocks(element, replacable = null, callback = null) {
 
   $(element).find('.category-container').remove();
 
@@ -40,55 +41,40 @@ function fetchBlocks(element, replacable = null) {
         if (parsedResponse && typeof parsedResponse === 'object') {
           for (var category in parsedResponse) {
             if (Array.isArray(parsedResponse[category])) {
-              // Create a label for the category
+
               var categoryLabel = $('<h4>').text(category);
               categoryLabel.addClass(category.replace(/ /g, '-'));
 
-              // Create a container div for the category and its child elements
               var categoryContainer = $('<div>').addClass('category-container');
-              // Append the category label to the container
               categoryContainer.append(categoryLabel);
               categoryLabel.append('<i class="fa-solid fa-layer-group" style="margin-left: 20px;"></i>');
 
-
-              // Iterate through the blocks in the category
               parsedResponse[category].forEach(function (block) {
-                // Create a new child element
                 var childElement = $('<div>').addClass('block-item hidden ' + category.replace(/ /g, '-'));
 
-                // Create a <p> tag for each item in the parsed response array
                 var itemElement = $('<p>').text(block.name);
 
-                // Append the item element to the child element
                 childElement.append(itemElement);
 
                 // Attach onclick event to the child element
                 childElement.click(function () {
                   getBlock(block.name, replacable);
+                  if(callback !== null) callback();
                 });
 
-                // Append the child element to the category container
                 categoryContainer.append(childElement);
               });
 
-              // Append the category container to the specified parent element
               $(element).append(categoryContainer);
 
               // Add a click event to toggle the visibility of child elements
               categoryLabel.click(function (catClass) {
                 return function () {
-                  $('.category-container .block-item.' + catClass).toggleClass('hidden');
+                  $(element + ' .category-container .block-item.' + catClass).toggleClass('hidden');
                 }
               }(category.replace(" ", "-")));
             }
           }
-
-          // Make the blocks stackable inside the preview element
-          $('.pageSection').children().each(function () {
-            if ($(this).is('div') && $(this).hasClass('block')) {
-              $(this).addClass('stackable');
-            }
-          });
         } else {
           console.log('Parsed response is not in the expected format.');
         }
@@ -102,7 +88,6 @@ function fetchBlocks(element, replacable = null) {
     }
   });
 }
-
 
 
 function getBlock(name, replacable = null) {
@@ -120,14 +105,12 @@ function getBlock(name, replacable = null) {
         $selection.append(response);
       }
 
-
       hasTextChild($(".block")).attr("contenteditable", "true");
       
-      // Attach BlockOptions function to click event of block and its direct children
-      $(".block").on("click", function () {
+      $(".block").on("click", function (e) {
         BlockOptions($(this));
       }).children().on("click", function (e) {
-        e.stopPropagation(); // Prevent event bubbling to the parent block
+        e.stopPropagation();
       });
     },
     error: function (xhr, status, error) {
@@ -142,19 +125,16 @@ function getBlock(name, replacable = null) {
 function rgbToHex(rgbColor) {
 
   if (rgbColor === null) return;
-  // Extract the RGB components from the color string
   var rgbValues = rgbColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
   if (!rgbValues) {
     return null; // Invalid RGB color string
   }
 
-  // Convert each RGB component to hexadecimal
   var hexValues = rgbValues.slice(1).map(function (value) {
     var hex = parseInt(value, 10).toString(16);
     return hex.length === 1 ? "0" + hex : hex;
   });
 
-  // Combine the hexadecimal values
   var hexColor = "#" + hexValues.join("");
 
   return hexColor;
@@ -205,24 +185,114 @@ function BlockOptions(element) {
   });
 }
 
-function updateBlockPositions() {
-  blockPositions = [];
-  $(".pageSection .block").each(function () {
-    blockPositions.push($(this).attr("id"));
-  });
+
+function quickOptions() {
+
 }
+
+function findNearestElement(x, y) {
+  let elements = $('.element');
+  let nearestElement = null;
+  let minDistance = Number.MAX_VALUE;
+
+  elements.each(function () {
+    let element = $(this);
+    let offset = element.offset();
+    let centerX = offset.left + element.width() / 2;
+    let centerY = offset.top + element.height() / 2;
+
+    let distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
+
+    if (distance < minDistance) {
+      minDistance = distance;
+      nearestElement = element;
+    }
+  });
+
+  return nearestElement;
+}
+
+function paste() {
+
+  if($('.selected') && !$('.selected').hasClass('.pageSection')) {
+    $clipBoard.removeClass('selected');
+    $clipBoard.click(function (event) {
+      event.stopPropagation();
+      BlockOptions(this);
+    });
+    $('.selected').append($clipBoard);
+    $clipBoard = $clipBoard.clone();
+    return;
+  }
+  
+
+  var $contextMenu = $('.context-menu');
+  var contextOffset = $contextMenu.offset();
+  var nearestBlock = null;
+  var minDistance = Number.MAX_VALUE;
+
+  var $blocks = $('.block').not($contextMenu);
+
+  $blocks.each(function () {
+    var $block = $(this);
+    var blockOffset = $block.offset();
+    var blockCenterX = blockOffset.left + $block.width() / 2;
+    var blockCenterY = blockOffset.top + $block.height() / 2;
+
+    var distance = Math.sqrt(
+      (contextOffset.left  - blockCenterX) ** 2 + (contextOffset.top - blockCenterY) ** 2
+    );
+
+    if (distance < minDistance) {
+      minDistance = distance;
+      nearestBlock = $block;
+    }
+  });
+
+  if (nearestBlock !== null) {
+    $clipBoard.removeClass('selected');
+    $clipBoard.click(function (event) {
+      event.stopPropagation();
+      BlockOptions(this);
+    });
+    $clipBoard.insertAfter(nearestBlock);
+    $clipBoard = $clipBoard.clone();
+  }
+}
+
+
+function cut() {
+  $clipBoard = $(".block.selected").clone();
+  $(".block.selected").remove();
+}
+
+function copy() {
+  $clipBoard = $(".block.selected").clone();
+  $('*').removeClass("selected");
+}
+
+
+function contextMenu() {
+  $(".context-menu").toggleClass("hidden");
+  $(".context-menu").css('top', currentMousePos.y);
+  $(".context-menu").css('left', currentMousePos.x);
+  $(".context-menu *").bind("click.context", function () { 
+    $(".context-menu").toggleClass("hidden");
+    $(".context-menu *").unbind("click.context");
+  });
+
+
+}
+
 
 function publishContent(name) {
   var $pageSection = $('.pageSection');
-  
-  // Clone the page section to avoid modifying the actual content
+
   var $clonedPageSection = $pageSection.clone();
 
-  // Remove the specified elements from the cloned page section
   $clonedPageSection.find(".block.empty.replacable").remove();
   $pageSection.find(".block.empty.replacable").remove();
 
-  // Get the HTML content of the modified page section
   var htmlContent = $clonedPageSection.last().prop('outerHTML');
 
   $.ajax({
@@ -233,9 +303,6 @@ function publishContent(name) {
       name: name,
       pageStatus: "live"
     },
-    success: function (response) {
-      // Handle the success response if needed
-    },
     error: function (xhr, status, error) {
       console.log(error);
     }
@@ -243,16 +310,13 @@ function publishContent(name) {
 }
 
 
-function publishContentPreview(name) {
+function savePage(name) {
   var $pageSection = $('.pageSection');
   
-  // Clone the page section to avoid modifying the actual content
   var $clonedPageSection = $pageSection.clone();
 
-  // Remove the specified elements from the cloned page section
   $clonedPageSection.find(".block.empty.replacable").remove();
 
-  // Get the HTML content of the modified page section
   var htmlContent = $clonedPageSection.last().prop('outerHTML');
 
   $.ajax({
@@ -308,74 +372,69 @@ function detectEmpty() {
 }
 
 
-function trackMouseBetweenBlocks() {
-  var $blocks = $('.pageSection .block');
+function trackMouse() {
+  var $blocks = $(".pageSection .block");
   var $newBlock = null;
   var $currentElement = null;
+  var timeoutId = null;
 
-  $blocks.on('mouseenter', function() {
+  $(".pageSection").on("DOMSubtreeModified", function () {
+    $blocks = $(".pageSection .block");
+  });
+
+  $blocks.on('mouseenter', function () {
     $currentElement = $(this);
-    if($currentElement.attr("id") === "grid-block") return;
 
-    if($currentElement.parent().attr("id") === "grid-block") return;
+    if (floatingBlockSelectorActive) return;
 
-    if(floatingBlockSelectorActive) return;
-    
     ignoreSave = true;
-    if(movingBlocks) {
-      $newBlock.remove();
+    if (movingBlocks) {
+      removeNewBlock();
       return;
     }
+    if ($currentElement.next('.block').hasClass("replacable")) return;
+
+    // Clear previous timeout if any
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+
     // Check if there is a previous or next sibling
-    if ($currentElement.prev('.block').length && $currentElement.next('.block').length) {
-      
-      // Remove the old new block if it exists
-      if ($newBlock) {
-        $newBlock.remove();
-      }
+    if ($currentElement.next('.block').length) {
+      timeoutId = setTimeout(function () {
+        removeNewBlock();
 
+        $newBlock = $('<div class="block replacable"></div>');
+        $currentElement.after($newBlock);
 
-      // Create a new element
-      $newBlock = $('<div class="block replacable"></div>');
+        $newBlock.on("click", function () {
+          floatingBlockSelectorActive = true;
+          floatingBlocks($newBlock);
+        });
 
-      // Insert the new element after the current element
-      $currentElement.after($newBlock);
-
-      $newBlock.on("click", function(){
-        floatingBlockSelectorActive = true;
-        floatingBlocks($newBlock);
-      });
-
+        $currentElement.on("mouseenter", function () {
+          if (floatingBlockSelectorActive) return;
+          removeNewBlock();
+        });
+      }, 700);
     }
   });
-
-  $blocks.on('mouseleave', function() {
-    if ($currentElement && $currentElement.next('.block').length && $currentElement.next('.block').hasClass('new-block')) {
-      $currentElement = null;
-    }
-
-    // Remove the new block if the mouse exits the current element
-  });
-
-  $('.pageSection').on('mouseenter', '.new-block', function() {
-    // Prevent removing the new block when entering between two new blocks
-    if ($currentElement) {
-      $currentElement = null;
-    }
-  });
-
-  $('.preview').on('mouseleave', '.new-block', function() {
-    // Remove the new block when leaving the space between two new blocks
-    if ($newBlock) {
-      $newBlock.remove();
-    }
-  })
 
   $(".preview").on("DOMSubtreeModified", function (event) {
-    if(movingBlocks) $newBlock.remove();
+    if (movingBlocks && $newBlock !== null) {
+      removeNewBlock();
+    }
   });
 
+  function removeNewBlock() {
+    if ($newBlock) {
+      $newBlock.remove();
+      $newBlock = null;
+      clearTimeout(timeoutId);
+    }
+  }
 }
+
 
 
 function updateFromHistory() {
@@ -393,19 +452,16 @@ function saveToHistory() {
 function createEditableLayout() {
   $selection = $('.pageSection');
 
-  $(".pageSection").sortable({
+  $(".preview").sortable({
     items: ".block",
     scroll: true,
-    axis: 'y',
-    containment: "parent",
+    scrollSensitivity: 50,
+    cursor: "move",
+    helper: "clone",
     tolerance: "pointer",
     cancel: 'input,textarea,button,select,option,[contenteditable]',
     start: function(event, ui) {
       movingBlocks = true;
-    },
-    update: function (event, ui) {
-      // Update the block positions array
-      updateBlockPositions();
     },
     stop: function(event, ui) {
       movingBlocks = false;
@@ -415,8 +471,9 @@ function createEditableLayout() {
   $('.pageSection .block').each(function () {
     var $block = $(this);
 
-    $block.on('click', function () {
+    $block.on('click', function (e) {
       BlockOptions($block);
+      e.stopPropagation();
     });
 
     hasTextChild($block).attr('contenteditable', 'true');
@@ -429,11 +486,14 @@ function createEditableLayout() {
 
   $(".preview").click(function () {
     if (ignorePreviewClick) {
-      ignorePreviewClick = false; // Reset the flag
-      return; // Ignore the click event
+      ignorePreviewClick = false;
+      return;
     }
+
     $selection = $('.pageSection');
+
     $("*").removeClass('selected');
+    
     $(".pageSection").addClass('selected');
     if($selection.find(".selected").length === 0) selectedElement = true;
   });
@@ -444,23 +504,22 @@ function createEditableLayout() {
       $(event.target).closest(".pageSection").length > 0 &&
       !$(event.target).is(".preview")
     ) {
-      ignorePreviewClick = true; // Set the flag to ignore the next preview click event
-      return; // Ignore the click event for the parent .pageSection element
+      ignorePreviewClick = true;
+      return;
     }
-
-    // Process the click event on .pageSection here
     BlockOptions(this);
-    fetchBlocks('.editor-tools');
-
-    
   });
 }
 
 
 function floatingBlocks(caller) {
   $('.floating-blocks').removeClass('hidden');
-  fetchBlocks('.floating-blocks .block-container', caller);
   $('.floating-blocks').draggable();
+  fetchBlocks('.floating-blocks .block-container', caller, function() {
+    $(".floating-blocks").addClass('hidden');
+    $("* .block").off("mouseenter");
+    trackMouse();
+  });
 }
 
 $(document).ready(function () {
@@ -473,7 +532,6 @@ $(document).ready(function () {
     } else {
       floatingBlockSelectorActive = true;
     }
-    console.log("change");
   });
 
   $(".preview").on("DOMSubtreeModified", function (event) {
@@ -492,16 +550,21 @@ $(document).ready(function () {
     if(event.ctrlKey) ctrlPressed = false;
   });
 
+  $(document).on('contextmenu', function(event) {
+    event.preventDefault();
+    contextMenu();
+  }); 
+
+  $(document).mousemove(function(event) {
+    currentMousePos.x = event.pageX;
+    currentMousePos.y = event.pageY;
+});
+
   saveToHistory();
 
   fetchBlocks('.editor-tools');
-  trackMouseBetweenBlocks();
+  trackMouse();
 
-  $(".preview").on("DOMSubtreeModified", function (event) {
-  //   if(!updatingFromHistory && !ignoreSave) saveToHistory();
-  //   updatingFromHistory = false;
-  //   ignoreSave = false;
-  });
 });
 
 

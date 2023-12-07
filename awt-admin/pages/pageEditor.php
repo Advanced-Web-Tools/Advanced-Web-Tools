@@ -29,10 +29,35 @@ $theme->getActiveTheme();
 </script>
 <script src="./javascript/pageEditor/gridOptions.js">
 </script>
+<script src="../awt-src/vendor/jQuery/jquery.nearest.min.js"></script>
 
 <link rel="stylesheet" href="./css/pageEditor.css">
 
-<div class="floating-blocks hidden">
+<div class="context-menu shadow hidden">
+    <p>Quick options</p>
+    <div class="context-group">
+        <button class="button" onclick="savePage('<?php echo $_GET['pageName']; ?>');"><i
+                class="fa-regular fa-floppy-disk"></i></button>
+        <button class="button" onclick="publishContent('<?php echo $_GET['pageName']; ?>');"><i
+                class="fa-solid fa-upload"></i></button>
+        <button class="button" onclick="$('.selected').remove()"><i class="fa-solid fa-trash"></i></button>
+        <button class="button" onclick="BlockOptions($('.selected').prev())"><i
+                class="fa-solid fa-left-long"></i></button>
+        <button class="button" onclick="BlockOptions($('.selected').parent())"><i
+                class="fa-solid fa-up-long"></i></button>
+        <button class="button" onclick="BlockOptions($('.selected').children().first())"><i
+                class="fa-solid fa-down-long"></i></button>
+        <button class="button" onclick="BlockOptions($('.selected').next())"><i
+                class="fa-solid fa-right-long"></i></button>
+    </div>
+    <button class="button" onclick="copy()">Copy <i class="fa-regular fa-copy"></i></button>
+    <button class="button" onclick="paste()">Paste <i class="fa-regular fa-paste"></i></button>
+    <button class="button" onclick="cut()">Cut <i class="fa-solid fa-scissors"></i></button>
+    <button class="button">Undo <i class="fa-solid fa-rotate-left"></i></button>
+    <button class="button">Redo <i class="fa-solid fa-rotate-right"></i></button>
+</div>
+
+<div class="floating-blocks hidden shadow">
     <div class="header">
         <p onclick="$(this).parent().parent().addClass('hidden')"><i class="fa-regular fa-circle-xmark"></i></p>
     </div>
@@ -49,8 +74,7 @@ $theme->getActiveTheme();
         <div class="action-buttons">
             <button type="button" onclick="publishContent('<?php echo $_GET['pageName']; ?>');"
                 class="button">Publish</button>
-            <button type="button" onclick="publishContentPreview('<?php echo $_GET['pageName']; ?>');"
-                class="button">Preview</button>
+            <button type="button" onclick="savePage('<?php echo $_GET['pageName']; ?>');" class="button">Save</button>
         </div>
         <div class="viewport-actions">
             <i onclick="changeViewPort(this)" class="fa-solid fa-mobile-button"></i>
@@ -68,7 +92,6 @@ $theme->getActiveTheme();
         </div>
     </div>
 </section>
-
 <script>
     $(document).ready(function () {
         $('a').on('click', function (e) {
