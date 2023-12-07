@@ -245,7 +245,10 @@ body {
     color: var(--primary-color);
 }
 
-.selected.block.empty {
+.selected.block.empty,
+.selected .block.empty
+
+{
     border: 1px solid var(--primary-color);
     margin-bottom: auto !important;
     margin-left: auto !important;
