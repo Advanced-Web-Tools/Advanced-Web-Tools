@@ -330,6 +330,7 @@ body {
 
 .block.ui-sortable-helper {
     position: absolute !important;
+    margin: 0 !important;
 }
 
 .floating-blocks {
@@ -366,6 +367,7 @@ body {
 .context-menu .context-group {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
 }
 

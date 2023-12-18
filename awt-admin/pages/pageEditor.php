@@ -46,14 +46,6 @@ $theme->getActiveTheme();
         <button class="button" onclick="publishContent('<?php echo $_GET['pageName']; ?>');"><i
                 class="fa-solid fa-upload"></i></button>
         <button class="button" onclick="$('.selected').remove()"><i class="fa-solid fa-trash"></i></button>
-        <button class="button" onclick="BlockOptions($('.selected').prev())"><i
-                class="fa-solid fa-left-long"></i></button>
-        <button class="button" onclick="BlockOptions($('.selected').parent())"><i
-                class="fa-solid fa-up-long"></i></button>
-        <button class="button" onclick="BlockOptions($('.selected').children().first())"><i
-                class="fa-solid fa-down-long"></i></button>
-        <button class="button" onclick="BlockOptions($('.selected').next())"><i
-                class="fa-solid fa-right-long"></i></button>
     </div>
     <button class="button" onclick="copy()">Copy <i class="fa-regular fa-copy"></i></button>
     <button class="button" onclick="paste()">Paste <i class="fa-regular fa-paste"></i></button>

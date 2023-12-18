@@ -325,6 +325,7 @@ function createEditableLayout() {
     },
     stop: function (event, ui) {
       movingBlocks = false;
+      saveToHistory();
     }
   });
 
