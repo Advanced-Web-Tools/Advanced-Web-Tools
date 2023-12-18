@@ -85,12 +85,9 @@ function isEditing($block) {
     var isAllowedContent = focusedElement.is(allowedTags.join('[contenteditable=true],') + '[contenteditable=true]');
 
     if (isAllowedContent) {
-
-        var topOfElement = focusedElement.offset().top - focusedElement.outerHeight();
-
         focusedElement.off('focus.textEditor');
         focusedElement.off('blur');
-        focusedElement.on('focus.textEditor', enableTextEditor(topOfElement, currentMousePos.x, focusedElement));
+        focusedElement.on('focus.textEditor', enableTextEditor(focusedElement));
         focusedElement.on('blur', function () { disableTextEditor() });
     }
 
@@ -110,24 +107,22 @@ function disableTextEditor() {
 }
 
 
-function enableTextEditor(positionY, positionX, element) {
+function enableTextEditor(element) {
 
     let $textEditor = $('.textEditor');
 
     clearTimeout(timeout);
-
-    $(".preview").off("scroll");
 
     if ($textEditor.hasClass('hidden')) {
         $textEditor.removeClass('hidden');
     }
 
     let offsetTop = element.offset().top - $textEditor.outerHeight() * 2;
-    if(offsetTop < $(".preview").offset().top) offsetTop = element.offset().top + $textEditor.outerHeight() / 3;
+    if(offsetTop < $(".preview").offset().top) offsetTop = element.offset().top + $textEditor.outerHeight() / element.offset().top;
 
     let offsetLeft = element.offset().left + (element.outerWidth() - $textEditor.outerWidth()) / 2;
 
-    if(offsetLeft < $(".preview").offset().left) offsetLeft = element.offset().left - (element.outerWidth() - $textEditor.outerWidth()) / 5;
+    if(offsetLeft < $(".preview").offset().left) offsetLeft = element.offset().left - (element.outerWidth() + $textEditor.outerWidth()) / $textEditor.outerWidth();
 
 
     $textEditor.css({
