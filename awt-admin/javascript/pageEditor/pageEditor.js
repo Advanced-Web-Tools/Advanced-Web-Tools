@@ -397,6 +397,16 @@ $(document).ready(function () {
   initShortcuts();
 
   fetchBlocks('.editor-tools');
+
+  var find = $('*').filter(function () { 
+    return $(this).css('position') == 'fixed';
+  });
+
+  find.each(function(){
+    $(this).css("width", "87.12%");
+    $(this).css("top", "50px");
+  })
+
 });
 
 

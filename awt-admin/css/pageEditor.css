@@ -6,9 +6,8 @@ body {
     grid-template-columns: auto auto !important;
 }
 
-.preview * {
-    position: relative !important;
-}
+
+
 
 .page {
     padding: 0;
@@ -55,14 +54,20 @@ body {
 .block:hover {
     transform: translateY(-2px);
     outline: solid 2px grey;
-    filter: brightness(1.1);
+    filter: brightness(1.05);
 }
 
-.preview {
-    max-height: 100%;
+.stage {
+    position: relative;
+    z-index: 5;
+    height: 100vh;
     width: 100%;
     scrollbar-width: 2px;
     scrollbar-color: #0080c0 #ffffff;
+}
+
+.preview * {
+    position: relative; 
 }
 
 .block-options {
@@ -378,6 +383,9 @@ body {
 
 .textEditor .header p{
     margin: 0;
+    width: 100%;
+    text-align: left !important;
+    font-size: 17px !important;
 }
 
 .textEditor .text-options {

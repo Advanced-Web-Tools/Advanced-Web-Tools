@@ -70,17 +70,6 @@ $theme->getActiveTheme();
 
     </div>
 </div>
-<div class="textEditor hidden shadow">
-    <div class="header">
-        <p onclick="$(this).parent().parent().addClass('hidden')"><i class="fa-regular fa-circle-xmark"></i></p>
-    </div>
-    <div class="text-options">
-        <button type="button" class="button" id="addHyperLink"><i class="fa-solid fa-anchor"></i></button>
-        <button type="button" class="button" id="turnItalic"><i class="fa-solid fa-italic"></i></button>
-        <button type="button" class="button" id="turnBold"><i class="fa-solid fa-bold"></i></button>
-        <button type="button" class="button" id="breakLine"><i class="fa-solid fa-diagram-successor"></i></button>
-    </div>
-</div>
 <div class="dialog shadow">
     <div class="header">
         <p onclick="$(this).parent().parent().toggleClass('active')"><i class="fa-regular fa-circle-xmark"></i></p>
@@ -105,6 +94,19 @@ $theme->getActiveTheme();
     </div>
     <div class="stage">
         <div class="preview">
+            <div class="textEditor hidden shadow">
+                <div class="header">
+                    <p onclick="$(this).parent().parent().addClass('hidden')"><i class="fa-regular fa-circle-xmark"></i>
+                    </p>
+                </div>
+                <div class="text-options">
+                    <button type="button" class="button" id="addHyperLink"><i class="fa-solid fa-anchor"></i></button>
+                    <button type="button" class="button" id="turnItalic"><i class="fa-solid fa-italic"></i></button>
+                    <button type="button" class="button" id="turnBold"><i class="fa-solid fa-bold"></i></button>
+                    <button type="button" class="button" id="breakLine"><i
+                            class="fa-solid fa-diagram-successor"></i></button>
+                </div>
+            </div>
             <?php
             $theme->loadThemePage("customPage.page");
             ?>

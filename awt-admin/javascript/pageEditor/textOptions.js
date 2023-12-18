@@ -104,6 +104,7 @@ function disableTextEditor() {
     timeout = setTimeout(function () {
         if (!$textEditor.hasClass('hidden')) {
             $textEditor.addClass('hidden');
+            $(".preview").css('top', 0);
         }
     }, 1);
 }
@@ -115,18 +116,30 @@ function enableTextEditor(positionY, positionX, element) {
 
     clearTimeout(timeout);
 
+    $(".preview").off("scroll");
+
     if ($textEditor.hasClass('hidden')) {
         $textEditor.removeClass('hidden');
     }
 
-    $textEditor.css('top', positionY - $textEditor.outerHeight());
-    $textEditor.css('left', positionX - $textEditor.outerWidth() / 2);
+    let offsetTop = element.offset().top - $textEditor.outerHeight() * 2;
+    if(offsetTop < $(".preview").offset().top) offsetTop = element.offset().top + $textEditor.outerHeight() / 3;
+
+    let offsetLeft = element.offset().left + (element.outerWidth() - $textEditor.outerWidth()) / 2;
+
+    if(offsetLeft < $(".preview").offset().left) offsetLeft = element.offset().left - (element.outerWidth() - $textEditor.outerWidth()) / 5;
+
+
+    $textEditor.css({
+        'top': offsetTop,
+        'left': offsetLeft
+    });
+    
 
     textEditor(element)
 }
 
 function textEditor(element) {
-    var selectedText = window.getSelection();
 
     const $italic = $(".textEditor #turnItalic");
     const $bold = $(".textEditor #turnBold");
