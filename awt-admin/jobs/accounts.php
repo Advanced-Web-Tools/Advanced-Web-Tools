@@ -8,6 +8,7 @@ include_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-pluginLoader.php';
 include_once JOBS . 'awt-domainBuilder.php';
 
 use admin\{authentication, profiler, admin};
+use mail\mail;
 
 $check = new authentication;
 $profiler = new profiler;
@@ -37,3 +38,8 @@ if (isset($_POST['create_account'])) {
 if(isset($_POST['delete_account'])) {
     echo json_encode($admin->deleteAccount($_POST['delete_account']));
 }
+
+if(isset($_POST['send_email'])) {
+    $mail = new mail($profiler->name, $_POST["receiver"], $_POST["subject"], $_POST["content"]);
+    echo json_encode($mail->sendMessage($profiler->firstname . " " . $profiler->lastname));
+} 

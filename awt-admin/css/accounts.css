@@ -6,15 +6,36 @@
     gap: 30px;
 }
 
-.info {
+.info,
+.dialog
+{
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    /* test */
     top: 60;
     padding: 10px;
     background: #fff;
     border-radius: 10px;
+}
+
+.info {
+    z-index: 15;
+}
+
+.dialog .header {
+    color: red;
+    margin: 10px 0;
+}
+
+.dialog .content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.dialog .content textarea {
+    resize: vertical;
 }
 
 .wrapper {
@@ -23,6 +44,10 @@
 
 .account-list {
     text-align: left;
+}
+
+.account-list .account button {
+    margin: 0 10px 0 0;
 }
 
 .account-list .account {

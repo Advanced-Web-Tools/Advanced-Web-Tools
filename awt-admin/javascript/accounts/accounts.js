@@ -14,11 +14,11 @@ function fetchAccounts(container) {
 
         var html = "";
         var response = JSON.parse(data);
-        
         $.each(response, function (index, value) {
             html += "<div class='account shadow'><span><h4>" + value.firstname + " " + value.lastname + "</h4>";
             html += "<p>@" + value.username + "</p>";
             var params = value.id+",'"+container+"'";
+            html += '</span><span><button class="button" id="green" data-email="' + value.email + '" onclick="sendMailDialog(this)"><i class="fa-solid fa-envelope"></i> Send email</button>';
             html += '</span><span><button class="button" id="red" onclick="deleteAccount('+params+');">Delete</button>';
             html += "</span></div>";
         });
@@ -91,4 +91,55 @@ function deleteAccount(id, container) {
             console.log('AJAX request failed.');
         }
     });
+}
+
+function sendMailDialog(caller) {
+    const reciever = $(caller).attr('data-email');
+    $('.dialog').removeClass('hidden');
+
+    $('.dialog #recipient').val(reciever);
+}
+
+function sendMail() {
+    const recipient = $('.dialog #recipient').val();
+    const subject = $('.dialog #subject').val();
+    const content = $('.dialog #content').val();
+
+    $.ajax({
+        url: './jobs/accounts.php',
+        type: 'POST',
+        data: {
+            send_email: 1,
+            receiver: recipient,
+            subject: subject,
+            content, content
+        },
+         error: function () {
+            console.log('AJAX request failed.');
+        }
+
+    }).done(function (data) {
+
+        var html = "";
+        var response = JSON.parse(data);
+
+        if(!response) {
+            response = "Failed to send";
+        } else {
+            response = "Message sent"
+        }
+        $(".info").removeClass("hidden");
+        $(".info").html("<p>"+response+"</p>");
+        setTimeout(function() {
+
+            if(!$(".info").hasClass("hidden")) {
+                $(".info").addClass("hidden");
+            }
+            
+        }, 2000);
+
+        console.log(response)
+        
+    });
+
 }

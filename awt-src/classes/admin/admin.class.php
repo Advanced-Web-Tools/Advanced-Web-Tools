@@ -165,7 +165,7 @@ class admin extends sessionHandler
 
         $email = $this->profiler->email;
 
-        $stmt = $this->mysqli->prepare("SELECT `id`, `username`, `firstname`, `lastname` FROM `awt_admin` WHERE `email` != ?;");
+        $stmt = $this->mysqli->prepare("SELECT `id`, `username`, `firstname`, `email`, `lastname` FROM `awt_admin` WHERE `email` != ?;");
         $stmt->bind_param("s", $email);
         $stmt->execute();
 
