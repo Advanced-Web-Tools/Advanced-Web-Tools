@@ -240,23 +240,25 @@ class store
     private function updateDatabase()
     {
 
+        
+        $info = $this->getDatabaseConfig();
+        
+        $db_config_file = CLASSES . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'databaseConfig.class.php';
+        
+        $this->replaceFileContent($db_config_file, 'private static string $hostname = "";', 'private static string $hostname = "' . $info['hostname'] . '";');
+        $this->replaceFileContent($db_config_file, 'private static string $database = "";', 'private static string $database = "' . $info['database'] . '";');
+        $this->replaceFileContent($db_config_file, 'private static string $username = "";', 'private static string $username = "' . $info['username'] . '";');
+        $this->replaceFileContent($db_config_file, 'private static string $password = "";', 'private static string $password = "' . $info['password'] . '";');
+        $this->replaceFileContent($db_config_file, 'private static string $key = "";', 'private static string $key = "' . $info['key'] . '";');
+        
         if (file_exists(ROOT . DIRECTORY_SEPARATOR . 'awt-database.sql')) {
             $db = new databaseConfig();
             $db->checkAuthority();
             $mysql = $db->getConfig();
             $sql = file_get_contents(ROOT . DIRECTORY_SEPARATOR . 'awt-database.sql');
             $mysql->multi_query($sql);
+            unlink(ROOT . DIRECTORY_SEPARATOR . 'awt-database.sql');
         }
-
-        $info = $this->getDatabaseConfig();
-
-        $db_config_file = CLASSES . DIRECTORY_SEPARATOR . 'database' . DIRECTORY_SEPARATOR . 'databaseConfig.class.php';
-
-        $this->replaceFileContent($db_config_file, 'private static string $hostname = "";', 'private static string $hostname = "' . $info['hostname'] . '";');
-        $this->replaceFileContent($db_config_file, 'private static string $database = "";', 'private static string $database = "' . $info['database'] . '";');
-        $this->replaceFileContent($db_config_file, 'private static string $username = "";', 'private static string $username = "' . $info['username'] . '";');
-        $this->replaceFileContent($db_config_file, 'private static string $password = "";', 'private static string $password = "' . $info['password'] . '";');
-        $this->replaceFileContent($db_config_file, 'private static string $key = "";', 'private static string $key = "' . $info['key'] . '";');
 
     }
 
