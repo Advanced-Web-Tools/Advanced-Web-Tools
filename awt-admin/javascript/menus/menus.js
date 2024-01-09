@@ -8,7 +8,6 @@ function fetchMenus(list_element, options_element) {
             fetch_all_menus: 1
         },
         success: function (response) {
-            console.log(response);
             createList(response, list_element);
             createMenuOptions(response, options_element);
         },
@@ -36,7 +35,6 @@ function createMenuOptions(menu, options_element) {
 
         const menu_items = menu[key]['items'].split('NEW_LINK');
 
-        console.log(menu_items);
         var container = $("<div class='options-container' data-type-menu='" + menu[key]['name'] + "'>");
 
         $.each(menu_items, function (key) {

@@ -48,7 +48,7 @@ function fetchBlocks(element, replacable = null, callback = null) {
                 // Attach onclick event to the child element
                 childElement.click(function () {
                   getBlock(block.name, replacable);
-                  if(callback !== null) callback();
+                  if (callback !== null) callback();
                 });
 
                 categoryContainer.append(childElement);
@@ -90,7 +90,7 @@ function getBlock(name, replacable = null) {
     },
     success: function (response) {
 
-      if(replacable !== null) {
+      if (replacable !== null) {
         $(replacable).replaceWith(response);
       } else {
         $selection.append(response);
@@ -99,7 +99,7 @@ function getBlock(name, replacable = null) {
       saveToHistory();
 
       hasTextChild($(".block")).attr("contenteditable", "true");
-      
+
       $(".block").on("click", function (e) {
         BlockOptions($(this));
       }).children().on("click", function (e) {
@@ -113,7 +113,7 @@ function getBlock(name, replacable = null) {
       console.log(error);
     }
   });
-  
+
 
 }
 
@@ -148,6 +148,7 @@ function BlockOptions(element) {
 
   if (hasTextChild($block).length > 0) {
     setTextOptions($block, defaultStyle);
+    isEditing($block);
   }
 
   if (hasListChild($block).length > 0) {
@@ -213,7 +214,7 @@ function contextMenu() {
   $(".context-menu").toggleClass("hidden");
   $(".context-menu").css('top', currentMousePos.y);
   $(".context-menu").css('left', currentMousePos.x);
-  $(".context-menu *").bind("click.context", function () { 
+  $(".context-menu *").bind("click.context", function () {
     $(".context-menu").toggleClass("hidden");
     $(".context-menu *").unbind("click.context");
   });
@@ -249,7 +250,7 @@ function publishContent(name) {
 
 function savePage(name) {
   var $pageSection = $('.pageSection');
-  
+
   var $clonedPageSection = $pageSection.clone();
 
   $clonedPageSection.find(".block.empty.replacable").remove();
@@ -301,17 +302,12 @@ function changeViewPort(caller) {
 function detectEmpty() {
   $('.preview').find('.block').each(function (index, block) {
     if ($(block).children().length == 0 && $(block).text().trim().length == 0 && $(block).is("div")) {
-      if($(block).hasClass("empty") == false) $(block).addClass("empty");
+      if ($(block).hasClass("empty") == false) $(block).addClass("empty");
     } else {
       $(block).removeClass("empty");
     }
   });
 }
-
-
-
-
-
 
 function createEditableLayout() {
   $selection = $('.pageSection');
@@ -324,11 +320,12 @@ function createEditableLayout() {
     helper: "clone",
     tolerance: "pointer",
     cancel: 'input,textarea,button,select,option,[contenteditable]',
-    start: function(event, ui) {
+    start: function (event, ui) {
       movingBlocks = true;
     },
-    stop: function(event, ui) {
+    stop: function (event, ui) {
       movingBlocks = false;
+      saveToHistory();
     }
   });
 
@@ -337,7 +334,12 @@ function createEditableLayout() {
 
     $block.on('click', function (e) {
       BlockOptions($block);
-      e.stopPropagation();
+      $(document).find(":focus").each(function () {
+        var focusedElement = $(this);
+        if (!focusedElement.is($block) && !$block.has(focusedElement).length > 0) {
+          $(this).blur();
+        }
+      });
     });
 
     hasTextChild($block).attr('contenteditable', 'true');
@@ -357,9 +359,9 @@ function createEditableLayout() {
     $selection = $('.pageSection');
 
     $("*").removeClass('selected');
-    
+
     $(".pageSection").addClass('selected');
-    if($selection.find(".selected").length === 0) selectedElement = true;
+    if ($selection.find(".selected").length === 0) selectedElement = true;
   });
 
   $(".pageSection").on("click", function (event) {
@@ -376,11 +378,11 @@ function createEditableLayout() {
 }
 
 $(document).ready(function () {
-  
+
   createEditableLayout();
-  
+
   $(".floating-blocks").on("DOMSubtreeModified", function (event) {
-    if($('.floating-blocks').hasClass('hidden')) {
+    if ($('.floating-blocks').hasClass('hidden')) {
       floatingBlockSelectorActive = false;
     } else {
       floatingBlockSelectorActive = true;
@@ -396,6 +398,16 @@ $(document).ready(function () {
   initShortcuts();
 
   fetchBlocks('.editor-tools');
+
+  var find = $('*').filter(function () { 
+    return $(this).css('position') == 'fixed';
+  });
+
+  find.each(function(){
+    $(this).css("width", "87.12%");
+    $(this).css("top", "50px");
+  })
+
 });
 
 

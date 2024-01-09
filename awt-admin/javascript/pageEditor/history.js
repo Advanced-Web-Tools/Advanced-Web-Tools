@@ -2,7 +2,7 @@
 var updatingFromHistory = false;
 
 var pageHistory = [];
-var currentIndex = -1;
+var currentIndex = 0;
 
 function undo() {
     updatingFromHistory = true;
@@ -25,8 +25,6 @@ function redo() {
 function saveToHistory() {
     $(".replacable").remove();
     var content = $(".pageSection").html();
-
-    
 
     pageHistory[currentIndex] = content;
     currentIndex++;

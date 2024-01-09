@@ -6,9 +6,8 @@ body {
     grid-template-columns: auto auto !important;
 }
 
-.preview * {
-    position: relative !important;
-}
+
+
 
 .page {
     padding: 0;
@@ -54,15 +53,21 @@ body {
 
 .block:hover {
     transform: translateY(-2px);
-    border: solid 2px grey;
-    filter: brightness(1.1);
+    outline: solid 2px grey;
+    filter: brightness(1.05);
 }
 
-.preview {
-    max-height: 100%;
+.stage {
+    position: relative;
+    z-index: 5;
+    height: 100vh;
     width: 100%;
     scrollbar-width: 2px;
     scrollbar-color: #0080c0 #ffffff;
+}
+
+.preview * {
+    position: relative; 
 }
 
 .block-options {
@@ -119,7 +124,9 @@ body {
     border-radius: 5px;
 }
 
-.block-options input[type=color] {
+.block-options input[type=color],
+.textEditor input[type=color]
+{
     background: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -130,7 +137,8 @@ body {
     margin: 10px -5px;
 }
 
-.block-options input[type=color]::-webkit-color-swatch {
+.block-options input[type=color]::-webkit-color-swatch,
+.textEditor input[type=color]::-webkit-color-swatch {
     border-radius: 50%;
     height: 25px;
     border: none;
@@ -138,7 +146,9 @@ body {
     height: 25px;
 }
 
-.block-options input[type=color]::-moz-color-swatch {
+.block-options input[type=color]::-moz-color-swatch,
+.textEditor input[type=color]::-moz-color-swatch
+{
     border-radius: 5px;
     border: 1px solid #000;
     width: 25px;
@@ -159,11 +169,27 @@ body {
 
 .dialog {
     display: none;
-    background: #f2f2f2;
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
     position: absolute;
-    z-index: 2;
-    width: 100px;
-    height: 100px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1001;
+    max-width: 80%;
+}
+
+.dialog .content {
+    display: none;
+}
+
+.dialog.active .content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
 }
 
 .block-options .alignment-buttons {
@@ -191,9 +217,7 @@ body {
 
 .selected,
 .selected:hover {
-    border-style: solid solid solid inset;
-    /* border-width: 2px 2px 2px 5px; */
-    border-color: #0080c0;
+    outline: 1px solid var(--primary-color);
 }
 
 .block-options .input-group {
@@ -259,7 +283,7 @@ body {
 .selected.block.empty,
 .selected .block.empty
 {
-    border: 1px solid var(--primary-color);
+    outline: 1px solid var(--primary-color);
     background: url('../../awt-data/icons/plus-solid.svg') no-repeat center;
     background-size: fill;
     cursor: pointer;
@@ -270,9 +294,9 @@ body {
     background-size: fill;
     cursor: pointer;
     display: block;
+    outline: none;
     text-align: center;
     margin: auto auto;
-    border: none;
     height: 20px;
     width: 90% !important;
     filter: brightness(0);
@@ -306,6 +330,7 @@ body {
 
 .block.ui-sortable-helper {
     position: absolute !important;
+    margin: 0 !important;
 }
 
 .floating-blocks {
@@ -319,6 +344,12 @@ body {
     padding: 10px;
     border-radius: 10px;
 }
+
+.floating-blocks .header p{
+    margin: 0;
+    width: fit-content;
+}
+
 
 .context-menu {
     position: absolute;
@@ -336,8 +367,42 @@ body {
 .context-menu .context-group {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 10px;
 }
+
+.textEditor {
+    position: absolute;
+    background: #fff;
+    border-radius: 5px;
+    z-index: 999;
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 350px;
+}
+
+.textEditor .header p{
+    margin: 0;
+    width: 100%;
+    text-align: left !important;
+    font-size: 17px !important;
+}
+
+.textEditor .text-options {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+}
+
+.textEditor .text-options input {
+    width: 150px;
+}
+
 
 @keyframes createSelector {
     0% {

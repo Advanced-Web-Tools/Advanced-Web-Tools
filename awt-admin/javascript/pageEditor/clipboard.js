@@ -10,18 +10,29 @@ $(document).mousemove(function (event) {
 
 function paste() {
 
-    if($('.selected') && !$('.selected').hasClass('.pageSection')) {
-      $clipBoard.removeClass('selected');
+    console.log("paste")
+
+    if(!$clipBoard) return;
+    $clipBoard.removeClass('selected');
+
+    if($('.selected').length > 0) {
       $clipBoard.click(function (event) {
         event.stopPropagation();
         BlockOptions(this);
       });
+
       $('.selected').append($clipBoard);
+
       saveToHistory();
+
       $clipBoard = $clipBoard.clone();
+
       $(document).off('mouseenter', '.block');
+
       insertBlock();
+
       $("* .replacable").remove();
+
       return;
     }
     
@@ -31,7 +42,7 @@ function paste() {
     var nearestBlock = null;
     var minDistance = Number.MAX_VALUE;
   
-    var $blocks = $('.block').not($contextMenu);
+    var $blocks = $('.block');
   
     $blocks.each(function () {
       var $block = $(this);

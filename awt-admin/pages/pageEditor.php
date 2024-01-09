@@ -33,6 +33,7 @@ $theme->getActiveTheme();
 <script src="./javascript/pageEditor/clipboard.js"></script>
 <script src="./javascript/pageEditor/history.js"></script>
 <script src="./javascript/pageEditor/blockInsertion.js"></script>
+<script src="./javascript/menus/menus.js"></script>
 <script src="../awt-src/vendor/jQuery/jquery.nearest.min.js"></script>
 
 <link rel="stylesheet" href="./css/pageEditor.css">
@@ -45,14 +46,6 @@ $theme->getActiveTheme();
         <button class="button" onclick="publishContent('<?php echo $_GET['pageName']; ?>');"><i
                 class="fa-solid fa-upload"></i></button>
         <button class="button" onclick="$('.selected').remove()"><i class="fa-solid fa-trash"></i></button>
-        <button class="button" onclick="BlockOptions($('.selected').prev())"><i
-                class="fa-solid fa-left-long"></i></button>
-        <button class="button" onclick="BlockOptions($('.selected').parent())"><i
-                class="fa-solid fa-up-long"></i></button>
-        <button class="button" onclick="BlockOptions($('.selected').children().first())"><i
-                class="fa-solid fa-down-long"></i></button>
-        <button class="button" onclick="BlockOptions($('.selected').next())"><i
-                class="fa-solid fa-right-long"></i></button>
     </div>
     <button class="button" onclick="copy()">Copy <i class="fa-regular fa-copy"></i></button>
     <button class="button" onclick="paste()">Paste <i class="fa-regular fa-paste"></i></button>
@@ -69,8 +62,13 @@ $theme->getActiveTheme();
 
     </div>
 </div>
-<div class="dialog">
+<div class="dialog shadow">
+    <div class="header">
+        <p onclick="$(this).parent().parent().toggleClass('active')"><i class="fa-regular fa-circle-xmark"></i></p>
+    </div>
+    <div class="content">
 
+    </div>
 </div>
 
 <section class="editor">
@@ -88,6 +86,19 @@ $theme->getActiveTheme();
     </div>
     <div class="stage">
         <div class="preview">
+            <div class="textEditor hidden shadow">
+                <div class="header">
+                    <p onclick="$(this).parent().parent().addClass('hidden')"><i class="fa-regular fa-circle-xmark"></i>
+                    </p>
+                </div>
+                <div class="text-options">
+                    <button type="button" class="button" id="addHyperLink"><i class="fa-solid fa-anchor"></i></button>
+                    <button type="button" class="button" id="turnItalic"><i class="fa-solid fa-italic"></i></button>
+                    <button type="button" class="button" id="turnBold"><i class="fa-solid fa-bold"></i></button>
+                    <button type="button" class="button" id="breakLine"><i
+                            class="fa-solid fa-diagram-successor"></i></button>
+                </div>
+            </div>
             <?php
             $theme->loadThemePage("customPage.page");
             ?>
