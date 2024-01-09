@@ -29,6 +29,18 @@ $profiler = new profiler;
 
 </div>
 
+<div class="dialog hidden shadow">
+    <div class="header">
+        <i class="fa-solid fa-circle-xmark" onclick="$('.dialog').addClass('hidden')"></i>
+    </div>
+    <div class="content">
+        <input type="email" class="input" id="recipient" placeholder="Recipient" disabled>
+        <input type="text" class="input" id="subject" placeholder="Subject">
+        <textarea id="content" cols="30" rows="10" class="input" placeholder="Content"></textarea>
+        <button class="button" onclick="sendMail()">Send</button>
+    </div>
+</div>
+
 <div class="wrapper">
     <h3>Account List</h3>
     <div class="account-list">
