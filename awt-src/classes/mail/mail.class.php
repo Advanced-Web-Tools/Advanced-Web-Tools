@@ -64,11 +64,11 @@ class mail {
     {
         $hostname = $_SERVER['HTTP_HOST'];
         $this->mail = new PHPMailer;
-        $this->mail->From = $this->sender ."@" . $hostname; 
+        $this->mail->From = $this->sender; 
         $this->mail->FromName = $name; 
         $this->mail->addAddress($this->reciever);
         $this->mail->addAddress($this->reciever); 
-        $this->mail->addReplyTo($this->sender ."@" . $hostname , "Reply");
+        $this->mail->addReplyTo($this->sender, "Reply");
         $this->mail->addCC("cc@" . $hostname); 
         $this->mail->addBCC("bcc@" . $hostname);
         $this->mail->isHTML(true); 

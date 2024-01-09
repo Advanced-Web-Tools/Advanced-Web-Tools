@@ -40,6 +40,6 @@ if(isset($_POST['delete_account'])) {
 }
 
 if(isset($_POST['send_email'])) {
-    $mail = new mail($profiler->name, $_POST["receiver"], $_POST["subject"], $_POST["content"]);
+    $mail = new mail($profiler->email, $_POST["receiver"], $_POST["subject"], $_POST["content"]);
     echo json_encode($mail->sendMessage($profiler->firstname . " " . $profiler->lastname));
 } 
