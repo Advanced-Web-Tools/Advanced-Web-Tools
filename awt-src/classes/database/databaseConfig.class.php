@@ -23,6 +23,7 @@ final class databaseConfig
         ROOT . DIRECTORY_SEPARATOR . 'index.php',
         JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-themesLoader.php',
         CLASSES . 'admin' . DIRECTORY_SEPARATOR . 'admin.class.php',
+        CLASSES . 'admin' . DIRECTORY_SEPARATOR . 'reset.class.php',
         CLASSES . 'admin' . DIRECTORY_SEPARATOR . 'authentication.class.php',
         CLASSES . 'admin' . DIRECTORY_SEPARATOR . 'profiler.class.php',
         CLASSES . 'plugins' . DIRECTORY_SEPARATOR . 'plugins.class.php',
