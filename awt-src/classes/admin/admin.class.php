@@ -20,7 +20,7 @@ class admin extends sessionHandler
         $this->sessionClearing();
     }
 
-    public function createAccount(string $email, string $username, string $firstname, string $lastname, string $password, int $permission_level = 2)
+    public function createAccount(string $email, string $username, string $firstname, string $lastname, string $password, int $permission_level) : string
     {
 
         $this->profiler = new profiler();
@@ -35,6 +35,10 @@ class admin extends sessionHandler
             $this->isStringEmptyOrSpaces($password)
         ) {
             return "All fields are required!";
+        }
+
+        if ($permission_level < 0 || $permission_level > 2) {
+            return "Invalid permission level";
         }
 
         $invalidPassMsg = "Password must contain at least one uppercase character, at least one number and at least one special character!";

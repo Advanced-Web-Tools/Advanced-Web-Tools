@@ -30,7 +30,7 @@ if (isset($_POST['create_account'])) {
         $_POST["firstname"],
         $_POST["lastname"],
         $_POST["password"],
-        $permission
+        $_POST["permission"]
     ));
 }
 
