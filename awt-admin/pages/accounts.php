@@ -48,7 +48,7 @@ $profiler = new profiler;
         <select name="permission" class="permissionLevel">
             <option value="0">Admin</option>
             <option value="1">Moderator</option>
-            <option value="2" selected>Author</option>
+            <option value="2">Author</option>
         </select>
         <button type="button" onclick="createAccount('.account-list');" class="button">Create new account</button>
     </div>

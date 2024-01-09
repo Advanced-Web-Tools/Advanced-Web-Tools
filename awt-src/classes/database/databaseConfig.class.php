@@ -36,6 +36,7 @@ final class databaseConfig
         CLASSES . 'media' . DIRECTORY_SEPARATOR . 'media.class.php',
         CLASSES . 'notifications' . DIRECTORY_SEPARATOR . 'notifications.class.php',
         CLASSES . 'store' . DIRECTORY_SEPARATOR . 'store.class.php',
+        CLASSES . 'mail' . DIRECTORY_SEPARATOR . 'mail.class.php',
     );
 
     private object $mysqli;

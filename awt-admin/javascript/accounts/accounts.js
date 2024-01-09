@@ -51,6 +51,8 @@ function createAccount(container) {
         success: function(response) {
             fetchAccounts(container);
             $(".info").removeClass("hidden");
+
+            response = response.replace(/"/g, ' ');
             $(".info").html("<p>"+response+"</p>");
             setTimeout(function() {
 
@@ -61,7 +63,6 @@ function createAccount(container) {
             }, 2000);
         },
         error: function(xhr, status, error) {
-            console.log('AJAX request failed.');
         }
     });
 }
@@ -76,6 +77,7 @@ function deleteAccount(id, container) {
         success: function(response) {
             fetchAccounts(container);
             $(".info").removeClass("hidden");
+            response = response.replace(/"/g, ' ');
             $(".info").html("<p>"+response+"</p>");
             setTimeout(function() {
 

@@ -23,6 +23,7 @@ if (isset($_POST['get_accounts'])) {
 }
 
 if (isset($_POST['create_account'])) {
+
     echo json_encode($admin->createAccount(
         $_POST["email"],
         $_POST["username"],
