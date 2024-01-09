@@ -9,6 +9,8 @@
 .info {
     position: absolute;
     left: 50%;
+    transform: translateX(-50%);
+    /* test */
     top: 60;
     padding: 10px;
     background: #fff;
