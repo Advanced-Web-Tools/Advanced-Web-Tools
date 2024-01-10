@@ -7,7 +7,7 @@ include_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-autoLoader.php';
 include_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-pluginLoader.php';
 include_once JOBS . 'awt-domainBuilder.php';
 
-use store\store;
+use store\updater;
 
 use admin\{authentication, profiler};
 
@@ -20,12 +20,12 @@ if (!$check->checkAuthentication()) {
 }
 
 if(isset($_POST["versionCompare"])) {
-    $update = new store("getLatestAWTVersion", "Advanced Web Tools", "AWT");
+    $update = new updater("getLatestAWTVersion", "Advanced Web Tools", "AWT");
     die(json_encode($update->checkAWTVersion()));
 }
 
 if($profiler->checkPermissions(0) && isset($_POST["updateAwt"])) {
-    $update = new store("getLatestAWTVersion", "Advanced Web Tools", "AWT");
+    $update = new updater("getLatestAWTVersion", "Advanced Web Tools", "AWT");
 
     $update->updateAWTVersion();
     die("AWT was updated!");
