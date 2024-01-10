@@ -19,8 +19,24 @@ $profiler = new profiler;
 <link rel="stylesheet" href="./css/mail.css">
 <script src="./javascript/mail/mail.js"></script>
 
+<div class="info hidden shadow">
+
+</div>
+
+<div class="dialog hidden shadow">
+    <div class="header">
+        <i class="fa-solid fa-circle-xmark" onclick="$('.dialog').addClass('hidden')"></i>
+    </div>
+    <div class="content">
+        <input type="email" class="input" id="recipient" placeholder="Recipient">
+        <input type="text" class="input" id="subject" placeholder="Subject">
+        <textarea id="content" cols="30" rows="10" class="input" placeholder="Content"></textarea>
+        <button class="button" onclick="sendMail()">Send</button>
+    </div>
+</div>
+
 <section class="side-bar">
-    <div class="info shadow">
+    <div class="account shadow">
         <h1>Mail account:</h1>
         <p><?php echo $profiler->email?></p>
         <h1>Sender name:</h1>
@@ -34,7 +50,7 @@ $profiler = new profiler;
         <p data-status='2' class="selected" ><i class="fa-solid fa-inbox"></i> Inbox</p>
         <p data-status='1'><i class="fa-solid fa-envelope-circle-check"></i> Sent</p>
         <p data-status='0'><i class="fa-solid fa-triangle-exclamation"></i> Failed</p>
-        <button class="button" id="green"><i class="fa-solid fa-pen-to-square"></i>Compose</button>
+        <button class="button compose" id="green"><i class="fa-solid fa-pen-to-square"></i>Compose</button>
     </div>
 </section>
 

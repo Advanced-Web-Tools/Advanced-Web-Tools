@@ -14,27 +14,27 @@
     min-width: 250px;
 }
 
-.side-bar .info {
+.side-bar .account {
     background: #fff;
     border-radius: 5px;
     padding: 10px 20px;
     max-width: 250px;
 }
 
-.side-bar .info button {
+.side-bar .account button {
     width: 80%;
     margin: 10px 10%;
 }
 
-.side-bar .info button i {
+.side-bar .account button i {
     margin: 0 10px 0 -10px;
 }
 
-.side-bar .info .important {
+.side-bar .account .important {
     font-size: 12px;
 }
 
-.side-bar .info .important b {
+.side-bar .account .important b {
     font-weight: bolder;
 }
 
@@ -121,4 +121,58 @@
     flex-grow: 1;
     font-weight: 800;
     font-size: 15px;
+}
+
+.dialog
+{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 60;
+    padding: 10px;
+    background: #fff;
+    border-radius: 10px;
+    width: 50%;
+}
+.dialog .header {
+    color: red;
+    margin: 10px 0;
+}
+
+.dialog .content {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+}
+
+.dialog .content input {
+    width: 100%;
+}
+
+.dialog .content textarea {
+    resize: vertical;
+    min-height: 150px;
+    padding: 10px 10px;
+    width: 100%;
+}
+
+.dialog .content button {
+    width: 25%;
+    margin: 0 auto;
+}
+
+.info {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 10;
+    padding: 10px;
+    background: #fff;
+    border-radius: 10px;
+}
+
+.info {
+    z-index: 15;
 }

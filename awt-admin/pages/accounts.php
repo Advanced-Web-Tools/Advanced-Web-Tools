@@ -17,6 +17,8 @@ $profiler = new profiler;
 ?>
 
 <script src="./javascript/accounts/accounts.js"></script>
+<script src="./javascript/mail/mail.js"></script>
+
 <script>
     $(document).ready(function() {
         fetchAccounts(".account-list");

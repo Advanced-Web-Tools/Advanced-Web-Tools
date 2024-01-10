@@ -123,6 +123,50 @@ function getMessage(caller)
 
 }
 
+function sendMail() {
+    const recipient = $('.dialog #recipient').val();
+    const subject = $('.dialog #subject').val();
+    const content = $('.dialog #content').val();
+
+    $.ajax({
+        url: './jobs/mail.php',
+        type: 'POST',
+        data: {
+            send: 1,
+            recipient: recipient,
+            subject: subject,
+            content, content
+        },
+
+         error: function () {
+            console.log('AJAX request failed.');
+        }
+
+    }).done(function (data) {
+
+        var html = "";
+        var response = JSON.parse(data);
+
+        if(!response) {
+            response = "Failed to send";
+        } else {
+            response = "Message sent"
+        }
+        $(".info").removeClass("hidden");
+        $(".info").html("<p>"+response+"</p>");
+        setTimeout(function() {
+
+            if(!$(".info").hasClass("hidden")) {
+                $(".info").addClass("hidden");
+            }
+            
+        }, 2000);
+
+        console.log(response)
+        
+    });
+
+}
 $(document).ready(function () {
     fetchMail();
 
@@ -131,4 +175,11 @@ $(document).ready(function () {
     $('#testMail').on('click', function() {
         testMail();
     });
+
+    $('button.compose').on('click', function() {
+
+        $('.dialog').toggleClass('hidden');
+
+    });
+
 });
