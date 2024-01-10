@@ -103,5 +103,32 @@ class mail {
 
     }
 
+    private function fetchMail(int $sent = 1) : array
+    {
+        $result = array();
+
+        $stmt = $this->mysqli->prepare("SELECT * FROM `awt_mail` WHERE `sent` = ?");
+        
+        if (!$stmt) {
+            return $result;
+        }
+    
+        $stmt->bind_param("i", $sent);
+    
+        $stmt->execute();
+    
+        $stmt->bind_result($result[0], $result[1], $result[2], $result[3], $result[4], $result[5], $result[6]);
+    
+        while ($stmt->fetch()) {
+            $row[] = array(
+                $result[0], $result[1], $result[2], $result[3], $result[4], $result[5], $result[6]
+            );
+        }
+    
+        $stmt->close();
+    
+        return $row;
+    }
+
 
 }
