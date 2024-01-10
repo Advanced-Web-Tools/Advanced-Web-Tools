@@ -11,7 +11,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -23,12 +22,13 @@ SET time_zone = "+00:00";
 -- Table structure for table `awt_access_authorization`
 --
 
-CREATE TABLE `awt_access_authorization` (
-  `id` int NOT NULL,
-  `fileName` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `fileHash` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `uniqueKey` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE IF NOT EXISTS `awt_access_authorization` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `fileName` varchar(255) NOT NULL,
+  `fileHash` varchar(255) NOT NULL,
+  `uniqueKey` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -84,11 +84,12 @@ CREATE TABLE `awt_mail` (
 CREATE TABLE `awt_media` (
   `id` int NOT NULL,
   `album_id` int DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `file` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `file_type` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `name` varchar(255) DEFAULT NULL,
+  `file` varchar(255) NOT NULL,
+  `file_type` varchar(20) NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -103,21 +104,6 @@ CREATE TABLE `awt_menus` (
   `active` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
---
--- Table structure for table `awt_metrics`
---
-
-CREATE TABLE `awt_metrics` (
-  `id` int NOT NULL,
-  `uid` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `url` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `ip` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `awt_notifications`
@@ -226,7 +212,15 @@ CREATE TABLE `awt_themes` (
 --
 
 INSERT INTO `awt_themes` (`id`, `name`, `description`, `version`, `placeholder`, `active`) VALUES
-(1, 'Twenty-Twenty-Three', 'This is a sleeek and modern theme for your website', '0.0.1', 'placeholder.png', 1);
+(1, 'Twenty-Twenty-Three', 'This is a sleek and modern theme for your website', '0.0.1', 'placeholder.png', 1);
+
+-- ... (rest of the SQL dump)
+
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
 --
 -- Indexes for dumped tables
@@ -268,11 +262,6 @@ ALTER TABLE `awt_media`
 ALTER TABLE `awt_menus`
   ADD PRIMARY KEY (`id`);
 
---
--- Indexes for table `awt_metrics`
---
-ALTER TABLE `awt_metrics`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `awt_notifications`
@@ -348,12 +337,6 @@ ALTER TABLE `awt_media`
 -- AUTO_INCREMENT for table `awt_menus`
 --
 ALTER TABLE `awt_menus`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `awt_metrics`
---
-ALTER TABLE `awt_metrics`
   MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
