@@ -19,7 +19,7 @@ if (!defined('DASHBOARD') || !checkForPlugin('floatingEditor', '0.0.1') == true)
     $nav->addItem(array('icon' => $location . 'media.svg', 'name' => "My Media", 'link' => HOSTNAME . 'awt-admin/?page=Media', 'permission' => 2));
     $nav->addItem(array('icon' => $location . 'sliders-solid.svg', 'name' => "Theme Editor", 'link' => HOSTNAME . 'awt-admin/?page=ThemeEditor', 'permission' => 0, 'attr' => 'target="_blank"'));
     $nav->addItem(array('icon' => $location . 'users-solid.svg', 'name' => 'Accounts', 'link' => HOSTNAME . 'awt-admin/?page=Accounts', 'permission' => 2));
-    $nav->addItem(array('icon' => $location . 'envelopes-bulk-solid.svg', 'name' => 'Mail', 'link' => HOSTNAME . 'awt-admin/?page=mail', 'permission' => 2));
+    $nav->addItem(array('icon' => $location . 'envelopes-bulk-solid.svg', 'name' => 'Mail', 'link' => HOSTNAME . 'awt-admin/?page=Mail', 'permission' => 2));
     $settings->addItem(array('icon' => $location . 'toolbox-solid.svg', 'name' => 'Settings', 'link' => HOSTNAME . 'awt-admin/?page=Settings', 'permission' => 0));
     $logout->addItem(array('icon' => $location . 'exit-solid.svg', 'name' => 'Log out', 'link' => HOSTNAME . 'awt-admin/jobs/signInOut.php?logout', 'permission' => 2));
 
