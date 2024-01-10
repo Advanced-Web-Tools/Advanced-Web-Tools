@@ -87,6 +87,7 @@
     margin: 1% 10px;
     height: 93%;
     padding: 10px 20px;
+    overflow-y: auto;
 }
 
 .mail-wrapper {
@@ -112,11 +113,6 @@
     width: fit-content;
     font-size: 17px;
     max-width: 20%;
-}
-
-.mail-wrapper .mail .content::before {
-    content: ' - ';
-    margin: 0 10px;
 }
 
 .mail-wrapper .mail .timestamp {
