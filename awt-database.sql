@@ -18,6 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
+-- Database: `awt_site`
 --
 
 -- --------------------------------------------------------
@@ -200,9 +201,7 @@ INSERT INTO `awt_settings` (`id`, `name`, `value`, `required_permission_level`, 
 (7, 'hostname_path', '/', 0, 'General'),
 (10, 'Enable API', 'true', 0, 'Security'),
 (11, 'API request whitelist', '*', 0, 'Security'),
-(13, 'PHP Error reporting', '0', 0, 'Security'),
-(14, 'Show default AWT widgets', 'true', 0, NULL),
-(15, 'Show Metrics widgets', 'true', 0, NULL);
+(13, 'PHP Error reporting', '1', 0, 'Security');
 
 -- --------------------------------------------------------
 
