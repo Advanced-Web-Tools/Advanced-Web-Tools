@@ -6,6 +6,8 @@ use database\databaseConfig;
 use notifications\notifications;
 use session\sessionHandler;
 use admin\profiler;
+use DateTime;
+use mail\mail;
 
 class admin extends sessionHandler
 {
@@ -57,22 +59,20 @@ class admin extends sessionHandler
 
         if (!$this->passwordContainsUppercase($password)) return $invalidPassMsg;
 
-        $this->connectToDatabase();
+        $result = $this->getAccountByEmailOrUsername($email);
 
-        $stmt = $this->mysqli->prepare("SELECT * FROM `awt_admin` WHERE `email` = ? OR `username` = ?");
-
-        $stmt->bind_param("ss", $email, $username);
-
-        $stmt->execute();
-
-        $result = $stmt->get_result();
-
-        $numRows = $result->num_rows;
-
-        $stmt->close();
+        $numRows = $result['num_rows'];
 
         if ($numRows > 0) {
-            return "User with this email or username already exists!";
+            return "User with this email already exists!";
+        }
+
+        $result = $this->getAccountByEmailOrUsername($username);
+
+        $numRows = $result['num_rows'];
+
+        if ($numRows > 0) {
+            return "User with this username already exists!";
         }
 
 
@@ -174,6 +174,101 @@ class admin extends sessionHandler
         $stmt->close();
 
         return $result;
+    }
+
+    public function getAccountByEmailOrUsername(string $search) : array
+    {
+        $this->connectToDatabase();
+        
+        $result = array();
+
+        $stmt = $this->mysqli->prepare("SELECT * FROM `awt_admin` WHERE `email` = ? OR `username` = ?;");
+        $stmt->bind_param("ss", $search, $search);
+
+        if ($stmt->execute()) {
+
+            $stmt->store_result();
+
+            $stmt->bind_result($result['id'], $result['email'], $result['username'], $result['firstname'], $result['lastname'], $result['last_logged_ip'], $result['password'], $result['token'], $result['permission_level']);
+            $stmt->fetch();
+        
+            $numRows = $stmt->num_rows;
+            
+            $result['num_rows'] = $numRows;
+
+            $stmt->close();
+
+        } else {
+            die($stmt->error);
+        }
+
+        return $result;
+    }
+
+    public function getAccountById(int $id) : array
+    {   
+
+        $this->connectToDatabase();
+
+        $result = array();
+
+        $stmt = $this->mysqli->prepare("SELECT * FROM `awt_admin` WHERE `id` = ?");
+
+        $stmt->bind_param("i", $id);
+    
+        if ($stmt->execute()) {
+
+            $stmt->store_result();
+
+            $stmt->bind_result($result['id'], $result['email'], $result['username'], $result['firstname'], $result['lastname'], $result['last_logged_ip'], $result['password'], $result['token'], $result['permission_level']);            $stmt->fetch();
+        
+            $numRows = $stmt->num_rows;
+            
+            $result['num_rows'] = $numRows;
+
+            $stmt->close();
+
+        } else {
+            die($stmt->error);
+        }
+
+        return $result;
+    }
+
+    public function changePassword(string $newPassword, int $id) : bool
+    {
+        $this->connectToDatabase();
+
+        $newPassword = hash("SHA512", $newPassword);
+
+        $stmt = $this->mysqli->prepare("UPDATE `awt_admin` SET `password` = ? WHERE `id` = ?");
+        $stmt->bind_param("si", $newPassword, $id);
+
+        if($stmt->execute()) {
+            $stmt->close();
+
+            $result = $this->getAccountById($id);
+
+            $email = $result["email"];
+            $fname = $result["firstname"];
+
+            $content = "
+            <h1 style='text-align: center;'>Password was changed</h1>
+            <hr>
+            <p>Hello ". $fname .", </p>
+            <p>Your password was changed. If you did not do this, please take immediate action by changing your password directly in database.</p>
+            <p>Or you can go to <a href='". HOSTNAME . "awt-admin/passwordreset.php' target='_blank' rel='noreferer'>this link</a> to request password reset link.</p>
+            <p>If you want to change it manually in database, it is mandatory to use this hashing algorihtm: <b>SHA512</b></p>
+            ";
+    
+            $mail = new mail(CONTACT_EMAIL, $email, "Password was changed", $content);
+    
+            $mail->sendMessage("Advanced Web Tools");
+
+            return true;
+        }
+        return false;
+
     }
 
     public function deleteAccount(int $id)

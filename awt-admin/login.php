@@ -40,6 +40,7 @@
                 <input type="password" name="password" id="password" placeholder="Password">
                 <button type="submit" name="login"><i class="fa-solid fa-arrow-right"></i></button>
                 <div class="lost">
+                    <a href="./passwordreset.php">Forgot password <i class="fa-solid fa-key"></i></a>
                     <p>Are you lost?</p>
                     <hr>
                     <a href="../">Go to the visitor area  <i class="fa-solid fa-arrow-right"></i></a>
