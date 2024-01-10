@@ -67,7 +67,7 @@ class reset extends admin
 
         $this->connectToDatabase();
 
-        $stmt = $this->mysqli->prepare("INSERT INTO `awt_password_reset`(`id`, `account_id`, `code`, `expires`, `status`) VALUES (NULL, ?, ?, ?, ?);");
+        $stmt = $this->mysqli->prepare("INSERT INTO `awt_password_reset` (`id`, `account_id`, `code`, `expires`, `status`) VALUES (NULL, ?, ?, ?, ?);");
 
         $content = "
         <h1>Password reset request</h1>
@@ -109,7 +109,7 @@ class reset extends admin
         $expiration_date = null;
 
         $currentDatetime = new DateTime("now");
-        $current = $currentDatetime->format('Y-m-d H:i:s');
+        $currentDatetime->format('Y-m-d H:i:s');
 
         $stmt = $this->mysqli->prepare("SELECT `account_id`, `expires` FROM `awt_password_reset` WHERE `code` = ? AND `status` = ?");
 
@@ -182,8 +182,6 @@ class reset extends admin
         } else {
             die($stmt->error);
         }
-
-        return false;
 
     }
 
