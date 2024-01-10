@@ -45,7 +45,7 @@ class mail {
         $this->mail->From = $this->sender ."@" . $hostname; 
         $this->mail->FromName = "Tester"; 
         $this->mail->addAddress($this->recipient);
-        $this->mail->addReplyTo($this->sender ."@" . $hostname , "Reply");
+        $this->mail->addReplyTo($this->sender, "Reply");
         $this->mail->addCC("cc@" . $hostname); 
         $this->mail->addBCC("bcc@" . $hostname);
         $this->mail->isHTML(true); 
@@ -71,7 +71,7 @@ class mail {
         $this->mail = new PHPMailer;
         $this->mail->From = $this->sender; 
         $this->mail->FromName = $name; 
-        $this->recipient = $this->mail->addAddress($this->sender);
+        $this->mail->addAddress($this->recipient);
         $this->mail->addReplyTo($this->sender, "Reply");
         $this->mail->addCC("cc@" . $hostname); 
         $this->mail->addBCC("bcc@" . $hostname);
@@ -114,6 +114,8 @@ class mail {
 
         if($strict) $sql .= " AND `sender` = ?";
 
+        $sql .= " ORDER BY `date` DESC";
+
         $stmt = $this->mysqli->prepare($sql);
         
         if (!$stmt) {
@@ -146,7 +148,7 @@ class mail {
         $result = array();
         $row = array();
 
-        $sql = "SELECT * FROM `awt_mail` WHERE `recipient` = ?";
+        $sql = "SELECT * FROM `awt_mail` WHERE `recipient` = ? ORDER BY `date` DESC";
 
 
         $stmt = $this->mysqli->prepare($sql);

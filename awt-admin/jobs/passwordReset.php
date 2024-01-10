@@ -12,7 +12,7 @@ use admin\{authentication, reset};
 if(isset($_POST['get-code'])) {
     $email = $_POST['email'];
     $reset = new reset($email);
-
+    
     if(!$reset->generateResetLink()){
         header("Location: ../passwordreset.php?no_accounts");
         exit();
