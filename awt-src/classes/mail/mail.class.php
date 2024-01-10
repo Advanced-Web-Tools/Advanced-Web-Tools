@@ -4,8 +4,7 @@ namespace mail;
 
 use database\databaseConfig;
 use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
+use DateTime;
 class mail {
 
     private databaseConfig $databaseConfig;
@@ -14,6 +13,9 @@ class mail {
     private string $content;
     private string $reciever;
     private string $sender;
+
+    private DateTime $date;
+
     private PHPMailer $mail;
     
     public function __construct(string $sender, string $reciever, string $subject, string $content = "") {
@@ -29,7 +31,7 @@ class mail {
         $this->content = $content;
         $this->mail = new PHPMailer(true);
         $this->subject = $subject;
-
+        $this->date = new DateTime("now");
     }
 
 
@@ -51,13 +53,13 @@ class mail {
 
 
         if(!$this->mail->send()) 
-        {
+        {   
+            $this->logMessage(0);
             return false;
-        } else {
-            return true;
-        }
+        } 
 
-
+        $this->logMessage(1);
+        return true;
     }
 
     public function sendMessage(string $name = "") : bool
@@ -78,10 +80,27 @@ class mail {
 
 
         if(!$this->mail->send()) 
-        {
+        {   
+            $this->logMessage(0);
             return false;
         } 
+
+        $this->logMessage(1);
         return true;
+    }
+
+    private function logMessage(int $sent) : void
+    {   
+        $date = $this->date->format('Y-m-d H:i:s');
+
+        $stmt = $this->mysqli->prepare("INSERT INTO `awt_mail` (`sender`,`recipient`, `subject`, `content`,`date`,`sent`) VALUES (?, ?, ?, ?, ?, ?)");
+
+        $stmt->bind_param("sssssi",$this->sender, $this->reciever, $this->subject, $this->content, $date, $sent);
+
+        $stmt->execute();
+
+        $stmt->close();
+
     }
 
 

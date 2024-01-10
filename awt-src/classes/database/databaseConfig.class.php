@@ -8,11 +8,11 @@ use notifications\notifications;
 
 final class databaseConfig
 {
-    private static string $hostname = "";
-    private static string $database = "";
-    private static string $username = "";
-    private static string $password = "";
-    private static string $key = "";
+private static string $hostname = "";
+private static string $database = "";
+private static string $username = "";
+private static string $password = "";
+private static string $key = "";
     private static int $keyLength;
     private $authorized;
     private string $fileHash;
@@ -37,6 +37,7 @@ final class databaseConfig
         CLASSES . 'media' . DIRECTORY_SEPARATOR . 'media.class.php',
         CLASSES . 'notifications' . DIRECTORY_SEPARATOR . 'notifications.class.php',
         CLASSES . 'store' . DIRECTORY_SEPARATOR . 'store.class.php',
+        CLASSES . 'store' . DIRECTORY_SEPARATOR . 'updater.class.php',
         CLASSES . 'mail' . DIRECTORY_SEPARATOR . 'mail.class.php',
     );
 

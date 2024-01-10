@@ -1,24 +1,20 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.1deb1ubuntu1
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 09, 2024 at 11:35 PM
--- Server version: 10.6.16-MariaDB-1:10.6.16+maria~deb11
--- PHP Version: 8.2.13
+-- Generation Time: Jan 10, 2024 at 11:25 AM
+-- Server version: 8.0.35-0ubuntu0.23.10.1
+-- PHP Version: 8.2.10-2ubuntu1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
-
---
---
 
 -- --------------------------------------------------------
 
@@ -27,7 +23,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE IF NOT EXISTS `awt_access_authorization` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL AUTO_INCREMENT,
   `fileName` varchar(255) NOT NULL,
   `fileHash` varchar(255) NOT NULL,
   `uniqueKey` varchar(255) NOT NULL,
@@ -40,18 +36,17 @@ CREATE TABLE IF NOT EXISTS `awt_access_authorization` (
 -- Table structure for table `awt_admin`
 --
 
-CREATE TABLE IF NOT EXISTS `awt_admin` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
-  `email` varchar(255) NOT NULL,
-  `username` varchar(255) NOT NULL,
-  `firstname` varchar(255) NOT NULL,
-  `lastname` varchar(255) NOT NULL,
-  `last_logged_ip` varchar(255) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `token` varchar(255) NOT NULL,
-  `permission_level` int(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `awt_admin` (
+  `id` int NOT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `username` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `firstname` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `lastname` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `last_logged_ip` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `permission_level` int NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -59,11 +54,10 @@ CREATE TABLE IF NOT EXISTS `awt_admin` (
 -- Table structure for table `awt_albums`
 --
 
-CREATE TABLE IF NOT EXISTS `awt_albums` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `awt_albums` (
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -71,11 +65,14 @@ CREATE TABLE IF NOT EXISTS `awt_albums` (
 -- Table structure for table `awt_mail`
 --
 
-CREATE TABLE IF NOT EXISTS `awt_mail` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `content` text NOT NULL,
-  `date` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`)
+CREATE TABLE `awt_mail` (
+  `id` int NOT NULL,
+  `sender` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `recipient` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `subject` text COLLATE utf8mb4_general_ci NOT NULL,
+  `content` text COLLATE utf8mb4_general_ci NOT NULL,
+  `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `sent` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -84,13 +81,13 @@ CREATE TABLE IF NOT EXISTS `awt_mail` (
 -- Table structure for table `awt_media`
 --
 
-CREATE TABLE IF NOT EXISTS `awt_media` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
-  `album_id` int(255) DEFAULT NULL,
+CREATE TABLE `awt_media` (
+  `id` int NOT NULL,
+  `album_id` int DEFAULT NULL,
   `name` varchar(255) DEFAULT NULL,
   `file` varchar(255) NOT NULL,
   `file_type` varchar(20) NOT NULL,
-  `time` timestamp NOT NULL DEFAULT current_timestamp(),
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -100,28 +97,25 @@ CREATE TABLE IF NOT EXISTS `awt_media` (
 -- Table structure for table `awt_menus`
 --
 
-CREATE TABLE IF NOT EXISTS `awt_menus` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `items` text NOT NULL,
-  `active` int(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `awt_menus` (
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `items` text COLLATE utf8mb4_general_ci NOT NULL,
+  `active` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
 
 --
 -- Table structure for table `awt_notifications`
 --
 
-CREATE TABLE IF NOT EXISTS `awt_notifications` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
-  `caller` varchar(255) NOT NULL,
-  `content` varchar(255) NOT NULL,
-  `importance` varchar(32) NOT NULL,
-  `time` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=196 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `awt_notifications` (
+  `id` int NOT NULL,
+  `caller` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `content` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `importance` varchar(32) COLLATE utf8mb4_general_ci NOT NULL,
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -129,16 +123,15 @@ CREATE TABLE IF NOT EXISTS `awt_notifications` (
 -- Table structure for table `awt_paging`
 --
 
-CREATE TABLE IF NOT EXISTS `awt_paging` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `content_1` mediumtext DEFAULT NULL,
-  `content_2` mediumtext DEFAULT NULL,
-  `status` varchar(7) NOT NULL,
-  `token` varchar(255) DEFAULT NULL,
-  `override` int(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `awt_paging` (
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `content_1` mediumtext COLLATE utf8mb4_general_ci,
+  `content_2` mediumtext COLLATE utf8mb4_general_ci,
+  `status` varchar(7) COLLATE utf8mb4_general_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `override` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -146,14 +139,13 @@ CREATE TABLE IF NOT EXISTS `awt_paging` (
 -- Table structure for table `awt_password_reset`
 --
 
-CREATE TABLE IF NOT EXISTS `awt_password_reset` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `account_id` int(11) NOT NULL,
-  `code` int(255) NOT NULL,
-  `expires` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE current_timestamp(),
-  `status` tinyint(1) NOT NULL DEFAULT 1,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `awt_password_reset` (
+  `id` int NOT NULL,
+  `account_id` int NOT NULL,
+  `code` int NOT NULL,
+  `expires` datetime NOT NULL DEFAULT '0000-00-00 00:00:00' ON UPDATE CURRENT_TIMESTAMP,
+  `status` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -161,15 +153,14 @@ CREATE TABLE IF NOT EXISTS `awt_password_reset` (
 -- Table structure for table `awt_plugins`
 --
 
-CREATE TABLE IF NOT EXISTS `awt_plugins` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `icon` varchar(255) DEFAULT NULL,
-  `version` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
-  `status` int(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `awt_plugins` (
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `icon` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `version` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `description` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `status` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -177,14 +168,13 @@ CREATE TABLE IF NOT EXISTS `awt_plugins` (
 -- Table structure for table `awt_settings`
 --
 
-CREATE TABLE IF NOT EXISTS `awt_settings` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `value` varchar(255) NOT NULL,
-  `required_permission_level` int(1) NOT NULL DEFAULT 0,
-  `category` varchar(32) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `awt_settings` (
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `value` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `required_permission_level` int NOT NULL DEFAULT '0',
+  `category` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT 'Miscellaneous'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `awt_settings`
@@ -200,9 +190,7 @@ INSERT INTO `awt_settings` (`id`, `name`, `value`, `required_permission_level`, 
 (7, 'hostname_path', '/', 0, 'General'),
 (10, 'Enable API', 'true', 0, 'Security'),
 (11, 'API request whitelist', '*', 0, 'Security'),
-(13, 'PHP Error reporting', '0', 0, 'Security'),
-(14, 'Show default AWT widgets', 'true', 0, NULL),
-(15, 'Show Metrics widgets', 'true', 0, NULL);
+(13, 'PHP Error reporting', '0', 1, 'Security');
 
 -- --------------------------------------------------------
 
@@ -210,22 +198,182 @@ INSERT INTO `awt_settings` (`id`, `name`, `value`, `required_permission_level`, 
 -- Table structure for table `awt_themes`
 --
 
-CREATE TABLE IF NOT EXISTS `awt_themes` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `version` varchar(255) NOT NULL,
-  `placeholder` varchar(255) DEFAULT NULL,
-  `active` int(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `awt_themes` (
+  `id` int NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `version` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `placeholder` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `active` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `awt_themes`
 --
 
 INSERT INTO `awt_themes` (`id`, `name`, `description`, `version`, `placeholder`, `active`) VALUES
-(1, 'Twenty-Twenty-Three', 'This is a sleeek and modern theme for your website', '0.0.1', 'placeholder.png', 1);
+(1, 'Twenty-Twenty-Three', 'This is a sleek and modern theme for your website', '0.0.1', 'placeholder.png', 1);
+
+-- ... (rest of the SQL dump)
+
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `awt_access_authorization`
+--
+ALTER TABLE `awt_access_authorization`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `awt_admin`
+--
+ALTER TABLE `awt_admin`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `awt_albums`
+--
+ALTER TABLE `awt_albums`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `awt_mail`
+--
+ALTER TABLE `awt_mail`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `awt_media`
+--
+ALTER TABLE `awt_media`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `awt_menus`
+--
+ALTER TABLE `awt_menus`
+  ADD PRIMARY KEY (`id`);
+
+
+--
+-- Indexes for table `awt_notifications`
+--
+ALTER TABLE `awt_notifications`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `awt_paging`
+--
+ALTER TABLE `awt_paging`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `awt_password_reset`
+--
+ALTER TABLE `awt_password_reset`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `awt_plugins`
+--
+ALTER TABLE `awt_plugins`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `awt_settings`
+--
+ALTER TABLE `awt_settings`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `awt_themes`
+--
+ALTER TABLE `awt_themes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `awt_access_authorization`
+--
+ALTER TABLE `awt_access_authorization`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `awt_admin`
+--
+ALTER TABLE `awt_admin`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `awt_albums`
+--
+ALTER TABLE `awt_albums`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `awt_mail`
+--
+ALTER TABLE `awt_mail`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `awt_media`
+--
+ALTER TABLE `awt_media`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `awt_menus`
+--
+ALTER TABLE `awt_menus`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `awt_notifications`
+--
+ALTER TABLE `awt_notifications`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `awt_paging`
+--
+ALTER TABLE `awt_paging`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `awt_password_reset`
+--
+ALTER TABLE `awt_password_reset`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `awt_plugins`
+--
+ALTER TABLE `awt_plugins`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `awt_settings`
+--
+ALTER TABLE `awt_settings`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `awt_themes`
+--
+ALTER TABLE `awt_themes`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
