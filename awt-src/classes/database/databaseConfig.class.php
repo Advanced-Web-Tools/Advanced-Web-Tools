@@ -32,6 +32,8 @@ private static string $key = "";
         CLASSES . 'content' . DIRECTORY_SEPARATOR . 'pluginInstaller.class.php',
         CLASSES . 'content' . DIRECTORY_SEPARATOR . 'themeInstaller.class.php',
         CLASSES . 'paging' . DIRECTORY_SEPARATOR . 'paging.class.php',
+        CLASSES . 'paging' . DIRECTORY_SEPARATOR . 'editor.class.php',
+        CLASSES . 'paging' . DIRECTORY_SEPARATOR . 'renderer.class.php',
         CLASSES . 'settings' . DIRECTORY_SEPARATOR . 'settings.class.php',
         CLASSES . 'media' . DIRECTORY_SEPARATOR . 'albums.class.php',
         CLASSES . 'media' . DIRECTORY_SEPARATOR . 'media.class.php',
