@@ -1,24 +1,35 @@
-<script src="./javascript/themeEditor/hidenav.js">
-</script>
-<script src="./javascript/themeEditor/saveChanges.js"></script>
-<link rel="stylesheet" href="./css/themeEditor.css">
-<div class="preview">
-    <?php
+<?php
 
-    define('THEME_EDIT', 1);
+defined('DASHBOARD') or  die("You should not do that..");
+defined('ALL_CONFIG_LOADED') or die("An error has occured");
 
-    if (!isset($_GET['theme_page'])) {
-        $_GET['page'] = 'Home';
-    } else {
-        $_GET['page'] = $_GET['theme_page'];
-    }
+use admin\authentication;
 
-    include_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-themesLoader.php';
-    ?>
-</div>
-<div class="settings">
-    <div class="actions">
-        <button type="button" onclick="saveChanges('<?php echo $_GET['page']; ?>')" class="button">Save</button>
+$check = new authentication;
+
+if (!$check->checkAuthentication()) {
+    header("Location: ./login.php");
+    exit();
+}
+
+?>
+<link rel="stylesheet" href="./css/customize.css">
+<script src="./javascript/customize/customize.js"></script>
+<script src="./javascript/themes/themes.js"></script>
+
+<section class='customize'>
+    <div class="customize-theme shadow">
+        <p class="theme-name">Theme</p>
+        <a href='<?php echo HOSTNAME . "/awt-admin/?page=Theme Editor"?>' target='_blank' rel="norefer" ><button type="button" class='button' id="green">Customize! <i class="fa-solid fa-wand-magic-sparkles"></i></button>
     </div>
-    <?php include_once THEME_DIR . "settings.php"; ?>
-</div>
+</section>
+
+
+<script>
+    $(document).ready(function () {
+        getActiveTheme(function(response){
+            const data = JSON.parse(response);
+            $('.theme-name').text(data.name);
+        });    
+    });
+</script>

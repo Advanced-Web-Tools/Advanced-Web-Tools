@@ -27,6 +27,10 @@ if(isset($_POST['get_themes']))
     echo json_encode($themes->getThemes());
 }
 
+if(isset($_POST['get_active_theme'])) {
+    echo json_encode($themes->getActiveTheme());
+}
+
 if(isset($_POST['enable_theme']))
 {   
     if($themes->enableTheme($_POST['enable_theme'], $profiler)) {

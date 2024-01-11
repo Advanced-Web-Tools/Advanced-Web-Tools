@@ -1,0 +1,19 @@
+.page {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+.customize {
+    margin: 30px;
+}
+
+.customize-theme {
+    padding: 10px 20px;
+    background: #fff;
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}

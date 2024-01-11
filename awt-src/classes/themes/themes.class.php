@@ -39,7 +39,7 @@ class themes extends modules
         return $this->themes;
     }
 
-    public function getActiveTheme()
+    public function getActiveTheme() : array
     {
         foreach ($this->themes as $key => $value) {
             if ($value['active'] == 1) {
@@ -47,6 +47,8 @@ class themes extends modules
                 return $this->activeTheme;
             }
         }
+
+        return array();
     }
 
     public function loadTheme()
