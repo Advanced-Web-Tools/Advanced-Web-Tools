@@ -30,6 +30,7 @@ class paging extends cache
             'pageEditor' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'pageEditor.php',
             'Menus' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'menus.php',
             'Mail' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'mail.php',
+            'Theme Editor' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'themeEditor.php',
         );
 
         $this->pluginPages = $pluginPages;

@@ -13,3 +13,7 @@ if (!$check->checkAuthentication()) {
 }
 
 ?>
+
+<section class="theme-editor">
+
+</section>
