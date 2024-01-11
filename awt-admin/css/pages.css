@@ -7,16 +7,23 @@
     margin: 10px 0;
     display: grid;
     grid-auto-flow: row;
-    gap: 20px;
+    gap: 10px;
     font-family: "Roboto", sans-serif;
     font-weight: 400;  
     width: auto;
 }
 
+.table i {
+    color: var(--primary-color);
+    font-size: 20px;
+    cursor: pointer;
+    width: fit-content;
+    justify-self: center;
+}
 
 .table-row {
     display: grid;
-    grid-template-columns: repeat(5, 20%);
+    grid-template-columns: repeat(6, 16%);
     align-items: center;
     background-color: #fff;
     padding: 10px;
@@ -24,6 +31,9 @@
     text-align: center;
 }
 
+.table-row.modify {
+    row-gap: 20px;
+}
 
 .table-header {
     text-align: center;
@@ -52,10 +62,21 @@
     font-size: 13px;
 }
 
+.table .input,
+.table .select
+{
+    width: fit-content;
+    align-self: center;
+    justify-self: center;
+}
 
-.input {
-    height: auto;
-    font-size: 13px;
-    padding: 7px 15px;
-    border-radius: 5px;
+.table .select {
+    height: fit-content;
+    padding: 5px 10px;
+}
+
+.table textarea.input {
+    min-height: 50px;
+    width: 100%;
+    resize: vertical;
 }

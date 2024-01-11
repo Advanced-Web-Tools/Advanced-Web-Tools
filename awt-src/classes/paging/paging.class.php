@@ -74,7 +74,7 @@ class paging extends cache
         $stmt->bind_param('ss', $_GET['page'], $status);
         $stmt->execute();
         $stmt->store_result();
-        $stmt->bind_result($result['id'], $result['name'], $result['content_1'], $result['content_2'], $result['status'], $result['token'], $result['override']);
+        $stmt->bind_result($result['id'], $result['name'], $result['description'], $result['content_1'], $result['content_2'], $result['status'], $result['token'], $result['override']);
         $stmt->fetch();
 
 
@@ -198,7 +198,7 @@ class paging extends cache
     {
         $result = array();
 
-        $stmt = $this->mysqli->prepare("SELECT `id`, `name`, `status`, `override`, `token` FROM `awt_paging`");
+        $stmt = $this->mysqli->prepare("SELECT `id`, `name`, `description`, `status`, `override`, `token` FROM `awt_paging`");
         $stmt->execute();
         $res = $stmt->get_result();
 
@@ -326,11 +326,23 @@ class paging extends cache
         }
     }
 
-    public function getEveryPage()
+    public function getEveryPage() : array
     {   
         global $builtInPages;
         $result = $this->getAllPages();
         $result = array_merge($builtInPages, $result);
         return $result;
     }
+
+    public function changeInfo(int $id, string $change, string $value) : bool
+    {
+        $stmt = $this->mysqli->prepare("UPDATE `awt_paging` SET `" . $change . "` = ? WHERE `id` = ?");
+
+        $stmt->bind_param("si", $value, $id);
+
+        if($stmt->execute()) return true;
+
+        return false;
+    }
+
 }
