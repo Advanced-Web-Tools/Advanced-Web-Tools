@@ -1,4 +1,5 @@
 <?php
+use paging\editor;
 
 if (!defined("THEME_NAME")) {
     define("THEME_NAME", "Twenty-Twenty-Three");
@@ -30,11 +31,12 @@ if (!defined("THEME_NAME")) {
 <div class="scene" style="overflow-x: hidden; z-index: 0; position: relative;">
     <?php
     if (isset($_GET['editPage'])) {
-        $paging->loadPageEdit($_GET['editPage']);
+        $editor = new editor(array());
+        $editor->loadPageEdit($_GET['editPage']);
     } else if (isset($_GET['preview'])) {
         $paging->loadPreview($_GET['preview'], $_GET['page']);
     } else {
-        $paging->loadPage($_GET['page'], "name");
+        $paging->getPage(false);
     }
     ?>
 
