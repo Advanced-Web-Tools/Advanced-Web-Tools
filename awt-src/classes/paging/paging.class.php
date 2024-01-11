@@ -289,7 +289,7 @@ class paging extends cache
             $stmt->bind_param('ss', $page, $status);
             $stmt->execute();
             $stmt->store_result();
-            $stmt->bind_result($result['id'], $result['name'], $result['content_1'], $result['content_2'], $result['status'], $result['token'], $result['override']);
+            $stmt->bind_result($result['id'], $result['description'], $result['name'], $result['content_1'], $result['content_2'], $result['status'], $result['token'], $result['override']);
             $stmt->fetch();
         }
 
@@ -313,7 +313,7 @@ class paging extends cache
         $stmt->bind_param('sss', $name, $token, $status);
         $stmt->execute();
         $stmt->store_result();
-        $stmt->bind_result($result['id'], $result['name'], $result['content_1'], $result['content_2'], $result['status'], $result['token'], $result['override']);
+        $stmt->bind_result($result['id'], $result['description'], $result['name'], $result['content_1'], $result['content_2'], $result['status'], $result['token'], $result['override']);
         $stmt->fetch();
 
         if ($stmt->num_rows == 1) {
