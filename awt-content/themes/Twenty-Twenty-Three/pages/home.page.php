@@ -13,19 +13,19 @@
 
 <body>
     <?php $theme->loadModule("Menu"); ?>
-    <?php $theme->loadCSS('/css/home.css'); ?>
-    <?php $theme->loadCSS('/css/startNow.css'); ?>
-    <?php $theme->loadCSS('/css/presentation.css'); ?>
-    <?php $theme->loadCSS('/css/features.css'); ?>
     <section class="pageSection">
-        <section class="landing">
-            <div class="container">
-                <div class="heading-container block">
+        <?php $theme->loadCSS('/css/home.css'); ?>
+        <?php $theme->loadCSS('/css/startNow.css'); ?>
+        <?php $theme->loadCSS('/css/presentation.css'); ?>
+        <?php $theme->loadCSS('/css/features.css'); ?>
+        <section class="landing block">
+            <div class="container block">
+                <div class="heading-container">
                     <h1>
                         Launch your website with a stunning Twenty-Twenty-Three theme.
                     </h1>
                 </div>
-                <div class="description-container block">
+                <div class="description-container">
                     <p>
                         Our theme is designed to make your website stand out and impress your audience. With easy
                         customization options, you can have a professional-looking website in no time. Say goodbye to
@@ -33,10 +33,10 @@
                         and hello to Twent-Twenty-Three.
                     </p>
                 </div>
-                <div class="button-container block">
+                <div class="button-container">
                     <a href="#">
                         <button class="landing-button">
-                            Get Started
+                            <p style='padding: 0; margin: 0;'>Get started</p>
                         </button>
                     </a>
                 </div>
@@ -44,8 +44,8 @@
         </section>
         <section class="presentation block">
             <div class="container">
-                <img class="block" src="<?php echo $theme->getAssetLink("/assets/images/product-shot-p-800.webp"); ?>"
-                    alt="Product shot">
+                <img src="<?php echo $theme->getAssetLink("/assets/images/product-shot-p-800.webp"); ?>"
+                    alt="Product shot" class='block'>
                 <h2>Sleek and modern theme for your next project</h2>
                 <p> Upgrade your website with our cutting-edge theme designed to make a lasting impression. Our
                     templates are easy to customize and perfect for businesses of all sizes. Say goodbye to outdated
@@ -68,7 +68,7 @@
                 </div>
                 <span>
                     <img src="<?php echo $theme->getAssetLink("/assets/images/marginalia-coming-soon.webp"); ?>"
-                        alt="Create a stunning website with ease. ">
+                        alt="Create a stunning website with ease. " class='block'>
                 </span>
             </div>
             <div class="container block">
@@ -84,8 +84,8 @@
                     </p>
                 </div>
                 <span>
-                    <img src="<?php echo $theme->getAssetLink("/assets/images/marginalia-order-complete.webp"); ?>"
-                        alt="Launch your website in minutes, not hours.">
+                    <img src="<?php echo $theme->getAssetLink("/assets/images/marginalia-online-shopping.webp"); ?>"
+                        alt="Launch your website in minutes, not hours." class='block'>
                 </span>
             </div>
             <div class="container block">
@@ -103,25 +103,25 @@
                 </div>
                 <span>
                     <img src="<?php echo $theme->getAssetLink("/assets/images/marginalia-order-complete.webp"); ?>"
-                        alt="Effortlessly create stunning landing pages.">
+                        alt="Effortlessly create stunning landing pages." class='block'>
                 </span>
             </div>
         </section>
 
 
-        <section class="start-now">
+        <section class="start-now block">
             <h3>
                 Make your website stand out with the Twent-Twenty-Three theme.
             </h3>
             <div class="wrapper">
-                <a href="./awt-admin/?page=Customize"><button>
+                <a href="./awt-admin/?page=Customize" class='block'><button>
                         Start Now
                     </button></a>
             </div>
         </section>
     </section>
-
     <?php $theme->loadModule("Footer"); ?>
+
 </body>
 
 </html>

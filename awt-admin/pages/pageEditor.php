@@ -15,7 +15,7 @@ $theme->getActiveTheme();
 <script src="../awt-src/vendor/jQuery/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-<script src="./javascript/themeEditor/hidenav.js">
+<script src="./javascript/pages/hidenav.js">
 </script>
 <script src="./javascript/pageEditor/pageEditor.js">
 </script>
