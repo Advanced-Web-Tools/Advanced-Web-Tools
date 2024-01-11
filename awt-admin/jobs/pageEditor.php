@@ -9,7 +9,7 @@ include_once JOBS . 'awt-domainBuilder.php';
 
 
 
-use paging\paging;
+use paging\editor;
 use admin\{authentication, profiler};
 
 $check = new authentication;
@@ -20,7 +20,7 @@ if (!$check->checkAuthentication()) {
     exit();
 }
 
-$paging = new paging(array());
+$paging = new editor(array());
 
 if(isset($_POST['getBlocks'])) echo json_encode($pluginBlocks);
 

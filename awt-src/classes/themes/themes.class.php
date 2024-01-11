@@ -125,7 +125,7 @@ class themes extends modules
         global $theme;
         global $paging;
         $this->linkToThemeDir = HOSTNAME . "awt-content/themes/" . $this->activeTheme['name'];
-        include_once THEMES . $this->activeTheme['name'] . DIRECTORY_SEPARATOR . "pages".DIRECTORY_SEPARATOR.$name.".php";
+        include_once THEMES . $this->activeTheme['name'] . DIRECTORY_SEPARATOR . "pages" . DIRECTORY_SEPARATOR.$name.".php";
     }
 
     public function enableTheme(int $id, profiler $profiler) {

@@ -56,7 +56,7 @@ $paging = new paging($pluginPages);
             <?php navbarLoader($navbar); ?>
         </nav>
         <section class="page">
-            <?php $paging->getPage(true, "paging"); ?>
+            <?php $paging->getPage(true, true, "paging"); ?>
         </section>
     </section>
 </body>

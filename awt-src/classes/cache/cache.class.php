@@ -14,9 +14,12 @@ class cache extends SessionHandler
     private array $files;
     private object $settings;
     public function initializeCache()
-    {
+    {   
         $this->settings = new settings;
-        $this->cacheEnabled = $this->settings->getSettingsValue('enable_caching');
+        $cacheEnabled = $this->settings->getSettingsValue('enable_caching');
+
+        if($cacheEnabled === "true") $this->cacheEnabled = true;
+        if($cacheEnabled === "false") $this->cacheEnabled = false;
         $this->sessionDuration = $this->settings->getSettingsValue('page_caching_time');
         $this->fileDuration = $this->settings->getSettingsValue('cache_in_session_time');
         $this->location = CACHE;
@@ -29,6 +32,11 @@ class cache extends SessionHandler
             $this->files = scandir($this->location);
             unset($this->files[0]);
             unset($this->files[1]);
+
+            foreach($this->files as $key => $file) {
+                if(!str_ends_with($file, "_cached.html")) unset($this->files[$key]);
+            }
+
             return $this->files;
         }
         return false;
@@ -50,6 +58,8 @@ class cache extends SessionHandler
 
     public function checkForCache($name)
     {
+        if(!$this->cacheEnabled) return false;
+
         $this->scanCacheDirectory();
         $this->validateCache();
 
@@ -58,13 +68,16 @@ class cache extends SessionHandler
     }
 
     public function readCache($name)
-    {
+    {   
+        if(!$this->cacheEnabled) return false;
         if ($this->checkForCache($name)) return file_get_contents(CACHE . $name . '_cached.html');
         return false;
     }
 
     public function writePageCache($name, $content)
-    {
+    {   
+        if(!$this->cacheEnabled) return false;
+        
         $file = fopen(CACHE . $name . '_cached.html', 'w');
         fwrite($file, $content);
         fclose($file);
