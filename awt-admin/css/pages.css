@@ -13,12 +13,15 @@
     width: auto;
 }
 
-.table i {
-    color: var(--primary-color);
+.table-row i {
     font-size: 20px;
     cursor: pointer;
     width: fit-content;
     justify-self: center;
+}
+
+.table-row.modify i {
+    color: var(--primary-color);
 }
 
 .table-row {
