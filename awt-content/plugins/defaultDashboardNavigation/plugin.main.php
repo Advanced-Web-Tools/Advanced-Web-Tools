@@ -17,7 +17,7 @@ if (!defined('DASHBOARD') || !checkForPlugin('floatingEditor', '0.0.1') == true)
     $nav->addItem(array('icon' => $location . 'store-solid.svg', 'name' => 'Store', 'link' => HOSTNAME . 'awt-admin/?page=Store', 'permission' => 0));
     $nav->addItem(array('icon' => $location . 'compass-solid.svg', 'name' => 'Menus', 'link' => HOSTNAME . 'awt-admin/?page=Menus', 'permission' => 1));
     $nav->addItem(array('icon' => $location . 'media.svg', 'name' => "My Media", 'link' => HOSTNAME . 'awt-admin/?page=Media', 'permission' => 2));
-    $nav->addItem(array('icon' => $location . 'sliders-solid.svg', 'name' => "Theme Editor", 'link' => HOSTNAME . 'awt-admin/?page=ThemeEditor', 'permission' => 0, 'attr' => 'target="_blank"'));
+    $nav->addItem(array('icon' => $location . 'wand-magic-sparkles-solid.svg', 'name' => "Customize", 'link' => HOSTNAME . 'awt-admin/?page=Customize', 'permission' => 1));
     $nav->addItem(array('icon' => $location . 'users-solid.svg', 'name' => 'Accounts', 'link' => HOSTNAME . 'awt-admin/?page=Accounts', 'permission' => 2));
     $nav->addItem(array('icon' => $location . 'envelopes-bulk-solid.svg', 'name' => 'Mail', 'link' => HOSTNAME . 'awt-admin/?page=Mail', 'permission' => 2));
     $settings->addItem(array('icon' => $location . 'toolbox-solid.svg', 'name' => 'Settings', 'link' => HOSTNAME . 'awt-admin/?page=Settings', 'permission' => 0));
