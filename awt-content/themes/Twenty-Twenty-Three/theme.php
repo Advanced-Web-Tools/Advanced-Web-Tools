@@ -31,9 +31,6 @@ if (!defined('DASHBOARD') || defined('THEME_EDIT')) {
         $theme->addModule("Features", THEME_MODULES_DIR . "features.mod.php");
         $theme->addModule("Start Now", THEME_MODULES_DIR . "start-now.mod.php");
 
-        $theme->addSettingsPage('global', THEME_DIR . 'pageSettings' . DIRECTORY_SEPARATOR . "globalSettings.php", true);
-        $theme->addSettingsPage('Home', THEME_DIR . 'pageSettings' . DIRECTORY_SEPARATOR . "homePageModules.php");
-
         $colors = $theme->retrieveCSSColors(THEME_DIR . "settings.xml");
 
         $theme->loadCSS('/css/theme.css');
@@ -47,13 +44,22 @@ if (!defined('DASHBOARD') || defined('THEME_EDIT')) {
 
         echo '<script src="' . HOSTNAME . '"/awt-src/vendor/jQuery/jquery.min.js"></script>';
         echo '<link href="' . HOSTNAME . '/awt-src/vendor/fontawesome-free-6.4.2-web/css/all.css" rel="stylesheet">';
+    
+
+        if(!defined('THEME_EDIT')) $theme->loadModule("Menu");
+
         if (!isset($_GET['page']) || empty($_GET['page']))
             $_GET['page'] = "Home";
+
+        echo "<title>" . WEB_NAME ." | ". $_GET['page'] . "</title>";
 
         if (isset($_GET['custom'])) {
             include THEME_PAGES_DIR . "customPage.page.php";
         } else {
             $paging->getPage(true, true, 'paging');
         }
+
+        if(!defined('THEME_EDIT')) $theme->loadModule("Footer");
+        
     }
 }

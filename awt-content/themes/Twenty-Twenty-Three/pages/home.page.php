@@ -1,18 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="<?php echo $paging->pages['Home']['description']; ?>">
-    <title>
-        <?php echo WEB_NAME . " | Home"; ?>
-    </title>
-</head>
-
-<body>
-    <?php $theme->loadModule("Menu"); ?>
     <section class="pageSection">
         <?php $theme->loadCSS('/css/home.css'); ?>
         <?php $theme->loadCSS('/css/startNow.css'); ?>
@@ -20,34 +6,32 @@
         <?php $theme->loadCSS('/css/features.css'); ?>
         <section class="landing block">
             <div class="container block">
-                <div class="heading-container">
+                <div class="heading-container block">
                     <h1>
                         Launch your website with a stunning Twenty-Twenty-Three theme.
                     </h1>
                 </div>
-                <div class="description-container">
-                    <p>
+                <div class="description-container block">
+                    <p class="block">
                         Our theme is designed to make your website stand out and impress your audience. With easy
                         customization options, you can have a professional-looking website in no time. Say goodbye to
                         boring
                         and hello to Twent-Twenty-Three.
                     </p>
                 </div>
-                <div class="button-container">
-                    <a href="#">
-                        <button class="landing-button">
-                            <p style='padding: 0; margin: 0;'>Get started</p>
-                        </button>
-                    </a>
+                <div class="button-container block">
+                        <p class="landing-button">
+                            Get started
+                        </p>
                 </div>
             </div>
         </section>
         <section class="presentation block">
-            <div class="container">
+            <div class="container block">
                 <img src="<?php echo $theme->getAssetLink("/assets/images/product-shot-p-800.webp"); ?>"
                     alt="Product shot" class='block'>
-                <h2>Sleek and modern theme for your next project</h2>
-                <p> Upgrade your website with our cutting-edge theme designed to make a lasting impression. Our
+                <h2 class="block">Sleek and modern theme for your next project</h2>
+                <p class="block"> Upgrade your website with our cutting-edge theme designed to make a lasting impression. Our
                     templates are easy to customize and perfect for businesses of all sizes. Say goodbye to outdated
                     designs and hello to a fresh new look with Twenty-Twenty-Three. </p>
                 </p>
@@ -56,10 +40,10 @@
         <section class="features block">
             <div class="container block">
                 <div class="wrapper">
-                    <h3>
+                    <h3 class="block">
                         Create a stunning website with ease.
                     </h3>
-                    <p>
+                    <p class="block">
                         Don't let your lack of coding skills hold you back from creating a beautiful website. With
                         Twent-Twenty-Three, you can build an amazing website without any hassle. Our theme is
                         user-friendly
@@ -76,7 +60,7 @@
                     <h3>
                         Launch your website in minutes, not hours.
                     </h3>
-                    <p>
+                    <p class="block">
                         Don't waste time on complicated website setups. With Twent-Twenty-Three's easy-to-use and
                         customizable theme, you can launch your website in just a few clicks. Get your online presence
                         up
@@ -93,7 +77,7 @@
                     <h3>
                         Effortlessly create stunning landing pages.
                     </h3>
-                    <p>
+                    <p class="block">
                         With Twent-Twenty-Three, creating a beautiful landing page is as easy as dropping blocks into
                         the
                         page editor. Say goodbye to hours spent coding and designing—focus on your message and let our
@@ -120,8 +104,3 @@
             </div>
         </section>
     </section>
-    <?php $theme->loadModule("Footer"); ?>
-
-</body>
-
-</html>

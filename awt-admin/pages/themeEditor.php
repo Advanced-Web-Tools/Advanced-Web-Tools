@@ -69,7 +69,7 @@ if (!isset($_GET['theme_page'])) {
 
 <section class="preview">
     <?php
-    include_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-themesLoader.php';
+        include_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-themesLoader.php';
     ?>
 </section>
 

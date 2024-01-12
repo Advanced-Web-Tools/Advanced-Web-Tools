@@ -26,8 +26,7 @@ if (!defined("THEME_NAME")) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<?php $theme->loadModule("Menu"); ?>
-
+<?php if (isset($_GET['editPage'])) $theme->loadModule("Menu"); ?>
 <div class="scene" style="overflow-x: hidden; z-index: 0; position: relative;">
     <?php
     if (isset($_GET['editPage'])) {
@@ -41,9 +40,8 @@ if (!defined("THEME_NAME")) {
     ?>
 
 </div>
-<?php
-$theme->loadModulesByOrder(THEME_DIR . "customPage.xml"); 
-?>
+<?php if (isset($_GET['editPage'])) $theme->loadModule("Footer"); ?>
+
 </body>
 </html>
 

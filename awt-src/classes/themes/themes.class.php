@@ -76,12 +76,12 @@ class themes extends modules
         include_once THEMES . $this->activeTheme['name'] . DIRECTORY_SEPARATOR . "theme.php";
     }
 
-    public function loadCSS($path)
+    public function loadCSS(string $path) : void
     {
         echo '<link rel="stylesheet" href="' . $this->linkToThemeDir . $path . '">';
     }
 
-    public function getAssetLink($path)
+    public function getAssetLink(string $path)
     {
         return $this->linkToThemeDir . $path;
     }
@@ -101,25 +101,6 @@ class themes extends modules
         }
 
         return $colors;
-    }
-
-    public function addSettingsPage($name, $path, $global = false)
-    {
-        if (!$global) $this->settingsPage[$name]['path'] = $path;
-        if ($global) $this->settingsPage['global']['path'] = $path;
-        return $this->settingsPage;
-    }
-
-    public function loadSettingsPage($name)
-    {
-        if (array_key_exists($name, $this->settingsPage)) return $this->settingsPage[$name]['path'];
-        return false;
-    }
-
-    public function loadGlobalSettingsPage()
-    {
-        if (array_key_exists("global", $this->settingsPage)) return $this->settingsPage["global"]['path'];
-        return false;
     }
 
     public function loadThemePage(string $name)

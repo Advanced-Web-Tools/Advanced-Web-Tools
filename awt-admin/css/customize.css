@@ -14,6 +14,17 @@
     border-radius: 5px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     align-items: center;
 }
+
+.customize-theme .customize-wrapper {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.customize-theme .customize-wrapper .select {
+    height: 33px !important;
+}
+
