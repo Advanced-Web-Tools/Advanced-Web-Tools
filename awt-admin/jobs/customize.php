@@ -19,4 +19,16 @@ if (!$check->checkAuthentication()) {
     exit();
 }
 
+$theme = new themes;
+
 if(isset($_POST['get_built_in_pages'])) die(json_encode($builtInPages));
+
+if(isset($_POST['fetch_custom'])){ 
+    $theme->getActiveTheme();
+    die(json_encode($theme->getAllCustomizedPages($theme->activeTheme['id'])));
+};
+
+if(isset($_POST["revert_changes"])) {
+    $theme->getActiveTheme();
+    die(json_encode($theme->revertChanges($theme->activeTheme['id'])));
+}

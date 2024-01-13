@@ -159,6 +159,37 @@ class themes extends modules
         return true;
     }
 
+    public function getAllCustomizedPages(int $id)
+    {
+
+        $stmt = $this->mysqli->prepare("SELECT `id`, `page_name` FROM `awt_theme_page` WHERE `theme_id` = ?");
+
+        $stmt->bind_param("i", $id);
+
+        
+        if($stmt->execute()) {
+            $row = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            $stmt->close();
+        } else {
+            die("ERROR HAS OCCURED");
+        }
+
+        return $row;
+    }
+
+    public function revertChanges(int $id)
+    {
+        $stmt = $this->mysqli->prepare("DELETE FROM `awt_theme_page` WHERE `theme_id` = ?");
+
+        $stmt->bind_param("i", $id);
+
+        if($stmt->execute()) {
+            $stmt->close();
+        } else {
+            die("ERROR HAS OCCURED");
+        }
+    }
+
     public function uploadCustomPage(string $name, string $content)
     {
         $this->getActiveTheme();

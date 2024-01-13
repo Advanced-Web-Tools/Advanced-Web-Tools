@@ -18,6 +18,7 @@ if (!$check->checkAuthentication()) {
 <script src="./javascript/themes/themes.js"></script>
 
 <section class='customize'>
+    <h2>Customize theme page</h2>
     <div class="customize-theme shadow">
         <p class="theme-name">Theme</p>
         <div class='customize-wrapper'>
@@ -25,8 +26,11 @@ if (!$check->checkAuthentication()) {
             </select>
             <a id='customize' href='<?php echo HOSTNAME . "/awt-admin/?page=Theme Editor" ?>' target='_blank'
                 rel="norefer"><button type="button" class='button' id="green">Customize! <i
-                        class="fa-solid fa-wand-magic-sparkles"></i></button>
+                        class="fa-solid fa-wand-magic-sparkles"></i></button></a>
         </div>
+    </div>
+    <h2>Customized pages</h2>
+    <div class="customized-list">
 
     </div>
 </section>
@@ -49,8 +53,39 @@ if (!$check->checkAuthentication()) {
                 }
             });
 
-            $("#page").on('change', function(){
+            $("#page").on('change', function () {
                 $('#customize').attr('href', original_link + "&theme_page=" + $(this).val());
+            });
+
+        });
+
+        getCustomizedPages(function (response) {
+            const data = JSON.parse(response);
+            $('.customized-list').html(" ");
+            $.each(data, function (key, page) {
+                const html = $("<div>").addClass('customized-page').addClass('shadow');
+
+                const page_name = $("<p>").addClass('page-name');
+
+                const button = $("<button>").addClass('button');
+
+                page_name.text(page.page_name);
+
+                button.html('Revert changes <i class="fa-solid fa-rotate-right"></i>');
+                button.attr("data-id", page.id);
+                button.attr("id", "red");
+
+
+                button.click(function(e) {
+                    revertChanges(page.id, function(){
+                        location.reload();
+                    });
+                });
+
+                html.append(page_name);
+                html.append(button);
+
+                $('.customized-list').append(html);
             });
 
         });
