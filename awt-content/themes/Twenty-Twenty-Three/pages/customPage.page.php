@@ -18,16 +18,9 @@ if (!defined("THEME_NAME")) {
 
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
+
 <?php if (isset($_GET['editPage'])) $theme->loadModule("Menu"); ?>
-<div class="scene" style="overflow-x: hidden; z-index: 0; position: relative;">
+<div class="scene" style="z-index: 0; position: relative;">
     <?php
     if (isset($_GET['editPage'])) {
         $editor = new editor(array());
@@ -35,13 +28,11 @@ if (!defined("THEME_NAME")) {
     } else if (isset($_GET['preview'])) {
         $paging->loadPreview($_GET['preview'], $_GET['page']);
     } else {
-        $paging->getPage(false);
+        $paging->getPage(true, true, "paging");
     }
     ?>
 
 </div>
 <?php if (isset($_GET['editPage'])) $theme->loadModule("Footer"); ?>
 
-</body>
-</html>
 

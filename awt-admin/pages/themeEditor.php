@@ -21,7 +21,7 @@ if (!isset($_GET['theme_page'])) {
 
 <link rel="stylesheet" href="./css/themeEditor.css">
 <link rel="stylesheet" href="./css/pageEditor.css">
-
+<script src="./javascript/themeEditor/editor.js"></script>
 <div class="textEditor hidden shadow">
     <div class="header">
         <p onclick="$(this).parent().parent().addClass('hidden')"><i class="fa-regular fa-circle-xmark"></i>
@@ -38,10 +38,8 @@ if (!isset($_GET['theme_page'])) {
 <div class="context-menu shadow hidden">
     <p>Quick options</p>
     <div class="context-group">
-        <button class="button" onclick="savePage('<?php echo $_GET['pageName']; ?>');"><i
+        <button class="button" onclick="saveThemePage('<?php echo $_GET['page']; ?>');"><i
                 class="fa-regular fa-floppy-disk"></i></button>
-        <button class="button" onclick="publishContent('<?php echo $_GET['pageName']; ?>');"><i
-                class="fa-solid fa-upload"></i></button>
         <button class="button" onclick="$('.selected').remove()"><i class="fa-solid fa-trash"></i></button>
     </div>
     <button class="button" onclick="copy()">Copy <i class="fa-regular fa-copy"></i></button>
@@ -62,7 +60,7 @@ if (!isset($_GET['theme_page'])) {
 
 <div class="top-menu">
     <div class="action-buttons">
-        <button type="button" onclick="publishContent('<?php echo $_GET['page']; ?>');"
+        <button type="button" onclick="saveThemePage('<?php echo $_GET['page']; ?>');"
             class="button" id="green">Save</button>
     </div>
 </div>

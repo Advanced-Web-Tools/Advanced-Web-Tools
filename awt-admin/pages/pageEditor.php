@@ -100,7 +100,7 @@ $theme->getActiveTheme();
                 </div>
             </div>
             <?php
-                $theme->loadThemePage("customPage.page");
+                $theme->loadThemePage("customPage");
             ?>
         </div>
         <div class="editor-tools">

@@ -48,15 +48,14 @@ if (!defined('DASHBOARD') || defined('THEME_EDIT')) {
 
         if(!defined('THEME_EDIT')) $theme->loadModule("Menu");
 
-        if (!isset($_GET['page']) || empty($_GET['page']))
-            $_GET['page'] = "Home";
-
+        if (!isset($_GET['page']) || empty($_GET['page'])) $_GET['page'] = "Home";
+        
         echo "<title>" . WEB_NAME ." | ". $_GET['page'] . "</title>";
 
         if (isset($_GET['custom'])) {
             include THEME_PAGES_DIR . "customPage.page.php";
         } else {
-            $paging->getPage(true, true, 'paging');
+            $theme->loadThemePage($_GET['page']);
         }
 
         if(!defined('THEME_EDIT')) $theme->loadModule("Footer");
