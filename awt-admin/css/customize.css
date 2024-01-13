@@ -31,6 +31,15 @@
     height: 33px !important;
 }
 
+.customized-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.customized-list h3 {
+    text-align: center;
+}
 
 .customized-page {
     justify-content: space-between;

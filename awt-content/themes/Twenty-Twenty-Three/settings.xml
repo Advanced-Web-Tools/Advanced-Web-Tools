@@ -10,4 +10,9 @@
         <primary-button>#c5aba5</primary-button>
         <secondary-button>#f7f6f3</secondary-button>
     </csscolors>
+    <branding>
+        <enabled>false</enabled>
+        <logo>/</logo>
+        <name>Twenty-Twenty-Three</name>
+    </branding>
 </settings>

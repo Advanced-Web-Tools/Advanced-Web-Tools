@@ -29,8 +29,12 @@ if (!$check->checkAuthentication()) {
                         class="fa-solid fa-wand-magic-sparkles"></i></button></a>
         </div>
     </div>
-    <h2>Customized pages</h2>
+    <h2>Customized theme pages</h2>
     <div class="customized-list">
+
+    </div>
+    <h2>Theme settings</h2>
+    <div class="theme-settings">
 
     </div>
 </section>
@@ -61,7 +65,10 @@ if (!$check->checkAuthentication()) {
 
         getCustomizedPages(function (response) {
             const data = JSON.parse(response);
-            $('.customized-list').html(" ");
+            $('.customized-list').html("<h3> This list is empty. Customize your first page to populate this. </h3>");
+
+            if(data.length > 0) $('.customized-list').html(" ");
+
             $.each(data, function (key, page) {
                 const html = $("<div>").addClass('customized-page').addClass('shadow');
 
