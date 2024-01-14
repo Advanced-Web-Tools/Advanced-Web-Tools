@@ -20,7 +20,7 @@
                     </p>
                 </div>
                 <div class="button-container block">
-                        <p class="landing-button">
+                        <p class="landing-button block
                             Get started
                         </p>
                 </div>
