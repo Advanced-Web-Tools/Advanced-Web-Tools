@@ -132,10 +132,13 @@ class updater extends store
     private function updateConfigFile()
     {
         $this->replaceFileContent(ROOT . DIRECTORY_SEPARATOR . 'awt-config.php', 'define(\'WEB_NAME\', "");', 'define("WEB_NAME", "' . WEB_NAME . '");');
+        $this->replaceFileContent(ROOT . DIRECTORY_SEPARATOR . 'awt-config.php', 'define("WEB_NAME", "");', 'define("WEB_NAME", "' . WEB_NAME . '");');
 
         $this->replaceFileContent(ROOT . DIRECTORY_SEPARATOR . 'awt-config.php', 'define(\'AWT_VERSION\', "");', 'define("AWT_VERSION", "' . $this->response[0]['version'] . '");');
+        $this->replaceFileContent(ROOT . DIRECTORY_SEPARATOR . 'awt-config.php', 'define("AWT_VERSION", "");', 'define("AWT_VERSION", "' . $this->response[0]['version'] . '");');
 
         $this->replaceFileContent(ROOT . DIRECTORY_SEPARATOR . 'awt-config.php', 'define("CONTACT_EMAIL", "");', 'define("CONTACT_EMAIL", "' . CONTACT_EMAIL . '");');
+        
     }
     
 }

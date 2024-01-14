@@ -1,25 +1,10 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1deb1ubuntu1
--- https://www.phpmyadmin.net/
---
--- Host: localhost:3306
--- Generation Time: Jan 14, 2024 at 07:48 PM
--- Server version: 8.0.35-0ubuntu0.23.10.1
--- PHP Version: 8.2.10-2ubuntu1
+
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
+
 SET time_zone = "+00:00";
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `awt_development`
---
 
 -- --------------------------------------------------------
 
@@ -167,7 +152,6 @@ CREATE TABLE IF NOT EXISTS `awt_notifications` (
 CREATE TABLE IF NOT EXISTS `awt_paging` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `description` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `content_1` mediumtext COLLATE utf8mb4_general_ci,
   `content_2` mediumtext COLLATE utf8mb4_general_ci,
   `status` varchar(7) COLLATE utf8mb4_general_ci NOT NULL,
@@ -226,17 +210,18 @@ CREATE TABLE IF NOT EXISTS `awt_settings` (
 -- Dumping data for table `awt_settings`
 --
 
-INSERT INTO `awt_settings` (`id`, `name`, `value`, `required_permission_level`, `category`) VALUES
+INSERT IGNORE INTO `awt_settings` (`id`, `name`, `value`, `required_permission_level`, `category`) VALUES
 (1, 'enable_caching', 'false', 0, 'General'),
 (2, 'page_caching_time', '150', 0, 'General'),
 (3, 'cache_in_session_time', '300', 0, 'General'),
 (4, 'whitelist', 'false', 0, 'Security'),
 (5, 'whitelist_list', '127.0.0.1 ::1 localhost', 0, 'Security'),
 (6, 'use_plugins', 'true', 0, 'General'),
-(7, 'hostname_path', '/', 0, 'General'),
+(7, 'hostname_path', '/', 0, 'General'), -- Fixed the opening parenthesis here
 (10, 'Enable API', 'true', 0, 'Security'),
 (11, 'API request whitelist', '*', 0, 'Security'),
 (13, 'PHP Error reporting', '1', 1, 'Security');
+
 
 -- --------------------------------------------------------
 
@@ -258,8 +243,9 @@ CREATE TABLE IF NOT EXISTS `awt_themes` (
 -- Dumping data for table `awt_themes`
 --
 
-INSERT INTO `awt_themes` (`id`, `name`, `description`, `version`, `placeholder`, `active`) VALUES
-(1, 'Twenty-Twenty-Three', 'This is a sleeek and modern theme for your website', '0.0.1', 'placeholder.png', 1);
+INSERT IGNORE INTO `awt_themes` (`id`, `name`, `description`, `version`, `placeholder`, `active`)
+VALUES (1, 'Twenty-Twenty-Three', 'This is a sleek and modern theme for your website', '0.0.1', 'placeholder.png', 1);
+
 
 -- --------------------------------------------------------
 
@@ -290,8 +276,11 @@ CREATE TABLE IF NOT EXISTS `awt_theme_settings` (
   `value` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-COMMIT;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+START TRANSACTION;
+
+ALTER TABLE `awt_paging` ADD `description` VARCHAR(255) DEFAULT NULL AFTER `name`; 
+
+
+COMMIT;
