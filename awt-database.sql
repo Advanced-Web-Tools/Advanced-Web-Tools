@@ -209,9 +209,7 @@ INSERT INTO `awt_settings` (`id`, `name`, `value`, `required_permission_level`, 
 (7, 'hostname_path', '/', 0, 'General'),
 (10, 'Enable API', 'true', 0, 'Security'),
 (11, 'API request whitelist', '*', 0, 'Security'),
-(13, 'PHP Error reporting', '1', 1, 'Security'),
-(16, 'Show default AWT widgets', 'false', 1, 'Miscellaneous'),
-(17, 'Show Metrics widgets', 'false', 1, 'Miscellaneous');
+(13, 'PHP Error reporting', '1', 1, 'Security');
 
 -- --------------------------------------------------------
 
