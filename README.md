@@ -2,7 +2,11 @@
 
 [![Download](https://img.shields.io/badge/Download-Latest-blue.svg)](https://github.com/ElStefanos/Advanced-Web-Tools/releases/latest)
 
+![Logo](https://github.com/ElStefanos/Advanced-Web-Tools/assets/46761434/3b0a9d92-e134-4fbf-8c47-b3f1a8852ac2)
+
+
 ## Description
+
 Advanced Web Tools is a PHP-based Content Management System (CMS) project with a clear mission—to evolve into the fastest, most feature-rich, and developer-friendly CMS available. With a focus on speed, advanced functionality, and strict security measures, Advanced Web Tools CMS aims to redefine the standards of effective web content management.
 This is self-hosted software that is free for anyone to install. 
 
