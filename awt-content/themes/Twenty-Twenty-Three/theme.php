@@ -42,7 +42,7 @@ if (!defined('DASHBOARD') || defined('THEME_EDIT')) {
         $colorTextVar= $settings->getSetting("text-color-variant");
         $buttonPrim = $settings->getSetting("primary-button");
         $buttonSec = $settings->getSetting("secondary-button");
-
+        echo "<!DOCTYPE html>";
         $theme->loadCSS('/css/theme.css');
         echo "<style id='inline-styles'> :root {";
         
@@ -57,8 +57,8 @@ if (!defined('DASHBOARD') || defined('THEME_EDIT')) {
 
         echo "}</style>";
 
-        echo '<script src="' . HOSTNAME . '"/awt-src/vendor/jQuery/jquery.min.js"></script>';
-        echo '<link href="' . HOSTNAME . '/awt-src/vendor/fontawesome-free-6.4.2-web/css/all.css" rel="stylesheet">';
+        echo '<script src="' . HOSTNAME . '/awt-src/vendor/jQuery/jquery.min.js"></script>';
+        echo '<link href="' . HOSTNAME . '/awt-src/vendor/fontawesome-free-6.4.2-web/css/all.css" rel="stylesheet"/>';
     
 
         if(!defined('THEME_EDIT')) $theme->loadModule("Menu");

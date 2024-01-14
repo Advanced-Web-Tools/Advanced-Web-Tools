@@ -79,7 +79,7 @@ class themes extends modules
 
     public function loadCSS(string $path): void
     {
-        echo '<link rel="stylesheet" href="' . $this->linkToThemeDir . $path . '">';
+        echo '<link rel="stylesheet" href="' . $this->linkToThemeDir . $path . '"/>';
     }
 
     public function getAssetLink(string $path)
