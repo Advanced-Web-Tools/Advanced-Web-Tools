@@ -12,7 +12,6 @@ if (!defined("THEME_NAME")) {
     $theme->addModule("Presentation", THEME_MODULES_DIR . "presentation.mod.php");
     $theme->addModule("Features", THEME_MODULES_DIR . "features.mod.php");
     $theme->addModule("Start Now", THEME_MODULES_DIR . "start-now.mod.php");
-    $colors = $theme->retrieveCSSColors(THEME_DIR . "settings.xml");
     $theme->loadCSS('/css/theme.css');
 }
 
