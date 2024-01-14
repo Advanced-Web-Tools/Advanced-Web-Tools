@@ -1,2 +1,3 @@
-$('.top-nav').remove();
-$('.main-navbar').remove();
+$(document).ready(function () {
+    $('.main-navbar').toggleClass('hidden');
+});

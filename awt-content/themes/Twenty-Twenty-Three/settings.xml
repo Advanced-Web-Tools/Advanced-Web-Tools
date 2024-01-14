@@ -1,13 +1,14 @@
 <?xml version="1.0"?>
 <settings>
-    <csscolors>
-        <primary-color>#4263EB</primary-color>
-        <primary-color-variant>#EDF2FF</primary-color-variant>
-        <secondary-color>#FFFFFF</secondary-color>
-        <secondary-color-variant>#F2F2F2</secondary-color-variant>
-        <text-color>#212529</text-color>
-        <text-color-variant>#84898D</text-color-variant>
-        <primary-button>#c5aba5</primary-button>
-        <secondary-button>#f7f6f3</secondary-button>
-    </csscolors>
+        <primary-color type='color' category='Colors'>#4263EB</primary-color>
+        <primary-color-variant type='color' category='Colors'>#EDF2FF</primary-color-variant>
+        <secondary-color type='color' category='Colors'>#FFFFFF</secondary-color>
+        <secondary-color-variant type='color' category='Colors'>#F2F2F2</secondary-color-variant>
+        <text-color type='color' category='Colors'>#212529</text-color>
+        <text-color-variant type='color' category='Colors'>#84898D</text-color-variant>
+        <primary-button type='color' category='Colors'>#c5aba5</primary-button>
+        <secondary-button type='color' category='Colors'>#f7f6f3</secondary-button>
+        <branding-enabled type='checkbox' category='Branding'>true</branding-enabled>
+        <logo-URL type='text' category='Branding' placeholder='URL To logo image'>/</logo-URL>
+        <logo-text type='text' category='Branding' placeholder='Text instead of logo'>Twenty-Twenty-Three</logo-text>
 </settings>

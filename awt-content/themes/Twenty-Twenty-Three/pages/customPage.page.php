@@ -12,23 +12,14 @@ if (!defined("THEME_NAME")) {
     $theme->addModule("Presentation", THEME_MODULES_DIR . "presentation.mod.php");
     $theme->addModule("Features", THEME_MODULES_DIR . "features.mod.php");
     $theme->addModule("Start Now", THEME_MODULES_DIR . "start-now.mod.php");
-    $colors = $theme->retrieveCSSColors(THEME_DIR . "settings.xml");
     $theme->loadCSS('/css/theme.css');
 }
 
 
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>
-<?php $theme->loadModule("Menu"); ?>
 
-<div class="scene" style="overflow-x: hidden; z-index: 0; position: relative;">
+<?php if (isset($_GET['editPage'])) $theme->loadModule("Menu"); ?>
+<div class="scene" style="z-index: 0; position: relative;">
     <?php
     if (isset($_GET['editPage'])) {
         $editor = new editor(array());
@@ -36,14 +27,11 @@ if (!defined("THEME_NAME")) {
     } else if (isset($_GET['preview'])) {
         $paging->loadPreview($_GET['preview'], $_GET['page']);
     } else {
-        $paging->getPage(false);
+        $paging->getPage(true, true, "paging");
     }
     ?>
 
 </div>
-<?php
-$theme->loadModulesByOrder(THEME_DIR . "customPage.xml"); 
-?>
-</body>
-</html>
+<?php if (isset($_GET['editPage'])) $theme->loadModule("Footer"); ?>
+
 

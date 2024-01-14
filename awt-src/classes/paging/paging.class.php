@@ -24,12 +24,13 @@ class paging extends cache
             'Store' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'store.php',
             'Settings' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'settings.php',
             'Accounts' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'accounts.php',
-            'ThemeEditor' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'themeEditor.php',
+            'Customize' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'customize.php',
             'Pages' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'pages.php',
             'Media' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'media.php',
             'pageEditor' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'pageEditor.php',
             'Menus' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'menus.php',
             'Mail' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'mail.php',
+            'Theme Editor' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'themeEditor.php',
         );
 
         $this->pluginPages = $pluginPages;

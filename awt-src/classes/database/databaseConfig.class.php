@@ -8,11 +8,11 @@ use notifications\notifications;
 
 final class databaseConfig
 {
-private static string $hostname = "";
-private static string $database = "";
-private static string $username = "";
-private static string $password = "";
-private static string $key = "";
+    private static string $hostname = "";
+    private static string $database = "";
+    private static string $username = "";
+    private static string $password = "";
+    private static string $key = "";
     private static int $keyLength;
     private $authorized;
     private string $fileHash;
@@ -28,6 +28,7 @@ private static string $key = "";
         CLASSES . 'admin' . DIRECTORY_SEPARATOR . 'profiler.class.php',
         CLASSES . 'plugins' . DIRECTORY_SEPARATOR . 'plugins.class.php',
         CLASSES . 'themes' . DIRECTORY_SEPARATOR . 'themes.class.php',
+        CLASSES . 'themes' . DIRECTORY_SEPARATOR . 'settings.class.php',
         CLASSES . 'menu' . DIRECTORY_SEPARATOR . 'menu.class.php',
         CLASSES . 'content' . DIRECTORY_SEPARATOR . 'pluginInstaller.class.php',
         CLASSES . 'content' . DIRECTORY_SEPARATOR . 'themeInstaller.class.php',
@@ -159,15 +160,15 @@ private static string $key = "";
         try {
             $res = $this->mysqli->query("SELECT 1 FROM $tableName");
             if ($res !== false) {
-                return true; 
+                return true;
             } else {
-                return false; 
+                return false;
             }
         } catch (mysqli_sql_exception $ex) {
             return false;
         }
     }
-    
+
 
 
 

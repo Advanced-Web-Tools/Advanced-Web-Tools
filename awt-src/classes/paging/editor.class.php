@@ -23,11 +23,9 @@ class editor extends paging
     {
         $page_length = strlen($page);
 
-        $page = str_replace("ui-sortable-handle", "", $page);
-        $page = str_replace("ui-sortable", "", $page);
-        $page = str_replace("ui-sortable", "", $page);
-        $page = str_replace('contenteditable="true"', "", $page);
-        $page = str_replace('selected', "", $page);
+        $renderer = new renderer($this->pluginPages);
+
+        $page = $renderer::sanitizePage($page);
 
         if ($page_length > 16777215) {
             $content_1 = substr($page, 0, 16777214);
@@ -117,7 +115,6 @@ class editor extends paging
         $stmt->store_result();
         $stmt->bind_result($result['id'], $result['description'], $result['name'], $result['content_1'], $result['content_2'], $result['status'], $result['token'], $result['override']);
         $stmt->fetch();
-
 
         if ($stmt->num_rows == 1) {
 

@@ -13,8 +13,18 @@ class renderer extends paging
     {
         parent::__construct($pluginPages);
 
-        
+    }
 
+
+    public static function sanitizePage(string $page) : string
+    {
+        $page = str_replace("ui-sortable-handle", "", $page);
+        $page = str_replace("ui-sortable", "", $page);
+        $page = str_replace("ui-sortable", "", $page);
+        $page = str_replace('contenteditable="true"', "", $page);
+        $page = str_replace('selected', "", $page);
+
+        return $page;
     }
 
 

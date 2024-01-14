@@ -9,7 +9,7 @@
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
-SET time_zone = "+00:00";
+SET time_zone = "+01:00";
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -374,9 +374,65 @@ ALTER TABLE `awt_settings`
 --
 ALTER TABLE `awt_themes`
   MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
-COMMIT;
 
 ALTER TABLE `awt_paging` ADD `description` VARCHAR(255) NULL AFTER `name`; 
+
+CREATE TABLE `awt_theme_page` (
+  `id` int NOT NULL,
+  `theme_id` int NOT NULL,
+  `page_name` varchar(255) NOT NULL,
+  `content` longtext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `awt_theme_page`
+--
+ALTER TABLE `awt_theme_page`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `awt_theme_page`
+--
+ALTER TABLE `awt_theme_page`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+
+CREATE TABLE `awt_cron` (
+  `id` int NOT NULL,
+  `interval` int NOT NULL,
+  `last_run` int NOT NULL,
+  `caller` varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `awt_cron`
+--
+ALTER TABLE `awt_cron`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `awt_cron`
+--
+ALTER TABLE `awt_cron`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
