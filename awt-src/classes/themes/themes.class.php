@@ -87,23 +87,6 @@ class themes extends modules
         return $this->linkToThemeDir . $path;
     }
 
-    public function retrieveCSSColors($xmlFilePath)
-    {
-        $colors = array();
-
-        if (file_exists($xmlFilePath)) {
-            $xml = simplexml_load_file($xmlFilePath);
-
-            foreach ($xml->csscolors->children() as $child) {
-                $tagName = $child->getName();
-                $tagValue = (string) $child;
-                $colors[$tagName] = $tagValue;
-            }
-        }
-
-        return $colors;
-    }
-
     public function loadThemePage(string $name): void
     {
         global $theme;

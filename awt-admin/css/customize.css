@@ -44,3 +44,47 @@
 .customized-page {
     justify-content: space-between;
 }
+
+.theme-settings {
+    display: flex;
+    flex-wrap: wrap;
+    background: #fff;
+    border-radius: 5px;
+    min-height: 30px;
+    width: 95%;
+    gap: 5%;
+    padding: 0 2.5%;
+}
+
+.theme-settings .placeholder {
+    width: 100%;
+    text-align: center;
+}
+
+.setting {
+    width: 45%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.setting p {
+    text-transform: capitalize;
+    width: 30%;
+}
+
+.setting input {
+    width: 30%;
+}
+
+.setting input {
+    border: none;
+    background: none;
+    border-radius: 5px;
+}
+
+.setting input[type='text'] {
+    border: 1px solid var(--primary-color);
+    background: #f2f2f2;
+    padding: 5px 10px;
+}

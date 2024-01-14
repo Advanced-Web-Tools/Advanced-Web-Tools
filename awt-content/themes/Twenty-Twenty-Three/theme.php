@@ -1,4 +1,5 @@
 <?php
+use themes\settings;
 
 define("THEME_DIR", __DIR__ . DIRECTORY_SEPARATOR);
 define("THEME_PAGES_DIR", THEME_DIR . "pages" . DIRECTORY_SEPARATOR);
@@ -30,15 +31,29 @@ if (!defined('DASHBOARD') || defined('THEME_EDIT')) {
         $theme->addModule("Presentation", THEME_MODULES_DIR . "presentation.mod.php");
         $theme->addModule("Features", THEME_MODULES_DIR . "features.mod.php");
         $theme->addModule("Start Now", THEME_MODULES_DIR . "start-now.mod.php");
+        $settings = new settings();
+        $settings->getSettings();
 
-        $colors = $theme->retrieveCSSColors(THEME_DIR . "settings.xml");
+        $colorPrim = $settings->getSetting("primary-color");
+        $colorPrimVar = $settings->getSetting("primary-color-variant");
+        $colorSec = $settings->getSetting("secondary-color");
+        $colorSecVar = $settings->getSetting("secondary-color-variant");
+        $colorText= $settings->getSetting("text-color");
+        $colorTextVar= $settings->getSetting("text-color-variant");
+        $buttonPrim = $settings->getSetting("primary-button");
+        $buttonSec = $settings->getSetting("secondary-button");
 
         $theme->loadCSS('/css/theme.css');
         echo "<style id='inline-styles'> :root {";
-
-        foreach ($colors as $key => $value) {
-            echo "--$key: $value;";
-        }
+        
+        echo "--primary-color: " . $colorPrim['value'] . ";";
+        echo "--primary-color-variant: " . $colorPrimVar['value'] . ";";
+        echo "--secondary-color: " . $colorSec['value'];
+        echo "--secondary-color-variant: " . $colorSecVar['value'] . ";";
+        echo "--text-color: " . $colorText['value'] . ";";
+        echo "--text-color-variant: " . $colorTextVar['value'] . ";";
+        echo "--primary-button: " . $buttonPrim['value'] . ";";
+        echo "--secondary-button: " . $buttonSec['value'] . ";";
 
         echo "}</style>";
 

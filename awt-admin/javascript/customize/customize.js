@@ -41,3 +41,17 @@ function revertChanges(id, callback)
         }
     });
 }
+
+function getThemeSettings(callback)
+{
+    $.ajax({
+        type: "POST",
+        url: "./jobs/customize.php",
+        data: {
+            get_settings: 1
+        },
+        success: function (response) {
+            callback(response);
+        }
+    });
+}

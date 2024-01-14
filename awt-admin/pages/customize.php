@@ -4,7 +4,6 @@ defined('DASHBOARD') or die("You should not do that..");
 defined('ALL_CONFIG_LOADED') or die("An error has occured");
 
 use admin\authentication;
-
 $check = new authentication;
 
 if (!$check->checkAuthentication()) {
@@ -18,7 +17,7 @@ if (!$check->checkAuthentication()) {
 <script src="./javascript/themes/themes.js"></script>
 
 <section class='customize'>
-    <h2>Customize theme page</h2>
+    <h2>Customize theme pages</h2>
     <div class="customize-theme shadow">
         <p class="theme-name">Theme</p>
         <div class='customize-wrapper'>
@@ -34,8 +33,8 @@ if (!$check->checkAuthentication()) {
 
     </div>
     <h2>Theme settings</h2>
-    <div class="theme-settings">
-
+    <div class="theme-settings shadow">
+        <p class='placeholder'>This theme doesn't have any settings</p>
     </div>
 </section>
 
@@ -96,5 +95,103 @@ if (!$check->checkAuthentication()) {
             });
 
         });
+
+
+        getThemeSettings(function(response){
+
+            const data = JSON.parse(response);
+
+            if(data) $('.theme-settings').html(" ");
+            console.log(data);
+            $.each(data, function (key, setting) { 
+                const html = $("<div>");
+
+                html.addClass("setting");
+
+                const name = $("<p>");
+
+                name.text(key.replace(/-/g, " ") + ": ");
+
+                const input = $("<input>");
+
+                input.attr("type", setting.type);
+
+                input.val(setting.value);
+
+                if(setting.type == "checkbox") {
+                    if(setting.value == "true") input.attr('checked', 'true');
+                    input.change(function() {
+                        if(input.val() == 'true') {
+                            input.val('false');
+                        } else {
+                            input.val('true');
+                        }
+                        
+                    });
+                }
+
+                if(setting.placeholder) input.attr('placeholder', setting.placeholder);
+
+                
+
+                const button = $("<button>");
+                button.addClass('button');
+                button.text('Apply');
+
+                button.click(function(){
+
+                    const value = input.val();
+                    
+
+                    $.ajax({
+                        type: "POST",
+                        url: "./jobs/customize.php",
+                        data: {
+                            change_setting: key,
+                            value: value
+                        },
+
+                        success: function (response) {
+                            
+                        }
+                    });
+
+                });
+
+                const revert = $("<button>");
+                revert.addClass('button');
+                revert.attr("id", "red");
+                if(setting.id) revert.attr('data-id', setting.id);
+                revert.text('Revert Changes');
+
+                revert.click(function() {
+                    const id = revert.attr('data-id');
+                    if(!id) return;
+
+                    $.ajax({
+                        type: "POST",
+                        url: "./jobs/customize.php",
+                        data: {
+                            revert_setting: id,
+                        },
+
+                        success: function (response) {
+                            location.reload();
+                        }
+                    });
+
+                });
+
+
+                html.append(name);
+                html.append(input);
+                html.append(button);
+                html.append(revert);
+
+                $('.theme-settings').append(html);
+
+            });
+        });
+
     });
 </script>
