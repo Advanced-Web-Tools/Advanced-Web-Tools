@@ -36,7 +36,10 @@ if (!defined('DASHBOARD') || defined('THEME_EDIT')) {
         $settings = new settings();
         $settings->getSettings();
 
-        
+        $description = $settings->getSetting("description")['value'];
+        $separate_title_with = $settings->getSetting("separate-title-with")['value'];
+        $logo = $settings->getSetting("icon-URL")['value'];
+    
         $colorPrim = $settings->getSetting("primary-color");
         $colorPrimVar = $settings->getSetting("primary-color-variant");
         $colorSec = $settings->getSetting("secondary-color");
@@ -68,7 +71,9 @@ if (!defined('DASHBOARD') || defined('THEME_EDIT')) {
         $render->addToHead($themeColors);
         $render->addToHead('<script src="' . HOSTNAME . '/awt-src/vendor/jQuery/jquery.min.js"></script>');
         $render->addToHead('<link href="' . HOSTNAME . '/awt-src/vendor/fontawesome-free-6.4.2-web/css/all.css" rel="stylesheet"/>');
-        $render->addToHead("<title>" . WEB_NAME ." | ". $_GET['page'] . "</title>");
+        $render->addToHead("<title>" . WEB_NAME ." $separate_title_with ". $_GET['page'] . "</title>");
+        $render->addToHead('<meta name="description" content="'.$description.'">');
+        $render->addToHead('<link rel="icon" type="image/x-icon" href="'. $logo .'">');
 
         if(!defined('THEME_EDIT')){ 
             $nav = $theme->loadModule("Menu");
