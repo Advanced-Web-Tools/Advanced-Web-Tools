@@ -68,19 +68,6 @@ class themeInstaller extends fileScanner
             return $return;
         }
 
-        if (!file_exists($folder . DIRECTORY_SEPARATOR . 'settings.xml')) {
-            $return['installer']['notice']['Fatal'] = "Missing settings.xml";
-            $return['installer']['info']['error'] = 'Error parsing the package';
-            $this->rrmdir($folder);
-            return $return;
-        }
-
-        if (!file_exists($folder . DIRECTORY_SEPARATOR . 'settings.php')) {
-            $return['installer']['notice']['Fatal'] = "Missing settings.php";
-            $return['installer']['info']['error'] = 'Error parsing the package';
-            $this->rrmdir($folder);
-            return $return;
-        }
 
         $this->xml->open($folder . DIRECTORY_SEPARATOR . 'theme.xml');
 

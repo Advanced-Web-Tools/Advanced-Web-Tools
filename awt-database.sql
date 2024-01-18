@@ -247,6 +247,8 @@ INSERT IGNORE INTO `awt_themes` (`id`, `name`, `description`, `version`, `placeh
 VALUES (1, 'Twenty-Twenty-Three', 'This is a sleek and modern theme for your website', '0.0.1', 'placeholder.png', 1);
 
 
+INSERT IGNORE INTO `awt_menus` (`id`, `name`, `items`, `active`) VALUES
+(1, 'Default Menu', '<a href=\'?page=Home\'>Home</a>NEW_LINK<a href=\'?page=Blog\'>Blog</a>NEW_LINK<a href=\'?page=About Us\'>About Us</a>NEW_LINK', 1);
 -- --------------------------------------------------------
 
 --

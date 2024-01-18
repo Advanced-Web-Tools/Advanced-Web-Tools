@@ -44,8 +44,8 @@ if (!defined('DASHBOARD') || defined('THEME_EDIT')) {
         $buttonSec = $settings->getSetting("secondary-button");
         echo "<!DOCTYPE html>";
         $theme->loadCSS('/css/theme.css');
+        echo ' <meta name="viewport" content="width=device-width, initial-scale=1">';
         echo "<style id='inline-styles'> :root {";
-        
         echo "--primary-color: " . $colorPrim['value'] . ";";
         echo "--primary-color-variant: " . $colorPrimVar['value'] . ";";
         echo "--secondary-color: " . $colorSec['value'];
