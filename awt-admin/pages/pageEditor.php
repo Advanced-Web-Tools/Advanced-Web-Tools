@@ -7,9 +7,7 @@ use themes\themes;
 
 $theme = new themes;
 
-$theme->getThemes();
-
-$theme->getActiveTheme();
+$theme->loadTheme();
 
 ?>
 <script src="../awt-src/vendor/jQuery/jquery.min.js"></script>
@@ -100,7 +98,7 @@ $theme->getActiveTheme();
                 </div>
             </div>
             <?php
-                $theme->loadThemePage("customPage");
+                echo $theme->loadThemePage('custom');
             ?>
         </div>
         <div class="editor-tools">

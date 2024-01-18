@@ -1,4 +1,4 @@
-<?php $theme->loadCSS('/css/footer.css'); ?>
+<?php echo $theme->loadCSS('/css/footer.css'); ?>
 
 <section class="footer">
     <div class="contact">

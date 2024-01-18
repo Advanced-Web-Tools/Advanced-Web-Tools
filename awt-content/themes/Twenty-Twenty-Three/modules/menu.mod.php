@@ -7,7 +7,7 @@ $items = $menu->retrieveMenuItems();
 
 define("MENU_ITEMS", $items);
 
-$theme->loadCSS('/css/menu.css');
+echo $theme->loadCSS('/css/menu.css');
 
 ?>
 <script src="<?php echo $theme->getAssetLink('/javascript/menu/menu.js');?>"></script>

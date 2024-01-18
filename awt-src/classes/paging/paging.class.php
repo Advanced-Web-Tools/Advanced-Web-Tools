@@ -10,7 +10,7 @@ class paging extends cache
 {
     protected array $adminPages;
     protected array $pluginPages;
-    protected array $pages;
+    public array $pages;
     private object $database;
     private object $mysqli;
     public function __construct(array $pluginPages)
@@ -78,6 +78,7 @@ class paging extends cache
         global $menu;
         global $settings;
         global $aio;
+        global $render;
 
         $this->initializeCache();
 
