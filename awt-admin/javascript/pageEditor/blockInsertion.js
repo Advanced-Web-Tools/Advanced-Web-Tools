@@ -1,16 +1,15 @@
 var $blocksAll = $(".block");
 var $lastElement;
+let $currentElement = null;
+let timeoutId = null;
+let $newBlock = null;
+
 $(document).ready(function() {
     $blocksAll = $(".pageSection .block");
     insertBlock();
 });
 
-$
-
 function insertBlock() {
-    let $currentElement = null;
-    let timeoutId = null;
-    let $newBlock = null;
 
     $(document).on('mouseenter', '.block', handleMouseEnter);
     
@@ -60,10 +59,27 @@ function insertBlock() {
 
 function floatingBlocks(caller) {
     $('.floating-blocks').removeClass('hidden');
-    $('.floating-blocks').draggable();
-    fetchBlocks('.floating-blocks .block-container', caller, function () {
-        $(".floating-blocks").addClass('hidden');
-        $(document).off('mouseenter', '.block');
-        insertBlock();
+
+    const floating = $('.floating-blocks');
+
+    let offsetTop = $currentElement.offset().top - floating.outerHeight() * 1.3;
+    if(offsetTop < $(".preview").offset().top) offsetTop = $currentElement.offset().top + floating.outerHeight();
+
+    let offsetLeft = $currentElement.offset().left + ($currentElement.outerWidth() - floating.outerWidth()) / 2;
+
+    if(offsetLeft < $(".preview").offset().left) offsetLeft = $currentElement.offset().left - ($currentElement.outerWidth() + floating.outerWidth()) / floating.outerWidth();
+
+    floating.css({
+        'top': offsetTop,
+        'left': offsetLeft
     });
+
+
+  fetchBlocks('.floating-blocks .block-container', caller, function () {
+    $(".floating-blocks").addClass('hidden');
+    $(document).off('mouseenter', '.block');
+      insertBlock();
+  });
+
+  
 }

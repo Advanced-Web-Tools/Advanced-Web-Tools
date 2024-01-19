@@ -17,6 +17,7 @@ var blockOptions = [];
 
 
 function fetchBlocks(element, replacable = null, callback = null) {
+
   $(element).find('.category-container').remove();
 
   $.ajax({
@@ -25,36 +26,67 @@ function fetchBlocks(element, replacable = null, callback = null) {
     data: {
       getBlocks: 1
     },
-    success: function(response) {
+    success: function (response) {
+
       const collections = JSON.parse(response);
 
-      $.each(collections, function(key, collection){
+      $.each(collections, function (key, value) {
+
+        const collection = value;
         const categoryContainer = $('<div class="category-container"></div>');
+        const categoryLabel = $('<h4>').text(collection.name);
 
-        const categoryLabel = $('<h4>')
-          .text(collection.name)
-          .addClass(collection.name.replace(/\s/g, '-'))
-          .prepend('<img class="blIcon" src="' + collection.iconURL + '" alt="' + collection.name + '">');
-
+        categoryLabel.addClass(collection.name.replace(/ /g, '-'));
+        categoryLabel.append('<img class="blIcon" src="' + collection.iconURL + '"  alt="' + collection.name + '" />');
         categoryContainer.append(categoryLabel);
 
-        collection.blocks.forEach((block, index) => {
-          const childElement = $('<div>').addClass('block-item hidden ' + collection.name.replace(/\s/g, '-'));
+        collection.blocks.forEach(function (block, index) {
+
+          const childElement = $('<div>').addClass('block-item hidden ' + collection.name.replace(/ /g, '-'));
           const itemElement = $('<p>').text(block.name);
 
+          const itemHover = $("<div>").addClass('block-item-description shadow hidden');
+          itemHover.append($("<h5>").text(block.name));
+          itemHover.append($("<p>").text(block.description));
+
+          childElement.append('<img class="blIcon" src="' + block.iconURL + '"  alt="' + collection.name + '" />');
           childElement.append(itemElement);
+
+          childElement.append(itemHover);
+
+          childElement.click(function () {
+            getBlock(block.name, replacable);
+            if (callback !== null) callback();
+          });
+
+          childElement.on("mouseenter", function () {
+            var blockItemDescription = $(this).find('.block-item-description');
+            blockItemDescription.removeClass("hidden");
+          });
+
+          childElement.on("mouseleave", function () {
+            var blockItemDescription = $(this).find('.block-item-description');
+            blockItemDescription.addClass("hidden");
+          });
+
           categoryContainer.append(childElement);
+
         });
-
         $(element).append(categoryContainer);
+        categoryLabel.click(function (catClass) {
+          return function () {
+            $(element + ' .category-container .block-item.' + catClass).toggleClass('hidden');
+          }
+        }(collection.name.replace(" ", "-")));
       });
-
-      if (callback) {
-        callback();
-      }
+    },
+    error: function (xhr, status, error) {
+      console.log('AJAX request failed.');
+      console.log(error);
     }
   });
 }
+
 
 
 function getBlock(name, replacable = null) {
@@ -75,7 +107,7 @@ function getBlock(name, replacable = null) {
       saveToHistory();
 
       hasTextChild($(".block")).attr("contenteditable", "true");
-      
+
       $(".block").on("click", function (e) {
         BlockOptions($(this));
       }).children().on("click", function (e) {
@@ -123,7 +155,7 @@ function BlockOptions(element) {
   setDefaultOptions($block, defaultStyle);
 
   blockOptions.forEach((opt) => {
-    opt.loadOption($block , defaultStyle);
+    opt.loadOption($block, defaultStyle);
   });
 
   $(".add-child").off("click").on("click", function () {
@@ -238,7 +270,8 @@ function changeViewPort(caller) {
       "margin": 'auto auto',
       "height": '667px',
       "border": '2px solid #000',
-      "overflow": 'auto' // Add overflow control
+      "overflow": 'auto', // Add overflow control
+      "flex-grow": "0"
     });
     shrinkenView = true;
     $(caller).addClass("active");
@@ -247,7 +280,8 @@ function changeViewPort(caller) {
       "width": 'auto',
       "height": '100%',
       "border": 'none',
-      "overflow": 'auto' // Reset overflow
+      "overflow": 'auto',
+      "flex-grow": "1" // Reset overflow
     });
     shrinkenView = false;
     $(caller).removeClass("active");
@@ -352,17 +386,17 @@ $(document).ready(function () {
 
   initShortcuts();
 
-  fetchBlocks('.editor-tools');
+  fetchBlocks('.add-blocks');
 
-  var find = $('*').filter(function () { 
+  var find = $('*').filter(function () {
     return $(this).css('position') == 'fixed';
   });
 
-  find.each(function(){
-    $(this).css("width", "87.12%");
-    $(this).css("top", "50px");
-  })
+  find.each(function () {
+    $(this).css("position", "relative");
+    $(this).css("top", "0");
 
+  })
 });
 
 

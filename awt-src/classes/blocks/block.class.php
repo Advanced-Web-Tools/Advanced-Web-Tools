@@ -6,12 +6,9 @@ class block {
     public string $name;
     public string $iconURL;
     public string $description;
-
+    public string $descriptionImageURL;
     public string $path;
-
     private string $body;
-    
-
     public function __construct(string $name, string $path, string|null $iconURL = NULL, string|null $description = NULL) {
         $this->name = $name;
         $this->path = $path;

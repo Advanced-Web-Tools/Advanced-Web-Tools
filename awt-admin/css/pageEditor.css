@@ -24,10 +24,8 @@ body {
 }
 
 .stage {
-    display: grid;
-    grid-template-columns: 87.12% auto;
-    grid-template-rows: auto;
-    width: 100vw;
+    display: flex;
+    width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
@@ -42,6 +40,19 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 10px;
+}
+
+.add-blocks {
+    background: #fff;
+    width: 170px;
+    padding: 0 10px;
+    border-right: 1px solid lightgray;
+}
+
+.add-blocks .blocks-header p {
+    margin: 5px 0;
+    cursor: pointer;
+    width: fit-content;
 }
 
 .top-menu i {
@@ -62,16 +73,22 @@ body {
     scrollbar-color: #0080c0 #ffffff;
 }
 
+.preview {
+    width: 90%; 
+}
+
 .preview * {
     position: relative; 
 }
 
 .scene {
     height: auto;
+    width: 100%;
 }
 
 .block-options {
     scrollbar-width: none;
+    width: 210px;
 }
 
 .block-options::-webkit-scrollbar {
@@ -87,12 +104,22 @@ body {
     border-radius: 10px;
 }
 
+.category-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .category-container h4 {
     display: flex;
     align-items: center;
     justify-content: start;
     flex-direction: row-reverse;
     gap: 10px;
+    margin: 0;
+    padding: 10px 0;
+    border-bottom: 1px solid lightgrey;
+    cursor: pointer;
 }
 
 .category-container .block-item {
@@ -100,12 +127,44 @@ body {
     align-items: center;
     justify-content: start;
     gap: 15px;
+    cursor: pointer;
 }
 
 .category-container .block-item p {
     padding: 0;
     margin: 10px 0;
     width: fit-content;
+}
+
+.block-item .block-item-description {
+    position: absolute;
+    left: 190px;
+    height: fit-content;
+    width: 200px;
+    padding: 10px;
+    border-radius: 5px;
+    background: #fff;
+    z-index: 988;
+}
+
+.block-item .block-item-description h5 {
+    margin: 0;
+    padding: 0;
+}
+
+
+.block-item .block-item-description::before 
+{
+    content: ""; /* Add this line */
+    width: 0; 
+    height: 0; 
+    border-top: 20px solid transparent; 
+    border-bottom: 20px solid transparent;
+    border-right: 20px solid white; /* Change border-left to border-right */
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .blIcon {
@@ -121,7 +180,7 @@ body {
 }
 
 .editor-tools {
-    width: auto;
+    width: 10%;
     padding: 10px;
     background: #fff;
     border-left: 1px solid lightgray;
@@ -140,7 +199,6 @@ body {
     flex-wrap: nowrap;
     flex-direction: column;
     margin: 10px 0;
-    border-top: 2px solid lightgray;
     overflow-y: auto;
 }
 
@@ -371,7 +429,7 @@ body {
     float: left;
     z-index: 10;
     top: 150px;
-    width: 300px;
+    width: 150px;
     left: 50px;
     background: #fff;
     padding: 10px;

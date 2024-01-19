@@ -71,7 +71,6 @@ $theme->loadTheme();
 
     </div>
 </div>
-
 <section class="editor">
     <div class="top-menu">
         <div class="action-buttons">
@@ -80,12 +79,18 @@ $theme->loadTheme();
             <button type="button" onclick="savePage('<?php echo $_GET['pageName']; ?>');" class="button">Save</button>
         </div>
         <div class="viewport-actions">
+            <button class="button" id="green" onclick="$('.add-blocks').toggleClass('hidden')">Add Block</button>
             <button class="button" onclick="undo()">Undo <i class="fa-solid fa-rotate-left"></i></button>
             <button class="button" onclick="redo()">Redo <i class="fa-solid fa-rotate-right"></i></button>
             <i onclick="changeViewPort(this)" class="fa-solid fa-mobile-button"></i>
         </div>
     </div>
     <div class="stage">
+        <div class="add-blocks hidden">
+            <div class='blocks-header'>
+                <p onclick="$('.add-blocks ').toggleClass('hidden')"><i class="fa-regular fa-circle-xmark"></i></p>
+            </div>
+        </div>
         <div class="preview">
             <div class="textEditor hidden shadow">
                 <div class="header">
@@ -106,6 +111,7 @@ $theme->loadTheme();
         </div>
         <div class="editor-tools">
             <div class="block-options">
+                <p>Select an element to edit.</p>
             </div>
         </div>
     </div>

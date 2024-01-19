@@ -4,7 +4,7 @@ $theme->addModule("Menu", THEME_MODULES_DIR . "menu.mod.php");
 $theme->addModule("Footer", THEME_MODULES_DIR . "footer.mod.php");
 ?>
 
-<?php if (isset($_GET['editPage'])) echo $theme->loadModule("Menu"); ?>
+
 <div class="scene" style="z-index: 0; position: relative;">
     <?php
     if (isset($_GET['editPage'])) {
@@ -17,6 +17,6 @@ $theme->addModule("Footer", THEME_MODULES_DIR . "footer.mod.php");
     }
     ?>
 </div>
-<?php if (isset($_GET['editPage'])) echo $theme->loadModule("Footer"); ?>
+
 
 
