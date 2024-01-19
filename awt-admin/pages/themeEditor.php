@@ -81,6 +81,8 @@ if (!isset($_GET['theme_page'])) {
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 <script src="./javascript/pages/hidenav.js">
 </script>
+<script src="./javascript/pageEditor/blockOptions.js">
+</script>
 <script src="./javascript/pageEditor/pageEditor.js">
 </script>
 <script src="./javascript/pageEditor/defaultOptions.js">

@@ -15,13 +15,8 @@ var ignorePreviewClick = false;
 
 var blockOptions = [];
 
-function getBlocks() {
-
-}
-
 
 function fetchBlocks(element, replacable = null, callback = null) {
-
   $(element).find('.category-container').remove();
 
   $.ajax({
@@ -30,51 +25,33 @@ function fetchBlocks(element, replacable = null, callback = null) {
     data: {
       getBlocks: 1
     },
-    success: function (response) {
-
+    success: function(response) {
       const collections = JSON.parse(response);
 
-      $.each(collections, function (key, value) {
+      $.each(collections, function(key, collection){
+        const categoryContainer = $('<div class="category-container"></div>');
 
-        var collection = value;
-
-
-        var categoryContainer = $('<div class="category-container"></div>');
-
-        var categoryLabel = $('<h4>').text(collection.name);
-        categoryLabel.addClass(collection.name.replace(/ /g, '-'));
-        categoryLabel.append('<img class="blIcon" src="' + collection.iconURL + '"  alt="' + collection.name + '" />');
+        const categoryLabel = $('<h4>')
+          .text(collection.name)
+          .addClass(collection.name.replace(/\s/g, '-'))
+          .prepend('<img class="blIcon" src="' + collection.iconURL + '" alt="' + collection.name + '">');
 
         categoryContainer.append(categoryLabel);
 
-        collection.blocks.forEach(function (block, index) {
-          console.log(block);
-          var childElement = $('<div>').addClass('block-item hidden ' + collection.name.replace(/ /g, '-'));
-          var itemElement = $('<p>').text(block.name);
-          childElement.append('<img class="blIcon" src="' + block.iconURL + '"  alt="' + collection.name + '" />');
-          childElement.append(itemElement);
-          
-          childElement.click(function () {
-            getBlock(block.name, replacable);
-            if (callback !== null) callback();
-          });
+        collection.blocks.forEach((block, index) => {
+          const childElement = $('<div>').addClass('block-item hidden ' + collection.name.replace(/\s/g, '-'));
+          const itemElement = $('<p>').text(block.name);
 
+          childElement.append(itemElement);
           categoryContainer.append(childElement);
         });
 
         $(element).append(categoryContainer);
-
-        categoryLabel.click(function (catClass) {
-          return function () {
-            $(element + ' .category-container .block-item.' + catClass).toggleClass('hidden');
-          }
-        }(collection.name.replace(" ", "-")));
-
       });
-    },
-    error: function (xhr, status, error) {
-      console.log('AJAX request failed.');
-      console.log(error);
+
+      if (callback) {
+        callback();
+      }
     }
   });
 }
