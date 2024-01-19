@@ -13,6 +13,13 @@ var floatingBlockSelectorActive = false;
 
 var ignorePreviewClick = false;
 
+var blockOptions = [];
+
+function getBlocks() {
+
+}
+
+
 function fetchBlocks(element, replacable = null, callback = null) {
 
   $(element).find('.category-container').remove();
@@ -24,52 +31,46 @@ function fetchBlocks(element, replacable = null, callback = null) {
       getBlocks: 1
     },
     success: function (response) {
-      try {
-        var parsedResponse = JSON.parse(response);
 
-        if (parsedResponse && typeof parsedResponse === 'object') {
-          for (var category in parsedResponse) {
-            if (Array.isArray(parsedResponse[category])) {
+      const collections = JSON.parse(response);
 
-              var categoryLabel = $('<h4>').text(category);
-              categoryLabel.addClass(category.replace(/ /g, '-'));
+      $.each(collections, function (key, value) {
 
-              var categoryContainer = $('<div>').addClass('category-container');
-              categoryContainer.append(categoryLabel);
-              categoryLabel.append('<i class="fa-solid fa-layer-group" style="margin-left: 20px;"></i>');
+        var collection = value;
 
-              parsedResponse[category].forEach(function (block) {
-                var childElement = $('<div>').addClass('block-item hidden ' + category.replace(/ /g, '-'));
 
-                var itemElement = $('<p>').text(block.name);
+        var categoryContainer = $('<div class="category-container"></div>');
 
-                childElement.append(itemElement);
+        var categoryLabel = $('<h4>').text(collection.name);
+        categoryLabel.addClass(collection.name.replace(/ /g, '-'));
+        categoryLabel.append('<img class="blIcon" src="' + collection.iconURL + '"  alt="' + collection.name + '" />');
 
-                // Attach onclick event to the child element
-                childElement.click(function () {
-                  getBlock(block.name, replacable);
-                  if (callback !== null) callback();
-                });
+        categoryContainer.append(categoryLabel);
 
-                categoryContainer.append(childElement);
-              });
+        collection.blocks.forEach(function (block, index) {
+          console.log(block);
+          var childElement = $('<div>').addClass('block-item hidden ' + collection.name.replace(/ /g, '-'));
+          var itemElement = $('<p>').text(block.name);
+          childElement.append('<img class="blIcon" src="' + block.iconURL + '"  alt="' + collection.name + '" />');
+          childElement.append(itemElement);
+          
+          childElement.click(function () {
+            getBlock(block.name, replacable);
+            if (callback !== null) callback();
+          });
 
-              $(element).append(categoryContainer);
+          categoryContainer.append(childElement);
+        });
 
-              // Add a click event to toggle the visibility of child elements
-              categoryLabel.click(function (catClass) {
-                return function () {
-                  $(element + ' .category-container .block-item.' + catClass).toggleClass('hidden');
-                }
-              }(category.replace(" ", "-")));
-            }
+        $(element).append(categoryContainer);
+
+        categoryLabel.click(function (catClass) {
+          return function () {
+            $(element + ' .category-container .block-item.' + catClass).toggleClass('hidden');
           }
-        } else {
-          console.log('Parsed response is not in the expected format.');
-        }
-      } catch (error) {
-        console.log('Error parsing the response as JSON.');
-      }
+        }(collection.name.replace(" ", "-")));
+
+      });
     },
     error: function (xhr, status, error) {
       console.log('AJAX request failed.');
@@ -80,8 +81,6 @@ function fetchBlocks(element, replacable = null, callback = null) {
 
 
 function getBlock(name, replacable = null) {
-
-
   $.ajax({
     url: './jobs/pageEditor.php',
     type: 'POST',
@@ -99,7 +98,7 @@ function getBlock(name, replacable = null) {
       saveToHistory();
 
       hasTextChild($(".block")).attr("contenteditable", "true");
-
+      
       $(".block").on("click", function (e) {
         BlockOptions($(this));
       }).children().on("click", function (e) {
@@ -146,22 +145,9 @@ function BlockOptions(element) {
 
   setDefaultOptions($block, defaultStyle);
 
-  if (hasTextChild($block).length > 0) {
-    setTextOptions($block, defaultStyle);
-    isEditing($block);
-  }
-
-  if (hasListChild($block).length > 0) {
-    ListOptions($block, defaultStyle);
-  }
-
-  if (isMedia($block)) {
-    mediaOptions($block, defaultStyle);
-  }
-
-  if ($block.attr("id") === "grid-block") {
-    setGridOptions($block, defaultStyle);
-  }
+  blockOptions.forEach((opt) => {
+    opt.loadOption($block , defaultStyle);
+  });
 
   $(".add-child").off("click").on("click", function () {
     var newChildElement = '<div class="block"></div>';
@@ -180,11 +166,6 @@ function BlockOptions(element) {
       BlockOptions(this);
     });
   });
-}
-
-
-function quickOptions() {
-
 }
 
 function findNearestElement(x, y) {
@@ -209,7 +190,6 @@ function findNearestElement(x, y) {
   return nearestElement;
 }
 
-
 function contextMenu() {
   $(".context-menu").toggleClass("hidden");
   $(".context-menu").css('top', currentMousePos.y);
@@ -218,8 +198,6 @@ function contextMenu() {
     $(".context-menu").toggleClass("hidden");
     $(".context-menu *").unbind("click.context");
   });
-
-
 }
 
 

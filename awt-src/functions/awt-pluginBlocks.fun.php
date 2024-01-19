@@ -1,6 +1,7 @@
 <?php
+use blocks\{BlockCollection, block};
 
-function createBlockCollection(string $collection)
+function createBlockCollection(string $collection, BlockCollection $blockCollection)
 {
     global $dependencies;
     global $plugins;
@@ -15,101 +16,56 @@ function createBlockCollection(string $collection)
     global $loadedPlugins;
     global $pluginBlocks;
     global $loadedBlocks;
-    $pluginBlocks[$collection] = array();
+    $pluginBlocks[$collection] = $blockCollection;
+    $loadedBlocks[] = $blockCollection->blocks;
 }
 
-function addBlock(array $block, string $collection)
-{
-    global $dependencies;
-    global $plugins;
-    global $aio;
-    global $settings;
-    global $pluginPages;
-    global $dashboardWidgets;
-    global $menu;
-    global $navbar;
-    global $engines;
-    global $widgets;
-    global $loadedPlugins;
-    global $pluginBlocks;
-    global $loadedBlocks;
-    array_push($pluginBlocks[$collection], $block);
-    $loadedBlocks[] = $block['name'];
-}
-
-function checkForCollection(string $collection)
+function getBlockFromCollection(string $collection, string $name)
 {
     global $pluginBlocks;
     global $loadedBlocks;
-
-    if(array_key_exists($collection, $pluginBlocks)) return true;
-
-    return false;
+    return $pluginBlocks[$collection]->blocks[$name]->getBlock();
 }
 
-function checkBlock(string $name) {
+
+function getCollectionInfo(string $name)
+{
     global $pluginBlocks;
+    return $pluginBlocks[$name]->getInfo();
+}
+
+function getAllBlocksFromCollection(string $name)
+{
+    global $pluginBlocks;
+    return $pluginBlocks[$name]->getAllBlocks();
+}
+
+function findBlock(string $name)
+{
     global $loadedBlocks;
-    foreach($pluginBlocks as $collection)
-    {
-        foreach($collection as $blocks => $value) {
-            if($value["name"] == $name) return $value;
+
+    foreach ($loadedBlocks as $key => $value) {
+        foreach ($value as $block) {
+            if ($block->name == $name) {
+                return $block;
+            }
         }
-        
     }
-    return false;
+
+    return $loadedBlocks[0][array_key_first($loadedBlocks[0])];
 }
 
-function loadBlock(string $name)
+function getBlock(string $name)
+{
+    global $loadedBlocks;
+    return findBlock($name)->getBlock();
+}
+
+function getBlockInfo(string $name)
 {   
-    $test = checkBlock($name);
-    if($test !== false) {
-        return $test;
-    } else {
-        die("ERROR loading block $name");
-    }
-}
-
-function getBlockPath(string $name)
-{
-    $test = checkBlock($name);
-    if($test !== false) return $test['path'];
-    die("ERROR loading block $name");
-}
-function getCollection(string $collection)
-{
-    global $dependencies;
-    global $plugins;
-    global $aio;
-    global $settings;
-    global $pluginPages;
-    global $dashboardWidgets;
-    global $menu;
-    global $navbar;
-    global $engines;
-    global $widgets;
-    global $loadedPlugins;
-    global $pluginBlocks;
     global $loadedBlocks;
-    if(array_key_exists($collection, $pluginBlocks)) return $pluginBlocks[$collection];
-    die("Error collection of block: $collection does not exist");
+    return findBlock($name)->getInfo();
 }
 
 
-function returnCollections()
-{
-    global $dependencies;
-    global $plugins;
-    global $aio;
-    global $settings;
-    global $pluginPages;
-    global $dashboardWidgets;
-    global $menu;
-    global $navbar;
-    global $engines;
-    global $widgets;
-    global $loadedPlugins;
-    global $pluginBlocks;
-    global $loadedBlocks;
-    return $pluginBlocks;
-}
+

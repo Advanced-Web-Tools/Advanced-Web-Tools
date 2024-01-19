@@ -13,8 +13,10 @@ $theme->loadTheme();
 <script src="../awt-src/vendor/jQuery/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<script src="./javascript/pageEditor/blockOptions.js"></script>
 <script src="./javascript/pages/hidenav.js">
 </script>
+
 <script src="./javascript/pageEditor/pageEditor.js">
 </script>
 <script src="./javascript/pageEditor/defaultOptions.js">
@@ -27,6 +29,7 @@ $theme->loadTheme();
 </script>
 <script src="./javascript/pageEditor/gridOptions.js">
 </script>
+
 <script src="./javascript/pageEditor/shortcuts.js"></script>
 <script src="./javascript/pageEditor/clipboard.js"></script>
 <script src="./javascript/pageEditor/history.js"></script>

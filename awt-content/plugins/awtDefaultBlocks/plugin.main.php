@@ -1,25 +1,22 @@
 <?php
 
-function_exists("createBlockCollection") == true or die("Fatal error function createBlockCollection not found!");
-function_exists("addBlock") == true or die("Fatal error function addBlock not found!");
+use blocks\{block, BlockCollection, BlockOptions};
 
 $collection = "awtDefaultBlocks";
 $defaultPath = PLUGINS.$collection.DIRECTORY_SEPARATOR."src".DIRECTORY_SEPARATOR;
-$collection = "Default Blocks";
-createBlockCollection($collection);
 
-$title = array("name" => "Title", "path" => $defaultPath."titleBlock.html");
-$paragraph = array("name" => "Paragraph", "path" => $defaultPath."paragraphBlock.html");
-$listBlock = array("name" => "List", "path" => $defaultPath."listBlock.html");
-$spacer = array("name" => "Space", "path" => $defaultPath."spacerBlock.html");
-$emptyBlock = array("name" => "Empty Block", "path" => $defaultPath."emptyBlock.html");
-$grid = array("name" => "Grid", "path" => $defaultPath."gridBlock.html");
-$imageBlock = array("name" => "Image", "path" => $defaultPath."mediaBlock.html");
+$urlToIcons = HOSTNAME . "/awt-content/plugins/" . $collection . "/data/icons/";
 
-addBlock($title, $collection);
-addBlock($paragraph, $collection);
-addBlock($listBlock, $collection);
-addBlock($spacer, $collection);
-addBlock($emptyBlock, $collection);
-addBlock($grid, $collection);
-addBlock($imageBlock, $collection);
+$blocks = [
+    new block('Title', $defaultPath . "titleBlock.html", $urlToIcons . "title.png"),
+    new block('List', $defaultPath . "listBlock.html", $urlToIcons . "list-text.png"),
+    new block('Space', $defaultPath . "spacerBlock.html", $urlToIcons . "line-spacing.png"),
+    new block('Empty Block', $defaultPath . "emptyBlock.html", $urlToIcons . "cubes.png"),
+    new block('Columns', $defaultPath . "gridBlock.html", $urlToIcons . "column.png"),
+    new block('Image', $defaultPath . "mediaBlock.html", $urlToIcons . "image.png")
+];
+
+
+$collection = new BlockCollection("Default Blocks", $blocks, $urlToIcons . "blocks.png");
+
+createBlockCollection("Default Blocks", $collection);

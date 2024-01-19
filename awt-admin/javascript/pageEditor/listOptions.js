@@ -45,3 +45,12 @@ function hasListChild($block) {
         return listTags.includes(this.tagName.toLowerCase());
     });
 }
+
+
+function isList($block)
+{
+    return hasListChild($block).length !== 0;
+}
+
+var option = new BlockOption(isList, ListOptions);
+blockOptions.push(option);

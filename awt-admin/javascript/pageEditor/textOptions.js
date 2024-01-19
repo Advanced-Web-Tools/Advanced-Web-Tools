@@ -69,6 +69,12 @@ function hasTextChild($block) {
         });
 }
 
+
+function isText($block) {
+    return hasTextChild($block).length !== 0;
+}
+
+
 var timeout;
 
 function isEditing($block) {
@@ -314,3 +320,8 @@ function italic(range) {
     range.insertNode(document.createRange().createContextualFragment(html));
     saveToHistory();
 }
+
+
+var option = new BlockOption(isText, setTextOptions, isEditing);
+
+blockOptions.push(option);

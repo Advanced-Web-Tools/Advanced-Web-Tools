@@ -87,6 +87,39 @@ body {
     border-radius: 10px;
 }
 
+.category-container h4 {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-direction: row-reverse;
+    gap: 10px;
+}
+
+.category-container .block-item {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 15px;
+}
+
+.category-container .block-item p {
+    padding: 0;
+    margin: 10px 0;
+    width: fit-content;
+}
+
+.blIcon {
+    margin: 0;
+}
+
+.category-container .blIcon {
+    width: 30px;
+}
+
+.category-container .block-item .blIcon {
+    width: 15px;
+}
+
 .editor-tools {
     width: auto;
     padding: 10px;
