@@ -2,8 +2,7 @@
 
 [![Download](https://img.shields.io/badge/Download-Latest-blue.svg)](https://github.com/ElStefanos/Advanced-Web-Tools/releases/latest)
 
-![Logo](https://github.com/ElStefanos/Advanced-Web-Tools/assets/46761434/3b0a9d92-e134-4fbf-8c47-b3f1a8852ac2)
-
+[![Logo](https://github.com/ElStefanos/Advanced-Web-Tools/assets/46761434/3b0a9d92-e134-4fbf-8c47-b3f1a8852ac2)] (https://advancedwebtools.com)
 
 ## Description
 
@@ -25,11 +24,10 @@ This is self-hosted software that is free for anyone to install.
 - **Plugins**: Extend the functionality of Advanced Web Tools CMS with a range of plugins.
 - **DAC (Database Access Control)**: Implement stricter security through Database Access Control.
 - **Page Caching**: Optimize performance with built-in page caching.
-- **Built-in SEO**: Enhance your website's visibility with integrated SEO features (WIP).
+- **Theme Customization**: Customize your website in just few clicks.
 - **Page Editor**: Easily edit and manage your web pages with the intuitive page editor.
 - **Media**: Seamlessly handle and organize media content within the CMS.
-- **API**: Develop and integrate using our API for enhanced customization.
-- **Online Marketplace**: Explore and integrate third-party extensions through our online marketplace (WIP).
+- **Online Marketplace**: Explore and integrate third-party extensions through our online marketplace.
 
 ## Installation
 
