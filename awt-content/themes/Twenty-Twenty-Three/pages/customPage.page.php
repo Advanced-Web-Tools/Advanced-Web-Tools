@@ -11,9 +11,9 @@ $theme->addModule("Footer", THEME_MODULES_DIR . "footer.mod.php");
         $editor = new editor(array());
         $editor->loadPageEdit($_GET['editPage']);
     } else if (isset($_GET['preview'])) {
-        $paging->loadPreview($_GET['preview'], $_GET['page']);
+        echo $paging->loadPreview($_GET['preview'], $_GET['page']);
     } else {
-        $paging->getPage(true, true, "paging");
+        echo $paging->getPage(true, true, "paging");
     }
     ?>
 </div>

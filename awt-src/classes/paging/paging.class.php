@@ -72,7 +72,7 @@ class paging extends cache
         $builtInPages[] = array('name'=> $name, 'builtIn' => true);
     }
 
-    public function getPage(bool $loadAdmin = false, bool $selfCalled = false, string $varName = '') : void
+    public function getPage(bool $loadAdmin = false, bool $selfCalled = false, string $varName = '')
     {
         global $theme;
         global $menu;
@@ -83,8 +83,7 @@ class paging extends cache
         $this->initializeCache();
 
         if ($this->cacheEnabled && $this->checkForCache($_GET['page'])) {
-            echo $this->readCache($_GET['page']);
-            return;
+            return $this->readCache($_GET['page']);
         }
 
         $result = array();
@@ -104,8 +103,7 @@ class paging extends cache
                 $this->writePageCache($_GET['page'], $result['content_1'] . $result['content_2']);
         
             $stmt->close();
-            echo $result['content_1'] . $result['content_2'];
-            return;
+            return $result['content_1'] . $result['content_2'];
 
         } else {
             $stmt->close();
@@ -121,21 +119,30 @@ class paging extends cache
         if (isset($_GET['page']) && $loadAdmin) {
             if (array_key_exists($_GET['page'], $this->adminPages)) {
                 if (file_exists($this->adminPages[$_GET['page']])) {
+                    ob_start();
                     include_once $this->adminPages[$_GET['page']];
-                    return;
+                    $page = ob_get_contents();
+                    ob_end_clean();
+                    return $page;
                 }
             }
 
             if (array_key_exists($_GET['page'], $this->pluginPages)) {
                 if (file_exists($this->pluginPages[$_GET['page']])) {
+                    ob_start();
                     include_once $this->pluginPages[$_GET['page']];
-                    return;
+                    $page = ob_get_contents();
+                    ob_end_clean();
+                    return $page;
                 }
             }
             if (array_key_exists($_GET['page'], $this->pages)) {
                 if (file_exists($this->pages[$_GET['page']]['path'])) {
+                    ob_start();
                     include_once $this->pages[$_GET['page']]['path'];
-                    return;
+                    $page = ob_get_contents();
+                    ob_end_clean();
+                    return $page;
                 }
             }
 
@@ -173,9 +180,9 @@ class paging extends cache
 
         if ($stmt->num_rows == 1) {
 
-            echo $result['content_1'] . $result['content_2'];
+            $page = $result['content_1'] . $result['content_2'];
             $stmt->close();
-            return 1;
+            return $page;
         } else {
             die("Page does not exist");
         }
