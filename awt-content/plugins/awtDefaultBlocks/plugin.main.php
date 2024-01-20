@@ -9,6 +9,7 @@ $urlToIcons = HOSTNAME . "/awt-content/plugins/" . $collection . "/data/icons/";
 
 $blocks = [
     new block('Title', $defaultPath . "titleBlock.html", $urlToIcons . "title.png", "Adds a large H1 text to your page."),
+    new block('Paragraph', $defaultPath . "paragraphBlock.html", $urlToIcons . "paragraph-solid.svg", "Creates paragraph text element."),
     new block('Ordered List', $defaultPath . "listBlock.html", $urlToIcons . "list-text.png", "Creates a numbered list. You can add/remove items in options panel."),
     new block('Unordered List', $defaultPath . "unorderedList.html", $urlToIcons . "list-text.png", "Creates a bullet list. You can add/remove items in options panel."),
     new block('Space', $defaultPath . "spacerBlock.html", $urlToIcons . "line-spacing.png", "Add space between elements. You can set height or width to space elements even more."),

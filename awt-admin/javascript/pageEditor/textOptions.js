@@ -71,7 +71,11 @@ function hasTextChild($block) {
 
 
 function isText($block) {
-    return hasTextChild($block).length !== 0;
+    var allowedTags = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "a", "strong", "em", "b", "i", "u", "li"];
+    console.log($block.nodeName);
+    if(allowedTags.includes($block.nodeName)) return true;
+    if(hasTextChild($block).length > 0) return true;
+    return false;
 }
 
 
