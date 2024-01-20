@@ -61,21 +61,28 @@ function setTextOptions($block, defaultStyle) {
 function hasTextChild($block) {
     var allowedTags = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "a", "strong", "em", "b", "i", "u", "li"];
 
-    return $block
+    var result = $block
         .find("*")
         .filter(function () {
             var tagName = this.tagName.toLowerCase();
             return allowedTags.includes(tagName) || this.nodeType === 3 && $.trim(this.nodeValue).length > 0;
         });
+
+    return result;
 }
 
 
 function isText($block) {
+
+    var result = false;
     var allowedTags = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "a", "strong", "em", "b", "i", "u", "li"];
-    console.log($block.nodeName);
-    if(allowedTags.includes($block.nodeName)) return true;
-    if(hasTextChild($block).length > 0) return true;
-    return false;
+    if(allowedTags.includes($(".selected").prop('nodeName').toLowerCase())) result = true;
+    console.log(result);
+    if(hasTextChild($block).length > 0) result = true;
+    
+    console.log(result);
+
+    return result;
 }
 
 
@@ -83,15 +90,20 @@ var timeout;
 
 function isEditing($block) {
 
+
     var allowedTags = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "a", "strong", "em", "b", "i", "u", "li"];
 
-    var isEditing = $block.find(':focus').length > 0;
+    var isEditing = false;
+
+    if(document.activeElement) isEditing = true;
+
+    console.log(isEditing);
 
     if (!isEditing) {
         return false;
     }
 
-    var focusedElement = $block.find(':focus');
+    var focusedElement = $('.pageSection').find(':focus');
     var isAllowedContent = focusedElement.is(allowedTags.join('[contenteditable=true],') + '[contenteditable=true]');
 
     if (isAllowedContent) {

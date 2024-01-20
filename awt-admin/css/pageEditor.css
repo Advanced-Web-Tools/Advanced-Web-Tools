@@ -31,6 +31,10 @@ body {
     padding: 0;
     overflow-x: hidden;
     overflow-y: hidden;
+    position: relative;
+    z-index: 5;
+    scrollbar-width: 2px;
+    scrollbar-color: #0080c0 #ffffff;
 }
 
 .top-menu {
@@ -40,6 +44,10 @@ body {
     align-items: center;
     justify-content: space-between;
     padding: 10px;
+}
+
+.top-menu i {
+    color: lightgray;
 }
 
 .add-blocks {
@@ -55,30 +63,13 @@ body {
     width: fit-content;
 }
 
-.top-menu i {
-    color: lightgray;
-}
-
-.block:hover {
-    transform: translateY(-2px);
-    outline: solid 2px grey;
-    filter: brightness(1.05);
-}
-
-.stage {
-    position: relative;
-    z-index: 5;
-    width: 100%;
-    scrollbar-width: 2px;
-    scrollbar-color: #0080c0 #ffffff;
-}
-
 .preview {
-    width: 90%; 
+    width: 90%;
+    overflow-y: scroll;
 }
 
 .preview * {
-    position: relative; 
+    position: relative;
 }
 
 .scene {
@@ -136,6 +127,12 @@ body {
     width: fit-content;
 }
 
+.block:hover {
+    transform: translateY(-2px);
+    outline: solid 2px grey;
+    filter: brightness(1.05);
+}
+
 .block-item .block-item-description {
     position: absolute;
     left: 190px;
@@ -152,15 +149,13 @@ body {
     padding: 0;
 }
 
-
-.block-item .block-item-description::before 
-{
-    content: ""; /* Add this line */
-    width: 0; 
-    height: 0; 
-    border-top: 20px solid transparent; 
+.block-item .block-item-description::before {
+    content: "";
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
     border-bottom: 20px solid transparent;
-    border-right: 20px solid white; /* Change border-left to border-right */
+    border-right: 20px solid white;
     position: absolute;
     left: -20px;
     top: 50%;
@@ -216,8 +211,7 @@ body {
 }
 
 .block-options input[type=color],
-.textEditor input[type=color]
-{
+.textEditor input[type=color] {
     background: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -238,8 +232,7 @@ body {
 }
 
 .block-options input[type=color]::-moz-color-swatch,
-.textEditor input[type=color]::-moz-color-swatch
-{
+.textEditor input[type=color]::-moz-color-swatch {
     border-radius: 5px;
     border: 1px solid #000;
     width: 25px;
@@ -302,10 +295,6 @@ body {
     display: block;
 }
 
-.preview {
-    overflow-y: scroll;
-}
-
 .selected,
 .selected:hover {
     outline: 1px solid var(--primary-color);
@@ -334,8 +323,7 @@ body {
 }
 
 .block-options #margin,
-.block-options #padding
-{
+.block-options #padding {
     width: 60px;
 }
 
@@ -352,18 +340,17 @@ body {
     font-size: 30px;
 }
 
-
 .viewport-actions i {
     color: rgba(0, 0, 0, 0.3);
     transition: 0.3s;
     cursor: pointer;
 }
 
-.viewport-actions button i{
+.viewport-actions button i {
     color: inherit;
 }
 
-.viewport-actions button:hover i{
+.viewport-actions button:hover i {
     color: inherit;
 }
 
@@ -372,8 +359,7 @@ body {
 }
 
 .selected.block.empty,
-.selected .block.empty
-{
+.selected .block.empty {
     outline: 1px solid var(--primary-color);
     background: url('../../awt-data/icons/plus-solid.svg') no-repeat center;
     background-size: fill;
@@ -433,14 +419,13 @@ body {
     left: 50px;
     background: #fff;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
-.floating-blocks .header p{
+.floating-blocks .header p {
     margin: 0;
     width: fit-content;
 }
-
 
 .context-menu {
     position: absolute;
@@ -474,7 +459,7 @@ body {
     width: 350px;
 }
 
-.textEditor .header p{
+.textEditor .header p {
     margin: 0;
     width: 100%;
     text-align: left !important;
@@ -493,7 +478,6 @@ body {
 .textEditor .text-options input {
     width: 150px;
 }
-
 
 @keyframes createSelector {
     0% {
@@ -523,5 +507,4 @@ body {
     100% {
         width: 25%;
     }
-
 }
