@@ -18,11 +18,10 @@ if (!isset($_GET['theme_page'])) {
 }
 
 ?>
-
 <link rel="stylesheet" href="./css/themeEditor.css">
 <link rel="stylesheet" href="./css/pageEditor.css">
 <script src="./javascript/themeEditor/editor.js"></script>
-<div class="textEditor hidden shadow">
+<!-- <div class="textEditor hidden shadow">
     <div class="header">
         <p onclick="$(this).parent().parent().addClass('hidden')"><i class="fa-regular fa-circle-xmark"></i>
         </p>
@@ -33,7 +32,7 @@ if (!isset($_GET['theme_page'])) {
         <button type="button" class="button" id="turnBold"><i class="fa-solid fa-bold"></i></button>
         <button type="button" class="button" id="breakLine"><i class="fa-solid fa-diagram-successor"></i></button>
     </div>
-</div>
+</div> -->
 
 <div class="context-menu shadow hidden">
     <p>Quick options</p>
@@ -60,19 +59,39 @@ if (!isset($_GET['theme_page'])) {
 
 <div class="top-menu">
     <div class="action-buttons">
-        <button type="button" onclick="saveThemePage('<?php echo $_GET['page']; ?>');"
-            class="button" id="green">Save</button>
+        <button type="button" onclick="saveThemePage('<?php echo $_GET['page']; ?>');" class="button"
+            id="green">Save</button>
     </div>
 </div>
 
-<section class="preview">
-    <?php
-        include_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-themesLoader.php';
-    ?>
-</section>
-
-<div class="editor-tools">
-    <div class="block-options">
+<div class="stage">
+    <!-- <div class="add-blocks hidden">
+        <div class='blocks-header'>
+            <p onclick="$('.add-blocks ').toggleClass('hidden')"><i class="fa-regular fa-circle-xmark"></i></p>
+        </div>
+    </div> -->
+    <div class="preview">
+        <div class="textEditor hidden shadow">
+            <div class="header">
+                <p onclick="$(this).parent().parent().addClass('hidden')"><i class="fa-regular fa-circle-xmark"></i>
+                </p>
+            </div>
+            <div class="text-options">
+                <button type="button" class="button" id="addHyperLink"><i class="fa-solid fa-anchor"></i></button>
+                <button type="button" class="button" id="turnItalic"><i class="fa-solid fa-italic"></i></button>
+                <button type="button" class="button" id="turnBold"><i class="fa-solid fa-bold"></i></button>
+                <button type="button" class="button" id="breakLine"><i
+                        class="fa-solid fa-diagram-successor"></i></button>
+            </div>
+        </div>
+        <?php
+        include_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-themesLoader.php';include_once JOBS . 'jobs' . DIRECTORY_SEPARATOR . 'awt-themesLoader';
+        ?>
+    </div>
+    <div class="editor-tools">
+        <div class="block-options">
+            <p>Select an element to edit.</p>
+        </div>
     </div>
 </div>
 
@@ -80,6 +99,8 @@ if (!isset($_GET['theme_page'])) {
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
 <script src="./javascript/pages/hidenav.js">
+</script>
+<script src="./javascript/pageEditor/blockOptions.js">
 </script>
 <script src="./javascript/pageEditor/pageEditor.js">
 </script>

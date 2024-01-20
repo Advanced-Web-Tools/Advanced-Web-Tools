@@ -33,17 +33,20 @@ $profile = $profiler->getProfile();
 
 $paging = new paging($pluginPages);
 
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/navbar.css">
-    <link href="../awt-src/vendor/fontawesome-free-6.4.2-web/css/all.css" rel="stylesheet">
+    <link href="../awt-src/vendor/fontawesome-free-6.5-web/css/all.css" rel="stylesheet">
+    <title></title>
 </head>
 
 <body>
@@ -56,7 +59,7 @@ $paging = new paging($pluginPages);
             <?php navbarLoader($navbar); ?>
         </nav>
         <section class="page">
-            <?php $paging->getPage(true, true, "paging"); ?>
+            <?php echo $paging->getPage(true, true, "paging"); ?>
         </section>
     </section>
 </body>

@@ -1,12 +1,33 @@
 .main-navigation {
-    height: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    height: 50px;
     width: 100%;
-    padding: 20px 0;
     background: var(--primary-color-variant);
     top: 0;
     z-index: 10;
     position: fixed;
     transition: 0.5s ease all;
+}
+
+.main-navigation .logo-wrapper {
+    height: 100%;
+    width: fit-content;
+    margin: auto 0;
+    display: flex;
+    align-items: center;
+    color: var(--text-color-variant);
+}
+
+.main-navigation .logo-wrapper img {
+    height: 100%;
+}
+
+.main-navigation .logo-wrapper h2 {
+    margin: 0 20px;
+    color: var(--text-color);
 }
 
 .main-navigation ul {
@@ -17,7 +38,7 @@
     align-items: center;
     gap: 20px;
     height: 100%;
-    margin: 0;
+    margin: 0 20px;
 }
 
 .main-navigation li a{
@@ -32,20 +53,29 @@
     color: var(--text-color-variant);
 }
 
+.hamburger-menu {
+    display: none;
+}
+
 @media(max-width: 450px) {
     .main-navigation {
         height: 60px;
-        display: grid;
-        grid-template-rows: 50px auto;
-        padding: 10px 0;
     }
 
     .hamburger-menu {
+        display: block;
         cursor: pointer;
         width: 60px;
         align-self: center;
     }
     
+    .main-navigation .logo-wrapper {
+        height: 40px;
+        margin: 0;
+        justify-content: flex-end;
+        width: 50%;
+    }
+
     .hamburger-menu span {
         display: block;
         width: 40px;
@@ -67,18 +97,21 @@
 
     .main-navigation ul {
         background: var(--primary-color-variant);
-        display: grid;
-        grid-template-rows: 35px;
-        grid-auto-flow: row;
-        gap: 30px;
-        margin-left: -200%;
-        transition: 0.5s ease all;
-        width: 0%;
+        width: 100vw;
+        left: -100vw;
+        position: fixed;
+        top: 60px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        transition: 0.3s ease-in-out;
     }
 
     .main-navigation ul.active {
         margin: 0;
-        padding: 15px 0;
+        left: 0;
         width: 100%;
     }
 

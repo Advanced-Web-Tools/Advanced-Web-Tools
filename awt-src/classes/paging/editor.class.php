@@ -106,7 +106,11 @@ class editor extends paging
     }
 
     public function loadPageEdit(int $id)
-    {
+    {   
+
+        global $theme;
+        global $render;
+
         $result = array();
 
         $stmt = $this->mysqli->prepare("SELECT * FROM `awt_paging` WHERE `id` = ?;");
@@ -117,7 +121,6 @@ class editor extends paging
         $stmt->fetch();
 
         if ($stmt->num_rows == 1) {
-
             echo $result['content_1'] . $result['content_2'];
             $stmt->close();
             return 1;

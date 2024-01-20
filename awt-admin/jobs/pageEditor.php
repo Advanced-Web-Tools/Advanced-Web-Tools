@@ -22,8 +22,8 @@ if (!$check->checkAuthentication()) {
 
 $paging = new editor(array());
 
-if(isset($_POST['getBlocks'])) echo json_encode($pluginBlocks);
+if(isset($_POST['getBlocks'])) die(json_encode($pluginBlocks));
 
-if(isset($_POST['getBlock'])) include_once getBlockPath($_POST['getBlock']);
+if(isset($_POST['getBlock'])) die(getBlock($_POST['getBlock']));
 
 if(isset($_POST['name']) && isset($_POST['htmlContent']) && isset($_POST['pageStatus'])) $paging->uploadPage($_POST['name'], $_POST['htmlContent'], $_POST['pageStatus']);

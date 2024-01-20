@@ -64,7 +64,7 @@ CREATE TABLE IF NOT EXISTS `awt_cron` (
   `caller` varchar(255) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -247,6 +247,8 @@ INSERT IGNORE INTO `awt_themes` (`id`, `name`, `description`, `version`, `placeh
 VALUES (1, 'Twenty-Twenty-Three', 'This is a sleek and modern theme for your website', '0.0.1', 'placeholder.png', 1);
 
 
+INSERT IGNORE INTO `awt_menus` (`id`, `name`, `items`, `active`) VALUES
+(1, 'Default Menu', '<a href=\'?page=Home\'>Home</a>NEW_LINK<a href=\'?page=Blog\'>Blog</a>NEW_LINK<a href=\'?page=About Us\'>About Us</a>NEW_LINK', 1);
 -- --------------------------------------------------------
 
 --
@@ -259,7 +261,7 @@ CREATE TABLE IF NOT EXISTS `awt_theme_page` (
   `page_name` varchar(255) NOT NULL,
   `content` longtext NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -275,7 +277,7 @@ CREATE TABLE IF NOT EXISTS `awt_theme_settings` (
   `type` varchar(255) NOT NULL,
   `value` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 
 START TRANSACTION;

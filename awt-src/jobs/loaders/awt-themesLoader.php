@@ -6,4 +6,4 @@ if(defined('ALL_CONFIG_LOADED')) {
     echo 'Error code 1';
     exit();
 }
-$theme->loadTheme();
+echo $theme->loadTheme();

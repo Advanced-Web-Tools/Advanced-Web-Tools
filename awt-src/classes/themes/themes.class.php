@@ -52,7 +52,7 @@ class themes extends modules
         return array();
     }
 
-    public function loadTheme()
+    public function loadTheme() : string
     {
         global $builtInPages;
         global $theme;
@@ -67,6 +67,7 @@ class themes extends modules
         global $pages;
         global $dashboardWidgets;
         global $floatingEditor;
+        global $paging;
 
         $this->getActiveTheme();
 
@@ -74,12 +75,20 @@ class themes extends modules
 
         $this->linkToThemeDir = HOSTNAME . "awt-content/themes/" . $this->activeTheme['name'];
 
+        ob_start();
+
         include_once THEMES . $this->activeTheme['name'] . DIRECTORY_SEPARATOR . "theme.php";
+
+        $content = ob_get_contents();
+        ob_end_clean();
+
+        return $content;
+
     }
 
-    public function loadCSS(string $path): void
+    public function loadCSS(string $path): string
     {
-        echo '<link rel="stylesheet" href="' . $this->linkToThemeDir . $path . '">';
+        return '<link rel="stylesheet" href="' . $this->linkToThemeDir . $path . '"/>';
     }
 
     public function getAssetLink(string $path)
@@ -87,19 +96,32 @@ class themes extends modules
         return $this->linkToThemeDir . $path;
     }
 
-    public function loadThemePage(string $name): void
+    public function loadThemePage(string $name): string
     {
         global $theme;
         global $paging;
+        global $render;
 
         $this->getActiveTheme();
+
+        if(!array_key_exists($name, $paging->pages)) {
+            die("error: $name does not exist in theme pages");
+        }
 
         $themeId = (int) $this->activeTheme['id'];
 
         $this->linkToThemeDir = HOSTNAME . "awt-content/themes/" . $this->activeTheme['name'];
 
         if (!$this->checkForCustomizedPage($name)) {
-            include_once THEMES . $this->activeTheme['name'] . DIRECTORY_SEPARATOR . "pages" . DIRECTORY_SEPARATOR . $name . ".page.php";
+            ob_start();
+
+            include_once $paging->pages[$name]['path'];
+
+            $contents = ob_get_contents();
+
+            ob_end_clean();
+
+            return $contents;
         }
 
         $content = "";
@@ -108,7 +130,6 @@ class themes extends modules
 
         $stmt->bind_param("is", $themeId , $name);
 
-        
         if($stmt->execute()) {
             $stmt->store_result();
             $stmt->bind_result($name, $content);
@@ -117,7 +138,7 @@ class themes extends modules
             die("ERROR HAS OCCURED");
         }
 
-        echo $content;
+        return $content;
 
     }
 

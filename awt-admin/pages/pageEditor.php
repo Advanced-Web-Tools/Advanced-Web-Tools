@@ -7,16 +7,16 @@ use themes\themes;
 
 $theme = new themes;
 
-$theme->getThemes();
-
-$theme->getActiveTheme();
+$theme->loadTheme();
 
 ?>
 <script src="../awt-src/vendor/jQuery/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+<script src="./javascript/pageEditor/blockOptions.js"></script>
 <script src="./javascript/pages/hidenav.js">
 </script>
+
 <script src="./javascript/pageEditor/pageEditor.js">
 </script>
 <script src="./javascript/pageEditor/defaultOptions.js">
@@ -29,6 +29,7 @@ $theme->getActiveTheme();
 </script>
 <script src="./javascript/pageEditor/gridOptions.js">
 </script>
+
 <script src="./javascript/pageEditor/shortcuts.js"></script>
 <script src="./javascript/pageEditor/clipboard.js"></script>
 <script src="./javascript/pageEditor/history.js"></script>
@@ -70,7 +71,6 @@ $theme->getActiveTheme();
 
     </div>
 </div>
-
 <section class="editor">
     <div class="top-menu">
         <div class="action-buttons">
@@ -79,12 +79,18 @@ $theme->getActiveTheme();
             <button type="button" onclick="savePage('<?php echo $_GET['pageName']; ?>');" class="button">Save</button>
         </div>
         <div class="viewport-actions">
+            <button class="button" id="green" onclick="$('.add-blocks').toggleClass('hidden')">Add Block</button>
             <button class="button" onclick="undo()">Undo <i class="fa-solid fa-rotate-left"></i></button>
             <button class="button" onclick="redo()">Redo <i class="fa-solid fa-rotate-right"></i></button>
             <i onclick="changeViewPort(this)" class="fa-solid fa-mobile-button"></i>
         </div>
     </div>
     <div class="stage">
+        <div class="add-blocks hidden">
+            <div class='blocks-header'>
+                <p onclick="$('.add-blocks ').toggleClass('hidden')"><i class="fa-regular fa-circle-xmark"></i></p>
+            </div>
+        </div>
         <div class="preview">
             <div class="textEditor hidden shadow">
                 <div class="header">
@@ -100,11 +106,12 @@ $theme->getActiveTheme();
                 </div>
             </div>
             <?php
-                $theme->loadThemePage("customPage");
+                echo $theme->loadThemePage('custom');
             ?>
         </div>
         <div class="editor-tools">
             <div class="block-options">
+                <p>Select an element to edit.</p>
             </div>
         </div>
     </div>

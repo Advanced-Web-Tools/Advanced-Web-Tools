@@ -30,7 +30,7 @@ if($check->checkAuthentication()) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/passwordReset.css">
-    <link href="../awt-src/vendor/fontawesome-free-6.4.2-web/css/all.css" rel="stylesheet">
+    <link href="../awt-src/vendor/fontawesome-free-6.5-web/css/all.css" rel="stylesheet">
     <title><?php echo WEB_NAME; ?> | Forgot Password</title>
 </head>
 <body>

@@ -1,204 +1,148 @@
-
 var $selection = $(".pageSection");
-
-var shrinkenView = false;
-
-var movingBlocks = false;
-
-var selectedElement = false;
-
-var ctrlPressed = false;
-
-var floatingBlockSelectorActive = false;
-
-var ignorePreviewClick = false;
+let shrinkenView = false;
+let movingBlocks = false;
+let selectedElement = false;
+let ctrlPressed = false;
+let floatingBlockSelectorActive = false;
+let ignorePreviewClick = false;
+let blockOptions = [];
 
 function fetchBlocks(element, replacable = null, callback = null) {
-
   $(element).find('.category-container').remove();
 
   $.ajax({
     url: './jobs/pageEditor.php',
     type: 'POST',
-    data: {
-      getBlocks: 1
-    },
+    data: { getBlocks: 1 },
     success: function (response) {
-      try {
-        var parsedResponse = JSON.parse(response);
+      const collections = JSON.parse(response);
 
-        if (parsedResponse && typeof parsedResponse === 'object') {
-          for (var category in parsedResponse) {
-            if (Array.isArray(parsedResponse[category])) {
+      $.each(collections, function (key, collection) {
+        const categoryContainer = $('<div class="category-container"></div>');
+        const categoryLabel = $('<h4>').text(collection.name);
 
-              var categoryLabel = $('<h4>').text(category);
-              categoryLabel.addClass(category.replace(/ /g, '-'));
+        categoryLabel.addClass(collection.name.replace(/ /g, '-'));
+        categoryLabel.append(`<img class="blIcon" src="${collection.iconURL}" alt="${collection.name}" />`);
+        categoryContainer.append(categoryLabel);
 
-              var categoryContainer = $('<div>').addClass('category-container');
-              categoryContainer.append(categoryLabel);
-              categoryLabel.append('<i class="fa-solid fa-layer-group" style="margin-left: 20px;"></i>');
+        $.each(collection.blocks, function (key, block) {
+          const childElement = $('<div>').addClass(`block-item hidden ${collection.name.replace(/ /g, '-')}`);
+          const itemElement = $('<p>').text(block.name);
 
-              parsedResponse[category].forEach(function (block) {
-                var childElement = $('<div>').addClass('block-item hidden ' + category.replace(/ /g, '-'));
+          const itemHover = $("<div>").addClass('block-item-description shadow hidden');
+          itemHover.append($("<h5>").text(block.name));
+          itemHover.append($("<p>").text(block.description));
 
-                var itemElement = $('<p>').text(block.name);
+          childElement.append(`<img class="blIcon" src="${block.iconURL}" alt="${collection.name}" />`);
+          childElement.append(itemElement);
+          childElement.append(itemHover);
 
-                childElement.append(itemElement);
+          childElement.click(() => {
+            getBlock(block.name, replacable);
+            if (callback !== null) callback();
+          });
 
-                // Attach onclick event to the child element
-                childElement.click(function () {
-                  getBlock(block.name, replacable);
-                  if (callback !== null) callback();
-                });
+          childElement.on("mouseenter", function () {
+            $(this).find('.block-item-description').removeClass("hidden");
+          });
 
-                categoryContainer.append(childElement);
-              });
+          childElement.on("mouseleave", function () {
+            $(this).find('.block-item-description').addClass("hidden");
+          });
 
-              $(element).append(categoryContainer);
+          categoryContainer.append(childElement);
+        });
 
-              // Add a click event to toggle the visibility of child elements
-              categoryLabel.click(function (catClass) {
-                return function () {
-                  $(element + ' .category-container .block-item.' + catClass).toggleClass('hidden');
-                }
-              }(category.replace(" ", "-")));
-            }
-          }
-        } else {
-          console.log('Parsed response is not in the expected format.');
-        }
-      } catch (error) {
-        console.log('Error parsing the response as JSON.');
-      }
+        $(element).append(categoryContainer);
+        categoryLabel.click(() => {
+          $(`${element} .category-container .block-item.${collection.name.replace(" ", "-")}`).toggleClass('hidden');
+        });
+      });
     },
     error: function (xhr, status, error) {
-      console.log('AJAX request failed.');
-      console.log(error);
+      console.error('AJAX request failed.');
+      console.error(error);
     }
   });
 }
 
-
 function getBlock(name, replacable = null) {
-
-
   $.ajax({
     url: './jobs/pageEditor.php',
     type: 'POST',
-    data: {
-      getBlock: name
-    },
+    data: { getBlock: name },
     success: function (response) {
-
       if (replacable !== null) {
         $(replacable).replaceWith(response);
       } else {
         $selection.append(response);
       }
 
-      saveToHistory();
-
-      hasTextChild($(".block")).attr("contenteditable", "true");
-
+      createEditableLayout();
+      
       $(".block").on("click", function (e) {
         BlockOptions($(this));
       }).children().on("click", function (e) {
         BlockOptions($(this));
         e.stopPropagation();
       });
-
     },
     error: function (xhr, status, error) {
-      console.log('AJAX request failed.');
-      console.log(error);
+      console.error('AJAX request failed.');
+      console.error(error);
     }
   });
-
-
 }
 
-
 function rgbToHex(rgbColor) {
+  if (rgbColor === null) return null;
 
-  if (rgbColor === null) return;
-  var rgbValues = rgbColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-  if (!rgbValues) {
-    return null; // Invalid RGB color string
-  }
+  const rgbValues = rgbColor.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+  if (!rgbValues) return null;
 
-  var hexValues = rgbValues.slice(1).map(function (value) {
-    var hex = parseInt(value, 10).toString(16);
+  const hexValues = rgbValues.slice(1).map(value => {
+    const hex = parseInt(value, 10).toString(16);
     return hex.length === 1 ? "0" + hex : hex;
   });
 
-  var hexColor = "#" + hexValues.join("");
-
-  return hexColor;
+  return `#${hexValues.join("")}`;
 }
 
-
 function BlockOptions(element) {
-  var $block = $(element);
+  const $block = $(element);
   $('*').removeClass("selected");
   $block.addClass("selected");
   $selection = $block;
-  var defaultStyle = $block.attr("style");
+  const defaultStyle = $block.attr("style");
 
   setDefaultOptions($block, defaultStyle);
 
-  if (hasTextChild($block).length > 0) {
-    setTextOptions($block, defaultStyle);
-    isEditing($block);
-  }
+  blockOptions.forEach(opt => {
+    opt.loadOption($block, defaultStyle);
+  });
 
-  if (hasListChild($block).length > 0) {
-    ListOptions($block, defaultStyle);
-  }
-
-  if (isMedia($block)) {
-    mediaOptions($block, defaultStyle);
-  }
-
-  if ($block.attr("id") === "grid-block") {
-    setGridOptions($block, defaultStyle);
-  }
-
-  $(".add-child").off("click").on("click", function () {
-    var newChildElement = '<div class="block"></div>';
+  $(".add-child, .create-child-button").off("click").on("click", function () {
+    const newChildElement = '<div class="block"></div>';
     $block.append(newChildElement);
     $block.children().last().click(function (event) {
       event.stopPropagation();
       BlockOptions(this);
     });
   });
-
-  $(".create-child-button").off("click").on("click", function () {
-    var newChildElement = '<div class="block"></div>';
-    $block.append(newChildElement);
-    $block.children().last().click(function (event) {
-      event.stopPropagation();
-      BlockOptions(this);
-    });
-  });
-}
-
-
-function quickOptions() {
-
 }
 
 function findNearestElement(x, y) {
-  let elements = $('.element');
+  const elements = $('.element');
   let nearestElement = null;
   let minDistance = Number.MAX_VALUE;
 
   elements.each(function () {
-    let element = $(this);
-    let offset = element.offset();
-    let centerX = offset.left + element.width() / 2;
-    let centerY = offset.top + element.height() / 2;
+    const element = $(this);
+    const offset = element.offset();
+    const centerX = offset.left + element.width() / 2;
+    const centerY = offset.top + element.height() / 2;
 
-    let distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
+    const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
 
     if (distance < minDistance) {
       minDistance = distance;
@@ -209,29 +153,26 @@ function findNearestElement(x, y) {
   return nearestElement;
 }
 
-
 function contextMenu() {
-  $(".context-menu").toggleClass("hidden");
-  $(".context-menu").css('top', currentMousePos.y);
-  $(".context-menu").css('left', currentMousePos.x);
+  $(".context-menu").toggleClass("hidden").css({
+    'top': currentMousePos.y,
+    'left': currentMousePos.x
+  });
+
   $(".context-menu *").bind("click.context", function () {
     $(".context-menu").toggleClass("hidden");
     $(".context-menu *").unbind("click.context");
   });
-
-
 }
 
-
 function publishContent(name) {
-  var $pageSection = $('.pageSection');
-
-  var $clonedPageSection = $pageSection.clone();
+  const $pageSection = $('.pageSection');
+  const $clonedPageSection = $pageSection.clone();
 
   $clonedPageSection.find(".block.empty.replacable").remove();
   $pageSection.find(".block.empty.replacable").remove();
 
-  var htmlContent = $clonedPageSection.last().prop('outerHTML');
+  const htmlContent = $clonedPageSection.last().prop('outerHTML');
 
   $.ajax({
     url: './jobs/pageEditor.php',
@@ -242,20 +183,17 @@ function publishContent(name) {
       pageStatus: "live"
     },
     error: function (xhr, status, error) {
-      console.log(error);
+      console.error(error);
     }
   });
 }
 
-
 function savePage(name) {
-  var $pageSection = $('.pageSection');
-
-  var $clonedPageSection = $pageSection.clone();
+  const $pageSection = $('.pageSection');
+  const $clonedPageSection = $pageSection.clone();
 
   $clonedPageSection.find(".block.empty.replacable").remove();
-
-  var htmlContent = $clonedPageSection.last().prop('outerHTML');
+  const htmlContent = $clonedPageSection.last().prop('outerHTML');
 
   $.ajax({
     url: './jobs/pageEditor.php',
@@ -268,14 +206,13 @@ function savePage(name) {
     success: function (response) {
     },
     error: function (xhr, status, error) {
-      console.log(error);
+      console.error(error);
     }
   });
 }
 
-
 function changeViewPort(caller) {
-  var $preview = $('.preview');
+  const $preview = $('.preview');
 
   if (!shrinkenView) {
     $preview.css({
@@ -283,7 +220,8 @@ function changeViewPort(caller) {
       "margin": 'auto auto',
       "height": '667px',
       "border": '2px solid #000',
-      "overflow": 'auto' // Add overflow control
+      "overflow": 'auto',
+      "flex-grow": "0"
     });
     shrinkenView = true;
     $(caller).addClass("active");
@@ -292,7 +230,8 @@ function changeViewPort(caller) {
       "width": 'auto',
       "height": '100%',
       "border": 'none',
-      "overflow": 'auto' // Reset overflow
+      "overflow": 'auto',
+      "flex-grow": "1"
     });
     shrinkenView = false;
     $(caller).removeClass("active");
@@ -301,10 +240,12 @@ function changeViewPort(caller) {
 
 function detectEmpty() {
   $('.preview').find('.block').each(function (index, block) {
-    if ($(block).children().length == 0 && $(block).text().trim().length == 0 && $(block).is("div")) {
-      if ($(block).hasClass("empty") == false) $(block).addClass("empty");
+    const $block = $(block);
+
+    if ($block.children().length === 0 && $block.text().trim().length === 0 && $block.is("div")) {
+      if (!$block.hasClass("empty")) $block.addClass("empty");
     } else {
-      $(block).removeClass("empty");
+      $block.removeClass("empty");
     }
   });
 }
@@ -330,12 +271,12 @@ function createEditableLayout() {
   });
 
   $('.pageSection .block').each(function () {
-    var $block = $(this);
+    const $block = $(this);
 
     $block.on('click', function (e) {
       BlockOptions($block);
       $(document).find(":focus").each(function () {
-        var focusedElement = $(this);
+        const focusedElement = $(this);
         if (!focusedElement.is($block) && !$block.has(focusedElement).length > 0) {
           $(this).blur();
         }
@@ -365,7 +306,6 @@ function createEditableLayout() {
   });
 
   $(".pageSection").on("click", function (event) {
-    // Check if the clicked element is a child of .pageSection
     if (
       $(event.target).closest(".pageSection").length > 0 &&
       !$(event.target).is(".preview")
@@ -378,15 +318,10 @@ function createEditableLayout() {
 }
 
 $(document).ready(function () {
-
   createEditableLayout();
 
   $(".floating-blocks").on("DOMSubtreeModified", function (event) {
-    if ($('.floating-blocks').hasClass('hidden')) {
-      floatingBlockSelectorActive = false;
-    } else {
-      floatingBlockSelectorActive = true;
-    }
+    floatingBlockSelectorActive = $('.floating-blocks').hasClass('hidden') ? false : true;
   });
 
   $(".preview").on("DOMSubtreeModified", function (event) {
@@ -397,17 +332,14 @@ $(document).ready(function () {
 
   initShortcuts();
 
-  fetchBlocks('.editor-tools');
+  fetchBlocks('.add-blocks');
 
-  var find = $('*').filter(function () { 
+  const find = $('*').filter(function () {
     return $(this).css('position') == 'fixed';
   });
 
-  find.each(function(){
-    $(this).css("width", "87.12%");
-    $(this).css("top", "50px");
-  })
-
+  find.each(function () {
+    $(this).css("position", "relative");
+    $(this).css("top", "0");
+  });
 });
-
-

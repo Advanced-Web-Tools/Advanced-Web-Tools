@@ -60,3 +60,6 @@ function isMedia($block) {
     var tagName = $block.prop("tagName").toLowerCase();
     return allowedTags.includes(tagName);
 }
+
+var option = new BlockOption(isMedia, mediaOptions);
+blockOptions.push(option);

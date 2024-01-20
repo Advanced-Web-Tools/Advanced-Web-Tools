@@ -24,15 +24,17 @@ body {
 }
 
 .stage {
-    display: grid;
-    grid-template-columns: 87.12% auto;
-    grid-template-rows: auto;
-    width: 100vw;
+    display: flex;
+    width: 100%;
     height: 100%;
     margin: 0;
     padding: 0;
     overflow-x: hidden;
     overflow-y: hidden;
+    position: relative;
+    z-index: 5;
+    scrollbar-width: 2px;
+    scrollbar-color: #0080c0 #ffffff;
 }
 
 .top-menu {
@@ -48,30 +50,36 @@ body {
     color: lightgray;
 }
 
-.block:hover {
-    transform: translateY(-2px);
-    outline: solid 2px grey;
-    filter: brightness(1.05);
+.add-blocks {
+    background: #fff;
+    width: 170px;
+    padding: 0 10px;
+    border-right: 1px solid lightgray;
 }
 
-.stage {
-    position: relative;
-    z-index: 5;
-    width: 100%;
-    scrollbar-width: 2px;
-    scrollbar-color: #0080c0 #ffffff;
+.add-blocks .blocks-header p {
+    margin: 5px 0;
+    cursor: pointer;
+    width: fit-content;
+}
+
+.preview {
+    width: 90%;
+    overflow-y: scroll;
 }
 
 .preview * {
-    position: relative; 
+    position: relative;
 }
 
 .scene {
     height: auto;
+    width: 100%;
 }
 
 .block-options {
     scrollbar-width: none;
+    width: 210px;
 }
 
 .block-options::-webkit-scrollbar {
@@ -87,8 +95,87 @@ body {
     border-radius: 10px;
 }
 
+.category-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.category-container h4 {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-direction: row-reverse;
+    gap: 10px;
+    margin: 0;
+    padding: 10px 0;
+    border-bottom: 1px solid lightgrey;
+    cursor: pointer;
+}
+
+.category-container .block-item {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 15px;
+    cursor: pointer;
+}
+
+.category-container .block-item p {
+    padding: 0;
+    margin: 10px 0;
+    width: fit-content;
+}
+
+.block:hover {
+    transform: translateY(-2px);
+    outline: solid 2px grey;
+    filter: brightness(1.05);
+}
+
+.block-item .block-item-description {
+    position: absolute;
+    left: 190px;
+    height: fit-content;
+    width: 200px;
+    padding: 10px;
+    border-radius: 5px;
+    background: #fff;
+    z-index: 988;
+}
+
+.block-item .block-item-description h5 {
+    margin: 0;
+    padding: 0;
+}
+
+.block-item .block-item-description::before {
+    content: "";
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-right: 20px solid white;
+    position: absolute;
+    left: -20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.blIcon {
+    margin: 0;
+}
+
+.category-container .blIcon {
+    width: 30px;
+}
+
+.category-container .block-item .blIcon {
+    width: 15px;
+}
+
 .editor-tools {
-    width: auto;
+    width: 10%;
     padding: 10px;
     background: #fff;
     border-left: 1px solid lightgray;
@@ -107,7 +194,6 @@ body {
     flex-wrap: nowrap;
     flex-direction: column;
     margin: 10px 0;
-    border-top: 2px solid lightgray;
     overflow-y: auto;
 }
 
@@ -125,8 +211,7 @@ body {
 }
 
 .block-options input[type=color],
-.textEditor input[type=color]
-{
+.textEditor input[type=color] {
     background: none;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -147,8 +232,7 @@ body {
 }
 
 .block-options input[type=color]::-moz-color-swatch,
-.textEditor input[type=color]::-moz-color-swatch
-{
+.textEditor input[type=color]::-moz-color-swatch {
     border-radius: 5px;
     border: 1px solid #000;
     width: 25px;
@@ -211,10 +295,6 @@ body {
     display: block;
 }
 
-.preview {
-    overflow-y: scroll;
-}
-
 .selected,
 .selected:hover {
     outline: 1px solid var(--primary-color);
@@ -243,8 +323,7 @@ body {
 }
 
 .block-options #margin,
-.block-options #padding
-{
+.block-options #padding {
     width: 60px;
 }
 
@@ -261,18 +340,17 @@ body {
     font-size: 30px;
 }
 
-
 .viewport-actions i {
     color: rgba(0, 0, 0, 0.3);
     transition: 0.3s;
     cursor: pointer;
 }
 
-.viewport-actions button i{
+.viewport-actions button i {
     color: inherit;
 }
 
-.viewport-actions button:hover i{
+.viewport-actions button:hover i {
     color: inherit;
 }
 
@@ -281,8 +359,7 @@ body {
 }
 
 .selected.block.empty,
-.selected .block.empty
-{
+.selected .block.empty {
     outline: 1px solid var(--primary-color);
     background: url('../../awt-data/icons/plus-solid.svg') no-repeat center;
     background-size: fill;
@@ -338,18 +415,17 @@ body {
     float: left;
     z-index: 10;
     top: 150px;
-    width: 300px;
+    width: 150px;
     left: 50px;
     background: #fff;
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
-.floating-blocks .header p{
+.floating-blocks .header p {
     margin: 0;
     width: fit-content;
 }
-
 
 .context-menu {
     position: absolute;
@@ -383,7 +459,7 @@ body {
     width: 350px;
 }
 
-.textEditor .header p{
+.textEditor .header p {
     margin: 0;
     width: 100%;
     text-align: left !important;
@@ -402,7 +478,6 @@ body {
 .textEditor .text-options input {
     width: 150px;
 }
-
 
 @keyframes createSelector {
     0% {
@@ -432,5 +507,4 @@ body {
     100% {
         width: 25%;
     }
-
 }
