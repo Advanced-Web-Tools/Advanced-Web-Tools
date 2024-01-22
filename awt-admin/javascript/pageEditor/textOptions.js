@@ -247,8 +247,11 @@ function hyperLink(range) {
 
     var $dialog = $('.dialog');
     $dialog.toggleClass("active");
+    $dialog.css("height", "fit-content");
+    $dialog.css("width", "fit-content");
 
     var content = $('.dialog .content');
+    content.css("justify-content", "center");
     content.empty();
 
     fetchPages('?page=Home', function (selector) {

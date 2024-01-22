@@ -16,7 +16,7 @@
   background: #fff;
   height: 95%;
   padding: 2.5% 30px;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 #categoriesContainer .category {
@@ -45,7 +45,7 @@
   gap: 10px;
   padding: 5px 10px;
   align-items: center;
-  border-radius: 10px;
+  border-radius: 5px;
   background: #fff;
   margin: auto;
 }
@@ -110,11 +110,11 @@ input:checked+.slider:before {
 }
 
 .slider.round {
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 .slider.round:before {
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 .site-health {
@@ -124,7 +124,7 @@ input:checked+.slider:before {
   gap: 10px;
   padding: 10px;
   background: #fff;
-  border-radius: 10px;
+  border-radius: 5px;
   width: 710px;
   height: fit-content;
   justify-content: center;
@@ -137,7 +137,7 @@ input:checked+.slider:before {
   height: 150px;
   width: 150px;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
   color: #fff;
 }
 
@@ -152,7 +152,7 @@ input:checked+.slider:before {
   height: 150px;
   width: 150px;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 .site-health .incidents p {
@@ -163,7 +163,7 @@ input:checked+.slider:before {
 .site-health .health {
   width: 100%;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
   color: #fff;
 }
 
@@ -202,7 +202,7 @@ input:checked+.slider:before {
   align-items: center;
   justify-content: space-between;
   background: red;
-  border-radius: 10px;
+  border-radius: 5px;
   height: fit-content;
   gap: 10px;
   padding: 10px;

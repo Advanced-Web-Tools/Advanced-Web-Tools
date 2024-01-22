@@ -131,7 +131,7 @@
     top: 60;
     padding: 10px;
     background: #fff;
-    border-radius: 10px;
+    border-radius: 5px;
     width: 50%;
 }
 .dialog .header {
@@ -170,7 +170,7 @@
     top: 10;
     padding: 10px;
     background: #fff;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .info {

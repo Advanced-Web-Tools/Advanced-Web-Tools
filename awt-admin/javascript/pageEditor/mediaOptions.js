@@ -1,28 +1,23 @@
-function mediaOptions($block, defaultStyle) {
+function imageOptions($block, defaultStyle) {
 
-    var src = $block.attr("src");
+    var options = "<p>Image options</p>";
 
-    var options = "<p>Media options</p>";
+    const button = $("<button>");
+    button.addClass("button");
+    button.text("Select image");
 
-    options += "<select id='selectMediaFile'>";
 
-    options += "<option value='none'>Select Image</option>";
-
-    fetchMediaFiles(options, function (updatedOptions) {
-        options += updatedOptions;
-
-        options += "</select>";
-
-        $(".block-options").append(options);
-
-        $("#selectMediaFile").change(function () {
-            var selectedValue = $(this).val();
-            $block.attr("src", selectedValue);
+    button.on("click", button => {
+        fetchImages($block, function ($block, images) {
+            createDialog($block, images);
         });
     });
+
+    $(".block-options").append(options);
+    $(".block-options").append(button);
 }
 
-function fetchMediaFiles(options, callback) {
+function fetchImages($block, callback) {
     $.ajax({
         url: '../api.php',
         type: 'POST',
@@ -39,27 +34,66 @@ function fetchMediaFiles(options, callback) {
         response = JSON.parse(response);
 
         if (response != null) {
-            var updatedOptions = ""; // Create a new variable to store the updated options
+            var images = []; 
 
             $.each(response, function (key, value) {
                 if (value.file_type == "image") {
-                    updatedOptions += "<option value='" + value.file + "'>" + value.name + "</option>";
+                    images.push(value);
                 }
             });
-
-            // Call the callback with the updated options
-            callback(updatedOptions);
+            
+            callback($block, images);
         }
     });
 }
 
 
-function isMedia($block) {
-    var allowedTags = ["audio", "video", "source", "track", "img", "source"];
+function createDialog($block, images) {
+    const dialog = $(".dialog");
+    dialog.toggleClass("active");
 
-    var tagName = $block.prop("tagName").toLowerCase();
-    return allowedTags.includes(tagName);
+    dialog.css("height", "90%");
+    dialog.css("width", "90%");
+    const content = $(".dialog .content");
+
+    content.html(" ");
+
+    images.forEach(function(value, index) {
+
+        console.log(value);
+
+        const image = $("<img>");
+        image.attr("src", value.file);
+
+        image.css({
+            "width": "220px",
+            "height" : "220px",
+            "border-radius": "5px",
+            "object-fit": "cover",
+        });
+
+        image.on("click", image => {
+            $block.attr("src", value.file);
+            dialog.toggleClass("active");
+        });
+
+        content.css("justify-content", "flex-start");
+
+        content.append(image);
+    });
+
 }
 
-var option = new BlockOption(isMedia, mediaOptions);
+
+function isImage($block) {
+
+    var allowedTags = ["img"];
+
+    var tagName = $block.prop("tagName").toLowerCase();
+
+    if(allowedTags.includes(tagName)) return true;
+    return false;
+}
+
+var option = new BlockOption(isImage, imageOptions);
 blockOptions.push(option);

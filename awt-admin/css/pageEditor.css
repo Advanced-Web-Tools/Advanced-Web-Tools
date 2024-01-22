@@ -92,7 +92,7 @@ body {
 
 .block-options::-webkit-scrollbar-thumb {
     background-color: #0080c0;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .category-container {
