@@ -1,5 +1,5 @@
 <?php
-use blocks\{BlockCollection, block};
+use blocks\{BlockCollection, block, BlockOptions};
 
 function createBlockCollection(string $collection, BlockCollection $blockCollection)
 {
@@ -68,4 +68,14 @@ function getBlockInfo(string $name)
 }
 
 
+function addBlockOption(BlockOptions $options) {
+    global $blockOptions;
+    array_push($blockOptions, $options);
+}
 
+function getBlockOptions() {
+    global $blockOptions;
+    foreach ($blockOptions as $key => $option) {
+        $option->loadOption();
+    }
+}

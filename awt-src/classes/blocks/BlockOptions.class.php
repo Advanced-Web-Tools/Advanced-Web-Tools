@@ -2,7 +2,7 @@
 
 namespace blocks;
 
-class blockOptions {
+class BlockOptions {
     public string $path;
     private string $body;
     public function __construct(string $path) {
