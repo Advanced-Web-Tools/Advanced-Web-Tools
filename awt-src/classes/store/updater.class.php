@@ -45,10 +45,11 @@ class updater extends store
         $this->data['api'] = "getLatestAWTVersion";
         
         $this->sendRequest();
+        
         $this->response = json_decode($this->response, true);
-        
-        
-        if ($versionCompare = version_compare(AWT_VERSION, $this->response[0]["version"]) == -1) {
+
+        if (version_compare(AWT_VERSION, $this->response[0]["version"]) == -1) {
+
             file_put_contents(TEMP . DIRECTORY_SEPARATOR . "update.zip", fopen($this->response[0]["path"], 'r'));
             
             $zip = new ZipArchive();

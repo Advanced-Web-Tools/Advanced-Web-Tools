@@ -6,6 +6,7 @@ function checkForUpdates(caller) {
             versionCompare: 1
         },
         success: function (response) {
+          alert(response);
           $(caller).html('Checking... <i class="fa-solid fa-spinner fa-spin-pulse"></i>');
         },
         error: function (xhr, status, error) {
@@ -45,6 +46,7 @@ function updateAwt(caller) {
           console.log(error);
         }
     }).done(function(response) {
+        alert(response);
         alert(response + "\nPage will reload now..");
         window.location.reload();
     });

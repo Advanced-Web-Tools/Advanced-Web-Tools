@@ -25,7 +25,7 @@ class store
 
     public string $url;
 
-    private $response;
+    protected $response;
 
     private array $data;
 
