@@ -4,9 +4,9 @@
 }
 
 .page section {
-  display: grid;
-  grid-template-columns: auto 45% auto;
-  grid-auto-flow: column;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   width: 100%;
   gap: 30px;
   height: 95%;
@@ -14,9 +14,20 @@
 
 #categoriesContainer {
   background: #fff;
-  height: 95%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  height: fit-content;
   padding: 2.5% 30px;
   border-radius: 5px;
+  width: 100%;
+}
+
+#categoriesContainer h3 {
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 #categoriesContainer .category {
@@ -25,6 +36,7 @@
   margin: 4px 0;
   color: var(--text-color-variant);
   transition: 0.3s ease;
+  font-size: 18px;
 }
 
 #categoriesContainer .category.selected {
@@ -34,12 +46,16 @@
 #formsContainer {
   height: fit-content;
   display: grid;
+  grid-template-columns: 100%;
   gap: 20px;
+  width: 45%;
+  justify-content: start;
 }
 
 #formsContainer .setting {
   display: grid;
-  width: 95%;
+  grid-template-columns: 33% 30% 33%;
+  width: 100%;
   height: fit-content;
   grid-template-columns: 150px auto 150px;
   gap: 10px;
@@ -48,6 +64,10 @@
   border-radius: 5px;
   background: #fff;
   margin: auto;
+}
+
+#formsContainer .setting h4 {
+  width: 100%;
 }
 
 #formsContainer .setting h4::first-letter {
@@ -114,7 +134,7 @@ input:checked+.slider:before {
 }
 
 .slider.round:before {
-  border-radius: 5px;
+  border-radius: 15px;
 }
 
 .site-health {
@@ -125,7 +145,7 @@ input:checked+.slider:before {
   padding: 10px;
   background: #fff;
   border-radius: 5px;
-  width: 710px;
+  width: 50%;
   height: fit-content;
   justify-content: center;
   align-items: flex-start;

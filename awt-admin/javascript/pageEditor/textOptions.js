@@ -77,10 +77,8 @@ function isText($block) {
     var result = false;
     var allowedTags = ["p", "h1", "h2", "h3", "h4", "h5", "h6", "a", "strong", "em", "b", "i", "u", "li"];
     if(allowedTags.includes($(".selected").prop('nodeName').toLowerCase())) result = true;
-    console.log(result);
-    if(hasTextChild($block).length > 0) result = true;
     
-    console.log(result);
+    if(hasTextChild($block).length > 0) result = true;
 
     return result;
 }
@@ -96,8 +94,6 @@ function isEditing($block) {
     var isEditing = false;
 
     if(document.activeElement) isEditing = true;
-
-    console.log(isEditing);
 
     if (!isEditing) {
         return false;

@@ -105,7 +105,11 @@ class media extends api
 
         if ($row = $result->fetch_assoc()) {
             $fileType = $row["file_type"];
-            $file = UPLOADS . $fileType . '/' . $row["file"];
+
+            $f_name = explode("/", $row['file']);
+            $f_name = $f_name[array_key_last($f_name)];
+
+            $file = UPLOADS . $fileType . '/' . $f_name;
 
             $stmt->close();
             $stmt = $this->mysqli->prepare("DELETE FROM `awt_media` WHERE `id` = ?;");

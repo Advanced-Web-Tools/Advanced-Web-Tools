@@ -16,6 +16,9 @@
     gap: 10px;
     height: 32px;
     width: 100%;
+    background: #fff;
+    padding: 10px 0px 10px 10px;
+    border-radius: 5px;
 }
 
 .media-files form p {
@@ -26,14 +29,22 @@
 
 .media-files .group-actions {
     margin: 10px 0;
+    background: #fff;
+    padding: 10px 0 10px 10px;
+    border-radius: 5px;
+    width: 100%;
 }
 
 .media-files .media-list {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    max-height: 100%;
+    max-height: 88%;
+    width: 97.9%;
     overflow-y: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
 }
 
 .media-files .media-list .media{

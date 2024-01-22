@@ -1,11 +1,85 @@
 .page {
-    margin: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.welcome-screen {
+    margin: 20px;
+    border-radius: 5px;
+    background: #fff;
+}
+
+.welcome-screen .welcome-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: var(--primary-color);
+    color: #fff;
+    border-radius: 5px 5px 0 0;
+}
+
+.welcome-header h1 {
+    margin: 5px 0;
+}
+
+.welcome-screen .welcome-header i {
+    cursor: pointer;
+}
+
+.welcome-screen .welcome-header p {
+    width: 100%;
+    margin: 0 0;
+}
+
+.welcome-screen .content {
+    padding: 5px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10rem;
+}
+
+.welcome-screen .content h3 {
+    font-size: 20px;
+    margin: 15px 0;
+}
+
+.welcome-screen .wrapper {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.welcome-screen .content .wrapper a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.welcome-screen .content .wrapper .link {
+    text-decoration: none;
+    color: var(--primary-color);
+    margin: 7px 0;
+}
+
+.welcome-screen .content .wrapper .button {
+    margin:  0 20px 0 0;
 }
 
 .widgets {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 50px;
-    margin: 10px;
-    background: #FFF9F9;
+    display: grid;
+    grid-template-columns: 49.5% 49.5%;
+    gap: 1%;
+    row-gap: 20px;
+    margin: 20px;
+}
+
+@media screen and (max-width: 450px) {
+    .widgets {
+        width: 90%;
+        grid-template-columns: 100%;
+        margin: 20px auto;
+    }
 }

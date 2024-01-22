@@ -34,7 +34,7 @@ if (!$check->checkAuthentication()) {
 </div>
 
 <div class="media-files">
-    <form action="./jobs/media.php" method="post" enctype="multipart/form-data">
+    <form class="shadow" action="./jobs/media.php" method="post" enctype="multipart/form-data">
         <input type="file" id="upload_button" name="uploadedFiles[]" multiple style="display: none;" />
         <label for="upload_button">
             <p class="button upload">Select Files</p>
@@ -42,14 +42,14 @@ if (!$check->checkAuthentication()) {
         <button type="submit" class="button">Upload</button>
         <p id="number_of_files"></p>
     </form>
-    <div class="group-actions hidden">
+    <div class="group-actions shadow hidden">
         <button type="button" class="button"
             onclick="addToAlbum('.add-to-album-list', '.media-list', selected, '<?php echo HOSTNAME; ?>')">Move to
             album</button>
         <button type="button" class="button" id="red"
             onclick="deleteMedia('.media-list', '<?php echo HOSTNAME; ?>')">Delete</button>
     </div>
-    <div class="media-list">
+    <div class="media-list shadow">
 
     </div>
 </div>
