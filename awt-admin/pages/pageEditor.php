@@ -8,7 +8,7 @@ use themes\themes;
 $theme = new themes;
 
 $theme->loadTheme();
-
+getBlockOptions();
 ?>
 <script src="../awt-src/vendor/jQuery/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
@@ -16,6 +16,10 @@ $theme->loadTheme();
 <script src="./javascript/pageEditor/blockOptions.js"></script>
 <script src="./javascript/pages/hidenav.js">
 </script>
+
+<?php 
+
+?>
 
 <script src="./javascript/pageEditor/pageEditor.js">
 </script>
