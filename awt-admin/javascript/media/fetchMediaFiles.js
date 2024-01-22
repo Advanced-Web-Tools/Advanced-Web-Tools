@@ -11,33 +11,40 @@ function fetchMediaFiles(container, hostname) {
     }).done(function (response) {
         var data = JSON.parse(response);
         var html = "";
+        $(container).html(" ");
         if (data != null) {
             $.each(data, function (key, value) {
-                html += "<div class='media'>";
+                html = $("<div class='media'>");
 
                 if (value.file_type == "image") {
-                    html += "<img class='file' id='" + value.id + "' src='" + value.file + "' onclick='selectMedia(" + value.id + ")'/>";
+                    html.append("<img class='file' id='" + value.id + "' src='" + value.file + "' onclick='selectMedia(" + value.id + ")'/>");
+                    const button = $('<button class="button crop-img" data-id="' + value.id + '"><i class="fa-solid fa-wand-magic-sparkles"></i></button>');
+                    
+                    button.on("click", function(e) {
+                        openEditor(this);
+                    });
+
+                    html.append(button);
                 }
 
                 if (value.file_type == "video") {
-                    html += "<video class='file'id='" + value.id + "' controls width='260px'>";
-                    html += '<source src="' + value.file + '"></source>';
-                    html += "</video>";
-                    html += "<input type='checkbox' onclick='selectMedia(" + value.id + ")'/>"
+                    const video = $("<video class='file'id='" + value.id + "' controls width='260px'>");
+                    video.append('<source src="' + value.file + '"></source>');
+                    html.append(video);
+                    html.append("<input type='checkbox' onclick='selectMedia(" + value.id + ")'/>");
                 }
 
                 if (value.file_type == "audio") {
-                    html += "<video class='file' id='" + value.id + "' controls width='260px' poster='" + hostname + "/awt-data/icons/microphone.jpg'>";
-                    html += '<source src="'  + value.file + '"></source>';
-                    html += "</video>";
-                    html += "<input type='checkbox' onclick='selectMedia(" + value.id + ")'/>"
+                    const video = $("<video class='file'id='" + value.id + "' controls width='260px' poster='" + hostname + "/awt-data/icons/microphone.jpg'>");
+                    video.append('<source src="' + value.file + '"></source>');
+                    html.append(video);
+                    html.append("<input type='checkbox' onclick='selectMedia(" + value.id + ")'/>");
                 }
-
-                html += "</div>";
-
+                $(container).append(html);
             });
+
         }
-        $(container).html(html);
+
     });
 }
 
@@ -54,33 +61,38 @@ function fetchMediaFilesAlbum(id, container, hostname) {
     }).done(function (response) {
         var data = JSON.parse(response);
         var html = "";
+        $(container).html(" ");
         if (data != null) {
             $.each(data, function (key, value) {
-                html += "<div class='media'>";
+                html = $("<div class='media'>");
 
                 if (value.file_type == "image") {
-                    html += "<img class='file' id='" + value.id + "' src='" + value.file + "' onclick='selectMedia(" + value.id + ")'/>";
+                    html.append("<img class='file' id='" + value.id + "' src='" + value.file + "' onclick='selectMedia(" + value.id + ")'/>");
+                    const button = $('<button class="button crop-img" data-id="' + value.id + '"><i class="fa-solid fa-wand-magic-sparkles"></i></button>');
+                    
+                    button.on("click", function(e) {
+                        openEditor(this);
+                    });
+
+                    html.append(button);
                 }
 
                 if (value.file_type == "video") {
-                    html += "<video class='file'id='" + value.id + "' controls width='260px'>";
-                    html += '<source src="' + value.file + '"></source>';
-                    html += "</video>";
-                    html += "<input type='checkbox' onclick='selectMedia(" + value.id + ")'/>"
+                    const video = $("<video class='file'id='" + value.id + "' controls width='260px'>");
+                    video.append('<source src="' + value.file + '"></source>');
+                    html.append(video);
+                    html.append("<input type='checkbox' onclick='selectMedia(" + value.id + ")'/>");
                 }
 
                 if (value.file_type == "audio") {
-                    html += "<video class='file' id='" + value.id + "' controls width='260px' poster='" + hostname + "/awt-data/icons/microphone.jpg'>";
-                    html += '<source src="'  + value.file + '"></source>';
-                    html += "</video>";
-                    html += "<input type='checkbox' onclick='selectMedia(" + value.id + ")'/>"
+                    const video = $("<video class='file'id='" + value.id + "' controls width='260px' poster='" + hostname + "/awt-data/icons/microphone.jpg'>");
+                    video.append('<source src="' + value.file + '"></source>');
+                    html.append(video);
+                    html.append("<input type='checkbox' onclick='selectMedia(" + value.id + ")'/>");
                 }
-
-                html += "</div>";
-
+                $(container).append(html);
             });
         }
-        $(container).html(html);
     });
 }
 

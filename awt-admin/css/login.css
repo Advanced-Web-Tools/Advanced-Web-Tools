@@ -39,7 +39,7 @@
     height: 60px;
     width: 370px;
     font-size: 18px;
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 5px 10px;
     box-sizing: border-box;
     outline: none;
@@ -58,7 +58,7 @@
     padding: 10px 20px;
     background: none;
     border: 1px solid var(--primary-color-variant);
-    border-radius: 10px;
+    border-radius: 5px;
     color: var(--primary-color);
     cursor: pointer;
     transition: 0.5s ease all;
@@ -99,7 +99,7 @@
 
     .form-wrapper {
         width: 98%;
-        border-radius: 10px;
+        border-radius: 5px;
         height: auto;
     }
 

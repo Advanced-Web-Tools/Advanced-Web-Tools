@@ -1,0 +1,137 @@
+
+.image-editor {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    height: 90%;
+    width: 80%;
+    position: absolute;
+    top: 2.5%;
+    left: 10%;
+    border-radius: 5px;
+    z-index: 10;
+    padding: 10px;
+}
+
+.image-editor .editor-header {
+    display: flex;
+}
+
+.editor-header i {
+    width: fit-content;
+    cursor: pointer;
+}
+
+.editor-header h3 {
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.overlay {
+    z-index: 9;
+}
+
+.editor-container {
+    width: 100%;
+    height: 95%;
+    margin: auto 0;
+    display: grid;
+    grid-template-columns: 70% 30%;
+    grid-template-rows: 100%;
+}
+
+.editor-container img {
+    max-height: 100%;
+}
+
+.editor-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+}
+
+.options-top {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    gap: 10px;
+}
+
+.preview-container {
+    background: #f2f2f2;
+    border: 2px solid #000;
+    width: 250px;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.preview-cover {
+    overflow: hidden;
+}
+
+.rotation-controls {
+    width: fit-content;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.move-img {
+    width: 255px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: -53px;
+}
+
+.move-img h5 {
+    width: 100%;
+}
+
+.move-img span {
+    width: 100%;
+    text-align: center;
+    margin: 15px 0;
+}
+
+.save_image i {
+    margin: 0 0 0 5px;
+}
+
+
+.info {
+    width: 95%;
+    margin: 0 auto;
+}
+
+.info .pallete {
+    display: flex;
+    gap: 10px;
+}
+
+.info .colorBlock {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #000;
+    border: 1px solid #000;
+}
+
+.info .color {
+    display: block;
+    width: 100%;
+    height: 30px;
+    border-radius: 5px;
+    background-color: #000;
+    border: 1px solid #000;
+}
+
+
+

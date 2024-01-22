@@ -3,7 +3,7 @@
     margin: 40px 0 0 0;
     height: fit-content;
     background: #fff;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .upload {
@@ -13,7 +13,7 @@
     position: absolute;
     background: #fff;
     z-index: 2;
-    border-radius: 10px;
+    border-radius: 5px;
     -webkit-box-shadow: 10px 10px 47px 0px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: 10px 10px 47px 0px rgba(0, 0, 0, 0.75);
     box-shadow: 10px 10px 47px 0px rgba(0, 0, 0, 0.75);
@@ -126,5 +126,5 @@
 
 .card img {
     width: 100%;
-    border-radius: 10px;
+    border-radius: 5px;
 }

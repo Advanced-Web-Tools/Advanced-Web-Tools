@@ -53,7 +53,7 @@
     max-width: 24%;
     height: 250px;
     background: #fff;
-    border-radius: 10px;
+    border-radius: 5px;
     color: #000;
     text-decoration: none;
     background-size: cover;
@@ -194,7 +194,7 @@
 
 .store-gallery .gallery-item {
     max-width: 350px;
-    border-radius: 10px;
+    border-radius: 5px;
     background: #252525;
     transition: 0.3s;
 }
@@ -210,7 +210,7 @@
     margin: 20px auto;
     gap: 10px;
     color: #000;
-    border-radius: 10px;
+    border-radius: 5px;
     padding: 10px;
 }
 
@@ -228,7 +228,7 @@
 
 .store-description .package-info {
     border: 1px solid #252525;
-    border-radius: 10px;
+    border-radius: 5px;
     margin: 50px 0;
     padding: 20px 30px;
 }

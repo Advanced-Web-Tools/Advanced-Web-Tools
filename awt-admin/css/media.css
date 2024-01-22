@@ -1,22 +1,25 @@
 .page {
-    display: grid;
-    grid-template-columns: 80% 19%;
-    grid-template-rows: 100%;
+    display: flex;
     gap: 1%;
     margin: 0;
     padding: 10px;
 }
 
+.media-files {
+    width: 80%;
+}
+
 .media-files form {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
+    align-items: center;
     gap: 10px;
     height: 32px;
+    width: 100%;
 }
 
 .media-files form p {
-    width: 100px;
+    width: fit-content;
     text-align: center;
     margin: 0;
 }
@@ -42,9 +45,19 @@
 .media-files .media-list .media .file{
     width: 260px;
     height: 260px;
-    border-radius: 10px;
+    border-radius: 5px;
     overflow: hidden;
 }
+
+.media-files .media-list .media .crop-img {
+    position: relative;
+    width: fit-content !important;
+    height: fit-content !important;
+    padding: 7px !important;
+    top: -87%;
+    right: 87%;
+}
+
 
 .media-files .media-list .media input{
     width: 10px;
@@ -60,20 +73,18 @@
 .albums {
     background: #fff;
     padding: 20px 5px;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 .albums .create-album {
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-between;
     gap: 10px;
     height: 32px;
 }
 
 .albums .create-album input {
-    width: auto;
+    width: 190px;
 }
 
 .albums-list {
@@ -107,7 +118,7 @@
     background: #fff;
     right: 50%;
     top: 20;
-    border-radius: 10px;
+    border-radius: 5px;
     width: 320px;
     padding: 10px;
     display: grid;
