@@ -12,7 +12,7 @@ function fetchMediaFiles(container, hostname) {
         var data = JSON.parse(response);
         var html = "";
         $(container).html(" ");
-        if (data != null) {
+        if (data.length != 0) {
             $.each(data, function (key, value) {
                 html = $("<div class='media'>");
 
@@ -43,6 +43,8 @@ function fetchMediaFiles(container, hostname) {
                 $(container).append(html);
             });
 
+        } else {
+            $(container).html("<p>Upload you first files to show them here</p>");
         }
 
     });
@@ -62,7 +64,7 @@ function fetchMediaFilesAlbum(id, container, hostname) {
         var data = JSON.parse(response);
         var html = "";
         $(container).html(" ");
-        if (data != null) {
+        if (data.length != 0) {
             $.each(data, function (key, value) {
                 html = $("<div class='media'>");
 
@@ -92,6 +94,8 @@ function fetchMediaFilesAlbum(id, container, hostname) {
                 }
                 $(container).append(html);
             });
+        } else {
+            $(container).html("<p>Upload you first files to show them here</p>");
         }
     });
 }
@@ -111,8 +115,6 @@ function selectMedia(id) {
     } else {
         if (!$(".group-actions").hasClass("hidden")) $(".group-actions").addClass("hidden");
     }
-
-    console.log(selected);
 }
 
 function arrayRemove(arr, value) {
@@ -130,7 +132,6 @@ function deleteMedia(container, hostname) {
 
     $(".group-actions").addClass("hidden");
 
-    console.log(data);
     $.ajax({
         url: './jobs/media.php',
         type: 'POST',
