@@ -8,8 +8,8 @@ function ListOptions($block, defaultStyle) {
     options += '<option value="ordered">Ordered</option>';
     options += '<option value="unordered">Unordered</option>';
     options += '</select>';
-    options += '<button class="add-list-item">Add Item</button>';
-    options += '<button class="remove-list-item">Remove Item</button>';
+    options += '<button class="add-list-item button">Add Item</button>';
+    options += '<button class="remove-list-item button">Remove Item</button>';
 
     $(".block-options").append(options);
 

@@ -49,6 +49,7 @@ function setDefaultOptions($block, defaultStyle) {
     options += '<input type="text" id="padding" class="padding-input-bottom" value="' + (defaultPaddingBottom) + '" placeholder="Bottom">';
     options += '<input type="text" id="padding" class="padding-input-left" value="' + (defaultPaddingLeft) + '" placeholder="Left">';
     options += '</div>';
+
     options += '<label for="border-radius">Border radius:</label>';
     options += '<div class="input-group">';
     options += '<input type="text" class="border-radius-topL" id="border-radius" value="' + (borderRadiusTopL) + '" placeholder="Top Left">';
@@ -57,16 +58,20 @@ function setDefaultOptions($block, defaultStyle) {
     options += '<input type="text" class="border-radius-botR" id="border-radius" value="' + (borderRadiusBotR) + '" placeholder="Bottom Left">';
     options += '<input type="text" class="border-radius-botL" id="border-radius" value="' + (borderRadiusBotL) + '" placeholder="Bottom Right">';
     options += '</div>';
+
     options += "<p>Height & Width</p>";
     options += '<input type="text" class="width-input" value="' + (defaultWidth ? defaultWidth[1] : '') + '" placeholder="Width">';
     options += '<input type="text" class="height-input" value="' + (defaultHeight ? defaultHeight[1] : '') + '" placeholder="Height">';
+
     options += "<p>Background settings</p>";
     options += '<label for="background-color">Background color:</label>';
     options += '<input type="color" class="background-color-input" id="background-color" value="' + defaultBackgroundColor + '" placeholder="Background Color">';
     options += '<label for="background-image">Background image:</label>';
-    options += '<select class="background-image" id="background-image">';
-    options += '<option value="none">Select image</option>';
-    options += '</select>';
+
+    options += '<button class="background-image button" id="background-image">Select Background</button>';
+    options += '<button class="background-image-remove button" id="background-image">Remove Background</button>';
+
+
     options += '<label for="background-position">Background position:</label>';
     options += '<select class="background-position" id="background-position" value="' + (backgroundPosition ? backgroundPosition[1] : 'Center') + '">';
     options += '<option value="center">Center</option>';
@@ -86,6 +91,7 @@ function setDefaultOptions($block, defaultStyle) {
     options += '<option value="contain">Contain</option>';
     options += '<option value="fill">Fill</option>';
     options += '</select>';
+
     options += '<button class="parent-selection button">Select Parent</button>';
     options += '<button class="delete-block button">Delete Block</button>';
     $(".block-options").html(options);
@@ -174,44 +180,64 @@ function setDefaultOptions($block, defaultStyle) {
         $block.css("background-size", $(this).val());
     });
 
-    $.ajax({
-        url: '../api.php',
-        type: 'POST',
-        data: {
-            request: "media",
-            data: 0,
-            type: 'fetchAll',
-        },
-        error: function (xhr, status, error) {
-            console.log(error);
-        }
-    }).done(function (response) {
 
-        response = JSON.parse(response);
+    $(".background-image-remove").on("click", function() {
+        $block.css("background-image", "");
+    });
 
-        if (response != null) {
-            var updatedOptions = ""; // Create a new variable to store the updated options
+    $(".background-image").on("click", function () {
+        $.ajax({
+            url: '../api.php',
+            type: 'POST',
+            data: {
+                request: "media",
+                data: 0,
+                type: 'fetchAll',
+            },
+            error: function (xhr, status, error) {
+                console.log(error);
+            }
+        }).done(function (response) {
 
-            $.each(response, function (key, value) {
-                if (value.file_type == "image") {
-                    updatedOptions += "<option value='" + value.file + "'>" + value.name + "</option>";
-                }
-            });
+            response = JSON.parse(response);
 
-            var imgLink = backgroundImage ? backgroundImage[1] : 'Select image';
+            if (response != null) {
+                var images = [];
 
-            imgLink = imgLink.replace("url(", '');
-            imgLink = imgLink.replace(")", '');
+                $.each(response, function (key, value) {
+                    if (value.file_type == "image") {
+                        images.push(value);
+                    }
+                });
 
-            $(".background-image").append(updatedOptions);
-            // $(".background-image option[value=" + imgLink + "]").attr('selected', 'selected');
-            $(".background-image").change(function () {
+                const dialog = $(".dialog");
+                dialog.toggleClass("active");
+                dialog.css("height", "90%");
+                dialog.css("width", "90%");
+                const content = $(".dialog .content");
 
-                var selectedValue = $(".background-image").val();
-                $block.css("background-image", "url(" + selectedValue + ")");
-            });
+                content.html("");
+                images.forEach(function (value, index) {
+                    const image = $("<img>");
+                    image.attr("src", value.file);
 
-        }
+                    image.css({
+                        "width": "220px",
+                        "height": "220px",
+                        "border-radius": "5px",
+                        "object-fit": "cover",
+                    });
+
+                    image.on("click", () => {
+                        $block.css("background-image", "url('" + value.file +"')");
+                        dialog.toggleClass("active");
+                    });
+
+                    content.css("justify-content", "flex-start");
+                    content.append(image);
+                });
+            }
+        });
     });
 }
 
