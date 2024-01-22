@@ -116,21 +116,6 @@ CREATE TABLE IF NOT EXISTS `awt_menus` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `awt_metrics`
---
-
-CREATE TABLE IF NOT EXISTS `awt_metrics` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `uid` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `url` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `ip` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `date` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=824 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `awt_notifications`
 --
 
@@ -150,15 +135,16 @@ CREATE TABLE IF NOT EXISTS `awt_notifications` (
 --
 
 CREATE TABLE IF NOT EXISTS `awt_paging` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `content_1` mediumtext COLLATE utf8mb4_general_ci,
-  `content_2` mediumtext COLLATE utf8mb4_general_ci,
-  `status` varchar(7) COLLATE utf8mb4_general_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `override` int NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `content_1` mediumtext DEFAULT NULL,
+  `content_2` mediumtext DEFAULT NULL,
+  `status` varchar(7) NOT NULL,
+  `token` varchar(255) DEFAULT NULL,
+  `override` int(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
