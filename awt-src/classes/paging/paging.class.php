@@ -35,9 +35,6 @@ class paging extends cache
 
         $this->pluginPages = $pluginPages;
 
-        if (isset($_GET['page']))
-            echo "<title>" . WEB_NAME . " | " . $_GET['page'] . "</title>";
-
         $this->database = new databaseConfig;
 
         $this->database->checkAuthority() == 1 or die("Fatal error database access for " . $this->database->getCaller() . " was denied");

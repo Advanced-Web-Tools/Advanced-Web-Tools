@@ -1,4 +1,4 @@
-var $selection = $(".pageSection");
+var $selection = $(".scene");
 let shrinkenView = false;
 let movingBlocks = false;
 let selectedElement = false;
@@ -166,13 +166,13 @@ function contextMenu() {
 }
 
 function publishContent(name) {
-  const $pageSection = $('.pageSection');
+  const $pageSection = $('.scene');
   const $clonedPageSection = $pageSection.clone();
 
   $clonedPageSection.find(".block.empty.replacable").remove();
   $pageSection.find(".block.empty.replacable").remove();
 
-  const htmlContent = $clonedPageSection.last().prop('outerHTML');
+  const htmlContent = $clonedPageSection.html();
 
   $.ajax({
     url: './jobs/pageEditor.php',
@@ -189,11 +189,11 @@ function publishContent(name) {
 }
 
 function savePage(name) {
-  const $pageSection = $('.pageSection');
+  const $pageSection = $('.scene');
   const $clonedPageSection = $pageSection.clone();
 
   $clonedPageSection.find(".block.empty.replacable").remove();
-  const htmlContent = $clonedPageSection.last().prop('outerHTML');
+  const htmlContent = $clonedPageSection.html();
 
   $.ajax({
     url: './jobs/pageEditor.php',
@@ -251,16 +251,18 @@ function detectEmpty() {
 }
 
 function createEditableLayout() {
-  $selection = $('.pageSection');
+  $selection = $('.scene');
 
-  $(".preview").sortable({
-    items: ".block",
+  $(".scene").sortable({
+    items: " > .block",
     scroll: true,
     scrollSensitivity: 50,
     cursor: "move",
     helper: "clone",
     tolerance: "pointer",
+    opacity: 0.8,
     cancel: 'input,textarea,button,select,option,[contenteditable]',
+    containment: "parent",
     start: function (event, ui) {
       movingBlocks = true;
     },
@@ -270,11 +272,12 @@ function createEditableLayout() {
     }
   });
 
-  $('.pageSection .block').each(function () {
+  $('.scene .block').each(function () {
     const $block = $(this);
 
     $block.on('click', function (e) {
       BlockOptions($block);
+      e.stopPropagation();
       $(document).find(":focus").each(function () {
         const focusedElement = $(this);
         if (!focusedElement.is($block) && !$block.has(focusedElement).length > 0) {
@@ -285,30 +288,30 @@ function createEditableLayout() {
 
     hasTextChild($block).attr('contenteditable', 'true');
 
-    $block.find('.block').on('click', function (e) {
+    $block.find('.scene .block').on('click', function (e) {
       e.stopPropagation();
       BlockOptions($block);
     });
   });
 
-  $(".preview").click(function () {
+  $(".scene").click(function () {
     if (ignorePreviewClick) {
       ignorePreviewClick = false;
       return;
     }
 
-    $selection = $('.pageSection');
+    $selection = $('.scene');
 
     $("*").removeClass('selected');
 
-    $(".pageSection").addClass('selected');
+    $(".scene").addClass('selected');
     if ($selection.find(".selected").length === 0) selectedElement = true;
   });
 
-  $(".pageSection").on("click", function (event) {
+  $(".scene").on("click", function (event) {
     if (
-      $(event.target).closest(".pageSection").length > 0 &&
-      !$(event.target).is(".preview")
+      $(event.target).closest(".scene").length > 0 &&
+      !$(event.target).is(".scene")
     ) {
       ignorePreviewClick = true;
       return;
@@ -324,7 +327,7 @@ $(document).ready(function () {
     floatingBlockSelectorActive = $('.floating-blocks').hasClass('hidden') ? false : true;
   });
 
-  $(".preview").on("DOMSubtreeModified", function (event) {
+  $(".scene").on("DOMSubtreeModified", function (event) {
     detectEmpty();
   });
 

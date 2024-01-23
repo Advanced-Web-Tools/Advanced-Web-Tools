@@ -99,7 +99,7 @@ function isEditing($block) {
         return false;
     }
 
-    var focusedElement = $('.pageSection').find(':focus');
+    var focusedElement = $('.scene').find(':focus');
     var isAllowedContent = focusedElement.is(allowedTags.join('[contenteditable=true],') + '[contenteditable=true]');
 
     if (isAllowedContent) {

@@ -20,6 +20,15 @@ class menu {
         $stmt->close();
     }
 
+    public function setActiveMenu(string $name) {
+        $stmt = $this->mysqli->prepare("UPDATE `awt_menus` SET `active` = '0' WHERE `active` = '1';");
+        $stmt->execute();
+        $stmt->close();
+        $stmt = $this->mysqli->prepare("UPDATE `awt_menus` SET `active` = '1' WHERE `name` = ?;");
+        $stmt->bind_param("s", $name);
+        $stmt->execute();
+    }
+
     public function getActiveMenus()
     {
         foreach($this->menus as $key => $value) {
@@ -39,7 +48,7 @@ class menu {
     public function createMenu(string $name, string $items)
     {   
         $active = 0;
-        $stmt = $this->mysqli->prepare("INSERT INTO `awt_menus`(`name`, `items`, `active`) VALUES ('?','?','?')';");
+        $stmt = $this->mysqli->prepare("INSERT INTO `awt_menus`(`name`, `items`, `active`) VALUES (?, ?, ?);");
         $stmt->bind_param("sss", $name, $items, $active);
         $stmt->execute();
     }

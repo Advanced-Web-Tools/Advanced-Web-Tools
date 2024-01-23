@@ -23,7 +23,7 @@ class editor extends paging
     {
         $page_length = strlen($page);
 
-        $renderer = new renderer($this->pluginPages);
+        $renderer = new renderer();
 
         $page = $renderer::sanitizePage($page);
 
@@ -82,8 +82,8 @@ class editor extends paging
 
     public function createEmptyPage(string $name) : bool
     {
-        $content_1 = "<div class='pageSection'>";
-        $content_2 = "</div>";
+        $content_1 = "";
+        $content_2 = "";
         $status = "preview";
         $override = 0;
 

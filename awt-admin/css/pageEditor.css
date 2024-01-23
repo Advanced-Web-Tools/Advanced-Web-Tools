@@ -130,7 +130,6 @@ body {
 .block:hover {
     transform: translateY(-2px);
     outline: solid 2px grey;
-    filter: brightness(1.05);
 }
 
 .block-item .block-item-description {
