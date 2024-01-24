@@ -145,7 +145,7 @@ function createTable(elementId, jsonData, link) {
     var pageName = rowData.name;
     var pageId = rowData.id;
     var token = rowData.token;
-    var editLink = $('<a>').attr('href', '?page=pageEditor&editPage=' + pageId + '&pageName=' + pageName).text('Edit');
+    var editLink = $('<a>').attr('href', '?page=Page Editor&editPage=' + pageId + '&pageName=' + pageName).text('Edit');
     var liveLink = $('<a>').attr('href', link + '?page=' + pageName + "&custom").text('Visit');
     var previewLink = $('<a>').attr('href', link + '?page=' + pageName + "&custom&preview=" + token).text('Preview');
     editLink.attr('target', "_blank");

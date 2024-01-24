@@ -254,15 +254,31 @@ function createEditableLayout() {
   $selection = $('.scene');
 
   $(".scene").sortable({
-    items: " > .block",
+    items: "> .block",
     scroll: true,
     scrollSensitivity: 50,
     cursor: "move",
     helper: "clone",
     tolerance: "pointer",
-    opacity: 0.8,
+    opacity: 0.5,
     cancel: 'input,textarea,button,select,option,[contenteditable]',
-    containment: "parent",
+    start: function (event, ui) {
+      movingBlocks = true;
+    },
+    stop: function (event, ui) {
+      movingBlocks = false;
+      saveToHistory();
+    }
+  });
+
+  $(".scene .block").sortable({
+    items: "> .block",
+    scroll: false,
+    cursor: "move",
+    helper: "clone",
+    tolerance: "pointer",
+    opacity: 0.5,
+    cancel: 'input, textarea, button, select, option, [contenteditable]',
     start: function (event, ui) {
       movingBlocks = true;
     },

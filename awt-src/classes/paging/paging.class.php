@@ -27,7 +27,7 @@ class paging extends cache
             'Customize' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'customize.php',
             'Pages' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'pages.php',
             'Media' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'media.php',
-            'pageEditor' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'pageEditor.php',
+            'Page Editor' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'pageEditor.php',
             'Menus' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'menus.php',
             'Mail' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'mail.php',
             'Theme Editor' => ADMIN . 'pages' . DIRECTORY_SEPARATOR . 'themeEditor.php',
