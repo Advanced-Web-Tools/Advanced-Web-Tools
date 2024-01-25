@@ -16,6 +16,7 @@ function loadAllPlugins()
     global $loadedPlugins;
     global $pluginBlocks;
     global $loadedBlocks;
+    global $api_executors;
 
     foreach ($plugins as $plugin) {
         if ($plugin['status'] === 1) {
