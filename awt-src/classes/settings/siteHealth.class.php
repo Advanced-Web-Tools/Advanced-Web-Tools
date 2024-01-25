@@ -1,21 +1,20 @@
 <?php
 
 namespace settings;
-use notifications\notifications;
+use notifications\{notifications, attention};
 
 class siteHealth extends notifications {
     public int $numberOfIncidents;
     public int $numberOfIncidentsToday;
     public int $numberOfNotices;
     public int $numberOfNoticesToday;
-
+    public int $numberOfUnresolvedAttentions;
     public array $incidentsToday;
     public array $incidents;
-
     public array $noticesToday;
     public array $notices;
-
     public string $health;
+    private int $maxHealth = 100;
 
     public function __construct()
     {   
@@ -31,32 +30,45 @@ class siteHealth extends notifications {
 
         $this->numberOfNoticesToday = count($this->noticesToday);
         $this->numberOfNotices = count($this->notices);
+
+        $attentions = new attention("Health", "check");
+
+        $this->numberOfUnresolvedAttentions = count($attentions->getUnresolved());
+
+    }
+
+    private function calculatehealth() : void
+    {
+        $this->maxHealth -= $this->numberOfUnresolvedAttentions * 2;
+        $this->maxHealth -= $this->numberOfIncidentsToday * 3;
     }
 
     public function getHealth() : string
     {   
 
-        if($this->numberOfIncidentsToday == 0) {
+        $this->calculatehealth();
+
+        if($this->maxHealth <= 100 && $this->maxHealth > 95) {
             $this->health = "Excellent";
             return $this->health;
         }
 
-        if($this->numberOfIncidentsToday > 0 && $this->numberOfIncidentsToday < 5) {
+        if($this->maxHealth <= 95 && $this->maxHealth > 85) {
             $this->health = "Good";
             return $this->health;
         }
 
-        if($this->numberOfIncidentsToday >= 5 && $this->numberOfIncidentsToday < 10) {
+        if($this->maxHealth <= 85 && $this->maxHealth > 75) {
             $this->health = "Medium";
             return $this->health;
         }
 
-        if($this->numberOfIncidentsToday >= 10 && $this->numberOfIncidentsToday < 15) {
+        if($this->maxHealth <= 75 && $this->maxHealth > 65) {
             $this->health = "Bad";
             return $this->health;
         }
 
-        if($this->numberOfIncidentsToday >= 15) {
+        if($this->maxHealth <= 65) {
             $this->health = "Critical";
             return $this->health;
         }
