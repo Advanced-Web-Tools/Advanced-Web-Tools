@@ -77,10 +77,10 @@ class settings
         return false;
     }
 
-    public function createSetting(string $name, string $value)
+    public function createSetting(string $name, string $value, string $category = "Miscellaneous")
     {
-        $stmt = $this->mysqli->prepare("INSERT INTO `awt_settings` (`name`, `value`, `required_permission_level`) VALUES (?, ?, ?);");
-        $stmt->bind_param('ssi', $name, $value, $this->profiler->permissionLevel);
+        $stmt = $this->mysqli->prepare("INSERT INTO `awt_settings` (`name`, `value`, `required_permission_level`, `category`) VALUES (?, ?, ?, ?);");
+        $stmt->bind_param('ssis', $name, $value, $this->profiler->permissionLevel, $category);
         $stmt->execute();
         $stmt->close();
 

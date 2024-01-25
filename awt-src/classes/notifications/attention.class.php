@@ -21,7 +21,6 @@ class attention
         $this->solved = 0;
 
         $this->databaseConfig = new databaseConfig();
-
     }
 
 
@@ -53,31 +52,52 @@ class attention
         $stmt->bind_param("ss", $this->caller, $this->reason);
 
         $stmt->execute();
-
+        
         $result = $stmt->get_result();
-
+        
         $unresolvedIssuesExist = $result->num_rows;
-
+        
         $stmt->close();
-
+        
         return $unresolvedIssuesExist;
     }
-
+    
     public function raiseOnMissingPlugin(string $pluginName): bool
     {
         global $loadedPlugins;
-
+        
         foreach ($loadedPlugins as $key => $value) {
             if ($value["name"] == $pluginName)
-                return false;
-        }
-
-        if (!$this->checkForUnresolvedAttention()) {
-            $this->raiseAttention();
-        }
-
-        return true;
+            return false;
     }
+    
+    if (!$this->checkForUnresolvedAttention()) {
+        $this->raiseAttention();
+    }
+    
+    return true;
+}
+
+
+    public function raiseOnMissingDatabasePermission() : bool
+    {
+        $name = debug_backtrace()[0]['file'];
+        $fileHash = hash_file("SHA512", $name);
+
+        $authorized = $this->databaseConfig->checkIfFileAuthorized($fileHash, $name);
+
+
+        if (!$authorized) {
+            if (!$this->checkForUnresolvedAttention()) {
+                $this->raiseAttention();
+            }
+            return true;
+        }
+
+        return false;
+    }
+
+
     public function getUnresolved(): array
     {
         $this->databaseConfig->checkAuthority() == 1 or die("Fatal error: Database access for " . $this->databaseConfig->getCaller() . " was denied");
@@ -116,6 +136,7 @@ class attention
     
         $stmt->close();
     }
+
 
 
 }
