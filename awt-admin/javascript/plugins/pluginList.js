@@ -21,7 +21,7 @@ $(document).ready(function () {
                     if (value.icon.endsWith('.svg')) {
                         pluginList += '<div class="plugin-header"> <img src="../awt-content/plugins/' + value.name + '/data/icons/' + value.icon + '" alt="icon" class="svg">';
                     } else {
-                        pluginList += '<img src="../awt-content/plugins/' + value.name + '/data/icons/' + value.icon + '" alt="icon">';
+                        pluginList += '<div class="plugin-header"> <img src="../awt-content/plugins/' + value.name + '/data/icons/' + value.icon + '" alt="icon">';
                     }
                 } else {
                     pluginList += '<img src="../awt-data/icons/placeholder-image.jpg" alt="icon">';
