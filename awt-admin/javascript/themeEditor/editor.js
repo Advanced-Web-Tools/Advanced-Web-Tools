@@ -1,5 +1,5 @@
 function saveThemePage(name) {
-  var $pageSection = $('.pageSection');
+  var $pageSection = $('.scene');
 
   var $clonedPageSection = $pageSection.clone();
 
