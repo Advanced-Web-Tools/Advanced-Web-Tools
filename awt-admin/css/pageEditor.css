@@ -66,6 +66,7 @@ body {
 .preview {
     width: 90%;
     overflow-y: scroll;
+    padding: 10px 10px;
 }
 
 .preview * {
@@ -128,9 +129,11 @@ body {
 }
 
 .block:hover {
-    transform: translateY(-2px);
-    outline: solid 2px grey;
-    filter: brightness(1.05);
+    outline: solid 2px var(--primary-color-variant);
+}
+
+.block.selected:hover {
+    outline: solid 3px var(--primary-color-variant);
 }
 
 .block-item .block-item-description {
@@ -297,7 +300,7 @@ body {
 
 .selected,
 .selected:hover {
-    outline: 1px solid var(--primary-color);
+    outline: 2px solid var(--primary-color);
 }
 
 .block-options .input-group {

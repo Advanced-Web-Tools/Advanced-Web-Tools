@@ -7,7 +7,7 @@ var currentIndex = 0;
 function undo() {
     updatingFromHistory = true;
     if (currentIndex - 1 >= 0) {
-        $('.pageSection').html(pageHistory[currentIndex - 1]);
+        $('.scene').html(pageHistory[currentIndex - 1]);
         currentIndex--;
         createEditableLayout();
     }
@@ -16,7 +16,7 @@ function undo() {
 function redo() {
     updatingFromHistory = true;
     if (currentIndex + 1 <= pageHistory.length) {
-        $('.pageSection').html(pageHistory[1 + currentIndex]);
+        $('.scene').html(pageHistory[1 + currentIndex]);
         currentIndex++;
         createEditableLayout();
     }
@@ -24,7 +24,7 @@ function redo() {
 
 function saveToHistory() {
     $(".replacable").remove();
-    var content = $(".pageSection").html();
+    var content = $(".scene").html();
 
     pageHistory[currentIndex] = content;
     currentIndex++;

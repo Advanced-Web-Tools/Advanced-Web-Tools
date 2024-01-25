@@ -5,7 +5,7 @@ let timeoutId = null;
 let $newBlock = null;
 
 $(document).ready(function() {
-    $blocksAll = $(".pageSection .block");
+    $blocksAll = $(".scene .block");
     insertBlock();
 });
 

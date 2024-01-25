@@ -46,6 +46,7 @@ $paging = new paging($pluginPages);
     <link rel="stylesheet" href="./css/main.css">
     <link rel="stylesheet" href="./css/navbar.css">
     <link href="../awt-src/vendor/fontawesome-free-6.5-web/css/all.css" rel="stylesheet">
+    <title><?php echo WEB_NAME . " | " . $_GET['page'] ?></title>
 </head>
 
 <body>

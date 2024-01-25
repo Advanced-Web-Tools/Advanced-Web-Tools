@@ -14,7 +14,7 @@ global $builtInPages;
 $paging = new paging($pluginPages);
 
 
-$paging->addBuiltInPage("Home", THEME_PAGES_DIR . "home.page.php", "This is a test desciption");
+$paging->addBuiltInPage("Home", THEME_PAGES_DIR . "Home.page.php", "This is a test desciption");
 $paging->addBuiltInPage("About Us", THEME_PAGES_DIR . "about.page.php", "This is a test desciption");
 $paging->addBuiltInPage("Posts", THEME_PAGES_DIR . "posts.page.php", "This is a test desciption");
 $paging->addBuiltInPage("Blog", THEME_PAGES_DIR . "blog.page.php", "This is a test desciption");

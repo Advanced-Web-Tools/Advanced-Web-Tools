@@ -1,6 +1,5 @@
 
-.pageSection {
-    width: 90% !important;
+.section {
     overflow-y: hidden;
 }
 
@@ -14,8 +13,4 @@
 
 .category-container {
     display: none;
-}
-
-.block:hover {
-    filter: brightness(1) !important;
 }
