@@ -65,7 +65,7 @@
 }
 
 .welcome-screen .content .wrapper .button {
-    margin:  0 20px 0 0;
+    margin: 0 20px 0 0;
 }
 
 .widgets {
@@ -74,6 +74,53 @@
     gap: 1%;
     row-gap: 20px;
     margin: 20px;
+}
+
+.attention-screen {
+    background: #fff;
+    border-radius: 5px;
+    margin: 20px;
+    padding:  5px 10px 0 10px;
+    max-height: 330px;
+}
+
+.attention-list {
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.attention-item {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    background: #F1D675;
+    border-radius: 3px;
+    margin: 8px 0;
+}
+
+.attention-item h5 {
+    width: 100%;
+    margin: 0;
+    font-size: 15px;
+    background: #F1C43B;
+    padding: 3px 10px;
+    border-radius: 3px 3px 0 0;
+    margin: 0 0 5px 0;
+}
+
+.attention-item p {
+    margin: 0;
+    padding: 3px 10px;
+}
+
+.attention-item button {
+    margin: 3px 10px;
+}
+
+.attention-item a {
+    color: var(--primary-color);
+    text-decoration: none;
 }
 
 @media screen and (max-width: 450px) {

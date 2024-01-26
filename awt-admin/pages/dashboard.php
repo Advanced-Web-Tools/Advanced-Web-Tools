@@ -29,7 +29,7 @@ if (!$check->checkAuthentication()) {
         <div class="wrapper">
             <h3>Next</h3>
             <a href="?page=Theme Editor" target="_blank" class="link"><i class="fa-regular fa-pen-to-square"></i> Edit
-                your landing page</a>
+            your landing page</a>
             <a href="?page=Menus" class="link"><i class="fa-solid fa-compass"></i> Edit menu.</a>
             <a href="?page=Pages" class="link"><i class="fa-solid fa-plus"></i> Create more pages</a>
         </div>
@@ -42,13 +42,20 @@ if (!$check->checkAuthentication()) {
         <div class="wrapper">
             <h3>Populate your dashboard</h3>
             <a href="?page=Store&viewStore=AWT Dashboard Widgets" class="link"><i class="fa-solid fa-shapes"></i>
-                Install default widgets plugin</a>
+            Install default widgets plugin</a>
         </div>
+    </div>
+</div>
+<div class="attention-screen shadow">
+    <h4>Attention needed:</h4>
+    <div class="attention-list">
+        <p>All is good!</p>
     </div>
 </div>
 <div class="widgets">
     <?php loadAllWidgets(); ?>
 </div>
+<script src="./javascript/attention/attention.js"></script>
 <script>
     const screen = $(".welcome-screen");
 

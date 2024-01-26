@@ -39,6 +39,7 @@ final class databaseConfig
         CLASSES . 'media' . DIRECTORY_SEPARATOR . 'albums.class.php',
         CLASSES . 'media' . DIRECTORY_SEPARATOR . 'media.class.php',
         CLASSES . 'notifications' . DIRECTORY_SEPARATOR . 'notifications.class.php',
+        CLASSES . 'notifications' . DIRECTORY_SEPARATOR . 'attention.class.php',
         CLASSES . 'store' . DIRECTORY_SEPARATOR . 'store.class.php',
         CLASSES . 'store' . DIRECTORY_SEPARATOR . 'updater.class.php',
         CLASSES . 'mail' . DIRECTORY_SEPARATOR . 'mail.class.php',
@@ -169,7 +170,21 @@ final class databaseConfig
         }
     }
 
+    public function checkIfFileAuthorized(string $fileHash, string $name) : bool
+    {
+        $stmt = $this->mysqli->prepare("SELECT * FROM `awt_access_authorization` WHERE `fileName` = ? AND `fileHash` = ?;");
 
+        $stmt->bind_param("ss", $name, $fileHash);
 
+        $stmt->execute();
+        
+        $result = $stmt->get_result();
+        
+        $unresolvedIssuesExist = $result->num_rows;
+        
+        $stmt->close();
+        
+        return $unresolvedIssuesExist;
+    }
 
 }

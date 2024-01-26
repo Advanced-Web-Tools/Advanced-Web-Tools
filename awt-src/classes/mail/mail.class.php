@@ -14,9 +14,7 @@ class mail {
     private string $content;
     public string $recipient;
     public string $sender;
-
     private DateTime $date;
-
     private PHPMailer $mail;
     
     public function __construct(string $sender, string $reciever, string $subject, string $content = "") {
