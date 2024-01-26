@@ -76,6 +76,6 @@ function addBlockOption(BlockOptions $options) {
 function getBlockOptions() {
     global $blockOptions;
     foreach ($blockOptions as $key => $option) {
-        $option->loadOption();
+        echo $option->getOptions();
     }
 }

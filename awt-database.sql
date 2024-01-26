@@ -251,6 +251,13 @@ CREATE TABLE IF NOT EXISTS `awt_theme_settings` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `awt_attention`
+--
+
 CREATE TABLE IF NOT EXISTS `awt_attention` (
   `id` INT NOT NULL AUTO_INCREMENT ,
   `caller` VARCHAR(255) NOT NULL ,

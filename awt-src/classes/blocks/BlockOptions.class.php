@@ -20,7 +20,7 @@ class BlockOptions {
         }
     }
 
-    public function getoptions() : string
+    public function getOptions() : string
     {
         return $this->body;
     }
