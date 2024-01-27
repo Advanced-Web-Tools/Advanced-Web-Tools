@@ -44,7 +44,7 @@ if(isset($_POST["installTheme"]) && $profiler->checkPermissions(0)) {
 
     $store = new Store();
 
-    die(json_encode($store->installPlugin($_POST["installPlugin"])));
+    die(json_encode($store->installTheme($_POST["installTheme"])));
 
 }
 
