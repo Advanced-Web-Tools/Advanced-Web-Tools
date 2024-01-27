@@ -202,3 +202,7 @@
     cursor: default;
     filter: brightness(2);
 }
+
+.search-item p:nth-child(3) {
+    display: none;
+}

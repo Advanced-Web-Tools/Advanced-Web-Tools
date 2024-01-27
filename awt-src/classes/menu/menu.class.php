@@ -53,10 +53,10 @@ class menu {
         $stmt->execute();
     }
 
-    public function updateMenu(string $name, string $items, string $active)
+    public function updateMenu(string $name, string $items)
     {   
-        $stmt = $this->mysqli->prepare("UPDATE  `awt_menus` SET `items` = ? , `active` = ? WHERE `name` = ?");
-        $stmt->bind_param("sss", $items, $active, $name);
+        $stmt = $this->mysqli->prepare("UPDATE  `awt_menus` SET `items` = ? WHERE `name` = ?");
+        $stmt->bind_param("ss", $items, $name);
         $stmt->execute();
     }
 

@@ -157,3 +157,26 @@
 .card:hover .button {
     display: block;
 }
+
+.dialog {
+    position: absolute;
+    z-index: 5;
+    background: #fff;
+    left: 50%;
+    top: 10%;
+    transform: translateX(-50%);
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dialog .actions {
+    display: flex;
+    gap: 10px;
+}
+
+.search-item p:nth-child(3) {
+    display: none;
+}

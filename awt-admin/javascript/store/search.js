@@ -15,10 +15,7 @@ function searchPackage(input, container, type) {
         }
     }).done(function (response) {
 
-        console.log(response);
-
         jsonArray = JSON.parse(JSON.parse(response));
-        console.log(jsonArray);
 
         $(container).html("");
 

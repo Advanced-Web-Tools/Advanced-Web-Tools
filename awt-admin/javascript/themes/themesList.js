@@ -51,17 +51,61 @@ function getThemeList(container, hostname) {
 
 function deleteTheme(id, name, container, hostname) {
 
-    $.ajax({
-        url: './jobs/themes.php',
-        type: 'POST',
-        data: {
-            delete_theme: id,
-            name: name
-        },
-    }).done(function (data) {
-        console.log(data)
-        getThemeList(container, hostname)
+    const $dialog = $(".dialog");
+    $(".overlay").toggleClass("hidden");
+    $dialog.toggleClass("hidden");
+
+    $dialog.empty();
+
+    const header = $("<h1>Warning!</h1>");
+
+    const par = $("<p>Removing this theme will also remove all prior customization made with it!</p>");
+    const par2 = $("<p>This includes:</p>");
+    const ol = $("<ol>");
+    ol.append("<li>All settings that are bound to this theme.</li>");
+    ol.append("<li>All theme pages that were customized.</li>");
+
+    
+    const cancelButton = $("<button>").addClass("button");
+    cancelButton.attr("id", "green");
+    cancelButton.text("Cancel");
+    
+    cancelButton.click(function() {
+        $(".dialog").toggleClass("hidden");
+        $(".overlay").toggleClass("hidden");
+        $(".dialog").empty();
     });
+    
+    const deleteButton = $("<button>").addClass("button");
+    deleteButton.attr("id", "red");
+    deleteButton.text("Delete");
+    
+    deleteButton.click(function(){
+        $.ajax({
+            url: './jobs/themes.php',
+            type: 'POST',
+            data: {
+                delete_theme: id,
+                name: name
+            },
+        }).done(function (data) {
+            console.log(data)
+            getThemeList(container, hostname)
+        });
+
+        cancelButton.click();
+    });
+    
+    const actions = $("<div>").addClass("actions");
+    actions.append(cancelButton);
+    actions.append(deleteButton);
+    
+    $dialog.append(header);
+    $dialog.append(par);
+    $dialog.append(par2);
+    $dialog.append(ol);
+    $dialog.append(actions);
+
 }
 
 

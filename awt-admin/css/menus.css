@@ -1,16 +1,54 @@
+.page {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 0;
+    padding: 20px;
+}
+
+.menu-list {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    width: 340px;
+}
+
+.menu-list p {
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.menu-list p.selected {
+    color: #000;
+}
+
+.menu-list .create {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
 .menu-options {
     background: #fff;
     width: fit-content;
-    border-radius: 7px;
+    border-radius: 5px;
     padding: 20px;
 }
 
 .options-container {
-    display: flex;
+    display: none;
     flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
     gap: 10px;
+}
+
+.options-container.selected {
+    display: flex;
 }
 
 .options-container .option-container {
