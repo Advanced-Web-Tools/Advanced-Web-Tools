@@ -17,6 +17,10 @@ if (!$check->checkAuthentication()) {
 <link rel="stylesheet" href="./css/store.css">
 <script src="./javascript/store/search.js"></script>
 <script src="./javascript/store/installation.js"></script>
+<div class="dialog hidden shadow">
+
+</div>
+<div class="overlay hidden"></div>
 <section>
     <div class="upload hidden">
         <div class="upload-header">

@@ -1,3 +1,8 @@
+.page {
+    margin: 0;
+    padding: 10px;
+}
+
 .add-themes {
     width: fit-content;
     margin: 40px 0 0 0;
@@ -114,17 +119,64 @@
 .card {
     width: 300px;
     height: 320px;
-    background: var(--primary-color);
-    padding: 10px;
-    border-radius: 15px;
-    color: var(--background-color);
+    background: #fff;
+    padding: 5px;
+    border-radius: 5px;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
+
 
 .card input[type=checkbox]:enabled {
     cursor: pointer;
 }
 
 .card img {
-    width: 100%;
+    object-fit: cover;
+    height: 150px !important;
     border-radius: 5px;
+}
+
+.card p {
+    height: 20px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.card .button {
+    display: none;
+    position: absolute;
+    margin-left: 262px;
+    margin-top: -5px;
+}
+
+
+.card:hover .button {
+    display: block;
+}
+
+.dialog {
+    position: absolute;
+    z-index: 5;
+    background: #fff;
+    left: 50%;
+    top: 10%;
+    transform: translateX(-50%);
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dialog .actions {
+    display: flex;
+    gap: 10px;
+}
+
+.search-item p:nth-child(3) {
+    display: none;
 }

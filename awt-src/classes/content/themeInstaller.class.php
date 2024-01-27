@@ -2,6 +2,7 @@
 
 namespace content;
 
+use themes\themes;
 use ZipArchive;
 use XMLReader;
 use database\databaseConfig;
@@ -197,7 +198,14 @@ class themeInstaller extends fileScanner
 
 
     public function removeTheme($name, $id)
-    {
+    {   
+
+        $theme = new themes;
+
+        $theme->getActiveTheme();
+
+        if($theme->activeTheme['id'] == $id) return false;
+
         $this->rrmdir(THEMES . $name);
         unlink(THEMES . $name);
         $stmt = $this->mysqli->prepare("DELETE FROM `awt_themes` WHERE `id` = ? AND `name` = ?;");

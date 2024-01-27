@@ -200,7 +200,7 @@ class themes extends modules
 
         $themeId = (int) $this->activeTheme['id'];
 
-        $renderer = new renderer(array());
+        $renderer = new renderer();
 
         $content = $renderer::sanitizePage($content);
 

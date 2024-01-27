@@ -25,10 +25,14 @@ if(isset($_POST["fetch_all_menus"])) {
 
 if(isset($_POST["updateMenu"])) {
     $data = json_decode($_POST["data"], true);
-
-    var_dump($data);
-
-    $menu->updateMenu($data[0]['name'], $data[0]['items'], $data[0]['active']);
+    $menu->updateMenu($data[0]['name'], $data[0]['items']);
 }
 
 
+if(isset($_POST["set_active_menu"])) {
+    $menu->setActiveMenu($_POST["set_active_menu"]);
+}
+
+if(isset($_POST["create_menu"])) {
+    $menu->createMenu($_POST["create_menu"], " ");
+}

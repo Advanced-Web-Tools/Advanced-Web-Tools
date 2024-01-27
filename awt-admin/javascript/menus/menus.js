@@ -1,5 +1,4 @@
 
-
 function fetchMenus(list_element, options_element) {
     $.ajax({
         url: './jobs/menus.php',
@@ -19,11 +18,65 @@ function fetchMenus(list_element, options_element) {
 
 
 function createList(menu, list_element) {
-    var html = '';
+
     var menu = JSON.parse(menu);
+
+    $(list_element).empty();
+
+    const newInput = $("<input type='text' class='input' id='menu-name' placeholder='New menu name'>");
+    const newButton = $("<button>Create</button>").addClass("button");
+
+    const create = $("<div>").addClass("create");
+
+    newButton.click(function(e) {
+        const name = $("#menu-name").val();
+        if(!name.trim() == "") {
+            createMenu(name);
+            fetchMenus(list_element, ".menu-options");
+        }
+    });
+
+
+    create.append(newInput);
+    create.append(newButton);
+
+    $(list_element).append(create);
+
     $.each(menu, function (key, value) {
-        var html = "<p data-type-menu='" + menu[key]['name'] + "' class='menu-cat'>" + menu[key]['name'] + "</p>";
+        var html = $("<p data-type-menu='" + value.name + "' class='menu-cat'>" + value.name + "</p>");
+        
+        console.log(value);
+
+        const selectInput = $("<input type='checkbox'>");
+
+        selectInput.attr("data-name", value.name);
+
+        if(value['active'] == 1) {
+            html.addClass("selected");
+            selectInput.attr("checked", "checked");
+            selectInput.attr("disabled", "disabled");
+        }
+
+        selectInput.click(function(e) {
+            const name = $(e.target).attr("data-name");
+            changeActiveMenu(name, ".menu-list", ".menu-options");
+        });
+        
+        html.append(selectInput);
+
+        html.click(function(e){
+
+            $(".selected").removeClass("selected");
+
+            const menu = $(e.target).attr("data-type-menu");
+
+            $(e.target).addClass("selected");
+
+            $(".options-container[data-type-menu='"+ menu +"']").addClass("selected");
+        });
+
         $(list_element).append(html);
+
     });
 }
 
@@ -33,9 +86,13 @@ function createMenuOptions(menu, options_element) {
     $.each(menu, function (key, value) {
 
 
-        const menu_items = menu[key]['items'].split('NEW_LINK');
+        const menu_items = value['items'].split('NEW_LINK');
 
-        var container = $("<div class='options-container' data-type-menu='" + menu[key]['name'] + "'>");
+        var container = $("<div class='options-container' data-type-menu='" + value.name + "'>");
+
+        if(value.active == 1) {
+            container.addClass("selected");
+        }
 
         $.each(menu_items, function (key) {
             if (menu_items[key]) {
@@ -55,8 +112,8 @@ function createMenuOptions(menu, options_element) {
             }
         });
 
-        var button = "<div class='actions'><button class='button' data-type-menu='" + menu[key]['name'] + "' onclick='AddNew(this)'>Add New Item</button>";
-        button += "<button class='button' id='green' data-type-menu='" + menu[key]['name'] + "' onclick='SaveChanges(this)'>Save Changes</button></div>";
+        var button = "<div class='actions'><button class='button' data-type-menu='" + value.name + "' onclick='AddNew(this)'>Add New Item</button>";
+        button += "<button class='button' id='green' data-type-menu='" + value.name + "' onclick='SaveChanges(this)'>Save Changes</button></div>";
         $(container).append(button);
         $(options_element).append(container);
     });
@@ -107,6 +164,18 @@ function createPageSelector(data, current_value) {
     return option;
 }
 
+function changeActiveMenu(name, list_element, options_element) {
+    $.ajax({
+        url: './jobs/menus.php',
+        type: 'POST',
+        data: {
+            set_active_menu: name
+        },
+    }).done(function(){
+        fetchMenus(list_element, options_element);
+    });
+}
+
 function SaveChanges(caller) {
     const dataType = $(caller).attr("data-type-menu");
 
@@ -114,7 +183,6 @@ function SaveChanges(caller) {
         {
             'name': dataType,
             'items': "",
-            'active': '1'
         }
     ];
 
@@ -134,6 +202,23 @@ function SaveChanges(caller) {
         data: {
             updateMenu: 1,
             data: JSON.stringify(builtMenu)
+        },
+        success: function (response) {
+
+        },
+        error: function (xhr, status, error) {
+            console.log(error);
+            callback('');
+        }
+    });
+}
+
+function createMenu(name) {
+    $.ajax({
+        url: './jobs/menus.php',
+        type: 'POST',
+        data: {
+            create_menu: name
         },
         success: function (response) {
 

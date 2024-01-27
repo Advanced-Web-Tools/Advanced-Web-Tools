@@ -17,7 +17,7 @@ if (!$check->checkAuthentication()) {
 <link rel="stylesheet" href="./css/menus.css">
 <script src="./javascript/menus/menus.js"></script>
 
-<div class="menu-list">
+<div class="menu-list shadow">
 
 </div>
 

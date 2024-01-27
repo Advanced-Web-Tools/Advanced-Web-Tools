@@ -41,9 +41,14 @@ if(isset($_POST['enable_theme']))
     
 }
 
-
 if (!$profiler->checkPermissions(0)) {
     header("Location: ../?page=Themes&status=permissionDenied");
+    exit();
+}
+
+if(isset($_POST['delete_theme'])) {
+    $response = $installer->removeTheme($_POST['name'], $_POST['delete_theme']);
+    echo json_encode($response);
     exit();
 }
 
@@ -57,12 +62,5 @@ if (isset($_POST['installerAction'])) {
     $action = explode('=', $_POST['installerAction']);
     $response = $installer->installerAction($action[0], $action[1], $action[2]);
     echo json_encode($response);
-    exit();
-}
-
-if (isset($_POST['uninstall'])) {
-    $uninstall = explode('=', $_POST['uninstall']);
-    $status = $installer->removeTheme($uninstall[0], $uninstall[1]);
-    header("Location: ../?page=Themes&status=" . $status);
     exit();
 }
