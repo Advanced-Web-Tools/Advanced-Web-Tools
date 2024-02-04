@@ -80,6 +80,8 @@ function getBlock(name, replacable = null) {
 
       createEditableLayout();
       
+      $(".block").off("click");
+
       $(".block").on("click", function (e) {
         BlockOptions($(this));
       }).children().on("click", function (e) {
