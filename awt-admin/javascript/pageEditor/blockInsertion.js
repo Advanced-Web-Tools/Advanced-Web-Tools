@@ -14,6 +14,7 @@ function insertBlock() {
     $(document).on('mouseenter', '.block', handleMouseEnter);
     
     function handleMouseEnter(event) {
+        event.stopPropagation();
         $currentElement = $(event.currentTarget);
         if ($currentElement.hasClass("replacable")) return;
         if ($currentElement.attr('id') == "grid-block") return;
@@ -21,11 +22,8 @@ function insertBlock() {
         if (floatingBlockSelectorActive) return;
 
         if (movingBlocks) {
-            removeNewBlock();
             return;
         }
-
-        removeNewBlock();
 
         if (timeoutId) {
             clearTimeout(timeoutId);
@@ -62,12 +60,12 @@ function floatingBlocks(caller) {
 
     const floating = $('.floating-blocks');
 
-    let offsetTop = $currentElement.offset().top - floating.outerHeight() * 1.3;
-    if(offsetTop < $(".preview").offset().top) offsetTop = $currentElement.offset().top + floating.outerHeight();
+    let offsetTop = $newBlock.offset().top - floating.outerHeight() * 1.3;
+    if(offsetTop < $(".preview").offset().top) offsetTop = $newBlock.offset().top + floating.outerHeight();
 
-    let offsetLeft = $currentElement.offset().left + ($currentElement.outerWidth() - floating.outerWidth()) / 2;
+    let offsetLeft = $newBlock.offset().left + ($newBlock.outerWidth() - floating.outerWidth()) / 2;
 
-    if(offsetLeft < $(".preview").offset().left) offsetLeft = $currentElement.offset().left - ($currentElement.outerWidth() + floating.outerWidth()) / floating.outerWidth();
+    if(offsetLeft < $(".preview").offset().left) offsetLeft = $newBlock.offset().left - ($newBlock.outerWidth() + floating.outerWidth()) / floating.outerWidth();
 
     floating.css({
         'top': offsetTop,
