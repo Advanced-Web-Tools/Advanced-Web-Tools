@@ -413,6 +413,10 @@ body {
     margin: 0 !important;
 }
 
+img.block.ui-sortable-helper {
+    width: 50% !important;
+}
+
 .floating-blocks {
     position: absolute;
     float: left;
