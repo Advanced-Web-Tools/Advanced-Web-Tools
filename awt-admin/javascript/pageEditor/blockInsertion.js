@@ -17,8 +17,8 @@ function insertBlock() {
         event.stopPropagation();
         $currentElement = $(event.currentTarget);
         if ($currentElement.hasClass("replacable")) return;
-        if ($currentElement.attr('id') == "grid-block") return;
-        if ($currentElement.parent().attr('id') == "grid-block") return;
+        // if ($currentElement.attr('id') == "grid-block") return;
+        // if ($currentElement.parent().attr('id') == "grid-block") return;
         if (floatingBlockSelectorActive) return;
 
         if (movingBlocks) {
