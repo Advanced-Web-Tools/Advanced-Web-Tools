@@ -263,6 +263,7 @@ function createEditableLayout() {
     helper: "clone",
     tolerance: "pointer",
     opacity: 0.5,
+    forceHelperSize: true,
     cancel: 'input,textarea,button,select,option,[contenteditable]',
     start: function (event, ui) {
       movingBlocks = true;
@@ -279,6 +280,7 @@ function createEditableLayout() {
     cursor: "move",
     helper: "clone",
     tolerance: "pointer",
+    forceHelperSize: true,
     opacity: 0.5,
     cancel: 'input, textarea, button, select, option, [contenteditable]',
     start: function (event, ui) {
