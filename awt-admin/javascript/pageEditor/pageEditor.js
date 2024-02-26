@@ -271,9 +271,7 @@ function createEditableLayout() {
     placeholder: "hidden",
     helper: function (event, ui) {
 
-      var $clone = $(ui).clone().css("height", "200px");
-      $clone.css('transform', 'translate(50%, 0)');
-
+      var $clone = $(ui).clone().css("max-height", "200px");
 
       return $clone;
     },
