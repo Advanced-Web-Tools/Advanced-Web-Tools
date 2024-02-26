@@ -8,11 +8,14 @@ use admin\{authentication, profiler};
 $check = new authentication;
 
 if (!$check->checkAuthentication()) {
-    header("Location: ./login.php");
-    exit();
+  header("Location: ./login.php");
+  exit();
 }
 
 $profiler = new profiler;
+
+
+if(!$profiler->checkPermissions(2)) die("Insufficient permission to view this page!");
 
 ?>
 

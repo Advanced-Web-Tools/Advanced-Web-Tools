@@ -5,9 +5,22 @@ defined('ALL_CONFIG_LOADED') or die("An error has occured");
 
 use settings\siteHealth;
 
+use admin\{authentication, profiler};
 $siteHealth = new siteHealth;
 
 $health = $siteHealth->getHealth();
+
+$check = new authentication;
+
+if (!$check->checkAuthentication()) {
+  header("Location: ./login.php");
+  exit();
+}
+
+$profiler = new profiler;
+
+
+if(!$profiler->checkPermissions(0)) die("Insufficient permission to view this page!");
 
 ?>
 <script>

@@ -4,10 +4,24 @@ defined('DASHBOARD') or die("You should not do that..");
 defined('ALL_CONFIG_LOADED') or die("An error has occured");
 
 use themes\themes;
+use admin\authentication;
+use admin\profiler;
 
 $theme = new themes;
 
 $theme->loadTheme();
+
+$check = new authentication;
+
+if (!$check->checkAuthentication()) {
+    header("Location: ./login.php");
+    exit();
+}
+
+$profiler = new profiler;
+
+if(!$profiler->checkPermissions(2)) die("Insufficient permission to view this page!");
+
 ?>
 <script src="../awt-src/vendor/jQuery/jquery.min.js"></script>
 <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js"></script>
