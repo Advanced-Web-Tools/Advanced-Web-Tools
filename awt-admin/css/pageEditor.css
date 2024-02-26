@@ -411,10 +411,11 @@ body {
 .block.ui-sortable-helper {
     position: absolute !important;
     margin: 0 !important;
+    outline: 1px solid var(--primary-color);
 }
 
 img.block.ui-sortable-helper {
-    width: 50% !important;
+    object-fit: cover !important;
 }
 
 .floating-blocks {

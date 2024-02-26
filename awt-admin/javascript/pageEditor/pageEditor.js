@@ -7,6 +7,14 @@ let floatingBlockSelectorActive = false;
 let ignorePreviewClick = false;
 let blockOptions = [];
 
+var mousePos = { x: -1, y: -1 };
+
+$(document).mousemove(function (event) {
+  mousePos.x = event.pageX;
+  mousePos.y = event.pageY;
+});
+
+
 function fetchBlocks(element, replacable = null, callback = null) {
   $(element).find('.category-container').remove();
 
@@ -79,7 +87,7 @@ function getBlock(name, replacable = null) {
       }
 
       createEditableLayout();
-      
+
       $(".block").off("click");
 
       $(".block").on("click", function (e) {
@@ -260,10 +268,18 @@ function createEditableLayout() {
     scroll: true,
     scrollSensitivity: 50,
     cursor: "move",
-    helper: "clone",
+    placeholder: "hidden",
+    helper: function (event, ui) {
+
+      var $clone = $(ui).clone().css("height", "200px");
+      $clone.css('transform', 'translate(50%, 0)');
+
+
+      return $clone;
+    },
     tolerance: "pointer",
     opacity: 0.5,
-    forceHelperSize: true,
+    forceHelperSize: false,
     cancel: 'input,textarea,button,select,option,[contenteditable]',
     start: function (event, ui) {
       movingBlocks = true;
@@ -276,11 +292,18 @@ function createEditableLayout() {
 
   $(".scene .block").sortable({
     items: "> .block",
-    scroll: false,
+    scroll: true,
     cursor: "move",
-    helper: "clone",
+    helper: function (event, ui) {
+      var $clone = $(ui).clone().css('width', $(ui).width());
+
+      $clone.css('transform', 'translate(50%, 0)');
+
+
+      return $clone;
+    },
     tolerance: "pointer",
-    forceHelperSize: true,
+    forceHelperSize: false,
     opacity: 0.5,
     cancel: 'input, textarea, button, select, option, [contenteditable]',
     start: function (event, ui) {
@@ -288,6 +311,7 @@ function createEditableLayout() {
     },
     stop: function (event, ui) {
       movingBlocks = false;
+
       saveToHistory();
     }
   });
