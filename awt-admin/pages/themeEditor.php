@@ -1,7 +1,8 @@
 <?php
+
 defined('ALL_CONFIG_LOADED') or die("An error has occured");
 define('THEME_EDIT', 1);
-use admin\authentication;
+use admin\{authentication, profiler};
 
 
 $check = new authentication;
@@ -10,6 +11,12 @@ if (!$check->checkAuthentication()) {
     header("Location: ./login.php");
     exit();
 }
+
+$profiler = new profiler;
+
+if (!$profiler->checkPermissions(2))
+    die("Insufficient permission to view this page!");
+
 
 if (!isset($_GET['theme_page'])) {
     $_GET['page'] = 'Home';
@@ -85,7 +92,8 @@ if (!isset($_GET['theme_page'])) {
             </div>
         </div>
         <?php
-        include_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-themesLoader.php';include_once JOBS . 'jobs' . DIRECTORY_SEPARATOR . 'awt-themesLoader';
+        include_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt-themesLoader.php';
+        include_once JOBS . 'jobs' . DIRECTORY_SEPARATOR . 'awt-themesLoader';
         ?>
     </div>
     <div class="editor-tools">

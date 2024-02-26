@@ -14,6 +14,8 @@ if (!$check->checkAuthentication()) {
 
 $profiler = new profiler;
 
+if(!$profiler->checkPermissions(2)) die("Insufficient permission to view this page!");
+
 ?>
 
 <script src="./javascript/accounts/accounts.js"></script>
