@@ -99,3 +99,41 @@ function sendMailDialog(caller) {
 
     $('.dialog #recipient').val(reciever);
 }
+
+
+function changeInfo()
+{
+    var email = $(".edit-account .email").val();
+    var firstname = $(".edit-account .fname").val();
+    var lastname = $(".edit-account .lname").val();
+    var password = $(".edit-account .password").val();
+
+    $.ajax({
+        url: "./jobs/accounts.php",
+        method: "POST",
+        data: {
+            edit_info: 1, 
+            email: email,
+            firstname: firstname,
+            lastname: lastname,
+            password: password,
+        },
+        success: function(response) {
+            $(".info").removeClass("hidden");
+
+            console.log(response)
+
+            response = response.replace(/"/g, ' ');
+            $(".info").html("<p>"+response+"</p>");
+            setTimeout(function() {
+
+                if(!$(".info").hasClass("hidden")) {
+                    $(".info").addClass("hidden");
+                }
+
+            }, 2000);
+        },
+        error: function(xhr, status, error) {
+        }
+    });
+}
