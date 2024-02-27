@@ -1,9 +1,9 @@
 .page {
-    display: grid;
-    grid-template-columns: 420px auto;
-    grid-template-rows: 100%;
-    grid-auto-flow: column;
-    gap: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 20px;
+    height: fit-content;
+    padding: 0 0 50px 0;
 }
 
 .info,
@@ -23,8 +23,12 @@
 }
 
 .dialog .header {
-    color: red;
-    margin: 10px 0;
+    color: gray;
+    margin: 5px 0 20px 5px;
+}
+
+.dialog .header i {
+    cursor: pointer;
 }
 
 .dialog .content {
@@ -40,21 +44,41 @@
 
 .wrapper {
     margin: 0 50px;
+    height: fit-content;
 }
+
+.wrapper-big {
+    height: fit-content;
+    width: 100%;
+}
+
+.edit-account {
+    background: #fff;
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px;
+}
+
 
 .account-list {
     text-align: left;
+    width: 400px;
 }
 
 .account-list .account button {
-    margin: 0 10px 0 0;
+    margin: 0 10%;
+    display: inline-block;
 }
 
 .account-list .account {
     background: #fff;
     border-radius: 5px;
     color: var(--text-color);
-    width: 100%;
+    width: 90%;
     margin: 20px 0;
     padding: 20px;
 }
@@ -62,13 +86,13 @@
 .create-new-account {
     width: 450px;
     height: 500px;
-    margin: 50px 0;
     padding: 20px;
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 15px;
     background: #fff;
-    border-radius: 15px;
+    border-radius: 5px;
 }
 
 .create-new-account h3 {

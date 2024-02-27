@@ -4,7 +4,8 @@ namespace admin;
 use session\sessionHandler;
 
 class profiler extends sessionHandler
-{
+{   
+    public int $id;
     public string $name;
     public string $email;
     public string $firstname;
@@ -23,6 +24,7 @@ class profiler extends sessionHandler
         $this->permissionLevel = 4;
 
         if(isset($_SESSION['userInfo'])) {
+            $this->id = $_SESSION['userInfo']['id'];
             $this->name = $_SESSION['userInfo']['username'];
             $this->email = $_SESSION['userInfo']['email'];
             $this->firstname = $_SESSION['userInfo']['firstname'];

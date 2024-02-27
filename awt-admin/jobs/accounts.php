@@ -42,4 +42,12 @@ if(isset($_POST['delete_account'])) {
 if(isset($_POST['send_email'])) {
     $mail = new mail($profiler->email, $_POST["receiver"], $_POST["subject"], $_POST["content"]);
     echo json_encode($mail->sendMessage($profiler->firstname . " " . $profiler->lastname));
-} 
+}
+
+if(isset($_POST['edit_info'])) {
+
+    if(trim($_POST["password"]) == "") $_POST["password"] = null;
+
+    die(json_encode($admin->updateInfo($profiler->id, $_POST["firstname"], $_POST["lastname"], $_POST["email"], $_POST["password"])));
+}
+
