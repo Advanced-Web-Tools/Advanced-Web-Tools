@@ -28,7 +28,7 @@ if(!$profiler->checkPermissions(2)) die("Insufficient permission to view this pa
 
 <div class="dialog hidden shadow">
     <div class="header">
-        <i class="fa-solid fa-circle-xmark" onclick="$('.dialog').addClass('hidden')"></i>
+        <i class="fa-solid fa-x" onclick="$('.dialog').addClass('hidden')"></i>
     </div>
     <div class="content">
         <input type="email" class="input" id="recipient" placeholder="Recipient">

@@ -135,8 +135,12 @@
     width: 50%;
 }
 .dialog .header {
-    color: red;
-    margin: 10px 0;
+    color: gray;
+    margin: 5px 0 20px 5px;
+}
+
+.dialog .header i {
+    cursor: pointer;
 }
 
 .dialog .content {
