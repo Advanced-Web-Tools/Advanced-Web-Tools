@@ -19,13 +19,11 @@ class block {
 
     public function getBlockInfo() : array
     {
-        $info = array(
+        return array(
             "Name" => $this->name,
             "icon" => $this->iconURL,
             "description" => $this->description
         );
-
-        return $info;
     }
 
     private function loadBlock() : void

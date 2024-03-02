@@ -17,11 +17,11 @@ class BlockCollection {
 
     public function getInfo() : array
     {
-        $info = array(
+        $info = [
             "Name" => $this->name,
             "icon" => $this->iconURL,
             "description" => $this->description
-        );
+        ];
 
         return $info;
     }

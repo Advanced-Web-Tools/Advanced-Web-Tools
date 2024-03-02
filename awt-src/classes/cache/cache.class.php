@@ -13,9 +13,10 @@ class cache extends SessionHandler
     private string $location;
     private array $files;
     private object $settings;
-    public function initializeCache()
+    public function initializeCache() : void
     {   
         $this->settings = new settings;
+        
         $cacheEnabled = $this->settings->getSettingsValue('enable_caching');
 
         if($cacheEnabled === "true") $this->cacheEnabled = true;
@@ -26,7 +27,7 @@ class cache extends SessionHandler
         $this->sessionHandler();
     }
 
-    public function scanCacheDirectory()
+    public function scanCacheDirectory() : array|bool
     {   
         if(is_dir($this->location)) {
             $this->files = scandir($this->location);
@@ -43,7 +44,7 @@ class cache extends SessionHandler
     }
 
 
-    public function validateCache()
+    public function validateCache() : void
     {
         foreach ($this->files as $key => $value) {
 
@@ -56,7 +57,7 @@ class cache extends SessionHandler
         }
     }
 
-    public function checkForCache($name)
+    public function checkForCache($name) : bool
     {
         if(!$this->cacheEnabled) return false;
 
@@ -67,16 +68,16 @@ class cache extends SessionHandler
         return false;
     }
 
-    public function readCache($name)
+    public function readCache($name) : string|bool
     {   
         if(!$this->cacheEnabled) return false;
         if ($this->checkForCache($name)) return file_get_contents(CACHE . $name . '_cached.html');
         return false;
     }
 
-    public function writePageCache($name, $content)
+    public function writePageCache($name, $content) : void
     {   
-        if(!$this->cacheEnabled) return false;
+        if(!$this->cacheEnabled) return ;
         
         $file = fopen(CACHE . $name . '_cached.html', 'w');
         fwrite($file, $content);
@@ -90,7 +91,7 @@ class cache extends SessionHandler
         return 1;
     }
 
-    public function checkForCacheSession($name)
+    public function checkForCacheSession($name) : bool
     {
         $this->sessionHandler();
 
