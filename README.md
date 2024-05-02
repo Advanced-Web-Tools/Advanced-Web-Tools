@@ -1,8 +1,7 @@
 # Advanced Web Tools
 
-[![Download](https://img.shields.io/badge/Download-Latest-blue.svg)](https://github.com/ElStefanos/Advanced-Web-Tools/releases/latest)
+[![Logo](https://github.com/ElStefanos/Advanced-Web-Tools/assets/46761434/eb7d7fd1-dd8e-42a2-94d3-d45a7417ac25)](https://advancedwebtools.com)
 
-[![Logo](https://github.com/ElStefanos/Advanced-Web-Tools/assets/46761434/3b0a9d92-e134-4fbf-8c47-b3f1a8852ac2)](https://advancedwebtools.com)
 
 ## Description
 
