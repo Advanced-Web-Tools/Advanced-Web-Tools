@@ -106,7 +106,7 @@ class admin extends sessionHandler
         return "Account created!";
     }
 
-    private function connectToDatabase()
+    private function connectToDatabase() : void
     {
 
         $this->database = new databaseConfig();
@@ -116,30 +116,30 @@ class admin extends sessionHandler
         $this->mysqli = $this->database->getConfig();
     }
 
-    private function isStringEmptyOrSpaces($str)
+    private function isStringEmptyOrSpaces($str) : bool
     {
         if (empty($str)) {
             return true;
         }
 
-        if (trim($str) === '') {
+        if (trim($str) == '') {
             return true;
         }
 
         return false;
     }
 
-    private function passwordContainsNumbers($password)
+    private function passwordContainsNumbers($password) : int
     {
         return preg_match('/\d/', $password) === 1;
     }
 
-    private function passwordContainsSpecialCharacters($password)
+    private function passwordContainsSpecialCharacters($password) : int
     {
         return preg_match('/[^A-Za-z0-9]/', $password) === 1;
     }
 
-    private function passwordContainsUppercase($password)
+    private function passwordContainsUppercase($password) : int
     {
         return preg_match('/[A-Z]/', $password) === 1;
     }
