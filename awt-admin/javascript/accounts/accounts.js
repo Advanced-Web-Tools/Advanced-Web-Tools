@@ -29,12 +29,12 @@ function fetchAccounts(container) {
 }
 
 function createAccount(container) {
-    var email = $(".email").val();
-    var username = $(".username").val();
-    var firstname = $(".fname").val();
-    var lastname = $(".lname").val();
-    var password = $(".password").val();
-    var permission = $(".permissionLevel").val();
+    var email = $(".email-create").val();
+    var username = $(".username-create").val();
+    var firstname = $(".fname-create").val();
+    var lastname = $(".lname-create").val();
+    var password = $(".password-create").val();
+    var permission = $(".permissionLevel-create").val();
 
     $.ajax({
         url: "./jobs/accounts.php",

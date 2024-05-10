@@ -70,12 +70,12 @@ if (!$profiler->checkPermissions(2))
     <div class="wrapper">
         <h3>Create new account</h3>
         <div class="create-new-account shadow">
-            <input type="text" autocomplete="false" class="fname" placeholder="First name" />
-            <input type="text" autocomplete="false" class="lname" placeholder="Last name" />
-            <input type="text" autocomplete="false" class="username" placeholder="Username" />
-            <input type="email" autocomplete="false" class="email" placeholder="Email" />
-            <input type="password" autocomplete="false" class="password" placeholder="Password" />
-            <select name="permission" class="permissionLevel">
+            <input type="text" autocomplete="false" class="fname-create" placeholder="First name" />
+            <input type="text" autocomplete="false" class="lname-create" placeholder="Last name" />
+            <input type="text" autocomplete="false" class="username-create" placeholder="Username" />
+            <input type="email" autocomplete="false" class="email-create" placeholder="Email" />
+            <input type="password" autocomplete="false" class="password-create" placeholder="Password" />
+            <select name="permission" class="permissionLevel-create">
                 <option value="0">Admin</option>
                 <option value="1">Moderator</option>
                 <option value="2">Author</option>
