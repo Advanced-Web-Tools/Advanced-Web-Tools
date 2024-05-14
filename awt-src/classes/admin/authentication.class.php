@@ -20,7 +20,7 @@ class authentication extends sessionHandler
         $this->mysqli = $this->database->getConfig();
     }
 
-    public function authenticateUser($login, $password)
+    public function authenticateUser($login, $password) : bool
     {
         $this->loginInfo = $login;
         $this->password = $password;
@@ -55,7 +55,7 @@ class authentication extends sessionHandler
         return true;
     }
 
-    public function checkAuthentication()
+    public function checkAuthentication() : bool
     {
 
         $this->sessionHandler();

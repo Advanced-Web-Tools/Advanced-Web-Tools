@@ -69,7 +69,7 @@ class paging extends cache
         $builtInPages[] = array('name'=> $name, 'builtIn' => true);
     }
 
-    public function getPage(bool $loadAdmin = false, bool $selfCalled = false, string $varName = '')
+    public function getPage(bool $loadAdmin = false, bool $selfCalled = false, string $varName = '') : string
     {
         global $theme;
         global $menu;

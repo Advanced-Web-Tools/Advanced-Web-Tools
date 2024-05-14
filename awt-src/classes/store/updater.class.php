@@ -15,12 +15,12 @@ class updater extends store
     }
 
 
-    private function updatePlugin()
+    public function updatePlugin()
     {
 
     }
 
-    private function updateTheme()
+    public function updateTheme()
     {
 
     }

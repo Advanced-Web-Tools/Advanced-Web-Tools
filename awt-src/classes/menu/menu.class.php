@@ -20,7 +20,8 @@ class menu {
         $stmt->close();
     }
 
-    public function setActiveMenu(string $name) {
+    public function setActiveMenu(string $name) : void
+    {
         $stmt = $this->mysqli->prepare("UPDATE `awt_menus` SET `active` = '0' WHERE `active` = '1';");
         $stmt->execute();
         $stmt->close();
@@ -29,7 +30,7 @@ class menu {
         $stmt->execute();
     }
 
-    public function getActiveMenus()
+    public function getActiveMenus() : array
     {
         foreach($this->menus as $key => $value) {
             if($value['active'] == 1) {
@@ -40,12 +41,13 @@ class menu {
         return $this->activeMenu;
     }
 
-    public function retrieveMenuItems(){
+    public function retrieveMenuItems() : array
+    {
         $this->getActiveMenus();
         return array_filter(explode("NEW_LINK", $this->activeMenu['items']));
     }
 
-    public function createMenu(string $name, string $items)
+    public function createMenu(string $name, string $items) : void
     {   
         $active = 0;
         $stmt = $this->mysqli->prepare("INSERT INTO `awt_menus`(`name`, `items`, `active`) VALUES (?, ?, ?);");
@@ -53,14 +55,15 @@ class menu {
         $stmt->execute();
     }
 
-    public function updateMenu(string $name, string $items)
+    public function updateMenu(string $name, string $items) : void
     {   
         $stmt = $this->mysqli->prepare("UPDATE  `awt_menus` SET `items` = ? WHERE `name` = ?");
         $stmt->bind_param("ss", $items, $name);
         $stmt->execute();
     }
 
-    public function retrieveAllMenus() {
+    public function retrieveAllMenus() : array
+    {
         return $this->menus;
     }
 

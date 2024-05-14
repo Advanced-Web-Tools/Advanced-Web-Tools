@@ -14,12 +14,12 @@ class navbar
         $this->profiler = new profiler;
     }
 
-    public function addItem(array $item)
+    public function addItem(array $item) : void
     {
         $this->items[] = $item;
     }
 
-    public function writeItems()
+    public function writeItems() : void
     {
         foreach ($this->items as $item => $value) {
 

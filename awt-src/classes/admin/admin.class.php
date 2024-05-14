@@ -164,7 +164,7 @@ class admin extends sessionHandler
         return false;
     }
 
-    public function getAccountList()
+    public function getAccountList() : array
     {
         $this->connectToDatabase();
 
@@ -279,7 +279,7 @@ class admin extends sessionHandler
 
     }
 
-    public function deleteAccount(int $id)
+    public function deleteAccount(int $id) : string
     {
         $profiler = new profiler();
         if (!$profiler->checkPermissions(0))

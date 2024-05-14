@@ -56,7 +56,7 @@ class cache extends SessionHandler
         }
     }
 
-    public function checkForCache($name)
+    public function checkForCache($name) : bool
     {
         if(!$this->cacheEnabled) return false;
 

@@ -37,12 +37,12 @@ class profiler extends sessionHandler
 
     }
 
-    public function getProfile()
+    public function getProfile() : array
     {   
         return array('name' => $this->name, 'email' => $this->email, 'fname' => $this->firstname, 'lname' => $this->lastname, 'type' => $this->accountType);
     }
 
-    public function checkPermissions(int $requiredPerm)
+    public function checkPermissions(int $requiredPerm) : bool
     {
         if($this->permissionLevel == 0) return true;
         if($this->permissionLevel > $requiredPerm) return false;

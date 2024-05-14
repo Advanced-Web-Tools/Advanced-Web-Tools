@@ -123,7 +123,6 @@ class store
     {
         $this->sendRequest();
         return $this->checkIfInstalled();
-        ;
     }
 
 

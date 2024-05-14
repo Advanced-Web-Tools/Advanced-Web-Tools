@@ -11,7 +11,7 @@ class modules
         $this->requiredModules[$name] = $path;
     }
 
-    public function loadModule($name, $additional_data = '')
+    public function loadModule($name, $additional_data = '') : string
     {
         global $theme;
         global $render;

@@ -91,7 +91,7 @@ class themes extends modules
         return '<link rel="stylesheet" href="' . $this->linkToThemeDir . $path . '"/>';
     }
 
-    public function getAssetLink(string $path)
+    public function getAssetLink(string $path) : string
     {
         return $this->linkToThemeDir . $path;
     }

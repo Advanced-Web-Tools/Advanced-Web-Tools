@@ -90,7 +90,7 @@ class settings
         return true;
     }
 
-    public function checkIfSettingExists(string $name) {
+    public function checkIfSettingExists(string $name) : bool {
         foreach ($this->allSettings as $key => $value) {
             if ($value['name'] == $name) return true;
         }
