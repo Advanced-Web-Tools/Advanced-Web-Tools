@@ -1,0 +1,92 @@
+.page_create {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.page_list {
+    width: 100%;  /* Ensure the table takes up full width */
+    border-collapse: collapse;
+    margin: 20px 0;
+}
+
+.page_list th, .page_list td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.page_list th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+.page_list tr {
+    border: 1px solid #ddd;
+}
+
+.page_list td {
+    border: none;
+    padding: 10px 5px;
+}
+
+.page_list tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.page_list tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.page_title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    padding: 16px;
+    background-color: #0073e6;
+    border: 1px solid #ddd;
+}
+
+.header th {
+    text-align: left;
+}
+
+/* Make the 'name' column take the most space */
+.page_list .name {
+    width: auto;
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+/* Set a minimum width for the 'actions' column to ensure space for buttons */
+.page_list .actions {
+    min-width: 200px;  /* Adjust this width as necessary */
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* Prevent other columns from taking too much space */
+.page_list th:not(.name), .page_list td:not(.name) {
+    width: 1%;
+    white-space: nowrap;
+}
+
+/* Ensure the table layout is flexible */
+.page_list {
+    table-layout: auto;
+}
+
+.page_list td,
+.page_list th {
+    padding: 10px 15px;
+}
+
+.page_list td:not(.actions) {
+    font-size: 1.1rem;
+}
+
+.page_list .actions button i {
+    font-size: .8rem !important;
+}

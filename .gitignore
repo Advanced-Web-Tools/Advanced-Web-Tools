@@ -4,8 +4,8 @@
 .vscode/
 .vs
 
-.VSCodeCounter/
-.idea/
+.VSCodeCounter/*
+.idea/*
 
-awt_packages/*
+
 public_html.code-workspace

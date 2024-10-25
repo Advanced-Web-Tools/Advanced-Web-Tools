@@ -1,0 +1,36 @@
+.package_table {
+    width: 95%;
+    margin: 50px auto;
+    border-collapse: collapse;
+    background: var(--secondary_background );
+    padding: 20px 10px;
+    border-radius: calc(var(--border_radius) + 5px);
+}
+
+.package_table th, .package_table td {
+    padding: 10px;
+    border: none;
+    text-align: center;
+}
+
+.package_table th {
+    font-weight: bold;
+    text-align: center;
+}
+
+.package_icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--border_radius);
+}
+
+.name {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}

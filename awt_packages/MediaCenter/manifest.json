@@ -1,0 +1,9 @@
+{
+    "plugin": {
+        "name": "Media Center",
+        "system": "true",
+        "version": "1.0.0",
+        "description": "Media Center - Control all your media",
+        "minimumAwtVersion": "24.9.0"
+    }
+}

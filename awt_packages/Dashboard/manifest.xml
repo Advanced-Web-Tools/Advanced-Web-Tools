@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<plugin>
+    <name>Dashboard</name>
+
+    <system>true</system>
+
+    <version>1.0.0</version>
+
+    <description>Advanced Web Tool - Dashboard packages</description>
+
+    <requiresAuthorization>false</requiresAuthorization>
+
+    <minimumAwtVersion>v24.9.0</minimumAwtVersion>
+</plugin>
