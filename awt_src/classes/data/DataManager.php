@@ -104,6 +104,8 @@ class DataManager
      *
      * @param int $id The ID of the owner whose data should be fetched.
      * @return self Returns the instance of DataManager.
+     * @throws ErrorException
+     * @throws ErrorException
      */
     public function fetchByOwnerId(int $id): self
     {
@@ -209,8 +211,8 @@ class DataManager
      * @param EDataType $dataType The type of data (e.g., Image, Video, Audio).
      * @param EDataOwnerType $ownerType The type of owner for the data, defaulting to System.
      * @param string $ownerName The name of the owner, defaulting to "Advanced Web Tools".
-     *
-     * @return bool Returns true if the upload is successful, otherwise false.
+     * @param bool $local
+     * @return Data|bool Returns true if the upload is successful, otherwise false.
      *
      * @throws ErrorException Thrown if any required information (e.g., owner name or file name) is missing.
      *

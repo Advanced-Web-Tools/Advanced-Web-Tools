@@ -94,7 +94,8 @@ abstract class Model extends DatabaseManager
     }
 
     /**
-     *  Creates an array of properties.
+     *  Creates a json of properties.
+     *  Works only on public properties.
      *
      * @return string Returns a json string of an object.
      */

@@ -86,6 +86,7 @@ final class PackageManagerController extends DashboardPage
 
     /**
      * @throws ErrorException
+     * @throws Exception
      */
     public function installPackage(array|string $params): Redirect
     {

@@ -10,7 +10,9 @@ use data\enums\EDataType;
 use database\DatabaseManager;
 use ErrorException;
 use FilesystemIterator;
+use object\ObjectHandler;
 use packages\enums\EPackageType;
+use packages\installer\interface\IPackageInstall;
 use packages\ManifestReader;
 use packages\Package;
 use ZipArchive;
@@ -76,6 +78,9 @@ class PackageInstaller
         return $this;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function installPackage(): self
     {
         mkdir(PACKAGES . str_replace(" ", "", $this->package->name), 0777, true);
@@ -112,6 +117,15 @@ class PackageInstaller
 
         $this->package->setId($this->databaseManager->table("awt_package")->
         insert($insert)->executeInsert());
+
+        if(file_exists(TEMP . $this->tempName . "/install.php"))
+        {
+            $installAction = ObjectHandler::createObjectFromFile(TEMP . $this->tempName . "/install.php");
+
+            if($installAction instanceof IPackageInstall) {
+                $installAction->postInstall($this->package->getId(), $this->package->name);
+            }
+        }
 
         return $this;
     }

@@ -3,7 +3,7 @@
 <link rel="stylesheet" href="@assets('css/packages.css')">
 @endsection
 @section("topbar.widgets")
-<form action=/package_manager/installer/install" enctype="multipart/form-data" method="post">
+<form action="/package_manager/installer/install" enctype="multipart/form-data" method="post">
     <input type="file" name="package" id="packageUpload">
     <button type="submit" class="btn_secondary">Install package.</button>
 </form>

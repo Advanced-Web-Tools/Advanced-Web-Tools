@@ -21,11 +21,7 @@ final class MediaCenterAlbumsManager extends Model
     }
 
     public function __toString() : string {
-        $return = [];
-        foreach ($this->albums as $album) {
-            $return[] = $album->__toArray();
-        }
-
+        //TODO
         return json_encode($this->__toArray(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
     }
 

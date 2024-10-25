@@ -34,7 +34,7 @@ $page->eventDispatcher = $eventDispatcher;
 try {
     if ($page instanceof Redirect) {
         $redirect = $page->getRedirectTo();
-        header("Location: {$redirect}");
+        header("Location: $redirect");
         exit();
     }
 

@@ -1,0 +1,10 @@
+{
+        "plugin": {
+        "name": "2024",
+        "system": false,
+        "version": "1.0.0",
+        "description": "2024 Theme",
+        "minimum_awt_version": "24.9.1",
+        "author": "ElStefanos"
+        }
+}

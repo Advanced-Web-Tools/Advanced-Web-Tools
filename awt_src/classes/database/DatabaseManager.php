@@ -64,9 +64,7 @@ class DatabaseManager
     private array $values = [];
     private array $joins = [];
     private array $conditions = [];
-    private ?PDO $pdo;
-
-
+    protected ?PDO $pdo;
 
     /**
      * Constructor method that initializes the PDO connection to the database.
@@ -142,6 +140,7 @@ class DatabaseManager
         $stmt->closeCursor();
         $this->columns = array();
         $this->values = array();
+        $this->__destruct();
         return null;
     }
 
@@ -222,7 +221,10 @@ class DatabaseManager
 
         $stmt->execute();
 
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $this->__destruct();
+        return $result;
     }
 
     /**
@@ -250,7 +252,10 @@ class DatabaseManager
             $stmt->bindValue($placeholder, $value);
         }
 
-        return $stmt->execute();
+        $result = $stmt->execute();
+
+        $this->__destruct();
+        return $result;
     }
 
     /**
@@ -267,7 +272,10 @@ class DatabaseManager
             $stmt->bindValue($placeholder, $value);
         }
 
-        return $stmt->execute();
+        $result = $stmt->execute();
+
+        $this->__destruct();
+        return $result;
     }
 
     /**
@@ -312,11 +320,6 @@ class DatabaseManager
     }
 
     public function __destruct() {
-        $this->tables = [];
-        $this->hostname = '';
-        $this->username = '';
-        $this->password = '';
-        $this->database = '';
         $this->sql = '';
         $this->selectQuery = '';
         $this->joinQuery = '';

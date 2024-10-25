@@ -56,7 +56,7 @@ class Data
 
     /**
      * Sets subdirectory based of `EDataOwnerType`.
-     * @param EDataOwnerType $ownerType
+     * @param EDataOwnerType|null $ownerType
      * @return void
      */
     private function setOwnerType(EDataOwnerType $ownerType = null): void
@@ -126,7 +126,7 @@ class Data
     /**
      * Sets the owner of the `Data` object.
      *
-     * @param string $owner The name of the owner to be associated with this data.
+     * @param string|null $owner The name of the owner to be associated with this data.
      * @return self Returns the current instance of `Data` for method chaining.
      */
     public function setOwner(?string $owner): self

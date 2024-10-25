@@ -2,6 +2,8 @@
 
 namespace packages\manager\loader;
 
+use Exception;
+use object\ObjectHandler;
 use packages\manager\PackageManager;
 use packages\runtime\api\RuntimeAPI;
 use packages\runtime\handler\enums\ERuntimeExceptions;
@@ -52,6 +54,7 @@ final class Loader extends RuntimeHandler
      * Iterates through the loading list, extracts package objects,
      * and manages the loading process, ensuring any waiting packages
      * are handled correctly and executing the runtime for each package.
+     * @throws Exception
      */
     public function load(): void
     {
@@ -87,11 +90,15 @@ final class Loader extends RuntimeHandler
 
     }
 
-
+    /**
+     * Checks if a waited package has already been loaded.
+     *
+     * @return bool True if the package is loaded; otherwise, false.
+     */
     private function checkForLoaded(): bool
     {
         foreach ($this->runtime->waitList as $package) {
-            if($this->loaded[$package]){
+            if ($this->loaded[$package]) {
                 continue;
             }
             return false;
@@ -112,7 +119,7 @@ final class Loader extends RuntimeHandler
      */
     private function handleLoadOrder(Runtime $runtime): bool
     {
-        if($this->checkForLoaded())
+        if ($this->checkForLoaded())
             return true;
 
         if (!$this->awaitListCheck()) {
@@ -165,16 +172,6 @@ final class Loader extends RuntimeHandler
         return true;
     }
 
-    /**
-     * Checks if a package has already been loaded.
-     *
-     * @param string $name The name of the package to check.
-     * @return bool True if the package is loaded; otherwise, false.
-     */
-    public function checkForLoadedPackage(string $name): bool
-    {
-        return in_array($name, $this->loaded, true);
-    }
 
     /**
      * Extracts package objects from a given runtime package.
@@ -184,29 +181,20 @@ final class Loader extends RuntimeHandler
      *
      * @param Runtime $runtime The runtime package to extract objects from.
      * @return array An array of instantiated package objects.
+     * @throws Exception On invalid runtime path. On Reflection error.
      */
     public function extractPackageObject(Runtime $runtime): array
     {
-        $loadedClasses = get_declared_classes();
+        $className = ObjectHandler::createObjectFromFile(PACKAGES . str_replace(" ", "", $runtime->name) . DIRECTORY_SEPARATOR . "main.php");
 
-        require_once PACKAGES . str_replace(" ", "", $runtime->name) . DIRECTORY_SEPARATOR . "main.php";
-
-        $newClasses = get_declared_classes();
-
-        $newClasses = array_diff($newClasses, $loadedClasses);
-
-        $return = [];
-
-        foreach ($newClasses as $className) {
-            if (is_subclass_of($className, RuntimeAPI::class)) {
-                try {
-                    $reflectionClass = new ReflectionClass($className);
-                } catch (ReflectionException $e) {
-                    die("AWT Runtime: " . $e->getMessage());
-                }
-                if (!$reflectionClass->isAbstract()) {
-                    $return[] = new $className();
-                }
+        if (is_subclass_of($className, RuntimeAPI::class)) {
+            try {
+                $reflectionClass = new ReflectionClass($className);
+            } catch (ReflectionException $e) {
+                die("AWT Runtime: " . $e->getMessage());
+            }
+            if (!$reflectionClass->isAbstract()) {
+                $return[] = new $className();
             }
         }
 

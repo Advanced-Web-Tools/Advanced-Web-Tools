@@ -1,11 +1,15 @@
 <?php
-use packages\themes\api\ThemeAPI;
 
-class TwentyTwentyFour extends \packages\runtime\api\RuntimeAPI
+
+use packages\runtime\api\RuntimeAPI;
+use packages\runtime\handler\enums\ERuntimeFlags;
+
+class TwentyTwentyFour extends RuntimeAPI
 {
     public function environmentSetup(): void
     {
-        // TODO: Implement environmentSetup() method.
+        $this->setRuntimeFlag(ERuntimeFlags::WaitForPackage);
+        $this->waitForRuntime("ThemeFY!");
     }
 
     public function setup(): void
@@ -15,6 +19,6 @@ class TwentyTwentyFour extends \packages\runtime\api\RuntimeAPI
 
     public function main(): void
     {
-        // TODO: Implement main() method.
+
     }
 }

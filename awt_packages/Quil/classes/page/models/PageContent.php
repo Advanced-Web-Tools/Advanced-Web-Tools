@@ -9,6 +9,7 @@ namespace Quil\classes\page\models;
  * - Use with `Dashboard` package.
  *
  * Manages content of custom pages.
+ * @property string $content
  */
 class PageContent extends PageInfo
 {

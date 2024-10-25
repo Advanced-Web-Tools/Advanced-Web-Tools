@@ -3,6 +3,7 @@
 namespace packages\runtime\handler;
 
 use event\EventDispatcher;
+use object\ObjectHandler;
 use packages\runtime\api\RuntimeAPI;
 use packages\runtime\interface\IRuntime;
 use packages\runtime\handler;
@@ -169,6 +170,7 @@ class RuntimeHandler extends RuntimeExceptions
      *
      * @param RuntimeAPI $runtime The runtime instance to load links from.
      * @return array An array of loaded linked runtime instances.
+     * @throws \Exception
      */
     public function loadLinked(RuntimeAPI $runtime): array
     {
@@ -178,27 +180,20 @@ class RuntimeHandler extends RuntimeExceptions
             return $return;
 
         foreach ($runtime->links as $link) {
-            $loadedClasses = get_declared_classes();
 
-            include_once $link;
+            $extractedObject = ObjectHandler::createObjectFromFile($link);
 
-            $newClasses = get_declared_classes();
-
-            $newClasses = array_diff($newClasses, $loadedClasses);
-
-            if (empty($newClasses))
+            if ($extractedObject === null)
                 return $return;
 
-            foreach ($newClasses as $className) {
-                if (is_subclass_of($className, RuntimeAPI::class)) {
-                    try {
-                        $reflectionClass = new ReflectionClass($className);
-                    } catch (ReflectionException $e) {
-                        die("RuntimeHandler: " . $e->getMessage());
-                    }
-                    if (!$reflectionClass->isAbstract()) {
-                        $return[] = new $className();
-                    }
+            if (is_subclass_of($extractedObject, RuntimeAPI::class)) {
+                try {
+                    $reflectionClass = new ReflectionClass($extractedObject);
+                } catch (ReflectionException $e) {
+                    die("RuntimeHandler: " . $e->getMessage());
+                }
+                if (!$reflectionClass->isAbstract()) {
+                    $return[] = $extractedObject;
                 }
             }
 

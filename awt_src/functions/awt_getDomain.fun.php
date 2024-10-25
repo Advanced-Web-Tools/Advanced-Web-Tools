@@ -4,7 +4,7 @@ use setting\Config;
 
 /**
  * Function getDomainName
- * @return string Returns a base domain name without requested URI.
+ * @return string|null Returns a base domain name without requested URI.
  */
 function getDomainName(): ?string
 {
