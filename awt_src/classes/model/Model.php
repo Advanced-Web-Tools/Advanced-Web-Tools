@@ -17,11 +17,15 @@ use ReflectionProperty;
  */
 abstract class Model extends DatabaseManager
 {
+
+    protected string $model_source;
+    protected ?int $model_id = null;
+    protected string $id_column;
+
     /**
      * Initializes the Model by calling the parent constructor of
      * DatabaseManager.
      */
-
     public function __construct()
     {
         parent::__construct();
@@ -55,6 +59,11 @@ abstract class Model extends DatabaseManager
         foreach ($result[0] as $key => $value) {
             $this->{$key} = $value;
         }
+
+        $this->model_source = $table;
+        $this->id_column = $column;
+        $this->model_id = $id;
+
 
         parent::__destruct();
     }
@@ -91,6 +100,24 @@ abstract class Model extends DatabaseManager
     final public function getParam(string $key): mixed
     {
         return $this->{$key} ?? null;
+    }
+
+    /**
+     * Saves the model to database
+     * @return bool true on success otherwise false
+     */
+    final public function save(): bool
+    {
+
+        $where = [$this->id_column => $this->model_id];
+
+        $update = $this->__toArray();
+
+        if($this->checkColumn($this->model_id, "updated_on"))
+            $update[] = ["updated_on" => 'DEFAULT'];
+
+
+        return $this->table($this->model_source)->where($where)->update($update);
     }
 
     /**

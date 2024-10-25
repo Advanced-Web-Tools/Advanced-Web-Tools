@@ -1,4 +1,5 @@
 <?php
+
 namespace database;
 
 require ROOT . "/awt_db.php";
@@ -46,7 +47,6 @@ use PDOException;
  * - Destructor:
  *   - Cleans up class properties and connection resources when the object is destroyed.
  */
-
 class DatabaseManager
 {
     private array $tables = [];
@@ -71,7 +71,8 @@ class DatabaseManager
      * It sets the error mode to exceptions for better error handling.
      */
 
-    public function __construct() {
+    public function __construct()
+    {
         $dsn = DB_TYPE . ":host={$this->hostname};dbname={$this->database}";
         try {
             $this->pdo = new PDO($dsn, $this->username, $this->password);
@@ -87,7 +88,8 @@ class DatabaseManager
      * @param string $name The name of the table.
      * @return $this The instance of the DatabaseManager for chaining.
      */
-    public function table(string $name): self {
+    public function table(string $name): self
+    {
         $this->tableName = $name;
         return $this;
     }
@@ -98,7 +100,8 @@ class DatabaseManager
      * @param array $data Associative array where keys are columns and values are the values to insert.
      * @return $this The instance of the DatabaseManager for chaining.
      */
-    public function insert(array $data): self {
+    public function insert(array $data): self
+    {
         foreach ($data as $column => $value) {
             $this->columns[] = $column;
             $this->values[":{$column}"] = $value;
@@ -112,7 +115,8 @@ class DatabaseManager
      * @return int|null Returns the ID of the inserted row or null on failure.
      * @throws PDOException If there is a mismatch between the number of columns and values.
      */
-    public function executeInsert(): ?int {
+    public function executeInsert(): ?int
+    {
         $columnList = implode(', ', $this->columns);
         $placeholderList = implode(', ', array_keys($this->values));
 
@@ -130,7 +134,7 @@ class DatabaseManager
         }
 
         if ($stmt->execute()) {
-            $lastInsertId = (int) $this->pdo->lastInsertId();
+            $lastInsertId = (int)$this->pdo->lastInsertId();
             $stmt->closeCursor();
             $this->columns = array();
             $this->values = array();
@@ -150,7 +154,8 @@ class DatabaseManager
      * @param array $columns List of column names to select.
      * @return $this The instance of the DatabaseManager for chaining.
      */
-    public function select(array $columns = ['*']): self {
+    public function select(array $columns = ['*']): self
+    {
         $columnList = implode(', ', $columns);
         $this->selectQuery = "SELECT {$columnList} FROM {$this->tableName}";
         return $this;
@@ -164,7 +169,8 @@ class DatabaseManager
      * @param string $type The type of join (e.g., INNER, LEFT).
      * @return $this The instance of the DatabaseManager for chaining.
      */
-    public function join(string $table, string $on, string $type = 'INNER'): self {
+    public function join(string $table, string $on, string $type = 'INNER'): self
+    {
         $this->joins[] = " {$type} JOIN {$table} ON {$on}";
         return $this;
     }
@@ -176,7 +182,8 @@ class DatabaseManager
      * @param bool $useNot Whether to use != instead of = in the condition.
      * @return $this The instance of the DatabaseManager for chaining.
      */
-    public function where(array $conditions, bool $useNot = false): self {
+    public function where(array $conditions, bool $useNot = false): self
+    {
         $whereClauses = [];
         foreach ($conditions as $column => $value) {
             $operator = $useNot ? "!=" : "=";
@@ -194,7 +201,8 @@ class DatabaseManager
      * @param string $direction The direction of sorting (ASC or DESC).
      * @return $this The instance of the DatabaseManager for chaining.
      */
-    public function orderBy(string $column, string $direction = 'ASC'): self {
+    public function orderBy(string $column, string $direction = 'ASC'): self
+    {
         $this->orderBy[] = "$column $direction";
         return $this;
     }
@@ -204,7 +212,8 @@ class DatabaseManager
      *
      * @return array The resulting rows as an associative array.
      */
-    public function get(): array {
+    public function get(): array
+    {
         $sql = $this->selectQuery . implode('', $this->joins) . $this->whereQuery;
 
         if (!empty($this->orderBy)) {
@@ -233,12 +242,18 @@ class DatabaseManager
      * @param array $data Associative array where keys are columns and values are the new values to update.
      * @return bool Returns true on success, false on failure.
      */
-    public function update(array $data): bool {
+    public function update(array $data): bool
+    {
         $setClauses = [];
         foreach ($data as $column => $value) {
-            $setClauses[] = "{$column} = :{$column}";
-            $this->values[":{$column}"] = $value;
+            if ($value === 'DEFAULT') {
+                $setClauses[] = "{$column} = DEFAULT"; // Set to DEFAULT directly
+            } else {
+                $setClauses[] = "{$column} = :{$column}";
+                $this->values[":{$column}"] = $value;
+            }
         }
+
         $setQuery = implode(', ', $setClauses);
         $sql = "UPDATE {$this->tableName} SET {$setQuery}" . $this->whereQuery;
 
@@ -263,7 +278,8 @@ class DatabaseManager
      *
      * @return bool Returns true on success, false on failure.
      */
-    public function delete(): bool {
+    public function delete(): bool
+    {
         $sql = "DELETE FROM {$this->tableName}" . $this->whereQuery;
 
         $stmt = $this->pdo->prepare($sql);
@@ -283,7 +299,8 @@ class DatabaseManager
      *
      * @return $this The instance of the DatabaseManager for chaining.
      */
-    public function getTables(): self {
+    public function getTables(): self
+    {
         $this->tables = $this->select()->join("awt_table_structure", "awt_table_structure.table_id = awt_table.id")->where(['1' => 1])->get();
         return $this;
     }
@@ -294,9 +311,12 @@ class DatabaseManager
      * @param string $table The name of the table.
      * @return bool Returns true if the table exists, false otherwise.
      */
-    public function checkTable(string $table): bool {
+    public function checkTable(string $table): bool
+    {
+        if(empty($this->tables))
+            $this->getTables();
         foreach ($this->tables as $tables) {
-            if(in_array($table, $tables)) {
+            if (in_array($table, $tables)) {
                 return true;
             }
         }
@@ -310,16 +330,20 @@ class DatabaseManager
      * @param string $column The column name.
      * @return bool Returns true if the column exists, false otherwise.
      */
-    public function checkColumn(string $table, string $column): bool {
+    public function checkColumn(string $table, string $column): bool
+    {
+        if(empty($this->tables))
+            $this->getTables();
         foreach ($this->tables as $tables) {
-            if(in_array($table, $tables) && $tables["column_name"] === $column) {
+            if (in_array($table, $tables) && $tables["column_name"] === $column) {
                 return true;
             }
         }
         return false;
     }
 
-    public function __destruct() {
+    public function __destruct()
+    {
         $this->sql = '';
         $this->selectQuery = '';
         $this->joinQuery = '';
