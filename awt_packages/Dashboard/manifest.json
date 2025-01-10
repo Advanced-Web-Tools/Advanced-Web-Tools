@@ -1,0 +1,11 @@
+{
+  "plugin": {
+    "name": "Dashboard",
+    "system": "true",
+    "version": "1.0.0",
+    "icon": "dashboard.png",
+    "description": "Advanced Web Tool - Dashboard packages",
+    "minimum_awt_version": "24.9.0",
+    "author": "ElStefanos"
+  }
+}

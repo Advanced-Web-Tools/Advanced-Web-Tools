@@ -1,0 +1,150 @@
+.page {
+    display: flex;
+    flex-wrap: nowrap;
+    padding: 0;
+}
+
+.account_list {
+    height: 100%;
+    width: 250px;
+    padding: 0 10px;
+    background: var(--secondary_background);
+}
+
+
+.account_list .account {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    background: var(--primary_background);
+    border-radius: var(--border_radius);
+    padding: 5px;
+    margin: 5px 0;
+}
+
+.account_list .account .account_username,
+.account_list .account .full_name {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    font-size: .9rem;
+    text-transform: capitalize;
+}
+
+.page .profile {
+    flex-grow: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.page .profile .header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
+    height: 150px;
+    background: var(--primary_accent);
+    color: var(--text_primary);
+    padding: 10px;
+    gap: 10px;
+}
+
+.header img {
+    width: 100px;
+    height: 100px;
+}
+
+.header .wrapper {
+    width: calc(70% - 120px);
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 0;
+    justify-content: center;
+}
+
+.header .wrapper h3,
+.header .wrapper p {
+    margin: 0;
+}
+
+.header .actions {
+    display: flex;
+    flex-wrap: wrap;
+    text-align: right;
+    justify-content: end;
+    gap: 10px;
+    flex-grow: 1;
+}
+
+.information {
+    height: calc(100% - 190px);
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-auto-rows: 100px;
+    gap: 10px;
+    margin: 10px;
+    overflow-y: auto;
+}
+
+.information .info_container,
+.information .password_change,
+.information .email_change {
+    height: calc(100% - 10px);
+    width: calc(100% - 10px);
+    padding: 5px;
+    border-radius: var(--border_radius);
+    background: var(--secondary_background);
+}
+
+.information .password_change,
+.information .email_change {
+    height: auto;
+    width: auto;
+    padding: 10px;
+    grid-column-start: 3;
+    grid-column-end: 5;
+    grid-row-start: span 3;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.information .password_change label {
+    width: 100%;
+}
+
+.information .password_change button {
+    margin: auto;
+}
+
+.information .email_change {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: span 2;
+    padding: 5px;
+}
+
+.create_account {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 15px;
+    width: 60%;
+    padding: 10px;
+    margin: 0 auto;
+    background: var(--secondary_background);
+    border-radius: var(--border_radius);
+}
+
+.create_account label {
+    margin: 0 0 0 -30px;
+}
+

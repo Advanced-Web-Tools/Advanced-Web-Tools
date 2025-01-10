@@ -1,0 +1,175 @@
+@import "editor/editorOptions.css";
+@import "editor/components.css";
+@import "editor/editorBlockMenu.css";
+@import "editor/editorScene.css";
+
+
+:root {
+    /* Core Colors */
+    --primary_accent: #3498db; /* Bright Blue for primary interactive elements */
+    --primary_background: #2b2b2b; /* Dark Gray for background */
+    --text_primary: #f5f5f5; /* Light Gray for primary text */
+
+    --secondary_accent: #2ecc71; /* Soft Green for secondary accents */
+    --secondary_background: #1c1c1c; /* Darker Gray for card backgrounds, etc. */
+    --text_secondary: #cccccc; /* Lighter Gray for secondary text */
+
+    --text_third: #c9c9c9; /* White for tertiary text */
+
+    /* Feedback Colors */
+    --error: #e74c3c; /* Red for error states */
+    --error_text: #ffffff; /* White text on error backgrounds */
+
+    --warning: #f39c12; /* Amber for warnings */
+    --warning_text: #ffffff; /* White text on warning backgrounds */
+
+    --info: #1abc9c; /* Teal for informational messages */
+    --info_text: #ffffff; /* White text on informational backgrounds */
+
+    /* Border and UI */
+    --border_radius: 5px; /* Consistent border radius */
+}
+
+
+.top-bar {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--secondary_background);
+}
+
+.inp_primary, .select_primary {
+    border: none;
+    color: var(--text_primary) !important;
+}
+
+input[type='checkbox'] {
+    cursor: pointer;
+}
+
+.top-bar .left,
+.top-bar .center,
+.top-bar .right,
+.top-bar .action {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+.main {
+    display: flex;
+    justify-content: space-between;
+    height: calc(100% - 51px);
+    flex-wrap: wrap;
+}
+
+.main aside {
+    padding: 10px;
+    max-height: calc(100% - 20px);
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+    background: var(--secondary_background);
+    transition: .2s ease-in-out;
+}
+
+.main aside .header {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    color: var(--text_third);
+}
+
+.main aside .header i.action {
+    cursor: pointer;
+}
+
+.main aside .header i {
+    font-size: 1.5rem;
+}
+
+.main aside .content {
+    color: var(--text_third);
+}
+
+.main .left {
+    width: 0;
+    opacity: 0;
+}
+
+.main .editor {
+    flex-grow: 1;
+    max-width: calc(100% - 275px);
+    height: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.main .right {
+    width: 275px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.main .right .header h3 {
+    font-size: 1.5rem;
+}
+
+.main .right .content {
+    width: 100%;
+}
+
+.main .left.active {
+    width: 300px;
+    opacity: 100%;
+}
+
+.main .editor.shrink {
+    max-width: calc(100% - 275px - 300px);
+}
+
+.editor {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.editor .page {
+    height: calc(100% - 20px);
+    width: 100%;
+    transition: .3s;
+    background: #fff;
+    padding: 10px 5px;
+    overflow-y: scroll;
+}
+
+.editor .page.mobile {
+    width: 375px;
+    height: 90%;
+    margin: 0 auto;
+    border: 1px solid var(--primary_accent);
+}
+
+.helper {
+    position: absolute;
+    display: none;
+    background: rgba(0, 0, 0, .5);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+
+.helper.active {
+    display: block;
+}

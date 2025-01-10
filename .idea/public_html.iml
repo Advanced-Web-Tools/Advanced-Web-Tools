@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="WEB_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/awt_src/classes" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/.VSCodeCounter" />
+      <excludeFolder url="file://$MODULE_DIR$/.vscode" />
+      <excludeFolder url="file://$MODULE_DIR$/awt-content/plugins/Easy Forms" />
+      <excludeFolder url="file://$MODULE_DIR$/awt-content/plugins/MyShop" />
+      <excludeFolder url="file://$MODULE_DIR$/awt-content/plugins/awtDashboardWidgets" />
+      <excludeFolder url="file://$MODULE_DIR$/awt-content/plugins/awtMetrics" />
+      <excludeFolder url="file://$MODULE_DIR$/awt-content/plugins/floatingNavigation" />
+      <excludeFolder url="file://$MODULE_DIR$/awt-content/themes/ARGO Robotics" />
+      <excludeFolder url="file://$MODULE_DIR$/awt-content/themes/Nature Calls" />
+      <excludeFolder url="file://$MODULE_DIR$/awt_data/media/uploads/image" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/inspectionProfiles" />
+      <excludeFolder url="file://$MODULE_DIR$/awt_packages/AccountManager/views/assets/js" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="MyShop" />
+  </component>
+</module>

@@ -1,0 +1,11 @@
+{
+  "plugin": {
+    "name": "AWTRespond",
+    "system": true,
+    "version": "1.0.0",
+    "description": "AWTRespond is a package library to allow other packages easy API handling.",
+    "minimum_awt_version": "24.9.1",
+    "icon": "AWTRespond.png",
+    "author": "ElStefanos"
+  }
+}

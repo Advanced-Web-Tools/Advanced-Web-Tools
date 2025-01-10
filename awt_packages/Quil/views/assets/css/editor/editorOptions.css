@@ -1,0 +1,142 @@
+.category-container {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    background: var(--primary_background);
+    border-radius: var(--border_radius);
+    padding: 0 10px;
+    width: calc(100% - 20px);
+}
+
+.category-container .category-selector {
+    border-width: 0 0 0 0;
+    border-style: none;
+    border-color: var(--text_primary);
+    transition: all .1s ease-in-out;
+    cursor: pointer;
+    margin: 0;
+}
+
+.category-container .category-selector.active {
+    border-width: 0px 0px 1px 0px;
+    border-style: solid;
+    border-color: var(--text_primary);
+}
+
+.option-category:not(.active) {
+    display: none;
+}
+
+.category-selector p {
+    color: dimgray;
+}
+
+.category-selector.active p {
+    color: var(--text_primary);
+}
+
+.options-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+    height: fit-content;
+    margin: 10px 0;
+}
+
+.options-title {
+    font-size: 1.2rem;
+    margin: 1px 0;
+}
+
+.option {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.options-container h3, h4, hr {
+    width: 100%;
+}
+
+.options-container input:not([type='color']),
+.options-container select {
+    border-radius: 2px;
+    height: 25px;
+    border: none;
+    padding: 2px 5px;
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+    background: var(--primary_background);
+    color: var(--text_third);
+    outline: none;
+}
+
+.options-container input[disabled],
+.options-container select[disabled] {
+    color: dimgray;
+}
+
+.options select {
+    height: 29px;
+    margin: 0;
+    cursor: pointer;
+}
+
+
+.field-wrapper label {
+    width: 100%;
+    color: var(--text_primary);
+}
+
+.input-field {
+    width: 45px;
+    text-align: center;
+}
+
+.unit-select {
+    width: fit-content !important;;
+}
+
+.lock-wrapper {
+    grid-column: 1 / span 2;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.lock-wrapper i {
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.options-container select {
+    width: fit-content;
+}
+
+
+.options-container input[type='number'] {
+    width: 100px;
+}
+
+.options-container input[type='color'] {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 3px solid var(--primary_background);
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+}
+
+.options-container .input-group {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+}

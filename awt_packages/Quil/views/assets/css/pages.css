@@ -1,0 +1,122 @@
+.page_create {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.list {
+    width: 100%;
+    border: none;
+    margin: 10px 0 50px 0;
+    background: var(--secondary_background);
+    border-radius: var(--border_radius);
+}
+
+.list th, .page_list td {
+    border: none;
+    padding: 8px;
+    text-align: left;
+}
+
+.list th {
+    background: var(--secondary_background);
+    font-weight: bold;
+}
+
+.list tr {
+    border: 1px solid #ddd;
+}
+
+.list td {
+    border: none;
+    padding: 10px 5px;
+}
+
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    text-align: left;
+    padding: 16px;
+}
+
+.header th {
+    text-align: left;
+}
+
+.list .name {
+    width: 45%;
+    white-space: nowrap;
+}
+
+.list .actions {
+    min-width: 200px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: start;
+}
+
+.list th:not(.name), .list td:not(.name) {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.list {
+    table-layout: auto;
+}
+
+.list td,
+.list th {
+    padding: 10px 15px;
+}
+
+.list td:not(.actions) {
+    font-size: 1.1rem;
+}
+
+.list .actions button i {
+    font-size: .8rem !important;
+}
+
+
+.newRouteContainer {
+    background: var(--primary_background);
+    border-radius: var(--border_radius);
+    padding: 10px;
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.newRouteContainer .title {
+    text-align: center;
+}
+
+.newRouteContainer .inputContainer .inputGroup {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-direction: row;
+}
+
+.newRouteContainer .inputContainer .inputGroup .delete{
+    justify-self: end;
+    margin: 0 0 0 auto !important;
+}
+
+
+.newRouteContainer .inputContainer {
+    width: 100%;
+}
+
+.newRouteContainer form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+

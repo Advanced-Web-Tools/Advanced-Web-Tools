@@ -1,0 +1,243 @@
+:root {
+    --primary_accent: #101010; /* Bright Blue for primary interactive elements */
+    --primary_background: #F2F2F2; /* Light Gray for background */
+    --text_primary: #FFFFFF; /* Dark Charcoal for primary text */
+
+    --secondary_accent: #007BFF; /* Green for secondary accents */
+    --secondary_background: #FFFFFF; /* White for card backgrounds, etc. */
+    --text_secondary: #666666; /* Medium Gray for secondary text */
+
+    --text_third: #171515;
+
+    --error: #C71515; /* Red for error states */
+    --error_text: #FFFFFF; /* White text on error backgrounds */
+
+    --warning: #FFC107; /* Amber Yellow for warnings */
+    --warning_text: #333333; /* Dark text on warning backgrounds */
+
+    --info: #17A2B8; /* Teal for informational messages */
+    --info_text: #FFFFFF; /* White text on informational backgrounds */
+
+    --border_radius: 5px;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--primary_background);
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+body * {
+    font-family: "Poppins", sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+.msg_e,
+.msg_i,
+.msg_w {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    padding: 10px 20px;
+    margin: 0;
+}
+
+.msg_e h3,
+.msg_i h3,
+.msg_w h3 {
+    padding: 0;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.msg_e i,
+.msg_i i,
+.msg_w i
+{
+    font-size: 3rem;
+}
+
+.msg_e {
+    background: var(--error);
+    color: var(--error_text);
+}
+
+.msg_i {
+    background: var(--info);
+    color: var(--info_text);
+}
+
+.msg_w  {
+    background: var(--warning);
+    color: var(--warning_text);
+}
+
+
+
+.inp_primary {
+    color: var(--primary_accent) !important;
+    font-family: "Poppins", sans-serif;
+    background: var(--secondary_background);
+    border: 1px solid var(--primary_accent);
+    padding: 10px 20px;
+    border-radius: var(--border_radius);
+}
+
+.select_primary {
+    background: var(--secondary_background);
+    border-radius: var(--border_radius);
+    border: 1px solid var(--primary_accent);
+    cursor: pointer;
+    color: var(--primary_accent);
+    font-family: "Poppins", sans-serif;
+    padding: 10px 20px;
+}
+
+.btn_primary,
+.btn_secondary,
+.btn_action_negative
+{
+    color: var(--primary_background);
+    background: var(--primary_accent);
+    border: 1px solid var(--primary_accent);
+    padding: 10px 20px;
+    border-radius: var(--border_radius);
+    transition: .3s ease-in-out;
+    cursor: pointer;
+    font-size: .8rem;
+    text-space: .3rem;
+    font-family: "Poppins", sans-serif;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.btn_secondary {
+    background: var(--secondary_accent);
+    border: 1px solid var(--secondary_accent);
+}
+
+.btn_action_negative {
+    background: var(--error);
+    border: 1px solid var(--error);
+    color: var(--error_text);
+}
+
+.btn_primary:hover,
+.btn_primary.active {
+    color: var(--primary_accent);
+    background: var(--primary_background);
+}
+
+.btn_secondary:hover,
+.btn_secondary.active {
+    color: var(--secondary_accent);
+    background: var(--secondary_background);
+}
+
+.btn_action_negative:hover,
+.btn_action_negative.active {
+    color: var(--error);
+    background: transparent;
+}
+
+.btn_primary i,
+.btn_secondary i,
+.btn_action_negative i
+{
+    margin: 0 0 0 10px;
+    font-size: 1rem;
+}
+
+.hp_primary {
+    text-decoration: none;
+    color: var(--primary_accent);
+}
+
+.lg {
+    width: 90%;
+}
+
+.md {
+    width: 50%;
+}
+
+.sm {
+    width: fit-content;
+    min-width: 115px;
+    height: fit-content;
+}
+
+.no_mrg {
+    margin: 0 !important;
+}
+
+.no_rad {
+    border-radius: 0;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.shadow {
+    -webkit-box-shadow: -7px 21px 25px 0px rgba(0,0,0,0.14);
+    -moz-box-shadow: -7px 21px 25px 0px rgba(0,0,0,0.14);
+    box-shadow: -7px 21px 25px 0px rgba(0,0,0,0.14);
+}
+
+.helper {
+    position: absolute;
+    display: none;
+    background: rgba(0, 0, 0,  .8);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 10;
+}
+
+
+.helper.active {
+    display: block;
+}
+
+
+.helper .content {
+    height: 100%;
+    width: 100%;
+}
+
+.helper .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: calc(100% - 20px);
+    padding: 10px;
+    height: 50px;
+    color: #fff;
+    font-size: 1.3rem;
+}
+
+.helper .header h4 {
+    margin: 0;
+}
+
+.helper .header i {
+    cursor: pointer;
+}
+
+.helper .wrapper {
+    height: calc(100% - 20px - 50px);
+}
+

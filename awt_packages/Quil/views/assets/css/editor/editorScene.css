@@ -1,0 +1,197 @@
+
+
+.editor .block {
+    cursor: pointer;
+}
+
+.editor .block:hover,
+.editor [selected=selected]:not(.insert) {
+    outline: 3px solid var(--primary_accent);
+    position: relative;
+}
+
+.editor .block.empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    width: 100%;
+    outline: 1px solid var(--secondary_accent);
+}
+
+.editor .block.empty::before {
+    content: "\2b";
+    font-family: "Font Awesome 5 Free";
+    font-size: 3rem;
+    color: var(--secondary_accent);
+}
+
+.editor .block.dragging {
+    opacity: .5;
+}
+
+.insert {
+    position: relative;
+    background-color: transparent;
+    overflow: visible;
+    color: var(--primary_accent);
+    cursor: pointer;
+}
+.insert[locked="true"] {
+    color: var(--text_third) !important;
+    outline: none;
+}
+
+.insert:before {
+    content: "\f0fe";
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 1.5rem;
+    color: var(--primary_accent);
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: fit-content;
+    width: fit-content;
+    background: #fff;
+    padding: 0;
+}
+
+.insert[locked="true"]:before {
+    color: var(--text_third);
+    content: "\f023";
+    background: transparent;
+}
+
+.contextWrapper {
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    left: -1.1px;
+    width: 350px;
+}
+
+.blockContext {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    border: 1px solid var(--primary_accent);
+    position: absolute;
+    top: 100%;
+    background: #fff;
+}
+
+h1.block .contextWrapper,
+h2.block .contextWrapper,
+h3.block .contextWrapper,
+h4.block .contextWrapper,
+h5.block .contextWrapper,
+li.block .contextWrapper,
+p.block .contextWrapper,
+a.block .contextWrapper,
+ol.block .contextWrapper,
+ul.block .contextWrapper,
+blockquote.block .contextWrapper,
+button.block .contextWrapper {
+    transform: translateY(-98%) translateX(-0.8px);
+}
+
+.blockContext .title {
+    width: fit-content;
+    height: fit-content;
+    background: var(--primary_accent);
+}
+
+.blockContext .title .block_name {
+    margin: 0;
+    padding: 7px;
+    font-size: 12px;
+    color: var(--text_primary);
+}
+
+.blockContext .actions {
+    display: flex;
+    align-items: center;
+    gap: 1px;
+    padding: 5px 10px;
+}
+
+.blockContext hr {
+    height: 12px;
+    margin: 0 5px;
+}
+
+.contextWrapper button {
+    height: 20px;
+    width: 20px;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    background: none;
+    border: none;
+    color: #000;
+}
+
+.contextWrapper button.btn_primary.active {
+    background: none;
+    color: var(--primary_accent) !important;
+}
+
+.contextWrapper button.btn_secondary.active {
+    background: none;
+    color: var(--secondary_accent) !important;
+}
+
+.contextWrapper button.btn_action_negative.active {
+    background: none;
+    color: var(--error) !important;
+}
+
+
+.contextWrapper button:hover {
+    background: none;
+}
+
+.contextWrapper button i {
+    font-size: .8rem;
+}
+
+.sub-context-wrapper {
+    display: none;
+    position: absolute;
+    right: -1px;
+    top: 32px;
+    width: 150px;
+    border: 1px solid var(--primary_accent);
+    background: #fff;
+}
+
+.sub-context-wrapper.active {
+    display: initial;
+}
+
+.sub-context-actions {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.sub-context-actions li {
+    margin: 0 10px;
+    border: none;
+    list-style: none;
+    width: calc(100% - 20px);
+}
+
+.sub-context-actions hr {
+    height: initial;
+    width: auto;
+}
+
+.sub-context-actions button {
+    justify-content: space-between !important;
+    width: 100%;
+    height: fit-content;
+}

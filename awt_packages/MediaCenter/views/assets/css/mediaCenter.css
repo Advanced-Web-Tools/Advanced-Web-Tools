@@ -1,0 +1,83 @@
+.files .content_wrapper {
+    display: grid;
+    grid-template-columns: repeat(4, calc((100% / 4) - 5px));
+    grid-auto-rows: 300px;
+    gap: 5px;
+    width: 100%;
+    min-height: 100%;
+}
+
+.files .wrapper {
+    background: var(--secondary_accent);
+    position: relative;
+    box-sizing: border-box;
+    border-radius: var(--border_radius);
+}
+
+.files .wrapper img, .files .wrapper video {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    object-fit: cover;
+    border-radius: var(--border_radius);
+}
+
+.files .wrapper .content-data {
+    position: absolute;
+    display: none;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: var(--text_primary);
+    padding: 10px;
+    width: calc(100% - 20px);
+    height: 280px;
+    border-radius: var(--border_radius);
+}
+
+.files .wrapper .content-data p {
+    font-size: .7rem;
+}
+
+.files .wrapper:hover .content-data {
+    display: block;
+}
+
+.files .wrapper .action {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.files .wrapper #enlarge {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 8px;
+}
+
+.files .wrapper .action button:hover {
+    background: transparent;
+}
+
+.helper .wrapper {
+    display: grid;
+    place-content: center;
+    width: 100%;
+}
+
+
+
+.helper .wrapper img {
+    display: block;
+    margin: 0 auto;
+    min-width: 15%;
+    max-width: 90%;
+    max-height: calc(90% - 20px);
+    object-fit: contain;
+    background: var(--secondary_accent);
+    border-radius: var(--border_radius);
+}
+
