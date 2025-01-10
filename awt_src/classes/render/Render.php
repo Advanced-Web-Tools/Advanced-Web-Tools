@@ -176,11 +176,11 @@ class Render
         $html = TemplateParser::foreachParser($this, $html);
         $html = TemplateParser::ifParser($this, $html);
         $html = TemplateParser::resource($html);
-        $html = TemplateParser::assets($this->localAssetPath, $html);
         $html = TemplateParser::data($this->packageName, $html);
         $html = TemplateParser::urlVar($this, $html);
         $html = TemplateParser::url($html);
         $html = TemplateParser::vars($this, $html);
+        $html = TemplateParser::assets($this->localAssetPath, $html);
         return $html;
     }
 }

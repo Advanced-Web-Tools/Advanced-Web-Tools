@@ -6,6 +6,7 @@ Quil\classes\page;
 use admin\Admin;
 use database\DatabaseManager;
 use Quil\classes\page\models\PageInfo;
+use Quil\classes\page\models\PageRoute;
 
 /**
  * Class PageManager
@@ -18,16 +19,17 @@ use Quil\classes\page\models\PageInfo;
 class PageManager
 {
     private DatabaseManager $database;
-    private array $pages;
+    private ?array $pages = null;
+    private ?array $routes = null;
     private Admin $admin;
-    private int $routeId;
-    private int $pageId;
+    public int $routeId;
+    public int $pageId;
+    public int $contentId;
 
     public function __construct()
     {
         $this->database = new DatabaseManager();
         $this->admin = new Admin();
-        $this->pages = [];
     }
 
     public function createPage(string $name): void
@@ -46,9 +48,10 @@ class PageManager
             ])
             ->executeInsert();
 
-        $this->database->table("quil_page_content")
+        $this->contentId = $this->database->table("quil_page_content")
             ->insert([
                 "page_id" => $this->pageId,
+                "content" => "<div class='page'></div>"
             ])
             ->executeInsert();
     }
@@ -62,15 +65,34 @@ class PageManager
             ->get();
 
         foreach ($result as $page) {
-            $this->pages[] = new PageInfo($page["id"]);
+            $this->pages[$page["id"]] = new PageInfo($page["id"]);
         }
 
         return $this;
     }
 
-    public function returnPages(): array
+    public function fetchRoutes(): self
+    {
+        $result = $this->database->table('quil_page_route')
+            ->select(["id"])
+            ->where(["1" => 1])
+            ->get();
+
+        foreach ($result as $route) {
+            $this->routes[$route["id"]] = new PageRoute($route["id"]);
+        }
+        return $this;
+    }
+
+
+    public function returnPages(): ?array
     {
         return $this->pages;
+    }
+
+    public function returnRoutes(): ?array
+    {
+        return $this->routes;
     }
 
     public function deletePage(int $id): void
@@ -78,15 +100,88 @@ class PageManager
         $this->database->table("quil_page")->where(["id" => $id])->delete();
     }
 
-    private function createRoute(string $path): void
+    public function deleteRoute(int $id): void
     {
+        $this->database->table("quil_page_route")->where(["id" => $id])->delete();
+    }
+
+    public function createRoute(string $path): void
+    {
+        $route = str_replace(" ", "", $path);
         $this->routeId = $this->database
             ->table("quil_page_route")
             ->insert([
-                "route" => $path,
+                "route" => $route,
                 "created_by" => $this->admin->getParam("id")
             ])
             ->executeInsert();
+    }
+
+    public function savePage(array $params): bool
+    {
+        $id = null;
+        $name = null;
+        $routeId = null;
+        $description = null;
+        $content = null;
+
+
+
+        if(!isset($params["id"])) {
+            return false;
+        }
+
+        $id = $params["id"];
+
+        if(isset($params["name"])) {
+            $name = $params["name"];
+            $ret = $this->database->table("quil_page")->where(["id" => $id])->update([
+                "name" => $name
+            ]);
+
+            if(!$ret)
+                return false;
+        }
+
+
+        if(isset($params["route_id"])) {
+            $routeId = $params["route_id"];
+
+            if($routeId === "null") {
+                $routeId = null;
+            }
+
+            $ret = $this->database->table("quil_page")->where(["id" => $id])->update([
+                "route_id" => $routeId
+            ]);
+
+            if(!$ret)
+                return false;
+        }
+
+
+        if(isset($params["description"])) {
+            $description = $params["description"];
+
+            $ret = $this->database->table("quil_page")->where(["id" => $id])->update([
+                "description" => $description
+            ]);
+            if(!$ret)
+                return false;
+        }
+
+
+        if(isset($params["content"])) {
+            $content = $params["content"];
+            $ret = $this->database->table("quil_page_content")->where(["page_id" => $id])->update([
+                "content" => $content
+            ]);
+            if(!$ret)
+                return false;
+        }
+
+        return true;
+
     }
 
 }

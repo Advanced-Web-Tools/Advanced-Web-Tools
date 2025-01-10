@@ -1,6 +1,6 @@
-import {createLockedInputGroup} from "../../ui/InputGroupComp";
-import {Option} from "../../options/Option";
-import {CreateContainerComponent} from "../../ui/Container";
+import {createLockedInputGroup} from "../../ui/InputGroupComp.js";
+import {Option} from "../../options/Option.js";
+import {CreateContainerComponent} from "../../ui/Container.js";
 
 export let paddingOptions = new Option();
 

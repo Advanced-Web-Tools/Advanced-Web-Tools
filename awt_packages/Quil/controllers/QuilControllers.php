@@ -10,6 +10,7 @@ final class QuilControllers extends RuntimeControllerAPI
     private Controller $controller;
     private Controller $actionController;
 
+    private Controller $customPageController;
     public function environmentSetup(): void
     {
         parent::environmentSetup();
@@ -28,11 +29,18 @@ final class QuilControllers extends RuntimeControllerAPI
         $this->actionController = $this->getLocalObject("/controllers/controller/QuilActionController.php");
         $this->actionController->controllerName = "QuilActionController";
 
+        $this->customPageController = $this->getLocalObject("/controllers/controller/CustomPageController.php");
+        $this->customPageController->controllerName = "CustomPageController";
+        $this->customPageController->eventDispatcher = $this->eventDispatcher;
+        $this->customPageController->setRootPath($this->runtimePath);
+        $this->customPageController->setViewPath("/views/");
+        $this->customPageController->localAssetPath = "/awt_packages/Quil/views/assets";
     }
 
     public function main(): void
     {
         $this->addController($this->controller);
         $this->addController($this->actionController);
+        $this->addController($this->customPageController);
     }
 }

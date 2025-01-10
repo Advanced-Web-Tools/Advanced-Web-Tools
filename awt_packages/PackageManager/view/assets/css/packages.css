@@ -8,14 +8,14 @@
 }
 
 .package_table th, .package_table td {
-    padding: 10px;
+    padding: 15px;
     border: none;
-    text-align: center;
+    text-align: left;
 }
 
 .package_table th {
     font-weight: bold;
-    text-align: center;
+    text-align: left;
 }
 
 .package_icon {
@@ -26,11 +26,10 @@
 
 .name {
     font-size: 18px;
-    font-weight: bold;
 }
 
 .actions {
     display: flex;
     gap: 10px;
-    justify-content: center;
+    justify-content: start;
 }

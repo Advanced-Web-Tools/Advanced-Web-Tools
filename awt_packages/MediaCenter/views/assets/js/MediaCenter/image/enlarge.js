@@ -1,4 +1,4 @@
-import {PopulateHelper} from "../../../../../../Dashboard/js/ui/Helper";
+import {PopulateHelper} from "../../../../../../Dashboard/js/ui/Helper.js";
 
 export function EnlargeImage(e) {
     const index = e.currentTarget.getAttribute("data-index");

@@ -31,7 +31,7 @@ class View extends Render
      * @param array $data The data to be passed to the view.
      * @return View The current instance for method chaining.
      */
-    final public function view(array $data = []): View
+    public function view(array $data = []): View
     {
         $this->bundle = $data;
 
@@ -50,7 +50,7 @@ class View extends Render
      *
      * @return string The content of the view file.
      */
-    private function getViewContent(): string
+    protected function getViewContent(): string
     {
         ob_start();
         include $this->viewDirectory . $this->viewName . '.awt.php';

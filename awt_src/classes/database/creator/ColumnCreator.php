@@ -4,8 +4,8 @@ namespace database\creator;
 
 class ColumnCreator
 {
-    public string $type;
-    public string $name;
+    public string $type = '';
+    public string $name = '';
     public string $default = '';
     public bool $autoIncrement = false;
     public string $length = '';
@@ -15,45 +15,53 @@ class ColumnCreator
     public ?string $foreignKeyReferenceColumn = null;
     public ?string $onDelete = null;
     public ?string $onUpdate = null;
-
+    private bool $defaultAsDefined = false; // New flag for raw SQL defaults
 
     public function INT(string $name, string $length): self
     {
-        $this->__destruct();
         $this->type = 'INT';
         $this->name = $name;
         $this->length = $length;
-        return clone $this;
+        return $this;
     }
 
     public function VARCHAR(string $name, string $length): self
     {
-        $this->__destruct();
         $this->type = 'VARCHAR';
         $this->name = $name;
         $this->length = $length;
-        return clone $this;
+        return $this;
     }
 
     public function TEXT(string $name): self
     {
-        $this->__destruct();
         $this->type = 'TEXT';
         $this->name = $name;
-        return clone $this;
+        return $this;
+    }
+
+    public function LONGTEXT(string $name): self
+    {
+        $this->type = 'LONGTEXT';
+        $this->name = $name;
+        return $this;
     }
 
     public function DATE(string $name): self
     {
-        $this->__destruct();
         $this->type = 'DATE';
         $this->name = $name;
-        return clone $this;
+        return $this;
     }
 
-    public function default(string $value): self
+    /**
+     * Sets the default value for the column.
+     * Use 'AS_DEFINED' for raw SQL defaults like 'CURRENT_TIMESTAMP'.
+     */
+    public function default(string $value, bool $asDefined = false): self
     {
         $this->default = $value;
+        $this->defaultAsDefined = $asDefined;
         return $this;
     }
 
@@ -98,7 +106,7 @@ class ColumnCreator
 
     public function generateSQL(): string
     {
-        $sql = "`" . $this->name ."` {$this->type}";
+        $sql = "`" . $this->name . "` {$this->type}";
 
         if (!empty($this->length)) {
             $sql .= "({$this->length})";
@@ -107,7 +115,11 @@ class ColumnCreator
         $sql .= $this->nullable ? " NULL" : " NOT NULL";
 
         if (!empty($this->default)) {
-            $sql .= " DEFAULT '{$this->default}'";
+            if ($this->defaultAsDefined) {
+                $sql .= " DEFAULT {$this->default}"; // Raw SQL, e.g., CURRENT_TIMESTAMP
+            } else {
+                $sql .= " DEFAULT '{$this->default}'"; // Escaped default
+            }
         }
 
         if ($this->autoIncrement) {
@@ -130,21 +142,7 @@ class ColumnCreator
                 $sql .= " ON UPDATE {$this->onUpdate}";
             }
         }
+
         return $sql;
     }
-
-    public function __destruct()
-    {
-        $this->name = "";
-        $this->type = "";
-        $this->default = "";
-        $this->autoIncrement = false;
-        $this->nullable = false;
-        $this->index = "";
-        $this->foreignKeyReferenceTable = "";
-        $this->foreignKeyReferenceColumn = "";
-        $this->onDelete = "";
-        $this->onUpdate = "";
-    }
-
 }

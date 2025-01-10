@@ -2,7 +2,6 @@
 
 namespace MediaCenter\classes\MediaManager\models;
 
-use data\DataManager;
 use ErrorException;
 use model\Model;
 
@@ -24,7 +23,7 @@ class MediaCenterAlbum extends Model
         $content = $this->table("media_center_album_content")->select()->where(["album_id" => $this->id])->get();
 
         foreach ($content as $key => $value) {
-            $this->albumContent[] = new MediaCenterContent($value['content_id']);
+            $this->albumContent[] = new MediaContentModel($value['content_id']);
         }
     }
 }

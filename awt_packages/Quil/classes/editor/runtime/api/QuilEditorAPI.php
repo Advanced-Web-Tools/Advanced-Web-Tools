@@ -4,7 +4,6 @@ namespace Quil\classes\editor\runtime\api;
 
 use packages\runtime\api\RuntimeAPI;
 use packages\runtime\handler\enums\ERuntimeFlags;
-use Quil\classes\editor\event\EQuilEditor;
 use Quil\classes\editor\event\EQuilEditorListener;
 use Quil\classes\editor\runtime\interface\IQuilEditor;
 
@@ -45,7 +44,7 @@ abstract class QuilEditorAPI extends RuntimeAPI implements IQuilEditor
      * *ALL QUIL SCRIPTS SHOULD BE PLACED IN THE ROOT DIRECTORY OF YOUR PACKAGE UNDER "Quil" DIRECTORY!*
      *
      * @param string $name Identification
-     * @param string $path Cant only contain name of the files since .js is appended at the end.
+     * @param string $path Can only contain name of the files since .js is appended at the end.
      * @return void
      */
     public function addScriptPath(string $name, string $path): void

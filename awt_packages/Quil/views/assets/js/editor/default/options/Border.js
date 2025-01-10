@@ -1,10 +1,10 @@
-import {createLockedInputGroup} from "../../ui/InputGroupComp";
-import {Option} from "../../options/Option";
-import {CreateColorInput} from "../../ui/ColorInputComp";
-import {NotPage} from "../conditions/DefaultConditions";
-import {ExtractUnitAndValue, rgbToHex} from "../../options/Functions";
-import {CreateContainerComponent} from "../../ui/Container";
-import {CreateSelect} from "../../ui/Inputs";
+import {createLockedInputGroup} from "../../ui/InputGroupComp.js";
+import {Option} from "../../options/Option.js";
+import {CreateColorInput} from "../../ui/ColorInputComp.js";
+import {NotPage} from "../conditions/DefaultConditions.js";
+import {ExtractUnitAndValue, rgbToHex} from "../../options/Functions.js";
+import {CreateContainerComponent} from "../../ui/Container.js";
+import {CreateSelect} from "../../ui/Inputs.js";
 
 export let borderOptions = new Option();
 

@@ -2,7 +2,7 @@
 
 namespace database\creator;
 use database\DatabaseManager;
-
+use database\creator\ColumnCreator;
 class TableWizard extends DatabaseManager
 {
     private array $columns = [];
@@ -39,12 +39,12 @@ class TableWizard extends DatabaseManager
             return false;
         }
 
-        $column = new ColumnCreator();
-        $date = $column->DATE("created_on")->default("CURRENT_TIMESTAMP");
-        $update = $column->DATE("updated_on")->default("CURRENT_TIMESTAMP");
-
-        $this->addColumn($date);
-        $this->addColumn($update);
+////        $column = new ColumnCreator();
+////        $date = $column->DATE("created_on")->default("CURRENT_TIMESTAMP");
+////        $update = $column->DATE("updated_on")->default("CURRENT_TIMESTAMP");
+////
+////        $this->addColumn($date);
+////        $this->addColumn($update);
 
         $columnsSQL = array_map(fn($column) => $column->generateSQL(), $this->columns);
         $columnsSQLString = implode(", ", $columnsSQL);

@@ -13,8 +13,8 @@ class SettingModel extends Model
     public mixed $value;
     public string $type;
     public string $category;
-    public string $constName;
-
+    public ?string $constName = null;
+    public int $required_permission_level = 1;
     public function __construct(int $id, string $package_name)
     {
         parent::__construct();
@@ -22,7 +22,11 @@ class SettingModel extends Model
         $this->id = $id;
         $this->selectByID($this->id, "awt_setting");
         $this->type = $this->getParam("value_type");
+        $this->required_permission_level = $this->getParam("required_permission_level");
         $this->package_name = $package_name;
+        $this->paramBlackList("constName");
+        $this->paramBlackList("type");
+        $this->paramBlackList("package_name");
     }
 
     private function convertType(): void
@@ -30,18 +34,15 @@ class SettingModel extends Model
         $this->type = match($this->type) {
             "text" => "string",
             "number" => "int",
-            "boolean" => "bool",
             default => "string",
         };
     }
 
-    public function setValue(string $value): self
+    public function setValue(mixed $value): self
     {
         $this->value = $value;
 
-        $this->__destruct();
-
-        $this->table("awt_setting")->where("id", $this->id)->update(["value" => $value]);
+        $this->table("awt_setting")->where(["id" => $this->id])->update(["value" => $value]);
 
         return $this;
     }

@@ -20,6 +20,16 @@ final class PackageManagerController extends DashboardPage
 
     public function index(array|string $params): View
     {
+
+        $this->adminCheck();
+
+        if(!$this->admin->checkPermission(1)) {
+            $this->redirect->back();
+
+            header("Location: {$this->redirect->redirectTo}");
+            exit();
+        }
+
         $filter = $params['filter'] ?? null;
 
         $packages = new PackagePackageManager();
@@ -50,6 +60,12 @@ final class PackageManagerController extends DashboardPage
 
     public function disableAction(array|string $params): Redirect
     {
+        $this->adminCheck();
+
+        if(!$this->admin->checkPermission(1)) {
+            return $this->redirect->back();
+        }
+
         if (!isset($params["id"])) {
             $this->redirect->back();
             return $this->redirect;
@@ -68,6 +84,11 @@ final class PackageManagerController extends DashboardPage
 
     public function enableAction(array|string $params): Redirect
     {
+        $this->adminCheck();
+        if(!$this->admin->checkPermission(1)) {
+            return $this->redirect->back();
+        }
+
         if (!isset($params["id"])) {
             $this->redirect->back();
             return $this->redirect;
@@ -90,6 +111,12 @@ final class PackageManagerController extends DashboardPage
      */
     public function installPackage(array|string $params): Redirect
     {
+        $this->adminCheck();
+
+        if(!$this->admin->checkPermission(1)) {
+            return $this->redirect->back();
+        }
+
         $this->redirect->back();
 
         $installer = new PackageInstaller($_FILES["package"]);
@@ -108,6 +135,12 @@ final class PackageManagerController extends DashboardPage
 
     public function uninstallPackage(array|string $params): Redirect
     {
+        $this->adminCheck();
+
+        if(!$this->admin->checkPermission(1)) {
+            return $this->redirect->back();
+        }
+
         $this->redirect->back();
 
         if($this->admin->checkPermission(0)) {

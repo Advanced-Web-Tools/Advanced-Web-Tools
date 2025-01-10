@@ -46,8 +46,8 @@ class ManifestReader extends Package
         $package->name = $values['name'];
         $package->description = $values['description'] ?? null;
         $package->setIcon($values['icon'] ?? null);
-        $package->setMinimumAwtVersion($values['minimum_awt_version'] ?? null);
-        $package->setMaximumAwtVersion($values['maximum_awt_version'] ?? null);
+        $package->setMinimumAwtVersion($values['minimumAwtVersion'] ?? null);
+        $package->setMaximumAwtVersion($values['maximumAwtVersion'] ?? null);
         $package->setVersion($values['version'] ?? null);
         $package->systemPackage = $values['system'];
         $package->author = $values['author'] ?? null;

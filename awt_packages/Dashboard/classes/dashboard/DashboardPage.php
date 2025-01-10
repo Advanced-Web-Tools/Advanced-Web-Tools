@@ -1,7 +1,6 @@
 <?php
 
-namespace 
-Dashboard\classes\dashboard;
+namespace Dashboard\classes\dashboard;
 
 use admin\Admin;
 use controller\Controller;
@@ -60,13 +59,11 @@ abstract class DashboardPage extends Controller
 
         $this->admin = new Admin();
         $this->event->dashboardMenu = $this->dashboardMenu;
-
-        $this->adminCheck();
     }
 
     abstract public function index(array|string $params): View;
 
-    private function adminCheck(): void
+    protected function adminCheck(): void
     {
         if(str_starts_with($_SERVER["REQUEST_URI"], "/dashboard/login/")) {
             return;

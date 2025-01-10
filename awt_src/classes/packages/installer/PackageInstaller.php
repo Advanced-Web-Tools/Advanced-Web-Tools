@@ -3,16 +3,17 @@
 namespace packages\installer;
 
 use admin\Admin;
-use data\Data;
 use data\DataManager;
 use data\enums\EDataOwnerType;
 use data\enums\EDataType;
+use data\models\DataModel;
 use database\DatabaseManager;
 use ErrorException;
 use FilesystemIterator;
 use object\ObjectHandler;
 use packages\enums\EPackageType;
 use packages\installer\interface\IPackageInstall;
+use packages\manager\PackageManager;
 use packages\ManifestReader;
 use packages\Package;
 use ZipArchive;
@@ -29,7 +30,7 @@ class PackageInstaller
     private string $tempName;
     private string $extension;
     private ?string $owner = null;
-    private Data|bool $data;
+    private DataModel|bool $data;
 
     public function __construct(array $packageFile, ?int $storeId = null)
     {
@@ -57,7 +58,7 @@ class PackageInstaller
     {
         $name = $this->tempName . "." . $this->extension;
         $this->data = $this->dataManager
-            ->uploadData($this->packageFile, $name, EDataType::TempData, EDataOwnerType::System, $this->owner);
+            ->uploadData($this->packageFile, $name, "temp", "System", $this->owner);
 
         return $this;
     }
@@ -125,6 +126,11 @@ class PackageInstaller
             if($installAction instanceof IPackageInstall) {
                 $installAction->postInstall($this->package->getId(), $this->package->name);
             }
+        }
+
+        if($this->package->systemPackage) {
+            $pm = new PackageManager();
+            $pm->enablePackage($this->package->getId());
         }
 
         return $this;
@@ -209,7 +215,7 @@ class PackageInstaller
                     "type" => mime_content_type($filePath),
                     "tmp_name" => $filePath,
                 ];
-                $data = $this->dataManager->uploadData($fileData, $fileData["name"], $type, EDataOwnerType::Package, $this->package->name, true);
+                $data = $this->dataManager->uploadData($fileData, $fileData["name"], $dir, "Package", $this->package->name, true);
 
                 if ($file == $this->package->getIcon()) {
                     $this->databaseManager->table("awt_package")->where(["id" => $this->package->getId()])
@@ -235,6 +241,7 @@ class PackageInstaller
 
     public function cleanUp(): void
     {
+        $this->dataManager->fetchData($this->data->id);
         $this->dataManager->deleteData($this->data->id);
         $this->clearTempFiles();
     }

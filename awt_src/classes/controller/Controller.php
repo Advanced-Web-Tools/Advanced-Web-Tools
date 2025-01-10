@@ -52,4 +52,14 @@ abstract class Controller extends View implements IController
     {
         $this->viewDirectory = $this->rootDirPath . $path;
     }
+
+    /**
+     * Sets the name for controller.
+     * @param string $name
+     * @return void
+     */
+    final public function setName(string $name): void
+    {
+        $this->controllerName = $name;
+    }
 }

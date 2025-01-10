@@ -9,6 +9,8 @@ require_once JOBS . "awt_domainBuilder.php";
 use event\EventDispatcher;
 use packages\manager\loader\Loader;
 use redirect\Redirect;
+use router\events\EDynamicRoute;
+use router\events\EDynamicRouteListener;
 use router\manager\RouterManager;
 use setting\Config;
 
@@ -16,14 +18,26 @@ $packages = new Loader();
 $router = new RouterManager();
 $eventDispatcher = new EventDispatcher();
 
-$packages->eventDispatcher = $eventDispatcher;
-
-if (Config::getConfig("AWT", "use packages")->getValue() == 'true')
-    $packages->load();
-
-$eventDispatcher = $packages->eventDispatcher;
 
 $router->eventDispatcher = $eventDispatcher;
+
+$dynamicRouteEvent = new EDynamicRouteListener();
+
+$dynamicRouteEvent->addManager($router);
+
+$eventDispatcher->addListener("route.dynamic.add", $dynamicRouteEvent);
+
+$packages->eventDispatcher = $eventDispatcher;
+
+if (Config::getConfig("AWT", "use packages")->getValue() == 'true') {
+    try {
+        $packages->load();
+    } catch (Exception $e) {
+        throw ($e);
+    }
+}
+
+$router->eventDispatcher = $packages->eventDispatcher;;
 
 foreach ($packages->routers as $route) {
     $router->loadRouters($route->getRouters());

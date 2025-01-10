@@ -1,29 +1,38 @@
-import {Option} from "../../../Quil/views/assets/js/editor/options/Option";
-import {CreateContainerComponent} from "../../../Quil/views/assets/js/editor/ui/Container";
-import {CreateButtonComponent, CreateButtonGroupComponent} from "../../../Quil/views/assets/js/editor/ui/Buttons";
-import {RequestMedia} from "./RequestMedia";
-import {CreateGallerySelectComponent} from "./CreateGallerySelectComponent";
-import {CloseHelper, PopulateHelper} from "../../../Dashboard/js/ui/Helper";
-import {CreateSelect} from "../../../Quil/views/assets/js/editor/ui/Inputs";
-import {createLockedInputGroup} from "../../../Quil/views/assets/js/editor/ui/InputGroupComp";
+import {Option} from "../../../Quil/views/assets/js/editor/options/Option.js";
+import {CreateContainerComponent} from "../../../Quil/views/assets/js/editor/ui/Container.js";
+import {CreateButtonComponent, CreateButtonGroupComponent} from "../../../Quil/views/assets/js/editor/ui/Buttons.js";
+import {RequestMedia} from "./RequestMedia.js";
+import {CreateGallerySelectComponent} from "./CreateGallerySelectComponent.js";
+import {CloseHelper, PopulateHelper} from "../../../Dashboard/js/ui/Helper.js";
+import {createLockedInputGroup} from "../../../Quil/views/assets/js/editor/ui/InputGroupComp.js";
 
 export let ImageOption = new Option();
+export let VideoOption = new Option();
 export let BackgroundImage = new Option();
 
 ImageOption.setCategory("Media");
+VideoOption.setCategory("Media");
 BackgroundImage.setCategory("Default");
 BackgroundImage.setCategory("Background");
-const container = CreateContainerComponent("Media options");
-const button_container = CreateContainerComponent("", false);
+
+
+
+const image_container = CreateContainerComponent("Media options");
+const video_container = CreateContainerComponent("Video options");
+const image_button = CreateContainerComponent("", false);
+const video_button = CreateContainerComponent("", false);
 
 var label = document.createElement("label");
 label.textContent = "Select image:";
-button_container.appendChild(label);
+image_button.appendChild(label);
 
-CreateButtonComponent(button_container, "Select image <i class=\"fa-regular fa-image\"></i>", "image-select", 'secondary', true, "Select image to display.");
-container.appendChild(button_container);
+CreateButtonComponent(image_button, "Select image <i class=\"fa-regular fa-image\"></i>", "image-select", 'secondary', true, "Select image to display.");
+image_container.appendChild(image_button);
 
-ImageOption.addDrawable(0, container);
+CreateButtonComponent(video_button, "Select video <i class=\"fa-regular fa-video\"></i>", "image-select", 'secondary', true, "Select video.");
+image_container.appendChild(video_button);
+
+ImageOption.addDrawable(0, image_container);
 ImageOption.attachFunction(0, function (block) {
 
     $("button#image-select.btn_secondary").on("click", (e) => {
@@ -41,10 +50,26 @@ ImageOption.attachFunction(0, function (block) {
                     const id = $(image).attr("data-id");
                     const src = $(image).attr("src");
 
-                    block.attr("data-name", name);
-                    block.attr("data-id", id);
-                    block.attr("alt", name);
-                    block.attr("src", src);
+                    const target = block.find("img")[0];
+
+                    $(target).attr("data-name", name);
+                    $(target).attr("data-id", id);
+                    $(target).attr("alt", name);
+                    $(target).attr("src", src);
+                    CloseHelper(e, document.querySelector(".helper"));
+                });
+            });
+
+            $(gallery).find(".video-selector").each((index, video) => {
+                $(video).on("click", (e) => {
+                    e.preventDefault();
+                    console.log("click");
+                    const src = $(e.currentTarget).find("source")[0];
+
+                    block.find("source").each((index, source) => {
+                        $(source).attr("src", $(src).attr("src"));
+                    });
+
                     CloseHelper(e, document.querySelector(".helper"));
                 });
             });
@@ -60,7 +85,6 @@ label = document.createElement("label");
 label.textContent = "Background:";
 bgContainer.appendChild(label);
 
-// Create buttons with Font Awesome icons
 CreateButtonComponent(bgContainer, "Select image <i class=\"fa-regular fa-image\"></i>", "background-select", 'secondary', true, "Select background image.");
 CreateButtonGroupComponent(bgContainer, "Background size:", true, [
     "Auto <i class=\"fa-solid fa-expand\"></i>",
@@ -82,8 +106,6 @@ createLockedInputGroup(bgContainer, "Background position",["Top", "Right", "Bott
 
 BackgroundImage.addDrawable(0, bgContainer);
 BackgroundImage.attachFunction(0, function (block) {
-    // Set initial active class based on current CSS values
-
     const initialBgSize = block.css("background-size");
     const initialBgPosition = block.css("background-position");
     const positions = ["auto", "top", "left", "center", "right", "bottom"]
@@ -132,7 +154,6 @@ BackgroundImage.attachFunction(0, function (block) {
         });
     });
 
-    // Function to handle background size button clicks
     function setBackgroundSize(sizeClass, buttonId) {
         block.css("background-size", sizeClass);
         $("button#background-auto, button#background-cover, button#background-contain").removeClass("active"); // Remove active class from all size buttons
@@ -151,11 +172,10 @@ BackgroundImage.attachFunction(0, function (block) {
         setBackgroundSize("contain", "#background-contain");
     });
 
-    // Function to handle background position button clicks
     function setBackgroundPosition(positionClass, buttonId) {
         block.css("background-position", positionClass);
         $("button#background-top, button#background-left, button#background-center, button#background-right, button#background-bottom").removeClass("active"); // Remove active class from all position buttons
-        $(buttonId).addClass("active"); // Add active class to the clicked button
+        $(buttonId).addClass("active");
     }
 
     $("button#background-top").on("click", (e) => {

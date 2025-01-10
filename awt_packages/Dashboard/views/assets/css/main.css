@@ -85,12 +85,21 @@ a {
 
 .inp_primary {
     color: var(--primary_accent) !important;
-    text-transform: capitalize;
     font-family: "Poppins", sans-serif;
     background: var(--secondary_background);
     border: 1px solid var(--primary_accent);
     padding: 10px 20px;
     border-radius: var(--border_radius);
+}
+
+.select_primary {
+    background: var(--secondary_background);
+    border-radius: var(--border_radius);
+    border: 1px solid var(--primary_accent);
+    cursor: pointer;
+    color: var(--primary_accent);
+    font-family: "Poppins", sans-serif;
+    padding: 10px 20px;
 }
 
 .btn_primary,
@@ -190,7 +199,7 @@ a {
 .helper {
     position: absolute;
     display: none;
-    background: rgba(0, 0, 0,  .5);
+    background: rgba(0, 0, 0,  .8);
     width: 100%;
     height: 100%;
     top: 0;

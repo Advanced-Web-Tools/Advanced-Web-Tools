@@ -4,6 +4,7 @@ namespace data;
 
 use data\enums\EDataOwnerType;
 use data\enums\EDataType;
+use data\models\DataModel;
 use database\DatabaseManager;
 use ErrorException;
 
@@ -16,59 +17,13 @@ use ErrorException;
  */
 class DataManager
 {
-    /**
-     * @var array $data
-     * An array that stores data objects.
-     * Each element in the array represents a `Data` object, indexed by an identifier.
-     */
+
     public array $data = [];
     private DatabaseManager $database;
 
     public function __construct()
     {
         $this->database = new DatabaseManager();
-    }
-
-    /**
-     * Converts an array of data into `Data` objects and associates them with
-     * their respective IDs.
-     *
-     * @param array $data Array of raw data fetched from the database.
-     * @return array An array of `Data` objects, with keys being the data IDs.
-     * @throws ErrorException On unknown data type.
-     */
-    public function arrayToData(array $data): array
-    {
-
-        $result = [];
-
-        foreach ($data as $d) {
-
-            $ownerType = match ($d["ownerType"]) {
-                "User" => EDataOwnerType::User,
-                "Package" => EDataOwnerType::Package,
-                "System" => EDataOwnerType::System
-            };
-
-            $dataType = match ($d["dataType"]) {
-                "image" => EDataType::Image,
-                "video" => EDataType::Video,
-                "audio" => EDataType::Audio,
-                "document" => EDataType::Document,
-                "other" => EDataType::Other,
-                "temp" => EDataType::TempData,
-                "icon" => EDataType::Icon,
-                "cache" => EDataType::Cache,
-                default => throw new ErrorException("Unknown data type: " . $d["dataType"]),
-            };
-
-            $data = new Data($ownerType);
-
-            $data->setDataType($dataType)->setFileName($d["dataName"])->setOwner($d["ownerName"]);
-
-            $result[$d['id']] = $data;
-        }
-        return $result;
     }
 
     /**
@@ -89,14 +44,16 @@ class DataManager
             $data = $this->database->table("awt_data")->select()->where(["id" => $id])->get();
         }
 
-        $data = $this->arrayToData($data);
 
         foreach ($data as $key => $d) {
-            $this->addDataToArray($d, $key);
+            $model = new DataModel($d['id']);
+
+            $this->addDataToArray($model, $d['id']);
         }
 
         return $this;
     }
+
 
     /**
      * Fetches data by a specific owner's ID and processes the fetched data
@@ -105,16 +62,14 @@ class DataManager
      * @param int $id The ID of the owner whose data should be fetched.
      * @return self Returns the instance of DataManager.
      * @throws ErrorException
-     * @throws ErrorException
      */
     public function fetchByOwnerId(int $id): self
     {
         $data = $this->database->table("awt_data")->select("*")->where(["ownerId" => $id])->get();
 
-        $data = $this->arrayToData($data);
-
         foreach ($data as $key => $d) {
-            $this->addDataToArray($d, $key);
+            $model = new DataModel($d['id']);
+            $this->addDataToArray($model, $d['id']);
         }
 
         return $this;
@@ -124,11 +79,11 @@ class DataManager
      * Adds a `Data` object to the `$data` array. If an ID is provided, the data
      * is stored with that key; otherwise, it appends the data to the array.
      *
-     * @param Data $data The data object to be added.
+     * @param DataModel $data The data object to be added.
      * @param int|null $id The optional ID for indexing the data.
      * @return self Returns the instance of DataManager.
      */
-    public function addDataToArray(Data $data, ?int $id = null): self
+    public function addDataToArray(DataModel $data, ?int $id = null): self
     {
         if ($id !== null) {
             $this->data[$id] = $data;
@@ -143,9 +98,9 @@ class DataManager
      * data object; otherwise, it returns the entire array of data.
      *
      * @param int|null $id The ID of the data to retrieve (optional).
-     * @return array|Data Returns the specific data object or an array of all data.
+     * @return array|DataModel Returns the specific data object or an array of all data.
      */
-    public function getData(?int $id = null): array|Data
+    public function getData(?int $id = null): array|DataModel
     {
         if ($id === null) {
             return $this->data;
@@ -197,7 +152,7 @@ class DataManager
 
         foreach ($subDirs as $subDir) {
             $path = DATA . "media/packages/" . $subDir . "/" . $name;
-            if(!file_exists($path)) {
+            if (!file_exists($path)) {
                 mkdir($path, 0775);
             }
         }
@@ -212,7 +167,7 @@ class DataManager
      * @param EDataOwnerType $ownerType The type of owner for the data, defaulting to System.
      * @param string $ownerName The name of the owner, defaulting to "Advanced Web Tools".
      * @param bool $local
-     * @return Data|bool Returns true if the upload is successful, otherwise false.
+     * @return DataModel|bool Returns true if the upload is successful, otherwise false.
      *
      * @throws ErrorException Thrown if any required information (e.g., owner name or file name) is missing.
      *
@@ -223,40 +178,35 @@ class DataManager
      * - Inserts metadata about the file (e.g., owner type, owner name, file name) into the `awt_data` table.
      * - Moves the uploaded file to the proper location based on its type and owner.
      */
-    public function uploadData(array $file, string $fileName, EDataType $dataType, EDataOwnerType $ownerType = EDataOwnerType::System, string $ownerName = "Advanced Web Tools", bool $local = false): Data|bool
+    public function uploadData(array $file, string $fileName, string $dataType, string $ownerType = "System", string $ownerName = "AWT", bool $local = false): DataModel|bool
     {
 
-        $data = new Data($ownerType);
-        $data->setFileName($fileName)->setDataType($dataType)->setOwner($ownerName);
-
-        if($ownerName === "AWT") {
+        if ($ownerName === "AWT") {
             $ownerId = 1;
         } else {
             $package = $this->database->table("awt_package")->select(["*"])->where(["name" => $ownerName])->get();
 
-            if(count($package) === 0) {
+            if (count($package) === 0) {
                 return false;
             }
 
             $ownerId = $package[0]["id"];
         }
 
-        $ownerType = match ($ownerType) {
-            EDataOwnerType::System => "System",
-            EDataOwnerType::User => "User",
-            EDataOwnerType::Package => "Package",
-        };
-
-        $id =$this->database->table("awt_data")->insert([
-            "ownerType" => $ownerType,
+        $upload = ["ownerType" => $ownerType,
             "ownerName" => $ownerName,
             "ownerId" => $ownerId,
             "dataName" => $fileName,
-            "dataType" => $data->sDataType
-        ])->executeInsert();
+            "dataType" => $dataType
+        ];
 
-        if(!$local) {
-            move_uploaded_file($file["tmp_name"], $data->getLocation(true));
+        $id = $this->database->table("awt_data")->insert($upload)->executeInsert();
+
+        $data = new DataModel();
+        $data->buildFromArray($upload);
+
+        if (!$local) {
+            move_uploaded_file($file["tmp_name"], $data->getLocation());
         } else {
             rename($file["tmp_name"], $data->getLocation());
         }
@@ -284,13 +234,13 @@ class DataManager
 
             unset($this->data[$key]);
 
-            if(!$status)
+            if (!$status)
                 return false;
         }
 
         $result = $this->deleteOwnerDirectories($ownerName);
 
-        if(!$result)
+        if (!$result)
             return false;
 
         $this->database->table("awt_data")->where(["ownerId" => $id])->delete();
@@ -298,17 +248,10 @@ class DataManager
         return true;
     }
 
-    public function deleteData(int $dataId) : bool {
-        $this->fetchData($dataId);
-
-        $res = $this->data[$dataId]->delete();
-
-        if($res) {
-            $this->database->__destruct();
-            $this->database->table("awt_data")->where(["id" => $dataId])->delete();
-        }
-
-        return false;
+    public function deleteData(int $dataId): bool
+    {
+        $this->data[$dataId]->setModelId($dataId);
+        return $this->data[$dataId]->deleteData();
     }
 
 }

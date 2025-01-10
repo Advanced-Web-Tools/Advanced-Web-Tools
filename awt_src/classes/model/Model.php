@@ -18,9 +18,11 @@ use ReflectionProperty;
 abstract class Model extends DatabaseManager
 {
 
-    protected string $model_source;
+    public ?string $model_source = null;
     protected ?int $model_id = null;
-    protected string $id_column;
+    public ?string $id_column = null;
+
+    protected array $paramBlackList = ["tables", "model_source", "id_column"];
 
     /**
      * Initializes the Model by calling the parent constructor of
@@ -63,9 +65,6 @@ abstract class Model extends DatabaseManager
         $this->model_source = $table;
         $this->id_column = $column;
         $this->model_id = $id;
-
-
-        parent::__destruct();
     }
 
     /**
@@ -84,9 +83,7 @@ abstract class Model extends DatabaseManager
             $table = end($table);
         }
 
-        $result = $this->table($table)->select()->where(['1' => '1'])->get();
-        parent::__destruct();
-        return $result;
+        return $this->table($table)->select()->where(['1' => '1'])->get();
     }
 
     /**
@@ -102,11 +99,19 @@ abstract class Model extends DatabaseManager
         return $this->{$key} ?? null;
     }
 
+
+    public function setModelId(int $id): void
+    {
+        $this->model_id = $id;
+    }
+
+
     /**
      * Saves the model to database
      * @return bool true on success otherwise false
      */
-    final public function save(): bool
+
+    public function save(): bool
     {
 
         $where = [$this->id_column => $this->model_id];
@@ -116,9 +121,37 @@ abstract class Model extends DatabaseManager
         if($this->checkColumn($this->model_id, "updated_on"))
             $update[] = ["updated_on" => 'DEFAULT'];
 
+        foreach ($this->paramBlackList as $key => $value) {
+            unset($update[$value]);
+        }
 
         return $this->table($this->model_source)->where($where)->update($update);
     }
+
+    public function saveModel(): bool
+    {
+        $save = $this->__toArray();
+        foreach ($this->paramBlackList as $key => $value) {
+            unset($save[$value]);
+        }
+
+        return $this->table($this->model_source)->insert($save)->executeInsert();
+    }
+
+    public function deleteModel(): bool
+    {
+        if($this->id_column === null)
+            $this->id_column = "id";
+
+        $where = [$this->id_column => $this->model_id];
+        return $this->table($this->model_source)->where($where)->delete();
+    }
+
+
+    public function paramBlackList(string $key): void {
+        $this->paramBlackList[] = $key;
+    }
+
 
     /**
      *  Creates a json of properties.

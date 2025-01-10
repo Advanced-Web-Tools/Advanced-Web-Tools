@@ -4,89 +4,119 @@
     gap: 10px;
 }
 
-.page_list {
-    width: 100%;  /* Ensure the table takes up full width */
-    border-collapse: collapse;
-    margin: 20px 0;
+.list {
+    width: 100%;
+    border: none;
+    margin: 10px 0 50px 0;
+    background: var(--secondary_background);
+    border-radius: var(--border_radius);
 }
 
-.page_list th, .page_list td {
-    border: 1px solid #ddd;
+.list th, .page_list td {
+    border: none;
     padding: 8px;
     text-align: left;
 }
 
-.page_list th {
-    background-color: #f4f4f4;
+.list th {
+    background: var(--secondary_background);
     font-weight: bold;
 }
 
-.page_list tr {
+.list tr {
     border: 1px solid #ddd;
 }
 
-.page_list td {
+.list td {
     border: none;
     padding: 10px 5px;
 }
 
-.page_list tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
 
-.page_list tbody tr:hover {
-    background-color: #f1f1f1;
-}
-
-.page_title {
+.title {
     font-size: 24px;
     font-weight: bold;
-    text-align: center;
+    text-align: left;
     padding: 16px;
-    background-color: #0073e6;
-    border: 1px solid #ddd;
 }
 
 .header th {
     text-align: left;
 }
 
-/* Make the 'name' column take the most space */
-.page_list .name {
-    width: auto;
+.list .name {
+    width: 45%;
     white-space: nowrap;
-    font-weight: bold;
 }
 
-/* Set a minimum width for the 'actions' column to ensure space for buttons */
-.page_list .actions {
-    min-width: 200px;  /* Adjust this width as necessary */
+.list .actions {
+    min-width: 200px;
     display: flex;
     gap: 10px;
     align-items: center;
-    justify-content: space-between;
+    justify-content: start;
 }
 
-/* Prevent other columns from taking too much space */
-.page_list th:not(.name), .page_list td:not(.name) {
+.list th:not(.name), .list td:not(.name) {
     width: 1%;
     white-space: nowrap;
 }
 
-/* Ensure the table layout is flexible */
-.page_list {
+.list {
     table-layout: auto;
 }
 
-.page_list td,
-.page_list th {
+.list td,
+.list th {
     padding: 10px 15px;
 }
 
-.page_list td:not(.actions) {
+.list td:not(.actions) {
     font-size: 1.1rem;
 }
 
-.page_list .actions button i {
+.list .actions button i {
     font-size: .8rem !important;
 }
+
+
+.newRouteContainer {
+    background: var(--primary_background);
+    border-radius: var(--border_radius);
+    padding: 10px;
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.newRouteContainer .title {
+    text-align: center;
+}
+
+.newRouteContainer .inputContainer .inputGroup {
+    width: 100%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-direction: row;
+}
+
+.newRouteContainer .inputContainer .inputGroup .delete{
+    justify-self: end;
+    margin: 0 0 0 auto !important;
+}
+
+
+.newRouteContainer .inputContainer {
+    width: 100%;
+}
+
+.newRouteContainer form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+

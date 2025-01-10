@@ -2,6 +2,7 @@
 
 namespace Dashboard\event;
 
+use admin\Admin;
 use Dashboard\classes\menu\DashboardMenu;
 use Dashboard\classes\menu\MenuItem;
 use DOMException;
@@ -32,6 +33,13 @@ class MenuDrawListener implements IEventListener
      */
     private function addMenus(): void
     {
+        $admin = new Admin();
+
+
+        if(!$admin->checkAuthentication() || !$admin->checkPermission(2)) {
+            return;
+        }
+
         $menu = new MenuItem("Dashboard", "fa-solid fa-house", "/dashboard");
         $menu->setIconType("fa");
         $menu->createDom();

@@ -1,7 +1,7 @@
 {
   "plugin": {
     "name": "Quil",
-    "icon": "",
+    "icon": "quil.png",
     "system": "true",
     "version": "1.0.0",
     "description": "Quil - Page builder",

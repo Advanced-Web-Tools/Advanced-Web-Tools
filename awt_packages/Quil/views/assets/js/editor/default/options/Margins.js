@@ -1,9 +1,9 @@
-import {createLockedInputGroup} from "../../ui/InputGroupComp";
-import {Option} from "../../options/Option";
-import {NotPage} from "../conditions/DefaultConditions";
-import {ExtractUnitAndValue} from "../../options/Functions";
-import {CreateContainerComponent} from "../../ui/Container";
-import {CreateSelect} from "../../ui/Inputs";
+import {createLockedInputGroup} from "../../ui/InputGroupComp.js";
+import {Option} from "../../options/Option.js";
+import {NotPage} from "../conditions/DefaultConditions.js";
+import {ExtractUnitAndValue} from "../../options/Functions.js";
+import {CreateContainerComponent} from "../../ui/Container.js";
+import {CreateSelect} from "../../ui/Inputs.js";
 
 export let marginOptions = new Option();
 

@@ -21,20 +21,28 @@ final class QuilController extends DashboardPage
 
     public function index(array|string $params): View
     {
+        $this->adminCheck();
         $this->setTitle("Pages and Routes");
 
         $this->eventDispatcher->dispatch($this->event);
 
         $pages = $this->pageManager->fetchPages()->returnPages();
 
-        return $this->view($this->getViewBundle(["pages" => $pages]));
+        $routes = $this->pageManager->fetchRoutes()->returnRoutes();
+
+        return $this->view($this->getViewBundle(["pages" => $pages, "custom_routes" => $routes]));
     }
 
     public function editor(array|string $params): View|Redirect
     {
+        $redirect = new Redirect();
+        if(!$this->admin->checkAuthentication() || !$this->admin->checkPermission(2)) {
+            return $redirect->back();
+        }
+
         if(!isset($params['id']))
         {
-            $redirect = new Redirect();
+
             return $redirect->back();
         }
 

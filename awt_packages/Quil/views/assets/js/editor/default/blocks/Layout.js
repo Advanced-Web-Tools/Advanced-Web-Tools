@@ -1,4 +1,4 @@
-import { Block } from "../../blocks/Block";
+import { Block } from "../../blocks/Block.js";
 
 export let flexible = new Block();
 export let slider = new Block();

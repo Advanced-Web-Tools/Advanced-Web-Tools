@@ -25,7 +25,7 @@ class Package
     protected ?string $version = null;               // Version of the package.
     protected string $minimumAwtVersion;             // Minimum required version of the AWT framework.
     protected ?string $maximumAwtVersion = null;     // Maximum supported version of the AWT framework.
-    protected EPackageType $packageType;             // Type of the package (Plugin or Theme).
+    public EPackageType $packageType;             // Type of the package (Plugin or Theme).
     protected ?string $installationDate = null;      // Date the package was installed.
     public ?string $license = null;                  // License information for the package.
     public ?string $licenseUrl = null;               // URL to the license details.

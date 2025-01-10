@@ -1,10 +1,10 @@
-import {Option} from "../../options/Option";
-import {CreateColorInput} from "../../ui/ColorInputComp";
-import {CreateContainerComponent} from "../../ui/Container";
-import {CreateInputWithUnitComponent, CreateSelect} from "../../ui/Inputs";
-import {NotPage} from "../conditions/DefaultConditions";
-import {ExtractUnitAndValue, rgbToHex} from "../../options/Functions";
-import {CreateButtonComponent, CreateButtonGroupComponent} from "../../ui/Buttons";
+import {Option} from "../../options/Option.js";
+import {CreateColorInput} from "../../ui/ColorInputComp.js";
+import {CreateContainerComponent} from "../../ui/Container.js";
+import {CreateInputWithUnitComponent, CreateSelect} from "../../ui/Inputs.js";
+import {NotPage} from "../conditions/DefaultConditions.js";
+import {ExtractUnitAndValue, rgbToHex} from "../../options/Functions.js";
+import {CreateButtonComponent, CreateButtonGroupComponent} from "../../ui/Buttons.js";
 
 export let fontOptions = new Option();
 

@@ -13,6 +13,9 @@
       <excludeFolder url="file://$MODULE_DIR$/awt-content/themes/ARGO Robotics" />
       <excludeFolder url="file://$MODULE_DIR$/awt-content/themes/Nature Calls" />
       <excludeFolder url="file://$MODULE_DIR$/awt_data/media/uploads/image" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/dataSources" />
+      <excludeFolder url="file://$MODULE_DIR$/.idea/inspectionProfiles" />
+      <excludeFolder url="file://$MODULE_DIR$/awt_packages/AccountManager/views/assets/js" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -1,6 +1,6 @@
-import {Block} from "../../blocks/Block"
-import {blocks} from "../../../main";
-import {flexColumn, flexible, flexRow, slider} from "./Layout";
+import {Block} from "../../blocks/Block.js"
+import {blocks} from "../../../main.js";
+import {flexColumn, flexible, flexRow, slider} from "./Layout.js";
 
 const h1 = new Block();
 h1.setName("Heading");

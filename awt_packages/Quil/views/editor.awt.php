@@ -5,5 +5,5 @@
     @endforeach
 @endsection
 @section("editor")
-    {{ page.content }}
+{{ page.content }}
 @endsection

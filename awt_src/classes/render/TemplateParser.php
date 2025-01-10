@@ -24,8 +24,8 @@ final class TemplateParser
     static final public function extends(string $path, string $childHtml): string
     {
         $path = trim($path);
-        $path = PACKAGES . $path;
         $path = str_replace(".", DIRECTORY_SEPARATOR, $path);
+        $path = PACKAGES . DIRECTORY_SEPARATOR . $path;
         $path .= ".awt.php";
 
         ob_start();
@@ -141,18 +141,17 @@ final class TemplateParser
      */
     static final public function ifParser(object $context, string $html): string
     {
-        // Adjusted regex pattern to handle nested @if and @else correctly
         $pattern = '/
         @if\s*\(([^)]+)\)   # Match @if with condition inside parentheses
-        (                     # Start of the capturing group for the block content
+        (                   # Start capturing group for the block content
             (?:             # Non-capturing group for nested blocks
-                (?>       # Atomic group to prevent backtracking
-                    [^@]+  # Match anything that is not @
-                    |     # Or
+                (?>         # Atomic group to prevent backtracking
+                    [^@]+   # Match anything that is not @
+                    |       # Or
                     @if\s*\((.*?)\)\s*.*?@endif  # Match nested @if blocks
-                )*        # Repeat the above
+                )*          # Repeat the above
             )
-        )                   # End of the capturing group for the block content
+        )                   # End of capturing group for the block content
         (@else\s*(.*?)\s*)? # Match optional @else and its content
         @endif              # Match @endif
     /xs';
@@ -162,55 +161,45 @@ final class TemplateParser
             $ifContent = $matches[2];
             $elseContent = $matches[4] ?? '';
 
-            // Enhanced evaluation of object/array variables (dot notation)
             $evaluatedCondition = preg_replace_callback('/\b(?!["\'])(\w+(\.\w+)*)(?!["\'])\b/', function ($varMatches) use ($context) {
-                $varPath = $varMatches[1];  // For example: packages.0.name
+                $varPath = $varMatches[1];
                 $varParts = explode('.', $varPath);
                 $value = $context;
 
-                // Traverse the object/array based on dot notation
                 foreach ($varParts as $part) {
-                    if (is_numeric($part)) {
-                        $part = (int) $part;
-                    }
-                    // Access the property/array key if it exists
+                    $part = is_numeric($part) ? (int)$part : $part;
                     if (is_array($value) && isset($value[$part])) {
                         $value = $value[$part];
                     } elseif (is_object($value) && isset($value->{$part})) {
                         $value = $value->{$part};
                     } else {
-                        return 'null';  // Return 'null' if the property doesn't exist
+                        return 'null';
                     }
                 }
-                return var_export($value, true); // Export value safely for use in eval
+                return var_export($value, true);
             }, $condition);
 
-            // Replace true, false, and logical operators in the evaluated condition
             $evaluatedCondition = str_replace(['true', 'false'], ['1', '0'], $evaluatedCondition);
             $evaluatedCondition = preg_replace('/\s*&&\s*/', ' and ', $evaluatedCondition);
             $evaluatedCondition = preg_replace('/\s*\|\|\s*/', ' or ', $evaluatedCondition);
 
+            $evaluatedCondition = preg_replace('/\s*</', ' < ', $evaluatedCondition);
+            $evaluatedCondition = preg_replace('/\s*>/', ' > ', $evaluatedCondition);
+
             try {
                 $conditionResult = eval('return ' . $evaluatedCondition . ';');
             } catch (\Throwable $e) {
-                echo "Error in eval: " . $e->getMessage();
                 $conditionResult = false;
             }
 
-            // Process nested if content
             if ($conditionResult) {
-                // Recursively parse nested @if blocks within the ifContent
                 return self::ifParser($context, $ifContent);
             } else {
-                // Only parse elseContent if conditionResult is false
-                if (!empty($elseContent)) {
-                    return self::ifParser($context, $elseContent);
-                } else {
-                    return ''; // Return empty string if no content matches
-                }
+                return !empty($elseContent) ? self::ifParser($context, $elseContent) : '';
             }
         }, $html));
     }
+
 
     /**
      * Processes "@foreach" loops in the template, iterating over collections
@@ -245,9 +234,12 @@ final class TemplateParser
                     $tempContext->{$itemVar} = $value;
 
                     $parsedBlock = TemplateParser::ifParser($tempContext, $blockContent);
+                    $parsedBlock = TemplateParser::secVars($tempContext, $parsedBlock);
                     $parsedBlock = TemplateParser::vars($tempContext, $parsedBlock);
                     $parsedBlock = TemplateParser::urlVar($tempContext, $parsedBlock);
                     $parsedBlock = TemplateParser::url($parsedBlock);
+                    $parsedBlock = TemplateParser::assets($tempContext->localAssetPath, $parsedBlock);
+                    $parsedBlock = TemplateParser::data($tempContext->packageName, $parsedBlock);
 
 
                     if (empty($stack) || end($stack)['result']) {

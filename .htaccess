@@ -5,6 +5,9 @@
     RewriteCond %{REQUEST_URI} !^/awt_packages/ [NC]
     RewriteCond %{REQUEST_URI} !^/awt_src/vendor/ [NC]
 
+    RewriteCond %{REQUEST_URI} !\.ico$ [NC]
+
     RewriteCond %{REQUEST_URI} !^/index\.php$ [NC]
+
     RewriteRule ^(.*)$ /index.php [L]
 </IfModule>

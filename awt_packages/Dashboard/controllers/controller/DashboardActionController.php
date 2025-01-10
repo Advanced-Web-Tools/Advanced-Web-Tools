@@ -43,7 +43,7 @@ final class DashboardActionController extends Controller
     {
         $admin = new Admin();
         $admin->logout();
-        return $this->redirect->redirect("/login/logout");
+        return $this->redirect->redirect("/dashboard/login/logout");
     }
 
 }

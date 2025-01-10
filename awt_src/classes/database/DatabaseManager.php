@@ -49,12 +49,12 @@ use PDOException;
  */
 class DatabaseManager
 {
-    private array $tables = [];
+    public array $tables = [];
     private string $hostname = DB_HOSTNAME;
     private string $username = DB_USERNAME;
     private string $password = DB_PASSWORD;
     private string $database = DB_NAME;
-    private string $sql;
+    private string $sql = '';
     private string $selectQuery = '';
     private string $joinQuery = '';
     private string $whereQuery = '';
@@ -65,6 +65,7 @@ class DatabaseManager
     private array $joins = [];
     private array $conditions = [];
     protected ?PDO $pdo;
+    private string $lastQuery = '';
 
     /**
      * Constructor method that initializes the PDO connection to the database.
@@ -232,6 +233,8 @@ class DatabaseManager
 
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+//        var_dump($result);
+
         $this->__destruct();
         return $result;
     }
@@ -301,7 +304,10 @@ class DatabaseManager
      */
     public function getTables(): self
     {
-        $this->tables = $this->select()->join("awt_table_structure", "awt_table_structure.table_id = awt_table.id")->where(['1' => 1])->get();
+        $this->tables = $this->table('awt_table')->select(['*'])
+            ->where(['1' => 1])
+            ->join("awt_table_structure", "awt_table.id = awt_table_structure.table_id")
+            ->get();
         return $this;
     }
 
@@ -342,8 +348,15 @@ class DatabaseManager
         return false;
     }
 
+
+    public function getLastQuery(): string
+    {
+        return $this->lastQuery;
+    }
+
     public function __destruct()
     {
+        $this->lastQuery = $this->sql;
         $this->sql = '';
         $this->selectQuery = '';
         $this->joinQuery = '';

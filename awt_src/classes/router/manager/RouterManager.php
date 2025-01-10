@@ -98,6 +98,17 @@ final class RouterManager
      */
     public function startRouter(): View|Redirect
     {
+
+        if($this->currentPath === '/')
+        {
+            if(!isset($this->routesPath['/'])) {
+                $this->handleNotFound();
+                exit();
+            } else {
+                $this->routesPath['/']->route([]);
+            }
+        }
+
         foreach ($this->routesPath as $route) {
             $params = $route->match($this->currentPath);
 

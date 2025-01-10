@@ -1,5 +1,5 @@
-import { CreateContainerComponent } from "./Container";
-import { CreateInputWithUnitComponent } from "./Inputs";
+import { CreateContainerComponent } from "./Container.js";
+import { CreateInputWithUnitComponent } from "./Inputs.js";
 
 export function createLockedInputGroup(
     html,

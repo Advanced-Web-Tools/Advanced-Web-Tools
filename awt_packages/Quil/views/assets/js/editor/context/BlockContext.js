@@ -1,4 +1,4 @@
-import {TextElement} from "../default/conditions/DefaultConditions";
+import {TextElement} from "../default/conditions/DefaultConditions.js";
 
 export class BlockContext {
     constructor(block, clipboard) {
@@ -60,6 +60,7 @@ export class BlockContext {
     createBlockContext(blockElement) {
         const contextWrapper = document.createElement("div");
         contextWrapper.classList.add("contextWrapper");
+        contextWrapper.setAttribute("save", "false");
 
         const blockContext = document.createElement('div');
         blockContext.classList.add('blockContext');

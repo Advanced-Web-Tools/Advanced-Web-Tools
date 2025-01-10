@@ -1,4 +1,4 @@
 @extends(Dashboard.views.templates.main)
-@section('head')
+@section('page')
 
 @endsection

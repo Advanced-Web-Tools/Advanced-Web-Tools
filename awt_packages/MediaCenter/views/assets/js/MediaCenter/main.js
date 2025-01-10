@@ -1,5 +1,5 @@
-import {EnlargeImage} from "./image/enlarge";
-import {SearchInPage} from "./search/search";
+import {EnlargeImage} from "./image/enlarge.js";
+import {SearchInPage} from "./search/search.js";
 
 document.addEventListener("DOMContentLoaded", () => {
     const enlargeButtons = document.querySelectorAll("#enlarge");

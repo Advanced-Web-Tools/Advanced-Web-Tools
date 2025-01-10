@@ -7,7 +7,6 @@ use redirect\Redirect;
 use router\events\RouteEnterEvent;
 use view\View;
 
-
 /**
  * The Router class handles routing in the AWT,
  * matching request paths to defined routes and invoking
@@ -64,6 +63,7 @@ class Router
         $this->action = $action;
         $this->controller = $controller;
         $this->name = "";
+
         return $this;
     }
 
@@ -111,18 +111,29 @@ class Router
      */
     public function match(string $requestPath): ?array
     {
-        $pattern = preg_replace('/\{(\w+)\}/', '(?P<$1>[^/]+)?', $this->path);
-
-        if (str_ends_with($this->path, '/')) {
-            $pattern = rtrim($pattern, '/') . '/?';
+        if ($requestPath === "/") {
+            return [];
         }
 
-        $pattern = '#^' . $pattern . '$#';
+        $explodedRoute = explode("/", $this->path);
+        $explodedPath = explode("/", $requestPath);
+        $matches = [];
 
-        if (preg_match($pattern, $requestPath, $matches)) {
-            return array_filter($matches, 'is_string', ARRAY_FILTER_USE_KEY);
+        if (count($explodedRoute) !== count($explodedPath)) {
+            return null;
         }
-        return null;
+
+        foreach ($explodedRoute as $routeKey => $routeValue) {
+
+            if (str_starts_with($routeValue, "{") && str_ends_with($routeValue, "}")) {
+                $paramName = trim($routeValue, '{}');
+                $matches[$paramName] = $explodedPath[$routeKey];
+            } elseif ($routeValue !== $explodedPath[$routeKey]) {
+                return null;
+            }
+        }
+
+        return $matches;
     }
 
     /**

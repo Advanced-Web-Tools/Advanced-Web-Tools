@@ -4,7 +4,6 @@ namespace Quil\classes\editor\event;
 
 use event\interfaces\IEvent;
 use event\interfaces\IEventListener;
-use Relay\Event;
 
 class EQuilEditorListener implements IEventListener
 {

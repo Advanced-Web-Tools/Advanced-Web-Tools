@@ -1,10 +1,10 @@
-import { options } from "../../../main";
-import {marginOptions} from "./Margins";
-import {paddingOptions} from "./Padding";
-import {fontOptions} from "./Fonts";
-import {borderOptions} from "./Border";
-import {backgroundOptions} from "./Background";
-import {dimensionOptions} from "./WidthHeight";
+import { options } from "../../../main.js";
+import {marginOptions} from "./Margins.js";
+import {paddingOptions} from "./Padding.js";
+import {fontOptions} from "./Fonts.js";
+import {borderOptions} from "./Border.js";
+import {backgroundOptions} from "./Background.js";
+import {dimensionOptions} from "./WidthHeight.js";
 
 
 options.addOption(dimensionOptions);

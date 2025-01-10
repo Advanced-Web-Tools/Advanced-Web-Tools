@@ -1,9 +1,9 @@
-import {Option} from "../../options/Option";
-import {createLockedInputGroup} from "../../ui/InputGroupComp";
-import {NotPage} from "../conditions/DefaultConditions";
-import {CreateContainerComponent} from "../../ui/Container";
-import {ExtractUnitAndValue} from "../../options/Functions";
-import {CreateSelect} from "../../ui/Inputs";
+import {Option} from "../../options/Option.js";
+import {createLockedInputGroup} from "../../ui/InputGroupComp.js";
+import {NotPage} from "../conditions/DefaultConditions.js";
+import {CreateContainerComponent} from "../../ui/Container.js";
+import {ExtractUnitAndValue} from "../../options/Functions.js";
+import {CreateSelect} from "../../ui/Inputs.js";
 
 export let dimensionOptions = new Option();
 const dimensions  = CreateContainerComponent("", false);

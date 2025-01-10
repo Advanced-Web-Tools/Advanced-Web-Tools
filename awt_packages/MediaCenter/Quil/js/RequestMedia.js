@@ -1,4 +1,4 @@
-import {AWTRespondRequest} from "../../../AWTRespond/js/AWTRespond";
+import {AWTRespondRequest} from "../../../AWTRespond/js/AWTRespond.js";
 
 let api = new AWTRespondRequest('');
 export function RequestMedia(callback)

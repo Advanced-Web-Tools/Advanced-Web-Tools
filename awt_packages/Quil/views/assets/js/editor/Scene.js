@@ -1,6 +1,7 @@
-import {Editor} from "./Editor";
-import {Clipboard} from "./clipboard/Clipboard";
-import {BlockContext} from "./context/BlockContext";
+import {Editor} from "./Editor.js";
+import {Clipboard} from "./clipboard/Clipboard.js";
+import {BlockContext} from "./context/BlockContext.js";
+import {DataSources} from "./data_sources/DataSources.js";
 
 export class Scene {
     constructor(editorPage, blocks, options) {
@@ -8,6 +9,9 @@ export class Scene {
         this.currentSelector = editorPage;
         this.blocks = blocks;
         this.options = options;
+        const urlParams = new URLSearchParams(window.location.search)
+        const paramValue = urlParams.get('id');
+        this.dataSources = new DataSources(paramValue);
 
         this.insert = this.createInsertElement();
         this.insertLocked = $("<hr class='insert' save='false' locked='true' replaceable='true'></hr>");

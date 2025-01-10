@@ -2,6 +2,7 @@
 
 namespace Quil\event;
 
+use admin\Admin;
 use Dashboard\classes\menu\DashboardMenu;
 use Dashboard\classes\menu\MenuItem;
 use DOMException;
@@ -17,6 +18,13 @@ final class MenuDrawListener implements IEventListener
      */
     private function addMenus(): void
     {
+        $admin = new Admin();
+
+
+        if(!$admin->checkAuthentication() || !$admin->checkPermission(2)) {
+            return;
+        }
+
         $pageMenu = new MenuItem("Pages and Routes", "fa-solid fa-file-circle-plus", "/dashboard/pages");
         $pageMenu->setIconType("fa");
         $pageMenu->createDom();

@@ -1,7 +1,9 @@
-import {Options} from "./editor/options/Options";
-import {Blocks} from "./editor/blocks/Blocks";
-import {Scene} from "./editor/Scene";
-import {Editor} from "./editor/Editor";
+import {Options} from "./editor/options/Options.js";
+import {Blocks} from "./editor/blocks/Blocks.js";
+import {Scene} from "./editor/Scene.js";
+import {Editor} from "./editor/Editor.js";
+import {PopulateHelper} from "../../../../Dashboard/js/ui/Helper.js";
+import {EditorOptions} from "./editor/editorOptions/EditorOptions.js";
 
 const editor = $(".editor");
 const editorPage = $(".editor .page");
@@ -18,6 +20,8 @@ function init(e) {
 
     blocks.drawList(".main .left .content");
 
+    scene.dataSources.fetchDataSources();
+
     $("#add_block").click((e) => {
         new Editor().openBlockSelector(leftAside);
     });
@@ -26,9 +30,26 @@ function init(e) {
         new Editor().openBlockSelector(leftAside);
     });
 
+    $("button#save").click((e) => {
+        const urlParams = new URLSearchParams(window.location.search)
+        const paramValue = urlParams.get('id');
+        new Editor().savePage(paramValue);
+    });
+
     $("#mobile").click((e) => {
         new Editor().mobileView(editorPage);
     });
+
+
+    $("#editor_options").click((e) => {
+        PopulateHelper("", new EditorOptions().draw());
+    });
+
+    $("#manage").click((e) => {
+        PopulateHelper("", scene.dataSources.drawHelper());
+    });
+
+    new EditorOptions().apply();
 
     scene.reattachEventsToScene();
 

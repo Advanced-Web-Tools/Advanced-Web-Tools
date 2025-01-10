@@ -2,6 +2,7 @@
 
 namespace PackageManager\event;
 
+use admin\Admin;
 use Dashboard\classes\menu\DashboardMenu;
 use Dashboard\classes\menu\MenuItem;
 use DOMException;
@@ -17,6 +18,13 @@ final class MenuDrawListener implements IEventListener
      */
     private function addMenus(): void
     {
+        $admin = new Admin();
+
+
+        if(!$admin->checkAuthentication() || !$admin->checkPermission(1)) {
+            return;
+        }
+
         $item = new MenuItem("Package Manager", "fa-solid fa-boxes-packing", "/dashboard/package_manager/");
         $item->setIconType("fa");
 

@@ -63,6 +63,9 @@ final class AdminAuthentication extends SessionHandler
             $_SESSION['admin']['permission'] = $result[0]['permission_level'];
             $_SESSION['admin']['token'] = $result[0]['token'];
 
+
+            $this->database->table("awt_admin")->where(["id" => $result[0]['id']])->update(["last_logged_ip" => $_SERVER['REMOTE_ADDR']]);
+
             return true;
         }
 

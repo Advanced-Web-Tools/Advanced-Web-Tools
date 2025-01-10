@@ -1,7 +1,12 @@
 <?php
-const AWT_VERSION = "v24.6.1";
+const AWT_VERSION = "24.9.1";
 const PACKAGE_MAX_LOAD_TRY = 5;
 const DEBUG = true;
+
+ini_set("post_max_size", "512M");
+ini_set("upload_max_filesize", "512M");
+ini_set("max_execution_time", "300");
+ini_set("max_input_time", "300");
 
 if (DEBUG) {
     ini_set('display_errors', 1);

@@ -3,14 +3,18 @@
 <link rel="stylesheet" href="@assets('css/packages.css')">
 @endsection
 @section("topbar.widgets")
+
+@if(admin.permission_level == '1' || admin.permission_level == '0')
 <form action="/package_manager/installer/install" enctype="multipart/form-data" method="post">
     <input type="file" name="package" id="packageUpload">
     <button type="submit" class="btn_secondary">Install package.</button>
 </form>
+@endif
+
 @endsection
 @section("page")
 <div class="package_list">
-    <table class="package_table shadow">
+    <table class="package_table">
         <thead>
         <tr>
             <th colspan="7">{{filter}} Package List</th>
@@ -54,7 +58,7 @@
                         <a href="/package_manager/actions/enable/%package.id%/">
                             <button class="btn_secondary">Enable</button>
                         </a>
-                        @endif
+                    @endif
                 @endif
             </td>
         </tr>

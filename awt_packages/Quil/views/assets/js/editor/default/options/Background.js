@@ -1,7 +1,7 @@
-import {Option} from "../../options/Option";
-import {CreateColorInput} from "../../ui/ColorInputComp";
-import {CreateContainerComponent} from "../../ui/Container";
-import {rgbToHex} from "../../options/Functions";
+import {Option} from "../../options/Option.js";
+import {CreateColorInput} from "../../ui/ColorInputComp.js";
+import {CreateContainerComponent} from "../../ui/Container.js";
+import {rgbToHex} from "../../options/Functions.js";
 
 export let backgroundOptions = new Option();
 
