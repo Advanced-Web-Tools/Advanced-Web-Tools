@@ -1,0 +1,11 @@
+{
+  "plugin": {
+    "name": "AccountManager",
+    "system": true,
+    "version": "1.0.0",
+    "description": "Manage admin accounts.",
+    "minimumAwtVersion": "24.9.1",
+    "icon": "accounts.png",
+    "author": "ElStefanos"
+  }
+}

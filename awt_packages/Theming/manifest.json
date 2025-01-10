@@ -1,0 +1,11 @@
+{
+  "plugin": {
+    "name": "Theming",
+    "icon": "theme.png",
+    "system": "true",
+    "version": "1.0.0",
+    "description": "Theme your website!",
+    "Author": "ElStefanos",
+    "minimumAwtVersion": "24.9.0"
+  }
+}

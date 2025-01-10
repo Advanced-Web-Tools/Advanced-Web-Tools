@@ -1,0 +1,61 @@
+.page {
+    display: flex;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    height: 100%;
+    padding: 0;
+    gap: 2px;
+}
+
+.categories {
+    height: calc(100% - 30px);
+    background: var(--primary_accent);
+    padding: 15px;
+    width: 135px;
+    display: flex;
+    flex-direction: column;
+    gap: 19px;
+}
+
+.categories .category {
+    width: 100%;
+    color: var(--text_secondary);
+}
+
+.categories .category:hover,
+.categories .category.current {
+    color: var(--text_primary);
+}
+
+.settings {
+    margin: 10px;
+    width: calc(100% - 20px - 200px - 4px);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    align-content: flex-start;
+}
+
+.setting-container {
+    width: calc(100% - 20px);
+    height: fit-content;
+    background: var(--secondary_background);
+    border-radius: var(--border_radius);
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 25% 60% 15%;
+    grid-template-rows: 50px;
+    align-items: center;
+    justify-content: start;
+}
+
+.setting-container input[type='checkbox'] {
+    width: fit-content;
+    text-align: left;
+}
+
+.setting-container button {
+    width: fit-content;
+    justify-self: end;
+}
