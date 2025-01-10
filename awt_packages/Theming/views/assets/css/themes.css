@@ -1,0 +1,67 @@
+.themes {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.theme {
+    background: var(--secondary_background);
+    border-radius: var(--border_radius);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+}
+
+.theme .info {
+    display: flex;
+    align-content: center;
+    justify-content: space-between;
+    padding: 5px 10px;
+    backdrop-filter: blur(5px) brightness(90%);
+    border-radius: var(--border_radius);
+}
+
+.theme .action {
+    display: grid;
+    place-content: center;
+}
+
+.settings {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: stretch;
+    gap: 10px;
+}
+
+.setting {
+    display: flex;
+    width: calc(50% - 30px);
+    flex-wrap: wrap;
+    background: var(--secondary_background);
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: var(--border_radius);
+}
+
+.pages {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, 32.5%);
+    grid-auto-flow: row;
+    grid-auto-rows: auto;
+    gap: 10px;
+}
+
+.theme-page {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    width: calc(100% - 20px);
+    padding: 10px;
+    border-radius: var(--border_radius);
+    background: var(--secondary_background);
+}
