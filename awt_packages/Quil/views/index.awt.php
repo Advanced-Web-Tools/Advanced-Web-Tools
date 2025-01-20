@@ -1,7 +1,7 @@
 @extends('Dashboard.views.templates.main')
 @section('head')
-<link rel="stylesheet" href="@assets('css/pages.css')">
-<script type="module" src="@assets('js/manage/main.js')"></script>
+<link rel="stylesheet" href="@asset('css/pages.css')">
+<script type="module" src="@asset('js/manage/main.js')"></script>
 @endsection
 @section('topbar.widgets')
 <form action="/quil/create" method="post" class="page_create">
@@ -27,24 +27,24 @@
     </tr>
     </thead>
     <tbody>
-    @foreach(pages as page)
+    @foreach($pages as $page)
     <tr class="info">
-        <td class="name">{{ page.name }}</td>
-        <td>{{ page.creation_date }}</td>
-        <td>{{ page.last_update }}</td>
-        <td>{{ page.admin.username }}</td>
+        <td class="name">{{ $page->name }}</td>
+        <td>{{ $page->creation_date }}</td>
+        <td>{{  $page->last_update }}</td>
+        <td>{{  $page->admin->username }}</td>
         <td class="actions">
-            <a href="/quil/page_editor/%page.id%?id=%page.id%" target="_blank" rel="nofollow">
+            <a href="/quil/page_editor/{{ $page->id }}?id={{ $page->id }}" target="_blank" rel="nofollow">
                 <button class="btn_primary">Edit <i class="fa-solid fa-feather"></i></button>
             </a>
-            <button class="manage_page btn_secondary" data-id="%page.id%">Manage <i class="fa-solid fa-gear"></i></button>
-            <a href="/quil/delete/%page.id%">
+            <button class="manage_page btn_secondary" data-id="{{ $page->id }}">Manage <i class="fa-solid fa-gear"></i></button>
+            <a href="/quil/delete/{{ $page->id }}">
                 <button class="btn_action_negative">Delete <i class="fa-solid fa-trash"></i></button>
             </a>
         </td>
     </tr>
     @endforeach
-    @if(pages == null)
+    @if($pages == null)
     <tr class="info">
         <td class="name" colspan="6">Create new page to populate this list.</td>
     </tr>
@@ -73,18 +73,18 @@
     </tr>
     </thead>
     <tbody>
-    @foreach(custom_routes as route)
+    @foreach($custom_routes as $route)
     <tr class="info">
-        <td class="name">{{ route.route }}</td>
-        <td>{{ route.creation_date }}</td>
+        <td class="name">{{ $route->route }}</td>
+        <td>{{ $route->creation_date }}</td>
         <td class="actions">
-            <a href="/quil/route_delete/%route.id%">
+            <a href="/quil/route_delete/{{ $route->id }}">
                 <button class="btn_action_negative">Delete <i class="fa-solid fa-trash"></i></button>
             </a>
         </td>
     </tr>
     @endforeach
-    @if(custom_routes == null)
+    @if($custom_routes == null)
     <tr class="info">
         <td class="name" colspan="6">Create new route or page to populate this list.</td>
     </tr>

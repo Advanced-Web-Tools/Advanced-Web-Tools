@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Quil Page Editor > {{title}}</title>
+    <title>Quil Page Editor > {{ $title }}</title>
     <link rel="stylesheet" href="@url('awt_packages/Dashboard/views/assets/css/main.css')">
     <link rel="stylesheet" href="@resource('fontawesome-free-6.5-web/css/all.css')">
-    <link rel="stylesheet" href="@assets('js/vendor/coloris/dist/coloris.min.css')">
-    <link rel="stylesheet" href="@assets('css/editor.css')">
+    <link rel="stylesheet" href="@asset('js/vendor/coloris/dist/coloris.min.css')">
+    <link rel="stylesheet" href="@asset('css/editor.css')">
     <script src="@resource('jQuery/jquery.min.js')"></script>
-    <script type="module" src="@assets('js/vendor/coloris/dist/coloris.min.js')"></script>
-    <script type="module" src="@assets('js/editor/Editor.js')"></script>
-    <script type="module" src="@assets('js/editor/default/blocks/DefaultBlocks.js')"></script>
-    <script type="module" src="@assets('js/editor/default/options/DefaultOptions.js')"></script>
+    <script type="module" src="@asset('js/vendor/coloris/dist/coloris.min.js')"></script>
+    <script type="module" src="@asset('js/editor/Editor.js')"></script>
+    <script type="module" src="@asset('js/editor/default/blocks/DefaultBlocks.js')"></script>
+    <script type="module" src="@asset('js/editor/default/options/DefaultOptions.js')"></script>
 </head>
 <body>
 <section class="top-bar shadow">

@@ -1,20 +1,21 @@
 <?php
 
-namespace Theming\classes\Theme;
+namespace Theming\classes\Theme\Page;
 
 use controller\Controller;
 use database\DatabaseManager;
 use DOMDocument;
-use DOMElement;
 use redirect\Redirect;
+use Theming\classes\Theme\Settings\ThemeSettings;
 use view\View;
 
 abstract class ThemePage extends Controller
 {
     private int $themeId;
     private DatabaseManager $database;
-    private array $pages = [];
+    protected array $pages = [];
 
+    protected ThemeSettings $settings;
     /**
      * @inheritDoc
      */
@@ -33,6 +34,12 @@ abstract class ThemePage extends Controller
         return $this;
     }
 
+    public function setSettings(ThemeSettings $settings): self
+    {
+        $this->settings = $settings;
+        return $this;
+    }
+
 
     public function view(array $data = []): View
     {
@@ -42,7 +49,9 @@ abstract class ThemePage extends Controller
             ->where(["name" => $this->matchPageName(), "theme_id" => $this->themeId])
             ->get()[0];
 
-        if (count($res) > 0) {
+        $data["theme"] = $this->settings;
+
+        if ($res !== null && count($res) > 0) {
             $dom = new DOMDocument();
             $content = $this->getViewContent();
 
@@ -65,13 +74,11 @@ abstract class ThemePage extends Controller
             return $this;
         }
 
-
-
         return parent::view($data);
     }
 
 
-    private function matchPageName(): string
+    protected function matchPageName(): string
     {
         foreach ($this->pages as $page) {
             if ($page['viewName'] == $this->viewName) {

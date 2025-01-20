@@ -25,12 +25,15 @@ class SessionHandler
 
         if (session_status() !== PHP_SESSION_ACTIVE) {
             $sameSite = Config::getConfig("AWT", "Session SameSite")->getValue();
-            $sameSite = ($sameSite === 'true') ? "Strict" : "None";
+            $sameSite = ($sameSite == 'true') ? "Strict" : "None";
+
+            $secure = Config::getConfig("AWT", "Session HTTPS Only")->getValue() == 'true';
+            $httpOnly = Config::getConfig("AWT", "Session HTTP Only")->getValue() == 'true';
 
             session_set_cookie_params([
                 "SameSite" => $sameSite,
-                "Secure" => Config::getConfig("AWT", "Session HTTPS Only")->getValue(),
-                "HttpOnly" => Config::getConfig("AWT", "Session HTTP Only")->getValue()
+                "Secure" => $secure,
+                "HttpOnly" => $httpOnly
             ]);
 
             session_start();

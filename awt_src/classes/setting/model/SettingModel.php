@@ -52,7 +52,7 @@ class SettingModel extends Model
         $this->constName = strtoupper(str_replace(" ", "_", strtoupper($this->package_name)) ."_". str_replace(" ", "_", strtoupper($this->name)));
 
         if(!defined($this->constName)) {
-            define("SETT_" . $this->constName, $this);
+            define("SETT_" . $this->constName, $this->getObject());
         }
 
         return $this;
@@ -68,4 +68,8 @@ class SettingModel extends Model
         return $this->name;
     }
 
+    public function getObject(): self
+    {
+        return $this;
+    }
 }

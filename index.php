@@ -9,7 +9,6 @@ require_once JOBS . "awt_domainBuilder.php";
 use event\EventDispatcher;
 use packages\manager\loader\Loader;
 use redirect\Redirect;
-use router\events\EDynamicRoute;
 use router\events\EDynamicRouteListener;
 use router\manager\RouterManager;
 use setting\Config;

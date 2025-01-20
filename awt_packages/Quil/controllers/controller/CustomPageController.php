@@ -5,6 +5,7 @@ use database\DatabaseManager;
 use Quil\classes\page\PageManager;
 use Quil\classes\sources\models\DummySourceModel;
 use Quil\classes\sources\SourceManager;
+use render\TemplateEngine\BladeOne;
 use view\View;
 
 class CustomPageController extends Controller
@@ -69,15 +70,16 @@ class CustomPageController extends Controller
 
     public function index(array|string $params): View
     {
+
         return $this->view($params);
     }
 
-    protected function getViewContent(): string
-    {
-        $page = parent::getViewContent();
-
-        return str_replace("{{ page.content }}", $this->page["content"], $page);
-    }
+//    protected function getViewContent(): string
+//    {
+//        $page = parent::getViewContent();
+//
+//        return str_replace('{{ $page->content }}', $this->page["content"], $page);
+//    }
 
 
     private function setTitle(string $title): void
@@ -96,6 +98,7 @@ class CustomPageController extends Controller
 
         $sources = new SourceManager($this->page["id"]);
         $sources->fetchSources();
+        $bundle = [];
 
         foreach ($sources->getSources() as $source) {
             if(!isset($params[$source->bind_param_url]) || $params[$source->bind_param_url] == null) {
@@ -109,7 +112,16 @@ class CustomPageController extends Controller
 
         $this->setTitle($this->page["name"]);
 
-        $bundle["page"] = $this->page;
+        $parser = new BladeOne();
+
+        $parser->with($bundle);
+
+        try {
+            $bundle["content"] = $parser->runString(htmlspecialchars_decode($this->page["content"]), $bundle);
+        } catch (Exception $e) {
+            die($e->getMessage());
+        }
+
 
         return $this->view($bundle);
     }

@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ page.name }}</title>
+    <title>{{ $page['name'] }}</title>
 </head>
 <body>
-    {{ page.content }}
+    {!! $content !!}
 </body>
 </html>

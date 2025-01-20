@@ -1,35 +1,35 @@
 @extends('Dashboard.views.templates.main')
 @section('head')
-    <link rel="stylesheet" href="@assets('css/settings.css')">
+    <link rel="stylesheet" href="@asset('css/settings.css')">
 @endsection
 @section('page')
     <div class="categories">
-        @foreach(cats as cat)
-            @if(cat == category)
-                <a href="./%cat%" class="category current">{{ cat }} </a>
+        @foreach($cats as $cat)
+            @if($cat == $category)
+                <a href="./{{$cat}}" class="category current">{{ $cat }} </a>
             @else
-                <a href="./%cat%" class="category">{{ cat }} </a>
+                <a href="./{{$cat}}" class="category">{{ $cat }} </a>
             @endif
         @endforeach
     </div>
     <div class="settings">
-        @foreach(settings as setting)
-        <form class="setting-container" data-category="{{ setting.category }}" action='/settings/change/' method="post">
-            <label for="setting">{{ setting.name }}: </label>
-            @if(setting.value_type == 'text')
-            <input type="text" name="{{ setting.name }}" id="setting" class="inp_primary lg" value="{{ setting.value }}" >
+        @foreach($settings as $setting)
+        <form class="setting-container" data-category="{{ $setting->category }}" action='/settings/change/' method="post">
+            <label for="setting">{{ $setting->name }}: </label>
+            @if($setting->value_type == 'text')
+            <input type="text" name="{{ $settings->name }}" id="setting" class="inp_primary lg" value="{{ $settings->name }}" >
             @endif
-            @if(setting.value_type == 'number')
-            <input type="number" name="{{ setting.name }}" id="setting" class="inp_primary lg" value="{{ setting.value }}">
+            @if($setting->value_type == 'number')
+            <input type="number" name="{{ $settings->name }}" id="setting" class="inp_primary lg" value="{{ $settings->name }}">
             @endif
-            @if(setting.value_type == 'boolean')
-            @if(setting.value == 'true')
-            <input type="checkbox" id="{{ settings.name }}" name="{{ setting.name }}" id="setting" checked="true">
+            @if($setting->value_type == 'boolean')
+            @if($setting->value == 'true')
+            <input type="checkbox" id="{{ $settings->name }}" name="{{ $settings->name }}" id="setting" checked="true">
             @else
-            <input type="checkbox" id="{{ settings.name }}" name="{{ setting.name }}" id="setting">
+            <input type="checkbox" id="{{ $settings->name }}" name="{{ $settings->name }}" id="setting">
             @endif
             @endif
-            <button class="btn_primary" type="submit" name="change" value="{{ setting.name }}">Save</button>
+            <button class="btn_primary" type="submit" name="change" value="{{ $settings->name }}">Save</button>
         </form>
         @endforeach
     </div>

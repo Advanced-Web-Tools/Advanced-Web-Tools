@@ -5,6 +5,7 @@ use event\EventDispatcher;
 use event\interfaces\IEvent;
 use event\interfaces\IEventListener;
 use router\events\EDynamicRoute;
+use Theming\classes\Theme\Settings\ThemeSettings;
 use Theming\classes\ThemeAPI\ThemeAPI;
 
 final class EThemeRegisterListener implements IEventListener
@@ -27,6 +28,8 @@ final class EThemeRegisterListener implements IEventListener
     {
         $this->themePackageID = $packageID;
         $this->themeAPI[$this->themePackageID] = $themeAPI;
+
+        $themeAPI->addSettings(new ThemeSettings($this->activeTheme));
 
         $themeAPI->buildTheme();
         $dynamicRoute = new EDynamicRoute();

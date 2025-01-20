@@ -4,9 +4,12 @@ namespace render;
 
 use DOMDocument;
 use DOMXPath;
+use Error;
 use event\EventDispatcher;
 use Exception;
 use render\events\RenderReadyEvent;
+use render\TemplateEngine\BladeOne;
+use Throwable;
 
 /**
  * The Render class provides tools to manipulate HTML documents, load templates, and manage dynamic content rendering.
@@ -48,15 +51,7 @@ class Render
     protected function loadTemplate(): void
     {
         $htmlContent = $this->dom->saveHTML();
-        preg_match('/@extends\s*\(\s*([\'"]?)(.+?)([\'"]?)\s*\)/', $htmlContent, $matches);
-
-        if (isset($matches[2])) {
-            $templatePath = $matches[2];
-            $templateContent = TemplateParser::extends($templatePath, $htmlContent);
-            $this->createDocument($templateContent);
-        } else {
-            $this->createDocument($htmlContent);
-        }
+        $this->createDocument($htmlContent);
     }
 
 
@@ -152,35 +147,5 @@ class Render
         foreach ($this->bundle as $key => $bundle) {
             $this->{$key} = $bundle;
         }
-    }
-
-    /**
-     * Renders the HTML document, processes templates, and dispatches a render-ready event.
-     * It applies template parsing for loops, conditions, assets, and variables before returning the final HTML string.
-     *
-     * @throws Exception If any issues occur during rendering or template loading.
-     * @return string The final rendered HTML content as a string.
-     */
-    public function render(): string
-    {
-        $this->loadTemplate();
-
-        $ready = new RenderReadyEvent();
-        $ready->renderer = $this;
-
-        $this->eventDispatcher->dispatch($ready);
-
-        $this->createBundleObjects();
-
-        $html = $this->dom->saveHTML();
-        $html = TemplateParser::foreachParser($this, $html);
-        $html = TemplateParser::ifParser($this, $html);
-        $html = TemplateParser::resource($html);
-        $html = TemplateParser::data($this->packageName, $html);
-        $html = TemplateParser::urlVar($this, $html);
-        $html = TemplateParser::url($html);
-        $html = TemplateParser::vars($this, $html);
-        $html = TemplateParser::assets($this->localAssetPath, $html);
-        return $html;
     }
 }

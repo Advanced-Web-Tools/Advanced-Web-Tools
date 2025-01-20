@@ -54,7 +54,6 @@ final class ThemingController extends DashboardPage
         return $this->view($this->getViewBundle($bundle));
     }
 
-
     public function customize(array|string $params): Redirect
     {
         $this->adminCheck();
@@ -65,6 +64,22 @@ final class ThemingController extends DashboardPage
         }
 
         return $this->enableCustomization($params);
+    }
+
+    public function MenuBuilder(array|string $params): View
+    {
+        $this->adminCheck();
+        $this->eventDispatcher->dispatch($this->event);
+        $this->setTitle("Menu Builder");
+
+        $database = new DatabaseManager();
+        $result = $database->table("theming_menu")->select(["*"])->where(["1" => 1])->get();
+
+        $bundle["menus"] = $result;
+
+        $bundle["menu_items"] = $database->table("theming_menu_item")->select(["*"])->where(["1"=>"1"])->get();
+
+        return $this->view($this->getViewBundle($bundle));
     }
 
     private function checkForCustomized(array $params): bool|int {
