@@ -46,7 +46,7 @@ If you don't have anything from above (besides Internet). Refer to one of the gu
 
 And finally:
 
-1. **Download**:  Obtain the latest release from our [GitHub repository](https://github.com/ElStefanos/Advanced-Web-Tools/releases/latest).
+1. **Download**:  Obtain the latest AWT-Installer from our [GitHub repository](https://github.com/ElStefanos/Advanced-Web-Tools/releases/latest).
 
 2. **Database**:  Make sure there is at least one empty database present (if you are unsure how to create one, contact your hosting provider or refer to this documentation if you are self hosting).
 
