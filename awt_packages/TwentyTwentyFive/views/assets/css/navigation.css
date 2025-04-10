@@ -1,0 +1,30 @@
+.header {
+    position: fixed;
+    height: 90px;
+    background: var(--secondary_background);
+    z-index: 3;
+    padding: 1em 4rem;
+    width: calc(100% - 4rem);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navigation {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.navigation a {
+    text-decoration: none;
+    font-weight: 400;
+    color: var(--primary_text);
+}
+
+.navigation a:hover {
+    color: var(--primary_accent);
+}

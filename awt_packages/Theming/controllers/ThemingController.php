@@ -1,5 +1,7 @@
 <?php
 
+use AWTRespond\src\AWTRespond;
+use AWTRespond\src\enums\EAWTRespondType;
 use Dashboard\classes\dashboard\DashboardPage;
 use database\DatabaseManager;
 use packages\enums\EPackageType;
@@ -176,5 +178,67 @@ final class ThemingController extends DashboardPage
         return $packages;
     }
 
+
+    public function saveMenuItem(): AWTRespond
+    {
+        $data = [
+            "response" => 500
+        ];
+
+        $rawBody = file_get_contents('php://input');
+        $decodedBody = json_decode($rawBody, true);
+
+        $database = new DatabaseManager();
+
+        if(str_starts_with($decodedBody["id"], "new-")) {
+            $res = $database->table("theming_menu_item")->insert([
+                "name" => $decodedBody["name"],
+                "menu_id" => $decodedBody["menu_id"],
+                "link" => $decodedBody["link"],
+                "target" => $decodedBody["target"],
+                "parent_item" => $decodedBody["parent_id"]
+            ])->executeInsert();
+
+            if($res !== null) {
+                $data["response"] = 200;
+                $data["id"] = $res;
+            }
+        } else {
+            $res = $database->table("theming_menu_item")->where(["id" => $decodedBody["id"]])->update([
+                "name" => $decodedBody["name"],
+                "link" => $decodedBody["link"],
+                "target" => $decodedBody["target"],
+                "parent_item" => $decodedBody["parent_id"]
+            ]);
+
+            if($res)
+                $data["response"] = 200;
+        }
+
+        $response = new AWTRespond();
+        $response->setType(EAWTRespondType::JSON)->setContent($data)->setCode($data["response"]);
+        return $response;
+    }
+
+    public function deleteMenuItem(): AWTRespond
+    {
+        $data = [
+            "response" => 500
+        ];
+
+        $rawBody = file_get_contents('php://input');
+        $decodedBody = json_decode($rawBody, true);
+
+        if(isset($decodedBody["id"])) {
+            $database = new DatabaseManager();
+            $res = $database->table("theming_menu_item")->where(["id" => $decodedBody["id"]])->delete();
+            if($res)
+                $data["response"] = 200;
+        }
+
+        $response = new AWTRespond();
+        $response->setType(EAWTRespondType::JSON)->setContent($data)->setCode($data["response"]);
+        return $response;
+    }
 
 }

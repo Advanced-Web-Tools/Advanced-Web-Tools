@@ -79,16 +79,11 @@ class View extends Render
 
 
         try {
-            $parser = new BladeOne($this->viewDirectory, null, BladeOne::MODE_AUTO);
+            $parser = new BladeOne($this->viewDirectory, CACHE, BladeOne::MODE_AUTO);
             $parser->setFileExtension(".awt.php");
 
             $parser->addAssetDict(0, $this->localAssetPath);
             $parser->setPackageName($this->packageName);
-
-            $parser->addMethod("compile", "@data" , static function (?array $args) {
-                $pn = $this->packageName;
-                return HOSTNAME . "awt_data/media/$args[1]/$pn/$args[0]";
-            });
 
 
             $parser->with($this->bundle);

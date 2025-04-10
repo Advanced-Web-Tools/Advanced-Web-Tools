@@ -15,7 +15,7 @@
       <PhpCSConfiguration asDefaultInterpreter="true" />
     </phpcs_settings>
   </component>
-  <component name="PhpProjectSharedConfiguration" php_language_level="8.1">
+  <component name="PhpProjectSharedConfiguration" php_language_level="8.2">
     <option name="suggestChangeDefaultLanguageLevel" value="false" />
   </component>
   <component name="PhpStan">
@@ -28,8 +28,10 @@
   </component>
   <component name="PhpStepFilterConfiguration">
     <skipped_functions>
-      <skipped_function name="router\manager\RouterManager-&gt;startRouter" />
-      <skipped_function name="ThemingController-&gt;checkForCustomized" />
+      <skipped_function name="require_once" />
+      <skipped_function name="database\DatabaseManager-&gt;__destruct" />
+      <skipped_function name="TwentyTwentyFive\classes\controller\TwentyTwentyFiveController-&gt;index" />
+      <skipped_function name="Theming\classes\Theme\Menu\ThemeMenu-&gt;__construct" />
     </skipped_functions>
   </component>
   <component name="Psalm">

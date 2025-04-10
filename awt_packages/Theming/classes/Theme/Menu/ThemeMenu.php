@@ -28,6 +28,7 @@ class ThemeMenu
             "theming_menu_item.target",
         ])->
         join("theming_menu", "theming_menu_item.menu_id = theming_menu.id")->
+        orderBy('position')->
         where(["active" => "1"])->
         get();
 
@@ -64,7 +65,8 @@ class ThemeMenu
         $dom->formatOutput = true;
         try {
             $nav = $dom->createElement("div");
-            $nav->className = "navigation";
+            $nav->setAttribute("id", "nav");
+            $nav->setAttribute("class", "navigation");
 
             foreach($this->items as $item)
             {

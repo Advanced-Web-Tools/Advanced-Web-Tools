@@ -36,7 +36,7 @@
         </form>
         <div class="footer lg">
             <p>In order to proceed, please login.</p>
-            <a class="hp_primary" href="/dashboard/passwordreset"><i class="fa-solid fa-key"></i> Forgot password?</a>
+{{--            <a class="hp_primary" href="/dashboard/passwordreset"><i class="fa-solid fa-key"></i> Forgot password?</a>--}}
         </div>
     </div>
 </body>

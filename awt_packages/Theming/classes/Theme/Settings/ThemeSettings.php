@@ -17,7 +17,7 @@ class ThemeSettings
 
         $result = $this->database->table("theming_settings")
         ->select(["*"])
-        ->where(["theme_id" => $this->id])->get();
+        ->where(["theme_id" => $this->id])->orderBy("type")->get();
 
 
         foreach ($result as $setting) {
