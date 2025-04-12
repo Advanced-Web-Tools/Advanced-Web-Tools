@@ -34,10 +34,8 @@ class ThemeMenu
 
 
         foreach ($result as $item) {
-            $this->items[$item["position"]] = new ThemeMenuItem($item);
+            $this->items[] = new ThemeMenuItem($item);
         }
-
-        ksort($this->items, SORT_REGULAR);
 
         $this->attachChildren();
     }
@@ -79,6 +77,7 @@ class ThemeMenu
 
         return $dom->saveHTML();
     }
+
 
 
 }

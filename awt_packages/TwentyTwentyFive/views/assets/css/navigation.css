@@ -1,7 +1,7 @@
 .header {
     position: fixed;
-    height: 90px;
-    background: var(--secondary_background);
+    height: 50px;
+    background: var(--primary_background);
     z-index: 3;
     padding: 1em 4rem;
     width: calc(100% - 4rem);
@@ -9,6 +9,17 @@
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
+}
+
+.header .branding {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header .branding h3 {
+    margin: 0;
+    padding: 0;
 }
 
 .header .navigation {
@@ -28,3 +39,20 @@
 .header .navigation a:hover {
     color: var(--primary_accent);
 }
+
+.header .nav-item.parent-item {
+    position: relative;
+}
+
+.children {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: var(--primary_background);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0.5em 1em;
+    z-index: 10;
+}
+

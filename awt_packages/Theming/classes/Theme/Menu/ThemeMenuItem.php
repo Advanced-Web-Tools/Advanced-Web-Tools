@@ -1,4 +1,5 @@
 <?php
+
 namespace Theming\classes\Theme\Menu;
 
 use DOMDocument;
@@ -14,7 +15,7 @@ class ThemeMenuItem
     public string $attributes;
     public int $parentId;
     public string $html;
-    public ?ThemeMenuItem $child = null;
+    public ?array $child = null;
     private ?DOMDocument $document;
 
     public function __construct(array $data = [])
@@ -25,13 +26,13 @@ class ThemeMenuItem
         $this->target = $data['target'] ?? '';
         $this->attributes = $data['attributes'] ?? '';
         $this->parentId = $data['parent_item'] ?? 0;
-        $this->document = null; // Document is set during node creation
+        $this->document = null;
         $this->html = "";
     }
 
     public function setChild(ThemeMenuItem $child): void
     {
-        $this->child = $child;
+        $this->child[] = $child;
     }
 
     public function createNode(DOMDocument $document): DOMElement
@@ -41,19 +42,29 @@ class ThemeMenuItem
         try {
 
             $item = $this->document->createElement("div");
-            if($this->link !== '') {
+            if ($this->child === null) {
                 $item = $document->createElement("a");
                 $item->setAttribute("href", $this->link);
 
-                if($this->target !== '')
+                if ($this->target !== '')
                     $item->setAttribute("target", $this->target);
 
                 $item->setAttribute("rel", "noopener noreferrer");
                 $item->textContent = $this->name;
             } else {
-                $text = $document->createElement("p");
+
+                $text = $document->createElement("a");
+                $text->setAttribute("href", $this->link);
+
+                if ($text->target !== '')
+                    $text->setAttribute("target", $this->target);
+
+                $text->setAttribute("rel", "noopener noreferrer");
+
+                $text->setAttribute("data-visible", "true");
+
                 $text->textContent = $this->name;
-                $text->className = "nav-text";
+
                 $item->appendChild($text);
             }
 
@@ -63,8 +74,14 @@ class ThemeMenuItem
 
             if ($this->child !== null) {
                 $item->setAttribute("class", "nav-item parent-item");
-                $item->appendChild($this->child->createNode($document));
+                $container = $document->createElement("div");
+                $container->setAttribute("class", "children");
+                foreach ($this->child as $child) {
+                    $container->appendChild($child->createNode($document));
+                }
+                $item->appendChild($container);
             }
+
             return $item;
         } catch (DOMException $e) {
             die($e->getMessage());

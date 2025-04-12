@@ -50,6 +50,9 @@
                         @endif
                     @endforeach
                 </select>
+
+                <label for="position_{{ $item['id'] }}">Position:</label>
+                <input min="0" type="number" name="order" id="position_{{ $item['id'] }}" class="inp_primary" style="width: 30px;" value="{{ $item['position']}}" >
                 <button data-id="{{ $item['id']  }}" class="btn_primary save_item"><i
                             class="no_mrg fa-solid fa-save"></i></button>
                 <button data-id="{{ $item['id']  }}" class="btn_action_negative delete_item"><i

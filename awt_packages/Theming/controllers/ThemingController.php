@@ -80,7 +80,7 @@ final class ThemingController extends DashboardPage
 
         $bundle["menus"] = $result;
 
-        $bundle["menu_items"] = $database->table("theming_menu_item")->select()->where(["1"=>"1"])->get();
+        $bundle["menu_items"] = $database->table("theming_menu_item")->select()->where(["1"=>"1"])->orderBy("position")->get();
 
         return $this->view($this->getViewBundle($bundle));
     }
@@ -184,20 +184,6 @@ final class ThemingController extends DashboardPage
         return [];
     }
 
-    private function filterPackages(array $packages): array
-    {
-
-        foreach ($packages as $key => $package) {
-            $type = $package->packageType;
-
-            if ($type !== EPackageType::Theme)
-                unset($packages[$key]);
-
-        }
-
-        return $packages;
-    }
-
 
     public function saveMenuItem(): AWTRespond
     {
@@ -216,7 +202,8 @@ final class ThemingController extends DashboardPage
                 "menu_id" => $decodedBody["menu_id"],
                 "link" => $decodedBody["link"],
                 "target" => $decodedBody["target"],
-                "parent_item" => $decodedBody["parent_id"]
+                "parent_item" => $decodedBody["parent_id"],
+                "position" => $decodedBody["position"]
             ])->executeInsert();
 
             if($res !== null) {
@@ -228,7 +215,8 @@ final class ThemingController extends DashboardPage
                 "name" => $decodedBody["name"],
                 "link" => $decodedBody["link"],
                 "target" => $decodedBody["target"],
-                "parent_item" => $decodedBody["parent_id"]
+                "parent_item" => $decodedBody["parent_id"],
+                "position" => $decodedBody["position"]
             ]);
 
             if($res)

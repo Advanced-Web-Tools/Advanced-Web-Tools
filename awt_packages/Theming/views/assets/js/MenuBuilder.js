@@ -75,6 +75,8 @@ document.addEventListener("DOMContentLoaded", function () {
             .map(item => `<option value="${item.dataset.id}">${item.dataset.id}</option>`)
             .join("")}
             </select>
+            <label for="position_${newItemId}">Position:</label>
+            <input min="0" type="number" name="order" id="position_${newItemId}" class="inp_primary" style="width: 30px;" value="1">
             <button class="btn_primary save_item" data-id="${newItemId}"><i class="no_mrg fa-solid fa-save"></i></button>
             <button class="btn_action_negative delete_item" data-id="${newItemId}"><i class="no_mrg fa-solid fa-trash-can"></i></button>
         `;
@@ -102,13 +104,12 @@ function save(e) {
     const api = new AWTRespondRequest("");
 
     const id = e.currentTarget.dataset.id;
-    console.log(id);
 
     const targetElement = document.querySelector("select#target_" + id);
     const nameElement = document.querySelector("input#name_" + id);
     const locationElement = document.querySelector("input#link_" + id);
     const parentElement = document.querySelector("select#parent_" + id);
-
+    const position = document.querySelector("input#position_" + id);
     let parentID = null;
 
     if(parentElement.value !== "null") {
@@ -125,7 +126,8 @@ function save(e) {
         target: targetElement ? targetElement.value : null,
         name: nameElement ? nameElement.value : null,
         link: locationElement ? locationElement.value : null,
-        parent_id: parentID
+        parent_id: parentID,
+        position: position.value
     }).then((data) => {
         if (data.response === 200) {
             const notify = new Notify("Menu item saved", "positive", 3000, "Item was saved successfully!");

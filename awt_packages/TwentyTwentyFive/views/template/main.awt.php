@@ -20,6 +20,8 @@
     <link rel="stylesheet" href="@asset('css/main.css')">
     <link rel="stylesheet" href="@asset('css/navigation.css')">
     <link rel="stylesheet" href="@asset('css/footer.css')">
+    <script src="@asset('js/Navigation.js')"></script>
+    <link rel="stylesheet" href="@resource('fontawesome-free-6.5-web/css/all.css')">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@300;400&display=swap"
           rel="stylesheet">
 </head>

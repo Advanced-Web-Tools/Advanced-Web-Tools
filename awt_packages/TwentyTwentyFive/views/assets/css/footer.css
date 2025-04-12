@@ -50,6 +50,10 @@
     color: var(--primary_accent);
 }
 
+.footer-links .children {
+    display: none;
+}
+
 .footer-bottom {
     text-align: center;
     border-top: 1px solid #374151;
