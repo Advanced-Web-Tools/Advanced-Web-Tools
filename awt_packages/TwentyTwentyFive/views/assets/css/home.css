@@ -11,14 +11,6 @@
     position: relative;
 }
 
-/*.hero::before {*/
-/*    content: "";*/
-/*    position: absolute;*/
-/*    inset: 0;*/
-/*    background: linear-gradient(to bottom, var(--primary_accent), rgba(255,255,255,0.7));*/
-/*    z-index: 1;*/
-/*}*/
-
 
 .hero-content {
     z-index: 2;
@@ -27,8 +19,8 @@
 }
 
 .btn-primary {
-    background-color: #2563eb;
-    color: white;
+    background-color: var(--primary_accent);
+    color: var(--secondary_text);
     padding: 0.75rem 2rem;
     border-radius: 10px;
     font-size: 1rem;
@@ -41,14 +33,13 @@
 }
 
 .btn-primary:hover {
-    background-color: #1d4ed8;
+    background-color: var(--secondary_accent);
     box-shadow: 0 12px 24px rgba(29,78,216,0.4);
     transform: scale(1.05);
 }
 
 
 .features {
-    background-color: #f9f9f9;
     padding: 4rem 1rem;
     text-align: center;
 }
@@ -66,7 +57,7 @@
 }
 
 .feature {
-    background: white;
+    background: var(--primary_background);
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -77,7 +68,7 @@
 .about {
     margin: auto 10%;
     padding: 4rem 1rem;
-    background-color: #fff;
+    background-color: var(--primary_background);
 }
 
 .about-content {
@@ -100,15 +91,15 @@
 }
 
 .cta {
-    background-color: #2563eb;
-    color: white;
+    background-color: var(--primary_accent);
+    color: var(--secondary_text);
     text-align: center;
     padding: 3rem 1rem;
 }
 
 .cta .btn-primary {
-    background: #fff;
-    color: #0a58ca;
+    background: var(--primary_background);
+    color: var(--primary_accent);
 }
 
 .cta h2 {

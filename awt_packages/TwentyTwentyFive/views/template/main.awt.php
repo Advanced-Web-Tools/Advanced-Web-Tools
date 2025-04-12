@@ -4,22 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title> {{ $name }} {{ $theme->settings['Title']->value }} {{ $page }}</title>
+    @yield('head')
+    <style>
+        :root {
+            @foreach($theme->settings as $setting)
+                    @if($setting->type === "COLOR")
+                        --{{$setting->name}}: {{$setting->value}};
+                    @endif
+                    @if($setting->name === "font_family")
+                        --font_family: {!! $setting->value !!};
+                    @endif
+            @endforeach
+        }
+    </style>
     <link rel="stylesheet" href="@asset('css/main.css')">
     <link rel="stylesheet" href="@asset('css/navigation.css')">
     <link rel="stylesheet" href="@asset('css/footer.css')">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@300;400&display=swap"
           rel="stylesheet">
-    @yield('head')
-    <style>
-        :root {
-            @foreach($theme->settings as $setting)
-                @if($setting->type == 'COLOR')
-                 --{{$setting->name}}: {{$setting->value}};
-        @endif
-    @endforeach
-
-        }
-    </style>
 </head>
 <body>
 <nav class="header">
@@ -38,16 +40,13 @@
             </div>
 
             <div class="footer-links block">
-                <a href="/" class="block">Home</a>
-                <a href="/about" class="block">About</a>
-                <a href="/contact" class="block">Contact</a>
-                <a href="/privacy" class="block">Privacy Policy</a>
+                {!! $navigation !!}
             </div>
 
             <div class="footer-social block">
-                <a href="#" class="block">Twitter</a>
-                <a href="#" class="block">LinkedIn</a>
-                <a href="#" class="block">Instagram</a>
+                <a href="{{ $xSocial }}" class="block">X</a>
+                <a href="{{ $linkedinSocial }}" class="block">LinkedIn</a>
+                <a href="{{ $instagramSocial }}" class="block">Instagram</a>
             </div>
         </div>
 

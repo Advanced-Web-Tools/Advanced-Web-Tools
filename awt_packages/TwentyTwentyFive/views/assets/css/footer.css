@@ -1,8 +1,8 @@
 .footer {
-    background-color: #111827;
+    background-color: var(--footer_background);
     color: white;
     padding: 3rem 1rem 2rem;
-    font-family: 'Poppins', sans-serif;
+    font-family: var(--font_family);
 }
 
 .footer .container {
@@ -25,11 +25,11 @@
 }
 
 .footer-branding p {
-    color: #9ca3af;
+    color: var(--secondary_text);
     font-size: 1rem;
 }
 
-.footer-links,
+.footer-links .navigation,
 .footer-social {
     display: flex;
     flex-direction: column;
@@ -38,15 +38,16 @@
 
 .footer-links a,
 .footer-social a {
-    color: #d1d5db;
+    color: var(--secondary_text);
     text-decoration: none;
     font-weight: 400;
     transition: color 0.3s ease;
+    text-align: left;
 }
 
 .footer-links a:hover,
 .footer-social a:hover {
-    color: #3b82f6;
+    color: var(--primary_accent);
 }
 
 .footer-bottom {

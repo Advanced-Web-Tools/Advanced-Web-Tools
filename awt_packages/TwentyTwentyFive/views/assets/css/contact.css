@@ -1,12 +1,12 @@
 .hero-contact {
     background-size: cover;
     background-position: center;
-    height: 50vh;
+    height: 70vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: white;
+    color: var(--secondary_text);
     padding: 2rem;
     box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.4);
 }
@@ -27,7 +27,7 @@
 }
 
 .contact-section {
-    background-color: #f8f9fa;
+    background-color: var(--secondary_background);
     padding: 4rem 1rem;
 }
 
@@ -46,7 +46,7 @@
 .contact-form,
 .contact-info {
     flex: 1 1 45%;
-    background: white;
+    background: var(--primary_background);
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
@@ -56,7 +56,7 @@
 .contact-info h2 {
     font-size: 1.75rem;
     margin-bottom: 1rem;
-    color: #1d4ed8;
+    color: var(--primary_text);
 }
 
 .contact-form input,
@@ -67,19 +67,19 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     font-size: 1rem;
-    background: #fefefe;
+    background: var(--secondary_background);
     transition: border-color 0.3s;
 }
 
 .contact-form input:focus,
 .contact-form textarea:focus {
-    border-color: #1d4ed8;
+    border-color: var(--primary_accent);
     outline: none;
 }
 
 .btn-primary {
-    background-color: #1d4ed8;
-    color: white;
+    background-color: var(--primary_accent);
+    color: var(--secondary_text);
     font-weight: bold;
     border: none;
     padding: 0.75rem 2rem;
@@ -89,25 +89,25 @@
 }
 
 .btn-primary:hover {
-    background-color: #1e40af;
+    background-color: var(--secondary_accent);
     transform: scale(1.05);
 }
 
 .contact-info p {
     margin: 0.5rem 0;
     font-size: 1rem;
-    color: #333;
+    color: var(--primary_text);
 }
 
 .socials a {
     display: inline-block;
     margin-right: 1rem;
-    color: #1d4ed8;
+    color: var(--secondary_accent);
     font-weight: bold;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 .socials a:hover {
-    color: #1e40af;
+    color: var(--primary_accent);
 }

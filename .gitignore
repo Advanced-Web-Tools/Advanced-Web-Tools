@@ -9,4 +9,6 @@
 ./awt_db.php
 
 public_html.code-workspace
+./awt_data/cache/
+
 

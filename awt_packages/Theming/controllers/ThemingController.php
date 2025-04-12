@@ -9,6 +9,7 @@ use packages\manager\PackageManager;
 use Quil\classes\page\PageManager;
 use redirect\Redirect;
 use Theming\classes\events\EGetThemePages;
+use Theming\classes\Theme\Settings\ThemeSettingModel;
 use Theming\classes\Theme\ThemeModel;
 use view\View;
 
@@ -75,13 +76,32 @@ final class ThemingController extends DashboardPage
         $this->setTitle("Menu Builder");
 
         $database = new DatabaseManager();
-        $result = $database->table("theming_menu")->select(["*"])->where(["1" => 1])->get();
+        $result = $database->table("theming_menu")->select()->where(["1" => 1])->get();
 
         $bundle["menus"] = $result;
 
-        $bundle["menu_items"] = $database->table("theming_menu_item")->select(["*"])->where(["1"=>"1"])->get();
+        $bundle["menu_items"] = $database->table("theming_menu_item")->select()->where(["1"=>"1"])->get();
 
         return $this->view($this->getViewBundle($bundle));
+    }
+
+    public function applySetting(array|string $params): Redirect
+    {
+        $this->adminCheck();
+
+        if(empty($params['setting_id']))
+            return (new Redirect())->back();
+
+        $setting = new ThemeSettingModel($params['setting_id']);
+
+        if(!isset($_POST['setting_value']))
+            return (new Redirect)->back();
+
+        $setting->changeValue($_POST['setting_value']);
+
+        $setting->save();
+
+        return (new Redirect)->back();
     }
 
     private function checkForCustomized(array $params): bool|int {

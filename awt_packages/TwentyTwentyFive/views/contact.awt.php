@@ -19,7 +19,6 @@
         <section class="contact-section block">
             <div class="container block">
                 <div class="contact-wrapper block">
-                    {{-- Contact Form --}}
                     <div class="contact-form block">
                         <h2 class="block">Send a Message</h2>
                         <form method="post" action="/contact/submit" class="block">
@@ -30,16 +29,17 @@
                         </form>
                     </div>
 
-                    {{-- Contact Info --}}
                     <div class="contact-info block">
                         <h2 class="block">Reach Us</h2>
-                        <p class="block"><strong>Email:</strong> hello@example.com</p>
-                        <p class="block"><strong>Phone:</strong> +1 234 567 890</p>
-                        <p class="block"><strong>Address:</strong> 123 Digital St, Innovation City, 2025</p>
+                        <p class="block"><strong>Email:</strong> {{ $contact }}</p>
+                        <p class="block"><strong>Phone:</strong> {{ $phoneNumber }}</p>
+                        <p class="block"><strong>Address:</strong> {{ $address }} </p>
                         <div class="socials block">
-                            <a href="#" class="block">Twitter</a>
-                            <a href="#" class="block">LinkedIn</a>
-                            <a href="#" class="block">Instagram</a>
+                            <a href="{{ $xSocial }}" class="block">X</a>
+                            <a href="{{ $linkedInSocial }}" class="block">LinkedIn</a>
+                            <a href="{{ $instagramSocial }}" class="block">Instagram</a>
+                            <a href="{{ $facebookSocial }}" class="block">Facebook</a>
+                            <a href="{{ $youtubeSocial }}" class="block">Youtube</a>
                         </div>
                     </div>
                 </div>

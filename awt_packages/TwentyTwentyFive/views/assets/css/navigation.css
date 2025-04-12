@@ -11,7 +11,7 @@
     align-items: center;
 }
 
-.navigation {
+.header .navigation {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -19,12 +19,12 @@
     padding: 0 20px;
 }
 
-.navigation a {
+.header .navigation a {
     text-decoration: none;
     font-weight: 400;
     color: var(--primary_text);
 }
 
-.navigation a:hover {
+.header .navigation a:hover {
     color: var(--primary_accent);
 }

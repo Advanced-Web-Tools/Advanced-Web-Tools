@@ -38,11 +38,11 @@
     </div>
     <div class="settings">
         @foreach($settings as $setting)
-        <form class="setting">
+        <form method="post" class="setting" action="/theming/settings/{{ $setting['id'] }}/apply">
             <label for="{{$setting["name"]}}">
                 {{$setting["name"]}}
             </label>
-            <input class="inp_primary md" id="{{$setting["name"]}}" name="{{$setting["name"]}}" value="{{$setting["value"]}}" type="{{$setting["type"]}}" />
+            <input class="inp_primary md" id="{{$setting["name"]}}" name="setting_value" value="{{$setting["value"]}}" type="{{$setting["type"]}}" />
             <button class="btn_secondary">Apply</button>
         </form>
         @endforeach
