@@ -3,7 +3,7 @@
     "name": "TwentyTwentyFive",
     "system": "true",
     "version": "1.0.0",
-    "icon": "icon.png",
+    "icon": "theme.png",
     "description": "AdvancedWebTools - Default Theme",
     "minimum_awt_version": "24.9.1",
     "author": "ElStefanos"

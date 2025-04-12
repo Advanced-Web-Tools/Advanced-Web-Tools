@@ -7,7 +7,7 @@
 <div class="account_list shadow">
     <h3>Other accounts</h3>
     @foreach($accounts as $account)
-    <a class="account hp_primary" href="/dashboard/accounts/%account.id%">
+    <a class="account hp_primary" href="/dashboard/accounts/{{ $account->id }}">
         <h3 class="account_username">
             {{$account->username}}
         </h3>
@@ -32,11 +32,11 @@
             </p>
         </div>
         <div class="actions">
-            <a href="mailto:%profile.email%" class="hp_primary">
+            <a href="mailto:{{$profile->email}}" class="hp_primary">
                 <button class="btn_secondary">Send email</button>
             </a>
             @php if ($admin->checkPermission($profile->permission_level) && $admin->permission_level <= 1 || $profile->id === $admin->id): @endphp
-                <a href="/dashboard/account_manager/delete/%profile.id%">
+                <a href="/dashboard/account_manager/delete/{{$profile->id}}">
                     <button class="btn_action_negative">Delete account</button>
                 </a>
             @php endif; @endphp
