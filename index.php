@@ -32,7 +32,7 @@ if (Config::getConfig("AWT", "use packages")->getValue() == 'true') {
     try {
         $packages->load();
     } catch (Exception $e) {
-        throw ($e);
+        die($e->getMessage());
     }
 }
 
