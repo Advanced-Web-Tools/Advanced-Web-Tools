@@ -164,6 +164,15 @@ input[type='checkbox'] {
     border: 1px solid var(--primary_accent);
 }
 
+.editor .code {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 35px);
+    left: 0;
+    top: 35px;
+    background: var(--primary_background);
+}
+
 .helper {
     position: absolute;
     display: none;

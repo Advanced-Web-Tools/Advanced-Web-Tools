@@ -1,17 +1,20 @@
 <?php
 
 use render\TemplateEngine\BladeOne;
-function handle_error(): void
+
+function handle_fatal(): void
 {
     $last = error_get_last();
-    if($last['type'] === E_ERROR) {
+    if ($last && $last['type'] === E_ERROR) {
         $engine = new BladeOne(ROOT, CACHE, BladeOne::MODE_SLOW);
-
-        $data["error"] = $last['message'];
-
         $engine->setFileExtension(".awt.php");
-        die($engine->run("error", $data));
+
+        $data = DEBUG ? ["error" => $last['message']] : [];
+
+        echo $engine->run("error", $data);
+        exit;
     }
 }
 
-register_shutdown_function("handle_error");
+register_shutdown_function("handle_fatal");
+

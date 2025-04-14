@@ -1,6 +1,6 @@
 .flip-switch {
     position: relative;
-    display: none;
+    display: block;
     width: 100px;
     height: 40px;
 }
@@ -29,7 +29,7 @@
 }
 
 .flip-switch .view-icon, .code-icon {
-    font-size: .8rem;
+    font-size: .7rem;
     color: var(--text_secondary);
     transition: color 0.3s ease;
 }

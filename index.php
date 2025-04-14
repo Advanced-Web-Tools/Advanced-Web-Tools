@@ -1,7 +1,6 @@
 <?php
 require_once './awt_dirMap.php';
 require_once './awt_config.php';
-
 require_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt_autoLoader.php';
 require_once JOBS . 'awt_settings.php';
 require_once JOBS . "awt_domainBuilder.php";
@@ -33,7 +32,7 @@ if (Config::getConfig("AWT", "use packages")->getValue() == 'true') {
     try {
         $packages->load();
     } catch (Exception $e) {
-//        die($e->getMessage());
+        die($e->getMessage());
     }
 }
 

@@ -9,10 +9,19 @@
     <link rel="stylesheet" href="@asset('js/vendor/coloris/dist/coloris.min.css')">
     <link rel="stylesheet" href="@asset('css/editor.css')">
     <script src="@resource('jQuery/jquery.min.js')"></script>
+
     <script type="module" src="@asset('js/vendor/coloris/dist/coloris.min.js')"></script>
     <script type="module" src="@asset('js/editor/Editor.js')"></script>
     <script type="module" src="@asset('js/editor/default/blocks/DefaultBlocks.js')"></script>
     <script type="module" src="@asset('js/editor/default/options/DefaultOptions.js')"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/codemirror@6.65.7/lib/codemirror.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/codemirror@6.65.7/lib/codemirror.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.0/beautify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.0/beautify-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.0/beautify-html.min.js"></script>
 </head>
 <body>
 <section class="top-bar shadow">
@@ -44,7 +53,7 @@
         <div class="action">
             <button class="btn_secondary" id="undo" title="Undoes last change.">Undo<i
                         class="fa-solid fa-rotate-left"></i></button>
-            <button class="btn_secondary" id="Redo" title="Redoes last change.">Redo<i
+            <button class="btn_secondary" id="redo" title="Redoes last change.">Redo<i
                         class="fa-solid fa-rotate-right"></i></button>
         </div>
         <button class="btn_secondary" id="mobile" title="Simulates mobile view. Not 100% accurate."><i
@@ -65,6 +74,9 @@
     </aside>
     <section class="editor">
         @yield("editor")
+        <textarea class="code hidden" contenteditable="true">
+
+        </textarea>
     </section>
     <aside class="right">
         <div class="header">
