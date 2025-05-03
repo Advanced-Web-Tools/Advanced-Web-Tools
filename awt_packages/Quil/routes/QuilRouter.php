@@ -20,17 +20,17 @@ final class QuilRouter extends RuntimeRouterAPI
         $this->addRouter(new Router("/dashboard/pages/{status}", "index", $this->controller->getController("QuilController")));
         $this->addRouter(new Router("/quil/page_editor/{id}", "editor", $this->controller->getController("QuilController")));
 
-        $this->addRouter(new Router("/quil/create", "create", $this->controller->getController("QuilActionController")));
-        $this->addRouter(new Router("/quil/route_create", "createRoute", $this->controller->getController("QuilActionController")));
-        $this->addRouter(new Router("/quil/route_delete/{id}", "deleteRoute", $this->controller->getController("QuilActionController")));
-        $this->addRouter(new Router("/quil/delete/{id}", "delete", $this->controller->getController("QuilActionController")));
-        $this->addRouter(new Router("/quil/save/{id}", "save", $this->controller->getController("QuilActionController")));
-        $this->addRouter(new Router("/quil/info/{id}", "getInfo", $this->controller->getController("QuilActionController")));
-        $this->addRouter(new Router("/quil/datasources/{id}", "getSources", $this->controller->getController("QuilActionController")));
-        $this->addRouter(new Router("/quil/add_source/{id}", "addSource", $this->controller->getController("QuilActionController")));
-        $this->addRouter(new Router("/quil/update_source/{id}", "updateSource", $this->controller->getController("QuilActionController")));
+        $this->addRouter(new Router("/quil/create", "create", $this->controller->getController("QuilActionController"), true));
+        $this->addRouter(new Router("/quil/route_create", "createRoute", $this->controller->getController("QuilActionController"), true));
+        $this->addRouter(new Router("/quil/route_delete/{id}", "deleteRoute", $this->controller->getController("QuilActionController"), true));
+        $this->addRouter(new Router("/quil/delete/{id}", "delete", $this->controller->getController("QuilActionController"), true));
+        $this->addRouter(new Router("/quil/save/{id}", "save", $this->controller->getController("QuilActionController"), true));
+        $this->addRouter(new Router("/quil/info/{id}", "getInfo", $this->controller->getController("QuilActionController"), true));
+        $this->addRouter(new Router("/quil/datasources/{id}", "getSources", $this->controller->getController("QuilActionController"), true));
+        $this->addRouter(new Router("/quil/add_source/{id}", "addSource", $this->controller->getController("QuilActionController"), true));
+        $this->addRouter(new Router("/quil/update_source/{id}", "updateSource", $this->controller->getController("QuilActionController"), true));
 
-        $this->addRouter(new Router("/quil/delete_source/{id}", "delSource", $this->controller->getController("QuilActionController")));
+        $this->addRouter(new Router("/quil/delete_source/{id}", "delSource", $this->controller->getController("QuilActionController"), true));
 
         $pm = new PageManager();
         foreach ($pm->fetchRoutes()->returnRoutes() as $route) {

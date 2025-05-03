@@ -1,4 +1,5 @@
 <?php
+
 use Dashboard\classes\dashboard\DashboardPage;
 use redirect\Redirect;
 use view\View;
@@ -10,8 +11,9 @@ final class DashboardMainController extends DashboardPage
     {
         $this->adminCheck();
         $this->setTitle("Dashboard");
+
         $this->eventDispatcher->dispatch($this->event);
-        return $this->view($this->getViewBundle());
+        return $this->view($this->getViewBundle(["paths" => $locs]));
     }
 
     public function login(array|string $params): View

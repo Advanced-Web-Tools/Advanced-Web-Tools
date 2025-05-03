@@ -18,7 +18,13 @@
 </form>
 @endsection
 @section('page')
-<h1 class="title">{{ $title }}</h1>
+@if(empty($mediaContent))
+    <div class="empty-wrapper">
+        <h1>It's little empty here....</h1>
+        <img src="@asset('/images/box.png')" alt="Empty box">
+    </div>
+@endif
+@if(!empty($mediaContent))
 <div class="files">
     <div class="content_wrapper">
         @foreach($mediaContent as $media)
@@ -74,7 +80,7 @@
         @endforeach
     </div>
 </div>
-
+@endif
 <div class="helper">
     <div class="content"></div>
 </div>

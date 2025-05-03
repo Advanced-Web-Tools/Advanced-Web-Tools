@@ -22,10 +22,10 @@ final class ThemingRouterAPI extends RuntimeRouterAPI
     public function main(): void
     {
         $this->addRouter(new Router("/dashboard/themes", "index", $this->controllerAPI->getController("ThemingController")));
-        $this->addRouter(new Router("/theming/customize/{name}/{theme_id}", "customize", $this->controllerAPI->getController("ThemingController")));
-        $this->addRouter(new Router("/theming/menu/save", "saveMenuItem", $this->controllerAPI->getController("ThemingController")));
-        $this->addRouter(new Router("/theming/menu/delete", "deleteMenuItem", $this->controllerAPI->getController("ThemingController")));
+        $this->addRouter(new Router("/theming/customize/{name}/{theme_id}", "customize", $this->controllerAPI->getController("ThemingController"), true));
+        $this->addRouter(new Router("/theming/menu/save", "saveMenuItem", $this->controllerAPI->getController("ThemingController"), true));
+        $this->addRouter(new Router("/theming/menu/delete", "deleteMenuItem", $this->controllerAPI->getController("ThemingController"), true));
         $this->addRouter(new Router("/dashboard/menu_builder/", "MenuBuilder", $this->controllerAPI->getController("ThemingController")));
-        $this->addRouter(new Router("/theming/settings/{setting_id}/apply", "applySetting", $this->controllerAPI->getController("ThemingController")));
+        $this->addRouter(new Router("/theming/settings/{setting_id}/apply", "applySetting", $this->controllerAPI->getController("ThemingController"), true));
     }
 }

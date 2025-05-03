@@ -50,6 +50,13 @@ class Router
      */
     public EventDispatcher $eventDispatcher;
 
+
+    /**
+     * @var bool Service
+     * Determines if this route is used for processing data or other type of jobs, and should be hidden from UI.
+     */
+    public bool $service = false;
+
     /**
      * Router constructor.
      *
@@ -57,12 +64,14 @@ class Router
      * @param string $action The action to be called.
      * @param Controller $controller The controller handling the action.
      */
-    public function __construct(string $path, string $action, Controller $controller)
+    public function __construct(string $path, string $action, Controller $controller, bool $service = false)
     {
         $this->path = $path;
         $this->action = $action;
         $this->controller = $controller;
         $this->name = "";
+
+        $this->service = $service;
 
         return $this;
     }

@@ -68,8 +68,6 @@
     width: 100%;
 }
 
-
-
 .helper .wrapper img {
     display: block;
     margin: 0 auto;
@@ -79,5 +77,24 @@
     object-fit: contain;
     background: var(--secondary_accent);
     border-radius: var(--border_radius);
+}
+
+.empty-wrapper {
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 70%;
+    height: 100%;
+    text-align: center;
+    color: #898989;
+    font-size: 2rem;
+}
+
+.empty-wrapper img {
+    width: 300px;
+    height: 300px;
 }
 
