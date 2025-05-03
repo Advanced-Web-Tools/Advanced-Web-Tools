@@ -21,8 +21,8 @@ final class MediaRoutes extends RuntimeRouterAPI
         $this->addRouter(new Router("/dashboard/media/{filter}", "index", $this->controller->getController("MediaCenter")));
 
         //Actions
-        $this->addRouter(new Router("/dashboard/mediacenter/actions/upload", "upload", $this->controller->getController("MediaAction")));
-        $this->addRouter(new Router("/dashboard/mediacenter/actions/delete/{id}", "delete", $this->controller->getController("MediaAction")));
-        $this->addRouter(new Router("/api/mediacenter/getMedia/", "fetchAllMedia", $this->controller->getController("MediaAction")));
+        $this->addRouter(new Router("/dashboard/mediacenter/actions/upload", "upload", $this->controller->getController("MediaAction"), true));
+        $this->addRouter(new Router("/dashboard/mediacenter/actions/delete/{id}", "delete", $this->controller->getController("MediaAction"), true));
+        $this->addRouter(new Router("/api/mediacenter/getMedia/", "fetchAllMedia", $this->controller->getController("MediaAction"), true));
     }
 }

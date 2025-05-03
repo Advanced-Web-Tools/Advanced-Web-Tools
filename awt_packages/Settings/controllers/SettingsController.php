@@ -55,7 +55,8 @@ final class SettingsController extends DashboardPage
         $set->fetchSettings();
         $setting = $set->getSetting($_POST["change"]);
 
-        if(!$this->admin->checkPermission($setting->required_permission_level)) {
+
+        if(!$this->admin->checkPermission($setting->required_permission_level ?? 0)) {
             $red = new Redirect();
             $red->back();
             $red->redirectTo .= "?error";
@@ -66,9 +67,9 @@ final class SettingsController extends DashboardPage
 
         if($setting->type == "boolean") {
             if(isset($_POST[$_POST["change"]])) {
-                $setting->value = true;
+                $setting->value = 'true';
             } else {
-                $setting->value = false;
+                $setting->value = 'false';
             }
         } else {
             $setting->value = $_POST[$_POST["change"]];

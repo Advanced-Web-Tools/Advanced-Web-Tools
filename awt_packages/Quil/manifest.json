@@ -1,10 +1,12 @@
 {
   "plugin": {
     "name": "Quil",
+    "author": "ElStefanos",
     "icon": "quil.png",
     "system": "true",
     "version": "1.0.0",
     "description": "Quil - Page builder",
-    "minimumAwtVersion": "24.9.0"
+    "minimumAwtVersion": "24.9.0",
+    "maximumAwtVersion": null
   }
 }

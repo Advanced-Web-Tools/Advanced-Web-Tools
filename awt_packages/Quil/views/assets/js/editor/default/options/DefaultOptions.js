@@ -5,6 +5,7 @@ import {fontOptions} from "./Fonts.js";
 import {borderOptions} from "./Border.js";
 import {backgroundOptions} from "./Background.js";
 import {dimensionOptions} from "./WidthHeight.js";
+import {HyperLink} from "./HyperLink.js";
 
 
 options.addOption(dimensionOptions);
@@ -13,3 +14,4 @@ options.addOption(paddingOptions);
 options.addOption(backgroundOptions);
 options.addOption(borderOptions);
 options.addOption(fontOptions);
+options.addOption(HyperLink)

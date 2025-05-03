@@ -42,7 +42,15 @@ class MenuDrawListener implements IEventListener
 
         $menu = new MenuItem("Customize", "fa-solid fa-brush", "/dashboard/themes");
         $menu->setIconType("fa");
+
+
+        $builder = new MenuItem("Menu Builder", "fa-solid fa-bars", "/dashboard/menu_builder/");
+        $builder->setIconType("fa");
+        $builder->createDom();
+
+        $menu->addChild($builder);
         $menu->createDom();
+
         $this->dashboardMenu->addItem($menu);
     }
 

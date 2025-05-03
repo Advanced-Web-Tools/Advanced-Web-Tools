@@ -31,7 +31,7 @@ const a = new Block();
 a.setName("Hyperlink");
 a.setCategory("Default");
 a.setFaIcon("fa-solid fa-link");
-a.addBody("<a class='block' style='font-size: 1rem;' href='' rel='nofollow'>Hyperlink</a>");
+a.addBody("<a class='block' style='font-size: 1rem;' href=\"#\" rel='nofollow'>Hyperlink</a>");
 
 const div = new Block();
 div.setName("Container");

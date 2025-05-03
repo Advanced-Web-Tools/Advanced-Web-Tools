@@ -4,7 +4,8 @@ namespace Theming\classes\ThemeAPI;
 
 use event\EventDispatcher;
 use router\Router;
-use Theming\classes\Theme\ThemePage;
+use Theming\classes\Theme\Page\ThemePage;
+use Theming\classes\Theme\Settings\ThemeSettings;
 
 abstract class ThemeAPI
 {
@@ -15,7 +16,7 @@ abstract class ThemeAPI
     public EventDispatcher $eventDispatcher;
     public array $pages = [];
     public int $themeID = 0;
-
+    public ThemeSettings $themeSettings;
     abstract public function buildTheme(): void;
 
     public function addPage(string $name, string $route, string $viewName): void
@@ -27,6 +28,11 @@ abstract class ThemeAPI
         ];
 
         $this->pages[] = $page;
+    }
+
+    public function addSettings(ThemeSettings $settings): void
+    {
+        $this->themeSettings = $settings;
     }
 
     public function getPages(): array
@@ -51,7 +57,7 @@ abstract class ThemeAPI
 
     protected function addController(ThemePage $controller): void
     {
-        $controller->setID($this->themeID)->addPages($this->pages);
+        $controller->setID($this->themeID)->addPages($this->pages)->setSettings($this->themeSettings);
         $this->controllers[] = $controller;
     }
 

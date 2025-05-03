@@ -122,7 +122,7 @@ class PackageManager
             $package->setMinimumAwtVersion($packageData['minimum_awt_version']);
             $package->setMaximumAwtVersion($packageData['maximum_awt_version']);
             $package->setInstallationDate($packageData['installation_date']);
-            $package->installedByUsername = $packageData['installed_by'];
+            $package->installedByUsername = $packageData['installed_by'] == null ? 'AWT' : $packageData['installed_by'];
 
             switch ($packageData['type']) {
                 case 1:

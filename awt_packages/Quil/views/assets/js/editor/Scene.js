@@ -2,9 +2,11 @@ import {Editor} from "./Editor.js";
 import {Clipboard} from "./clipboard/Clipboard.js";
 import {BlockContext} from "./context/BlockContext.js";
 import {DataSources} from "./data_sources/DataSources.js";
+import {History} from "./history/History.js";
 
 export class Scene {
     constructor(editorPage, blocks, options) {
+        this.history = new History();
         this.editor = editorPage;
         this.currentSelector = editorPage;
         this.blocks = blocks;
@@ -76,7 +78,7 @@ export class Scene {
         }
 
         if (this.insert.is(target)) {
-            return; // No need to move if the inserter is already below the target
+            return;
         }
 
         const newInsert = this.createInsertElement();

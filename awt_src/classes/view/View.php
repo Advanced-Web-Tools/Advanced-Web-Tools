@@ -3,7 +3,11 @@
 namespace view;
 
 use DOMDocument;
+use render\events\RenderReadyEvent;
 use render\Render;
+use render\TemplateEngine\BladeOne;
+use render\TemplateEngine\Data\DataFunction;
+use Throwable;
 
 class View extends Render
 {
@@ -55,6 +59,43 @@ class View extends Render
         ob_start();
         include $this->viewDirectory . $this->viewName . '.awt.php';
         return ob_get_clean();
+    }
+
+    /**
+     * Renders the HTML document, processes templates, and dispatches a render-ready event.
+     * It applies template parsing for loops, conditions, assets, and variables before returning the final HTML string.
+     *
+     * @throws Exception If any issues occur during rendering or template loading.
+     * @return string The final rendered HTML content as a string.
+     */
+    public function render(): string
+    {
+        $this->loadTemplate();
+        $ready = new RenderReadyEvent();
+        $ready->renderer = $this;
+
+        $this->eventDispatcher->dispatch($ready);
+        $this->createBundleObjects();
+
+
+        try {
+            $parser = new BladeOne($this->viewDirectory, CACHE, BladeOne::MODE_AUTO);
+            $parser->setFileExtension(".awt.php");
+
+            $parser->addAssetDict(0, $this->localAssetPath);
+            $parser->setPackageName($this->packageName);
+
+
+            $parser->with($this->bundle);
+            return $parser->run($this->viewName);
+
+        } catch (Throwable $e) {
+            if(DEBUG)
+                $e->getTraceAsString();
+
+            echo "An error has occurred while rendering: " . $e->getMessage();
+        }
+        return "";
     }
 
 }

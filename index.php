@@ -1,15 +1,14 @@
 <?php
 require_once './awt_dirMap.php';
 require_once './awt_config.php';
-
 require_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt_autoLoader.php';
 require_once JOBS . 'awt_settings.php';
 require_once JOBS . "awt_domainBuilder.php";
+require_once FUNCTIONS . 'awt_errorHandler.fun.php';
 
 use event\EventDispatcher;
 use packages\manager\loader\Loader;
 use redirect\Redirect;
-use router\events\EDynamicRoute;
 use router\events\EDynamicRouteListener;
 use router\manager\RouterManager;
 use setting\Config;
@@ -33,7 +32,7 @@ if (Config::getConfig("AWT", "use packages")->getValue() == 'true') {
     try {
         $packages->load();
     } catch (Exception $e) {
-        throw ($e);
+        die($e->getMessage());
     }
 }
 

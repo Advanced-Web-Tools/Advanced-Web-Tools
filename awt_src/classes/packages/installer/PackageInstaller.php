@@ -220,7 +220,7 @@ class PackageInstaller
                 if ($file == $this->package->getIcon()) {
                     $this->databaseManager->table("awt_package")->where(["id" => $this->package->getId()])
                         ->update([
-                            "icon" => explode("public_html", $data->getLocation())[1],
+                            "icon" => "/awt_data" . explode("awt_data", $data->getLocation())[1],
                         ]);
                 }
 

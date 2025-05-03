@@ -1,7 +1,7 @@
 User-agent: *
-Disallow: 
 Crawl-delay: 600
 Disallow: /awt_admin/
 Disallow: /awt_packages/
 Disallow: /awt_src/
 Disallow: /awt_data/
+Disallow: /dashboard/

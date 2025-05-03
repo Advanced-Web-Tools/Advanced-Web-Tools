@@ -1,5 +1,7 @@
 <?php
 
+use AWTRespond\src\AWTRespond;
+use AWTRespond\src\enums\EAWTRespondType;
 use Dashboard\classes\dashboard\DashboardPage;
 use database\DatabaseManager;
 use packages\enums\EPackageType;
@@ -7,6 +9,7 @@ use packages\manager\PackageManager;
 use Quil\classes\page\PageManager;
 use redirect\Redirect;
 use Theming\classes\events\EGetThemePages;
+use Theming\classes\Theme\Settings\ThemeSettingModel;
 use Theming\classes\Theme\ThemeModel;
 use view\View;
 
@@ -54,7 +57,6 @@ final class ThemingController extends DashboardPage
         return $this->view($this->getViewBundle($bundle));
     }
 
-
     public function customize(array|string $params): Redirect
     {
         $this->adminCheck();
@@ -65,6 +67,41 @@ final class ThemingController extends DashboardPage
         }
 
         return $this->enableCustomization($params);
+    }
+
+    public function MenuBuilder(array|string $params): View
+    {
+        $this->adminCheck();
+        $this->eventDispatcher->dispatch($this->event);
+        $this->setTitle("Menu Builder");
+
+        $database = new DatabaseManager();
+        $result = $database->table("theming_menu")->select()->where(["1" => 1])->get();
+
+        $bundle["menus"] = $result;
+
+        $bundle["menu_items"] = $database->table("theming_menu_item")->select()->where(["1"=>"1"])->orderBy("position")->get();
+
+        return $this->view($this->getViewBundle($bundle));
+    }
+
+    public function applySetting(array|string $params): Redirect
+    {
+        $this->adminCheck();
+
+        if(empty($params['setting_id']))
+            return (new Redirect())->back();
+
+        $setting = new ThemeSettingModel($params['setting_id']);
+
+        if(!isset($_POST['setting_value']))
+            return (new Redirect)->back();
+
+        $setting->changeValue($_POST['setting_value']);
+
+        $setting->save();
+
+        return (new Redirect)->back();
     }
 
     private function checkForCustomized(array $params): bool|int {
@@ -147,19 +184,69 @@ final class ThemingController extends DashboardPage
         return [];
     }
 
-    private function filterPackages(array $packages): array
+
+    public function saveMenuItem(): AWTRespond
     {
+        $data = [
+            "response" => 500
+        ];
 
-        foreach ($packages as $key => $package) {
-            $type = $package->packageType;
+        $rawBody = file_get_contents('php://input');
+        $decodedBody = json_decode($rawBody, true);
 
-            if ($type !== EPackageType::Theme)
-                unset($packages[$key]);
+        $database = new DatabaseManager();
 
+        if(str_starts_with($decodedBody["id"], "new-")) {
+            $res = $database->table("theming_menu_item")->insert([
+                "name" => $decodedBody["name"],
+                "menu_id" => $decodedBody["menu_id"],
+                "link" => $decodedBody["link"],
+                "target" => $decodedBody["target"],
+                "parent_item" => $decodedBody["parent_id"],
+                "position" => $decodedBody["position"]
+            ])->executeInsert();
+
+            if($res !== null) {
+                $data["response"] = 200;
+                $data["id"] = $res;
+            }
+        } else {
+            $res = $database->table("theming_menu_item")->where(["id" => $decodedBody["id"]])->update([
+                "name" => $decodedBody["name"],
+                "link" => $decodedBody["link"],
+                "target" => $decodedBody["target"],
+                "parent_item" => $decodedBody["parent_id"],
+                "position" => $decodedBody["position"]
+            ]);
+
+            if($res)
+                $data["response"] = 200;
         }
 
-        return $packages;
+        $response = new AWTRespond();
+        $response->setType(EAWTRespondType::JSON)->setContent($data)->setCode($data["response"]);
+        return $response;
     }
 
+    public function deleteMenuItem(): AWTRespond
+    {
+        $data = [
+            "response" => 500
+        ];
+
+        $rawBody = file_get_contents('php://input');
+        $decodedBody = json_decode($rawBody, true);
+
+        if(isset($decodedBody["id"])) {
+            $database = new DatabaseManager();
+            $res = $database->table("theming_menu_item")->where(["id" => $decodedBody["id"]])->delete();
+            if($res)
+                $data["response"] = 200;
+        }
+
+        $response = new AWTRespond();
+        $response->setType(EAWTRespondType::JSON)->setContent($data)->setCode($data["response"]);
+        return $response;
+    }
 
 }

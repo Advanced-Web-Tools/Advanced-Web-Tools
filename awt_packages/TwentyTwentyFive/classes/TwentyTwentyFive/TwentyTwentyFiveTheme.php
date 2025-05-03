@@ -23,7 +23,8 @@ final class TwentyTwentyFiveTheme extends ThemeAPI
         $this->buildController();
         $this->addRouter(new Router("/", "index", $this->controller));
         $this->addRouter(new Router("/about", "about", $this->controller));
-        $this->addRouter(new Router("/contact", "about", $this->controller));
+        $this->addRouter(new Router("/contact", "contact", $this->controller));
+        $this->addRouter(new Router("/TwentyTwentyFive/MainCSS", "MainCSS", $this->controller));
     }
 
     private function buildController(): void
@@ -33,7 +34,7 @@ final class TwentyTwentyFiveTheme extends ThemeAPI
         $this->controller->setRootPath(PACKAGES . "/TwentyTwentyFive");
         $this->controller->setViewPath("/views/");
         $this->controller->packageName = "TwentyTwentyFive";
-        $this->controller->localAssetPath = "/TwentyTwentyFive/views/assets/";
+        $this->controller->localAssetPath = "/awt_packages/TwentyTwentyFive/views/assets";
         $this->addController($this->controller);
     }
 

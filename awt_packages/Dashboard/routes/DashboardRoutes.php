@@ -19,7 +19,7 @@ final class DashboardRoutes extends RuntimeRouterAPI
         $this->addRouter(new Router("/dashboard/login/{status}", "login", $this->controller->getController("DashboardController")));
 
         //Actions
-        $this->addRouter(new Router("/dashboard/loginAction", "loginAction", $this->controller->getController("ActionController")));
-        $this->addRouter(new Router("/dashboard/logout", "logoutAction", $this->controller->getController("ActionController")));
+        $this->addRouter(new Router("/dashboard/loginAction", "loginAction", $this->controller->getController("ActionController"), true));
+        $this->addRouter(new Router("/dashboard/logout", "logoutAction", $this->controller->getController("ActionController"), true));
     }
 }

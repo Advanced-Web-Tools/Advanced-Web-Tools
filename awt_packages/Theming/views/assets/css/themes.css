@@ -46,6 +46,13 @@
     border-radius: var(--border_radius);
 }
 
+
+.setting input[type='color'] {
+    width: 30px !important;
+    padding: 0;
+    height: 30px !important;
+}
+
 .pages {
     width: 100%;
     display: grid;

@@ -18,6 +18,6 @@ final class SettingsRouter extends RuntimeRouterAPI
     public function main(): void
     {
         $this->addRouter(new Router("/dashboard/settings/{category}", "index", $this->controller->getController("SettingsController")));
-        $this->addRouter(new Router("/settings/change/", "changeSetting", $this->controller->getController("SettingsController")));
+        $this->addRouter(new Router("/settings/change/", "changeSetting", $this->controller->getController("SettingsController"), true));
     }
 }

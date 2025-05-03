@@ -85,7 +85,6 @@ dimensionOptions.attachFunction(0, function(block) {
             console.log(current_w_css);
         } else {
             $("#width_options").val("manual").trigger("change");
-            console.log(current_w_css);
         }
 
         if (dimOptions.includes(current_h_css)) {

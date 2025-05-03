@@ -41,6 +41,10 @@
     background: var(--secondary_background);
 }
 
+.top-bar * {
+    overflow: hidden;
+}
+
 .inp_primary, .select_primary {
     border: none;
     color: var(--text_primary) !important;
@@ -64,7 +68,7 @@ input[type='checkbox'] {
     display: flex;
     justify-content: space-between;
     height: calc(100% - 51px);
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
 }
 
 .main aside {
@@ -76,6 +80,7 @@ input[type='checkbox'] {
     flex-direction: column;
     background: var(--secondary_background);
     transition: .2s ease-in-out;
+    overflow: hidden;
 }
 
 .main aside .header {
@@ -109,7 +114,7 @@ input[type='checkbox'] {
     flex-grow: 1;
     max-width: calc(100% - 275px);
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
 }
 
@@ -128,7 +133,7 @@ input[type='checkbox'] {
 }
 
 .main .left.active {
-    width: 300px;
+    min-width: 300px;
     opacity: 100%;
 }
 
@@ -148,7 +153,8 @@ input[type='checkbox'] {
     transition: .3s;
     background: #fff;
     padding: 10px 5px;
-    overflow-y: scroll;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .editor .page.mobile {
@@ -156,6 +162,15 @@ input[type='checkbox'] {
     height: 90%;
     margin: 0 auto;
     border: 1px solid var(--primary_accent);
+}
+
+.editor .code {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 35px);
+    left: 0;
+    top: 35px;
+    background: var(--primary_background);
 }
 
 .helper {

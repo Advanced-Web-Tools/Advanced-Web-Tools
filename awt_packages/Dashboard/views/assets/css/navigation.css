@@ -41,9 +41,9 @@
     margin: 5px 0;
 }
 
-.navigation .dropdown:hover .dropdown-menu,
-.dropdown a.active + .dropdown-menu,
-.dropdown-menu.active {
+.navigation a.active + .dropdown-menu,
+.dropdown-menu.active,
+.navigation.active {
     display: flex;
     gap: 5px;
     flex-direction: column;

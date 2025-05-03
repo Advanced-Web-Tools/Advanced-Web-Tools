@@ -1,0 +1,114 @@
+.hero {
+    background-size: cover;
+    background-position: 50% 50%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    padding: 2rem;
+    position: relative;
+}
+
+
+.hero-content {
+    z-index: 2;
+    max-width: 700px;
+    font-size: 35pt;
+}
+
+.btn-primary {
+    background-color: var(--theme_primary_accent);
+    color: var(--theme_secondary_text);
+    padding: 0.75rem 2rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    box-shadow: 0 10px 20px rgba(37,99,235,0.3);
+    transition: all 0.3s ease;
+    transform: scale(1);
+}
+
+.btn-primary:hover {
+    background-color: var(--theme_secondary_accent);
+    box-shadow: 0 12px 24px rgba(29,78,216,0.4);
+    transform: scale(1.05);
+}
+
+
+.features {
+    padding: 4rem 1rem;
+    text-align: center;
+}
+
+.features h2 {
+    margin-bottom: 2rem;
+    font-size: 2rem;
+}
+
+.feature-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.feature {
+    background: var(--theme_primary_background);
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    flex: 1 1 300px;
+    max-width: 320px;
+}
+
+.about {
+    margin: auto auto;
+    padding: 4rem 1rem;
+    width: calc(100% - 2rem);
+    background-color: var(--theme_primary_background);
+}
+
+.about-content {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.about .text {
+    flex: 1;
+    min-width: 280px;   
+}
+
+.about .image img {
+    width: 100%;
+    border-radius: 12px;
+    max-width: 480px;
+}
+
+.cta {
+    background-color: var(--theme_primary_accent);
+    color: var(--theme_secondary_text);
+    text-align: center;
+    padding: 3rem 1rem;
+}
+
+.cta .btn-primary {
+    background: var(--theme_primary_background);
+    color: var(--theme_primary_accent);
+}
+
+.cta h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.cta p {
+    font-size: 1.125rem;
+    margin-bottom: 2rem;
+}

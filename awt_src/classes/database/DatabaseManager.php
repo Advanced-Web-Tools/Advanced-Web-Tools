@@ -229,11 +229,14 @@ class DatabaseManager
 
         $this->sql = $sql;
 
-        $stmt->execute();
+        try {
+            $stmt->execute();
+        } catch (PDOException $e) {
+            if(DEBUG)
+                die("Error has occured: " . $e->getMessage() . "<br>" . "SQL: " . $sql);
+        }
 
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-//        var_dump($result);
 
         $this->__destruct();
         return $result;
