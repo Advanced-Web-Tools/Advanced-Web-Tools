@@ -1,3 +1,4 @@
+
 .hero-about {
     background-size: cover;
     background-position: center;
@@ -6,7 +7,7 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: var(--secondary_text);
+    color: var(--theme_secondary_text);
     padding: 2rem;
     position: relative;
     box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.3);
@@ -46,7 +47,7 @@
 
 .about-us {
     padding: 4rem 1rem;
-    background-color: var(--secondary_background);
+    background-color: var(--theme_secondary_background);
     text-align: center;
 }
 
@@ -64,14 +65,14 @@
 .about-us .text h2 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
-    color: var(--primary_text);
+    color: var(--theme_primary_text);
     font-weight: 600;
 }
 
 .about-us .text p {
     font-size: 1.125rem;
     line-height: 1.8;
-    color: var(--primary_text);
+    color: var(--theme_primary_text);
     margin-bottom: 1rem;
 }
 
@@ -89,7 +90,7 @@
 
 /* Our Values Section */
 .values {
-    background-color: var(--primary_background);
+    background-color: var(--theme_primary_background);
     padding: 4rem 1rem;
 }
 
@@ -98,7 +99,7 @@
     text-transform: uppercase;
     margin-bottom: 2rem;
     font-weight: bold;
-    color: var(--primary_text);
+    color: var(--theme_primary_text);
     text-align: center;
 }
 
@@ -110,7 +111,7 @@
 }
 
 .value {
-    background: var(--secondary_background);
+    background: var(--theme_secondary_background);
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
@@ -128,12 +129,12 @@
 .value-heading {
     font-size: 1.75rem;
     margin-bottom: 1rem;
-    color: var(--primary_text);
+    color: var(--theme_primary_text);
 }
 
 .cta {
-    background-color: var(--primary_accent);
-    color: var(--secondary_text);
+    background-color: var(--theme_primary_accent);
+    color: var(--theme_secondary_text);
     text-align: center;
     padding: 3rem 1rem;
     transition: background-color 0.3s ease;
@@ -154,9 +155,9 @@
     padding: 1rem 2.5rem;
     font-weight: bold;
     border-radius: 8px;
-    background-color: var(--primary_background);
+    background-color: var(--theme_primary_background);
     text-decoration: none;
-    color: var(--primary_accent);
+    color: var(--theme_primary_accent);
     display: inline-block;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;

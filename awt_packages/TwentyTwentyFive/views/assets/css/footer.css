@@ -1,8 +1,9 @@
+
 .footer {
-    background-color: var(--footer_background);
+    background-color: var(--theme_footer_background);
     color: white;
     padding: 3rem 1rem 2rem;
-    font-family: var(--font_family);
+    font-family: var(--theme_font_family);
 }
 
 .footer .container {
@@ -25,7 +26,7 @@
 }
 
 .footer-branding p {
-    color: var(--secondary_text);
+    color: var(--theme_secondary_text);
     font-size: 1rem;
 }
 
@@ -38,7 +39,7 @@
 
 .footer-links a,
 .footer-social a {
-    color: var(--secondary_text);
+    color: var(--theme_secondary_text);
     text-decoration: none;
     font-weight: 400;
     transition: color 0.3s ease;
@@ -47,7 +48,7 @@
 
 .footer-links a:hover,
 .footer-social a:hover {
-    color: var(--primary_accent);
+    color: var(--theme_primary_accent);
 }
 
 .footer-links .children {

@@ -9,10 +9,10 @@
         :root {
             @foreach($theme->settings as $setting)
                     @if($setting->type === "COLOR")
-                        --{{$setting->name}}: {{$setting->value}};
+                        --theme_{{$setting->name}}: {{$setting->value}};
                     @endif
                     @if($setting->name === "font_family")
-                        --font_family: {!! $setting->value !!};
+                        --theme_font_family: {!! $setting->value !!};
                     @endif
             @endforeach
         }

@@ -1,7 +1,8 @@
+
 .header {
     position: fixed;
     height: 50px;
-    background: var(--primary_background);
+    background: var(--theme_primary_background);
     z-index: 3;
     padding: 1em 4rem;
     width: calc(100% - 4rem);
@@ -33,11 +34,11 @@
 .header .navigation a {
     text-decoration: none;
     font-weight: 400;
-    color: var(--primary_text);
+    color: var(--theme_primary_text);
 }
 
 .header .navigation a:hover {
-    color: var(--primary_accent);
+    color: var(--theme_primary_accent);
 }
 
 .header .nav-item.parent-item {
@@ -48,7 +49,7 @@
     position: absolute;
     top: 100%;
     left: 0;
-    background: var(--primary_background);
+    background: var(--theme_primary_background);
     display: flex;
     flex-direction: column;
     gap: 5px;

@@ -24,6 +24,7 @@ final class TwentyTwentyFiveTheme extends ThemeAPI
         $this->addRouter(new Router("/", "index", $this->controller));
         $this->addRouter(new Router("/about", "about", $this->controller));
         $this->addRouter(new Router("/contact", "contact", $this->controller));
+        $this->addRouter(new Router("/TwentyTwentyFive/MainCSS", "MainCSS", $this->controller));
     }
 
     private function buildController(): void

@@ -19,8 +19,8 @@
 }
 
 .btn-primary {
-    background-color: var(--primary_accent);
-    color: var(--secondary_text);
+    background-color: var(--theme_primary_accent);
+    color: var(--theme_secondary_text);
     padding: 0.75rem 2rem;
     border-radius: 10px;
     font-size: 1rem;
@@ -33,7 +33,7 @@
 }
 
 .btn-primary:hover {
-    background-color: var(--secondary_accent);
+    background-color: var(--theme_secondary_accent);
     box-shadow: 0 12px 24px rgba(29,78,216,0.4);
     transform: scale(1.05);
 }
@@ -57,7 +57,7 @@
 }
 
 .feature {
-    background: var(--primary_background);
+    background: var(--theme_primary_background);
     padding: 2rem;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -66,9 +66,10 @@
 }
 
 .about {
-    margin: auto 10%;
+    margin: auto auto;
     padding: 4rem 1rem;
-    background-color: var(--primary_background);
+    width: calc(100% - 2rem);
+    background-color: var(--theme_primary_background);
 }
 
 .about-content {
@@ -81,7 +82,7 @@
 
 .about .text {
     flex: 1;
-    min-width: 280px;
+    min-width: 280px;   
 }
 
 .about .image img {
@@ -91,15 +92,15 @@
 }
 
 .cta {
-    background-color: var(--primary_accent);
-    color: var(--secondary_text);
+    background-color: var(--theme_primary_accent);
+    color: var(--theme_secondary_text);
     text-align: center;
     padding: 3rem 1rem;
 }
 
 .cta .btn-primary {
-    background: var(--primary_background);
-    color: var(--primary_accent);
+    background: var(--theme_primary_background);
+    color: var(--theme_primary_accent);
 }
 
 .cta h2 {

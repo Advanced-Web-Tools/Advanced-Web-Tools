@@ -1,6 +1,7 @@
 <?php
 
 namespace TwentyTwentyFive\classes\controller;
+
 use setting\Config;
 use Theming\classes\Theme\Menu\ThemeMenu;
 use Theming\classes\Theme\Page\ThemePage;
@@ -18,6 +19,7 @@ final class TwentyTwentyFiveController extends ThemePage
     public string $page;
     public ThemeMenu $menu;
     public string $menuHTML;
+
     public function __construct()
     {
         $this->config = new Config();
@@ -53,7 +55,8 @@ final class TwentyTwentyFiveController extends ThemePage
             "address" => $this->address,
             "page" => $this->page,
             "params" => $params,
-            "navigation" => $this->menuHTML]);    }
+            "navigation" => $this->menuHTML]);
+    }
 
     public function contact(array|string $params): View
     {
@@ -64,5 +67,11 @@ final class TwentyTwentyFiveController extends ThemePage
             "address" => $this->address,
             "page" => $this->page,
             "params" => $params,
-            "navigation" => $this->menuHTML]);    }
+            "navigation" => $this->menuHTML]);
+    }
+
+    public function MainCSS(array|string $params): View
+    {
+        return $this->view();
+    }
 }
