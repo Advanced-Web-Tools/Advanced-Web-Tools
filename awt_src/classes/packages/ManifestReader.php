@@ -44,6 +44,7 @@ class ManifestReader extends Package
         $type = array_key_first($this->manifest);
         $values = $this->manifest[$type];
         $package->name = $values['name'];
+        $package->setStoreId($values['storeId']);
         $package->description = $values['description'] ?? null;
         $package->setIcon($values['icon'] ?? null);
         $package->setMinimumAwtVersion($values['minimumAwtVersion'] ?? null);

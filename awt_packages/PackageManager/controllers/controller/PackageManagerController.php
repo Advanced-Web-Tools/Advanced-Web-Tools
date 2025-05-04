@@ -23,7 +23,7 @@ final class PackageManagerController extends DashboardPage
 
         $this->adminCheck();
 
-        if(!$this->admin->checkPermission(1)) {
+        if (!$this->admin->checkPermission(1)) {
             $this->redirect->back();
 
             header("Location: {$this->redirect->redirectTo}");
@@ -62,7 +62,7 @@ final class PackageManagerController extends DashboardPage
     {
         $this->adminCheck();
 
-        if(!$this->admin->checkPermission(1)) {
+        if (!$this->admin->checkPermission(1)) {
             return $this->redirect->back();
         }
 
@@ -85,7 +85,7 @@ final class PackageManagerController extends DashboardPage
     public function enableAction(array|string $params): Redirect
     {
         $this->adminCheck();
-        if(!$this->admin->checkPermission(1)) {
+        if (!$this->admin->checkPermission(1)) {
             return $this->redirect->back();
         }
 
@@ -111,11 +111,14 @@ final class PackageManagerController extends DashboardPage
      */
     public function installPackage(array|string $params): Redirect
     {
+
+
         $this->adminCheck();
 
-        if(!$this->admin->checkPermission(1)) {
+        if (!$this->admin->checkPermission(0)) {
             return $this->redirect->back();
         }
+
 
         $this->redirect->back();
 
@@ -137,13 +140,13 @@ final class PackageManagerController extends DashboardPage
     {
         $this->adminCheck();
 
-        if(!$this->admin->checkPermission(1)) {
+        if (!$this->admin->checkPermission(1)) {
             return $this->redirect->back();
         }
 
         $this->redirect->back();
 
-        if($this->admin->checkPermission(0)) {
+        if ($this->admin->checkPermission(0)) {
             $uninstaller = new PackageManager();
             $uninstaller->removePackage($params["id"]);
         } else {
