@@ -13,6 +13,7 @@ use FilesystemIterator;
 use object\ObjectHandler;
 use packages\enums\EPackageType;
 use packages\installer\interface\IPackageInstall;
+use packages\installer\interface\IPackageUpdate;
 use packages\manager\PackageManager;
 use packages\ManifestReader;
 use packages\Package;
@@ -84,53 +85,95 @@ class PackageInstaller
      */
     public function installPackage(): self
     {
-        mkdir(PACKAGES . str_replace(" ", "", $this->package->name), 0777, true);
 
-        $this->dataManager->createOwnerDirectories($this->package->name);
+        $installed = true;
 
-        $type = match ($this->package->getPackageType()) {
-            EPackageType::Plugin => 1,
-            EPackageType::Theme => 2,
-            EPackageType::System => 0,
-        };
+        if(!is_dir(PACKAGES . str_replace(" ", "", $this->package->name)))
+            $installed = false;
 
-        $installedBy = null;
-        if ($this->admin->checkAuthentication())
-            $installedBy = $this->admin->getParam("id");
+        if(!$installed) {
+            mkdir(PACKAGES . str_replace(" ", "", $this->package->name), 0770, true);
 
-        $insert = [
-            'store_id' => $this->storeId,
-            'installed_by' => $installedBy,
-            'name' => $this->package->name,
-            'description' => $this->package->description,
-            'icon' => null,
-            'preview_image' => null,
-            'license' => $this->package->license,
-            'license_url' => $this->package->licenseUrl,
-            'author' => $this->package->author,
-            'version' => $this->package->getVersion(),
-            'minimum_awt_version' => $this->package->getMinimumAwtVersion(),
-            'maximum_awt_version' => $this->package->getMaximumAwtVersion(),
-            'type' => $type,
-            'system_package' => $this->package->systemPackage ? 1 : 0
-        ];
+            $this->dataManager->createOwnerDirectories($this->package->name);
 
 
-        $this->package->setId($this->databaseManager->table("awt_package")->
-        insert($insert)->executeInsert());
+            $type = match ($this->package->getPackageType()) {
+                EPackageType::Plugin => 1,
+                EPackageType::Theme => 2,
+                EPackageType::System => 0,
+            };
 
-        if(file_exists(TEMP . $this->tempName . "/install.php"))
-        {
-            $installAction = ObjectHandler::createObjectFromFile(TEMP . $this->tempName . "/install.php");
+            $installedBy = null;
+            if ($this->admin->checkAuthentication())
+                $installedBy = $this->admin->getParam("id");
 
-            if($installAction instanceof IPackageInstall) {
-                $installAction->postInstall($this->package->getId(), $this->package->name);
+            $insert = [
+                'store_id' => $this->storeId,
+                'installed_by' => $installedBy,
+                'name' => $this->package->name,
+                'description' => $this->package->description,
+                'icon' => null,
+                'preview_image' => null,
+                'license' => $this->package->license,
+                'license_url' => $this->package->licenseUrl,
+                'author' => $this->package->author,
+                'version' => $this->package->getVersion(),
+                'minimum_awt_version' => $this->package->getMinimumAwtVersion(),
+                'maximum_awt_version' => $this->package->getMaximumAwtVersion(),
+                'type' => $type,
+                'system_package' => $this->package->systemPackage ? 1 : 0
+            ];
+
+
+            $this->package->setId($this->databaseManager->table("awt_package")->
+            insert($insert)->executeInsert());
+
+            if (file_exists(TEMP . $this->tempName . "/install.php")) {
+                $installAction = ObjectHandler::createObjectFromFile(TEMP . $this->tempName . "/install.php");
+
+                if ($installAction instanceof IPackageInstall) {
+                    $installAction->postInstall($this->package->getId(), $this->package->name);
+                }
             }
-        }
 
-        if($this->package->systemPackage) {
-            $pm = new PackageManager();
-            $pm->enablePackage($this->package->getId());
+            if ($this->package->systemPackage) {
+                $pm = new PackageManager();
+                $pm->enablePackage($this->package->getId());
+            }
+        } else {
+
+            $this->package->setId($this->databaseManager->table("awt_package")->select(["id"])->where(["name" => $this->package->name])->get()[0]["id"]);
+
+
+            if($this->package->systemPackage) {
+                $update["status"] = 1;
+            }
+
+            $update = [
+                'store_id' => $this->storeId,
+                'name' => $this->package->name,
+                'description' => $this->package->description,
+                'icon' => null,
+                'preview_image' => null,
+                'license' => $this->package->license,
+                'license_url' => $this->package->licenseUrl,
+                'author' => $this->package->author,
+                'version' => $this->package->getVersion(),
+                'minimum_awt_version' => $this->package->getMinimumAwtVersion(),
+                'maximum_awt_version' => $this->package->getMaximumAwtVersion(),
+                'system_package' => $this->package->systemPackage ? 1 : 0
+            ];
+
+
+            $this->databaseManager->table("awt_package")->where(["id" => $this->package->getId()])->update($update);
+
+            if (file_exists(TEMP . $this->tempName . "/update.php")) {
+                $installAction = ObjectHandler::createObjectFromFile(TEMP . $this->tempName . "/update.php");
+
+                if ($installAction instanceof IPackageUpdate) {
+                    $installAction->update($this->package->getId(), $this->package->name);
+                }
+            }
         }
 
         return $this;
@@ -215,9 +258,10 @@ class PackageInstaller
                     "type" => mime_content_type($filePath),
                     "tmp_name" => $filePath,
                 ];
+
                 $data = $this->dataManager->uploadData($fileData, $fileData["name"], $dir, "Package", $this->package->name, true);
 
-                if ($file == $this->package->getIcon()) {
+                if ($fileData["name"] == $this->package->getIcon()) {
                     $this->databaseManager->table("awt_package")->where(["id" => $this->package->getId()])
                         ->update([
                             "icon" => "/awt_data" . explode("awt_data", $data->getLocation())[1],

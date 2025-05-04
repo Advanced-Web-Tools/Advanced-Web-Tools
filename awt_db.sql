@@ -3,10 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 04, 2025 at 12:22 AM
+-- Generation Time: May 04, 2025 at 01:05 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
+SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -27,6 +28,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `awt_admin`
 --
 
+DROP TABLE IF EXISTS `awt_admin`;
 CREATE TABLE IF NOT EXISTS `awt_admin` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
@@ -49,6 +51,7 @@ CREATE TABLE IF NOT EXISTS `awt_admin` (
 -- Table structure for table `awt_data`
 --
 
+DROP TABLE IF EXISTS `awt_data`;
 CREATE TABLE IF NOT EXISTS `awt_data` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ownerType` varchar(255) NOT NULL,
@@ -86,6 +89,7 @@ INSERT INTO `awt_data` (`id`, `ownerType`, `ownerName`, `ownerId`, `dataType`, `
 -- Table structure for table `awt_package`
 --
 
+DROP TABLE IF EXISTS `awt_package`;
 CREATE TABLE IF NOT EXISTS `awt_package` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `store_id` int(11) DEFAULT NULL,
@@ -137,6 +141,7 @@ INSERT INTO `awt_package` (`id`, `store_id`, `installed_by`, `name`, `descriptio
 -- Table structure for table `awt_setting`
 --
 
+DROP TABLE IF EXISTS `awt_setting`;
 CREATE TABLE IF NOT EXISTS `awt_setting` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `package_id` int(11) NOT NULL,
@@ -176,6 +181,7 @@ INSERT INTO `awt_setting` (`id`, `package_id`, `name`, `value_type`, `value`, `r
 -- Table structure for table `awt_table`
 --
 
+DROP TABLE IF EXISTS `awt_table`;
 CREATE TABLE IF NOT EXISTS `awt_table` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -214,6 +220,7 @@ INSERT INTO `awt_table` (`id`, `name`, `creation_date`, `creator`) VALUES
 -- Table structure for table `awt_table_structure`
 --
 
+DROP TABLE IF EXISTS `awt_table_structure`;
 CREATE TABLE IF NOT EXISTS `awt_table_structure` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `table_id` int(11) NOT NULL,
@@ -309,6 +316,7 @@ INSERT INTO `awt_table_structure` (`id`, `table_id`, `column_name`, `column_type
 -- Table structure for table `media_center_album`
 --
 
+DROP TABLE IF EXISTS `media_center_album`;
 CREATE TABLE IF NOT EXISTS `media_center_album` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -321,6 +329,7 @@ CREATE TABLE IF NOT EXISTS `media_center_album` (
 -- Table structure for table `media_center_album_content`
 --
 
+DROP TABLE IF EXISTS `media_center_album_content`;
 CREATE TABLE IF NOT EXISTS `media_center_album_content` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `album_id` int(11) NOT NULL,
@@ -336,6 +345,7 @@ CREATE TABLE IF NOT EXISTS `media_center_album_content` (
 -- Table structure for table `media_center_content`
 --
 
+DROP TABLE IF EXISTS `media_center_content`;
 CREATE TABLE IF NOT EXISTS `media_center_content` (
   `media_id` int(11) NOT NULL AUTO_INCREMENT,
   `data_id` int(11) NOT NULL,
@@ -350,6 +360,7 @@ CREATE TABLE IF NOT EXISTS `media_center_content` (
 -- Table structure for table `quil_page`
 --
 
+DROP TABLE IF EXISTS `quil_page`;
 CREATE TABLE IF NOT EXISTS `quil_page` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `created_by` int(11) DEFAULT NULL,
@@ -369,6 +380,7 @@ CREATE TABLE IF NOT EXISTS `quil_page` (
 -- Table structure for table `quil_page_content`
 --
 
+DROP TABLE IF EXISTS `quil_page_content`;
 CREATE TABLE IF NOT EXISTS `quil_page_content` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `page_id` int(11) NOT NULL,
@@ -383,6 +395,7 @@ CREATE TABLE IF NOT EXISTS `quil_page_content` (
 -- Table structure for table `quil_page_data_source`
 --
 
+DROP TABLE IF EXISTS `quil_page_data_source`;
 CREATE TABLE IF NOT EXISTS `quil_page_data_source` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `page_id` int(11) NOT NULL,
@@ -403,6 +416,7 @@ CREATE TABLE IF NOT EXISTS `quil_page_data_source` (
 -- Table structure for table `quil_page_route`
 --
 
+DROP TABLE IF EXISTS `quil_page_route`;
 CREATE TABLE IF NOT EXISTS `quil_page_route` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `route` varchar(255) NOT NULL,
@@ -419,6 +433,7 @@ CREATE TABLE IF NOT EXISTS `quil_page_route` (
 -- Table structure for table `theming_custom_page`
 --
 
+DROP TABLE IF EXISTS `theming_custom_page`;
 CREATE TABLE IF NOT EXISTS `theming_custom_page` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `theme_id` int(11) NOT NULL,
@@ -435,6 +450,7 @@ CREATE TABLE IF NOT EXISTS `theming_custom_page` (
 -- Table structure for table `theming_menu`
 --
 
+DROP TABLE IF EXISTS `theming_menu`;
 CREATE TABLE IF NOT EXISTS `theming_menu` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -460,6 +476,7 @@ INSERT INTO `theming_menu` (`id`, `name`, `active`) VALUES
 -- Table structure for table `theming_menu_item`
 --
 
+DROP TABLE IF EXISTS `theming_menu_item`;
 CREATE TABLE IF NOT EXISTS `theming_menu_item` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `menu_id` int(11) NOT NULL,
@@ -493,6 +510,7 @@ INSERT INTO `theming_menu_item` (`id`, `menu_id`, `name`, `link`, `target`, `pos
 -- Table structure for table `theming_settings`
 --
 
+DROP TABLE IF EXISTS `theming_settings`;
 CREATE TABLE IF NOT EXISTS `theming_settings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `theme_id` int(11) NOT NULL,
@@ -531,6 +549,7 @@ INSERT INTO `theming_settings` (`id`, `theme_id`, `name`, `value`, `type`) VALUE
 -- Table structure for table `theming_theme`
 --
 
+DROP TABLE IF EXISTS `theming_theme`;
 CREATE TABLE IF NOT EXISTS `theming_theme` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `package_id` int(11) NOT NULL,
@@ -649,6 +668,7 @@ ALTER TABLE `theming_settings`
 --
 ALTER TABLE `theming_theme`
   ADD CONSTRAINT `theming_theme_ibfk_1` FOREIGN KEY (`package_id`) REFERENCES `awt_package` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

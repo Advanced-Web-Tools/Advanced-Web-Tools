@@ -16,7 +16,7 @@ use packages\enums\EPackageType;
 class Package
 {
     protected ?int $id = null;                      // Unique identifier for the package.
-    protected ?int $storeId = null;                 // Identifier for the store where the package is located.
+    protected ?string $storeId = null;                 // Identifier for the store where the package is located.
     protected ?int $installedBy = null;             // ID of the user who installed the package.
     public string $name;                             // Name of the package.
     public ?string $description = null;              // Description of the package.
@@ -72,9 +72,9 @@ class Package
     /**
      * Sets the store ID of the package.
      *
-     * @param int|null $storeId The store identifier.
+     * @param string|null $storeId The store identifier.
      */
-    public function setStoreId(?int $storeId): void
+    public function setStoreId(?string $storeId): void
     {
         $this->storeId = $storeId;
     }

@@ -7,16 +7,38 @@ require_once JOBS . "awt_domainBuilder.php";
 require_once FUNCTIONS . 'awt_errorHandler.fun.php';
 
 use event\EventDispatcher;
+use packages\installer\PackageInstaller;
 use packages\manager\loader\Loader;
 use redirect\Redirect;
 use router\events\EDynamicRouteListener;
 use router\manager\RouterManager;
 use setting\Config;
 
+if (DEBUG && REMOTE_INSTALL_FOR_DEVS) {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_SERVER['REQUEST_URI'] == '/dev/install') {
+        if (isset($_FILES["package"]) && DEV_SECRET == $_POST["devSecret"]) {
+            $installer = new PackageInstaller($_FILES["package"]);
+
+            $installer->
+            setDataOwner("AWT")->
+            uploadPackage()->
+            extractPackage()->
+            installPackage()->
+            transferPackageFiles()->
+            extractData()->
+            cleanUp();
+
+            die("Installed on " . Config::getConfig("AWT", "Website Name")->getValue());
+        } else {
+            die(Config::getConfig("AWT", "Website Name")->getValue() . ": Wrong dev secret, or missing file.");
+        }
+    }
+}
+
+
 $packages = new Loader();
 $router = new RouterManager();
 $eventDispatcher = new EventDispatcher();
-
 
 $router->eventDispatcher = $eventDispatcher;
 
@@ -36,7 +58,7 @@ if (Config::getConfig("AWT", "use packages")->getValue() == 'true') {
     }
 }
 
-$router->eventDispatcher = $packages->eventDispatcher;;
+$router->eventDispatcher = $packages->eventDispatcher;
 
 foreach ($packages->routers as $route) {
     $router->loadRouters($route->getRouters());

@@ -50,11 +50,11 @@
                     <button class="btn_action_negative">Uninstall <i class="fas fa-trash-can"></i> </button>
                 </a>
                 @if($package['status'] === "Active")
-                <a href="/package_manager/actions/disable/{{$package['id']}}/">
+                <a href="/package_manager/actions/disable/{{$package['id']}}">
                     <button class="btn_action_negative">Disable</button>
                 </a>
                 @else
-                <a href="/package_manager/actions/enable/{{$package['id']}}/">
+                <a href="/package_manager/actions/enable/{{$package['id']}}">
                     <button class="btn_secondary">Enable</button>
                 </a>
                 @endif

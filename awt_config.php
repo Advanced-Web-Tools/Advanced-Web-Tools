@@ -1,7 +1,19 @@
 <?php
-const AWT_VERSION = "24.10.1";
+const AWT_VERSION = "24.10.2";
 const PACKAGE_MAX_LOAD_TRY = 5;
-const DEBUG = true;
+
+const DEBUG = false;
+
+/**
+ * # WARNING: Setting this to TRUE enables remote package installations in the local environment on port 3000.
+ *
+ * This setting is intended for development purposes only.
+ * It MUST remain FALSE in production environments to ensure security.
+ *
+ * In order for this to work please also set `DEBUG = true;`.
+ */
+const REMOTE_INSTALL_FOR_DEVS = false;
+const DEV_SECRET = "";
 
 ini_set("post_max_size", "512M");
 ini_set("upload_max_filesize", "512M");
