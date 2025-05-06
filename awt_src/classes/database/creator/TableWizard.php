@@ -26,8 +26,23 @@ class TableWizard extends DatabaseManager
             return false;
         }
 
-        $sql = "ALTER TABLE `$tableName` ADD COLUMN " . $column->generateSQL();
+        $sql = "ALTER TABLE `$tableName` ADD COLUMN " . $column->generateColumnSQL() . $column->generateForeignKeySQL();
+
         $stmt = $this->pdo->prepare($sql);
+
+
+        foreach ($this->tables as $table) {
+            if($table["name"] == $tableName) {
+                $tableID = $table["table_id"];
+                break;
+            }
+        }
+
+        $this->table("awt_table_structure")->insert([
+            "table_id" => $tableID,
+            "column_name" => $column->name,
+            "column_type" => strtolower($column->type),
+        ])->executeInsert();
 
         return $stmt->execute();
     }
@@ -39,17 +54,22 @@ class TableWizard extends DatabaseManager
             return false;
         }
 
-////        $column = new ColumnCreator();
-////        $date = $column->DATE("created_on")->default("CURRENT_TIMESTAMP");
-////        $update = $column->DATE("updated_on")->default("CURRENT_TIMESTAMP");
-////
-////        $this->addColumn($date);
-////        $this->addColumn($update);
+        // Separate column definitions and foreign keys
+        $columnsSQL = [];
+        $foreignKeysSQL = [];
 
-        $columnsSQL = array_map(fn($column) => $column->generateSQL(), $this->columns);
-        $columnsSQLString = implode(", ", $columnsSQL);
+        foreach ($this->columns as $column) {
+            $columnsSQL[] = $column->generateColumnSQL(); // Only the column
+            if ($foreignKey = $column->generateForeignKeySQL()) {
+                $foreignKeysSQL[] = $foreignKey; // Foreign keys separately
+            }
+        }
 
-        $sql = "CREATE TABLE `$tableName` ($columnsSQLString)";
+        $fullSQLParts = array_merge($columnsSQL, $foreignKeysSQL);
+        $columnsSQLString = implode(",\n    ", $fullSQLParts);
+
+        $sql = "CREATE TABLE `$tableName` (\n    $columnsSQLString\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;";
+
         $stmt = $this->pdo->prepare($sql);
         $result = $stmt->execute();
 
@@ -68,7 +88,13 @@ class TableWizard extends DatabaseManager
             }
         }
 
+        $this->__destruct();
+
         return $result;
+    }
+
+    public function __destruct() {
+        $this->columns = [];
     }
 
 }

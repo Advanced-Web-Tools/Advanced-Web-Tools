@@ -92,7 +92,7 @@ class PackageInstaller
             $installed = false;
 
         if(!$installed) {
-            mkdir(PACKAGES . str_replace(" ", "", $this->package->name), 0770, true);
+            mkdir(PACKAGES . str_replace(" ", "", $this->package->name), 0755, true);
 
             $this->dataManager->createOwnerDirectories($this->package->name);
 
@@ -197,7 +197,7 @@ class PackageInstaller
             $destPath = $to . DIRECTORY_SEPARATOR . $file->getBasename();
 
             if ($file->isDir()) {
-                mkdir($destPath, 0755, true);
+                mkdir($destPath, 755, true);
                 $this->moveFiles($file->getPathname(), $destPath);
             } else {
                 rename($file->getPathname(), $destPath);
@@ -211,7 +211,7 @@ class PackageInstaller
      */
     public function extractData(): self
     {
-        $dataDir = PACKAGES . $this->package->name . "/data";
+        $dataDir = PACKAGES . $this->package->name . DIRECTORY_SEPARATOR . "data";
 
         if (!file_exists($dataDir) || !is_dir($dataDir)) {
             return $this;
@@ -226,7 +226,13 @@ class PackageInstaller
             "document",
         ];
 
-        $scanned = array_diff(scandir($dataDir), ['.', '..']);
+        $scanResult = scandir($dataDir);
+
+        if ($scanResult === false) {
+            return $this;
+        }
+
+        $scanned = array_diff($scanResult, ['.', '..']);
         $filtered = array_intersect($scanned, $allowedTypes);
 
         foreach ($filtered as $dir) {
