@@ -324,8 +324,9 @@ class DatabaseManager
     {
         if(empty($this->tables))
             $this->getTables();
+
         foreach ($this->tables as $tables) {
-            if (in_array($table, $tables)) {
+            if (array_key_exists('name', $tables) && $tables["name"] === $table) {
                 return true;
             }
         }
@@ -341,10 +342,12 @@ class DatabaseManager
      */
     public function checkColumn(string $table, string $column): bool
     {
-        if(empty($this->tables))
+        if (empty($this->tables)) {
             $this->getTables();
+        }
+
         foreach ($this->tables as $tables) {
-            if (in_array($table, $tables) && $tables["column_name"] === $column) {
+            if (array_key_exists('name', $tables) && $tables["column_name"] === $column && $tables["name"] === $table) {
                 return true;
             }
         }
@@ -370,5 +373,6 @@ class DatabaseManager
         $this->values = [];
         $this->joins = [];
         $this->conditions = [];
+        $this->tables = [];
     }
 }

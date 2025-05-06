@@ -15,49 +15,50 @@ class ColumnCreator
     public ?string $foreignKeyReferenceColumn = null;
     public ?string $onDelete = null;
     public ?string $onUpdate = null;
-    private bool $defaultAsDefined = false; // New flag for raw SQL defaults
+    private bool $defaultAsDefined = false;
 
     public function INT(string $name, string $length): self
     {
-        $this->type = 'INT';
-        $this->name = $name;
-        $this->length = $length;
-        return $this;
+        $instance = new self();
+        $instance->type = 'INT';
+        $instance->name = $name;
+        $instance->length = $length;
+        return $instance;
     }
 
     public function VARCHAR(string $name, string $length): self
     {
-        $this->type = 'VARCHAR';
-        $this->name = $name;
-        $this->length = $length;
-        return $this;
+        $instance = new self();
+        $instance->type = 'VARCHAR';
+        $instance->name = $name;
+        $instance->length = $length;
+        return $instance;
     }
 
     public function TEXT(string $name): self
     {
-        $this->type = 'TEXT';
-        $this->name = $name;
-        return $this;
+        $instance = new self();
+        $instance->type = 'TEXT';
+        $instance->name = $name;
+        return $instance;
     }
 
     public function LONGTEXT(string $name): self
     {
-        $this->type = 'LONGTEXT';
-        $this->name = $name;
-        return $this;
+        $instance = new self();
+        $instance->type = 'LONGTEXT';
+        $instance->name = $name;
+        return $instance;
     }
 
     public function DATE(string $name): self
     {
-        $this->type = 'DATE';
-        $this->name = $name;
-        return $this;
+        $instance = new self();
+        $instance->type = 'DATE';
+        $instance->name = $name;
+        return $instance;
     }
 
-    /**
-     * Sets the default value for the column.
-     * Use 'AS_DEFINED' for raw SQL defaults like 'CURRENT_TIMESTAMP'.
-     */
     public function default(string $value, bool $asDefined = false): self
     {
         $this->default = $value;
@@ -104,7 +105,7 @@ class ColumnCreator
         return $this;
     }
 
-    public function generateSQL(): string
+    public function generateColumnSQL(): string
     {
         $sql = "`" . $this->name . "` {$this->type}";
 
@@ -116,9 +117,9 @@ class ColumnCreator
 
         if (!empty($this->default)) {
             if ($this->defaultAsDefined) {
-                $sql .= " DEFAULT {$this->default}"; // Raw SQL, e.g., CURRENT_TIMESTAMP
+                $sql .= " DEFAULT {$this->default}";
             } else {
-                $sql .= " DEFAULT '{$this->default}'"; // Escaped default
+                $sql .= " DEFAULT '{$this->default}'";
             }
         }
 
@@ -132,8 +133,13 @@ class ColumnCreator
             $sql .= " UNIQUE";
         }
 
+        return $sql;
+    }
+
+    public function generateForeignKeySQL(): ?string
+    {
         if ($this->foreignKeyReferenceTable && $this->foreignKeyReferenceColumn) {
-            $sql .= ", FOREIGN KEY (`{$this->name}`) REFERENCES `{$this->foreignKeyReferenceTable}`(`{$this->foreignKeyReferenceColumn}`)";
+            $sql = "FOREIGN KEY (`{$this->name}`) REFERENCES `{$this->foreignKeyReferenceTable}`(`{$this->foreignKeyReferenceColumn}`)";
 
             if ($this->onDelete) {
                 $sql .= " ON DELETE {$this->onDelete}";
@@ -141,8 +147,10 @@ class ColumnCreator
             if ($this->onUpdate) {
                 $sql .= " ON UPDATE {$this->onUpdate}";
             }
+
+            return $sql;
         }
 
-        return $sql;
+        return null;
     }
 }

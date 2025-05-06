@@ -1,5 +1,5 @@
 <?php
-const AWT_VERSION = "24.10.2";
+const AWT_VERSION = "24.10.3";
 const PACKAGE_MAX_LOAD_TRY = 5;
 
 const DEBUG = false;
