@@ -211,14 +211,23 @@ class DatabaseManager
     /**
      * Executes the SELECT query and retrieves the results as an associative array.
      *
+     * @param int|null $offset Optional offset for LIMIT clause.
+     * @param int|null $limit Optional limit for LIMIT clause.
      * @return array The resulting rows as an associative array.
      */
-    public function get(): array
+    public function get(?int $offset = null, ?int $limit = null): array
     {
         $sql = $this->selectQuery . implode('', $this->joins) . $this->whereQuery;
 
         if (!empty($this->orderBy)) {
             $sql .= ' ORDER BY ' . implode(', ', $this->orderBy);
+        }
+
+        if ($limit !== null) {
+            $sql .= ' LIMIT :limit';
+            if ($offset !== null) {
+                $sql .= ' OFFSET :offset';
+            }
         }
 
         $stmt = $this->pdo->prepare($sql);
@@ -227,12 +236,19 @@ class DatabaseManager
             $stmt->bindValue($placeholder, $value);
         }
 
+        if ($limit !== null) {
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            if ($offset !== null) {
+                $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+            }
+        }
+
         $this->sql = $sql;
 
         try {
             $stmt->execute();
         } catch (PDOException $e) {
-            if(DEBUG)
+            if (DEBUG)
                 die("Error has occured: " . $e->getMessage() . "<br>" . "SQL: " . $sql);
         }
 

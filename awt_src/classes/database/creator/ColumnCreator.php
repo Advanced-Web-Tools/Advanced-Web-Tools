@@ -59,6 +59,14 @@ class ColumnCreator
         return $instance;
     }
 
+    public function TIMESTAMP(string $name): self
+    {
+        $instance = new self();
+        $instance->type = 'TIMESTAMP';
+        $instance->name = $name;
+        return $instance;
+    }
+
     public function default(string $value, bool $asDefined = false): self
     {
         $this->default = $value;
@@ -116,7 +124,8 @@ class ColumnCreator
         $sql .= $this->nullable ? " NULL" : " NOT NULL";
 
         if (!empty($this->default)) {
-            if ($this->defaultAsDefined) {
+            $nonQuotedDefaults = ['CURRENT_TIMESTAMP', 'NULL', 'TRUE', 'FALSE', 'NOW()'];
+            if ($this->defaultAsDefined || in_array(strtoupper($this->default), $nonQuotedDefaults, true)) {
                 $sql .= " DEFAULT {$this->default}";
             } else {
                 $sql .= " DEFAULT '{$this->default}'";

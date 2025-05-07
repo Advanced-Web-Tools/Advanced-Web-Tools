@@ -30,7 +30,7 @@ class TableWizard extends DatabaseManager
 
         $stmt = $this->pdo->prepare($sql);
 
-
+        var_dump($sql);
         foreach ($this->tables as $table) {
             if($table["name"] == $tableName) {
                 $tableID = $table["table_id"];
