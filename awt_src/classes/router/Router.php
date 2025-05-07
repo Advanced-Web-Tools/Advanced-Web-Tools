@@ -154,7 +154,7 @@ class Router
      */
     public function route(array $params = []): View|Redirect
     {
-        $this->eventDispatcher->dispatch(new RouteEnterEvent($this->path, $this->action, $this->controller->controllerName));
+        $this->eventDispatcher->dispatch(new RouteEnterEvent($this->path, $this->action, $this->controller));
 
         $this->controller->viewName = $this->action;
         return $this->controller->{$this->action}($params);

@@ -30,7 +30,7 @@ class Render
      * @param string $html The HTML content to load into the DOMDocument. Defaults to a basic HTML structure.
      * @return DOMDocument The created and loaded DOMDocument instance.
      */
-    protected function createDocument(string $html = "<html lang=''></html>"): DOMDocument
+    public function createDocument(string $html = "<html lang=''></html>"): DOMDocument
     {
         try {
             $this->dom = new DOMDocument();
@@ -54,6 +54,11 @@ class Render
         $this->createDocument($htmlContent);
     }
 
+
+    public function getDom(): DOMDocument
+    {
+        return $this->dom;
+    }
 
     /**
      * Replaces all elements in the DOM that match the given class name with a new DOM element.
@@ -119,12 +124,30 @@ class Render
      */
     public function insertIntoByClassname(string $classname, DOMDocument $html): void
     {
+        if (!isset($this->dom)) {
+            throw new \RuntimeException('DOMDocument instance is not initialized.');
+        }
+
+        $classname = ltrim($classname, '.'); // Remove leading `.` if present
+
+        if (!preg_match('/^[a-zA-Z0-9-_]+$/', $classname)) {
+            throw new \InvalidArgumentException("Invalid class name: '$classname'.");
+        }
+
+        if ($html->documentElement === null) {
+            throw new \InvalidArgumentException('The provided DOMDocument has no valid documentElement.');
+        }
+
         $xpath = new DOMXPath($this->dom);
-        $elements = $xpath->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' $classname ')]");
+
+        // Match the exact class name
+        $elements = $xpath->query("//*[contains(concat(' ', normalize-space(@class), ' '), ' {$classname} ')]");
 
         foreach ($elements as $element) {
-            $newNode = $this->dom->importNode($html->documentElement, true);
-            $element->appendChild($newNode);
+            if ($element instanceof \DOMElement) {
+                $newNode = $this->dom->importNode($html->documentElement, true);
+                $element->appendChild($newNode);
+            }
         }
     }
 
