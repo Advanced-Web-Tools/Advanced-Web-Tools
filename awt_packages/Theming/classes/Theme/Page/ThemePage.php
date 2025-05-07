@@ -103,12 +103,8 @@ abstract class ThemePage extends Controller
             return parent::render();
 
         $this->loadTemplate();
-        $ready = new RenderReadyEvent();
-        $ready->renderer = $this;
 
-        $this->eventDispatcher->dispatch($ready);
         $this->createBundleObjects();
-
 
         try {
             $parser = new BladeOne($this->viewDirectory, CACHE, BladeOne::MODE_AUTO);
@@ -119,7 +115,13 @@ abstract class ThemePage extends Controller
 
 
             $parser->with($this->bundle);
-            return $parser->runString($this->dom->saveHTML());
+            $compiled = $parser->runString($this->dom->saveHTML());
+
+            $ready = new RenderReadyEvent();
+            $ready->renderer = $this;
+            $this->eventDispatcher->dispatch($ready);
+
+            return $this->dom->saveHTML();
 
         } catch (Throwable $e) {
             if(DEBUG)
