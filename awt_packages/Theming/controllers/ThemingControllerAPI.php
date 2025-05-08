@@ -1,11 +1,12 @@
 <?php
 
-use controller\Controller;
+
+use Dashboard\classes\dashboard\DashboardPage;
 use packages\runtime\api\RuntimeControllerAPI;
 
 final class ThemingControllerAPI extends RuntimeControllerAPI
 {
-    private Controller $controller;
+    private DashboardPage $controller;
 
 
     public function setup(): void
@@ -23,6 +24,7 @@ final class ThemingControllerAPI extends RuntimeControllerAPI
 
     public function main(): void
     {
+        $this->controller->setShared($this->shared);
         $this->addController($this->controller);
     }
 }
