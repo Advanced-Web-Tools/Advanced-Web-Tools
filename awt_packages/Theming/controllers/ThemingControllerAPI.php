@@ -25,6 +25,7 @@ final class ThemingControllerAPI extends RuntimeControllerAPI
     public function main(): void
     {
         $this->controller->setShared($this->shared);
+
         $this->addController($this->controller);
     }
 }
