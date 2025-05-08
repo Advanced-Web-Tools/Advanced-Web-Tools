@@ -71,13 +71,7 @@ class View extends Render
     public function render(): string
     {
         $this->loadTemplate();
-        $ready = new RenderReadyEvent();
-        $ready->renderer = $this;
-
-        $this->eventDispatcher->dispatch($ready);
         $this->createBundleObjects();
-
-
         try {
             $parser = new BladeOne($this->viewDirectory, CACHE, BladeOne::MODE_AUTO);
             $parser->setFileExtension(".awt.php");
@@ -87,7 +81,15 @@ class View extends Render
 
 
             $parser->with($this->bundle);
-            return $parser->run($this->viewName);
+            $compiled = $parser->run($this->viewName);
+
+            $this->dom->loadHTML($compiled);
+
+            $ready = new RenderReadyEvent();
+            $ready->renderer = $this;
+            $this->eventDispatcher->dispatch($ready);
+
+            return $this->dom->saveHTML();
 
         } catch (Throwable $e) {
             if(DEBUG)

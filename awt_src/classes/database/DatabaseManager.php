@@ -145,6 +145,8 @@ class DatabaseManager
         $stmt->closeCursor();
         $this->columns = array();
         $this->values = array();
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        echo "sql_con insert {$backtrace[1]["file"]}<br>";
         $this->__destruct();
         return null;
     }
@@ -211,14 +213,23 @@ class DatabaseManager
     /**
      * Executes the SELECT query and retrieves the results as an associative array.
      *
+     * @param int|null $offset Optional offset for LIMIT clause.
+     * @param int|null $limit Optional limit for LIMIT clause.
      * @return array The resulting rows as an associative array.
      */
-    public function get(): array
+    public function get(?int $offset = null, ?int $limit = null): array
     {
         $sql = $this->selectQuery . implode('', $this->joins) . $this->whereQuery;
 
         if (!empty($this->orderBy)) {
             $sql .= ' ORDER BY ' . implode(', ', $this->orderBy);
+        }
+
+        if ($limit !== null) {
+            $sql .= ' LIMIT :limit';
+            if ($offset !== null) {
+                $sql .= ' OFFSET :offset';
+            }
         }
 
         $stmt = $this->pdo->prepare($sql);
@@ -227,20 +238,49 @@ class DatabaseManager
             $stmt->bindValue($placeholder, $value);
         }
 
+        if ($limit !== null) {
+            $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+            if ($offset !== null) {
+                $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+            }
+        }
+
         $this->sql = $sql;
 
         try {
             $stmt->execute();
         } catch (PDOException $e) {
-            if(DEBUG)
+            if (DEBUG)
                 die("Error has occured: " . $e->getMessage() . "<br>" . "SQL: " . $sql);
         }
 
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $this->__destruct();
+        if (DEBUG && SHOW_SQL_CONNECTIONS_CALLS)
+            echo "sql_con get " . self::getCallerChain() . "<br>";
+
         return $result;
     }
+
+    private static function getCallerChain()
+    {
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        $files = [];
+
+        foreach ($backtrace as $trace) {
+            if (isset($trace['file'])) {
+                $filename = basename($trace['file']);
+                $line = $trace['line'] ?? '?';
+                $files[] = "{$filename}:{$line}";
+            }
+        }
+
+        // Reverse to show caller first
+        $files = array_reverse($files);
+
+        return implode('->', $files);
+    }
+
 
     /**
      * Builds and executes an UPDATE query.
@@ -274,7 +314,6 @@ class DatabaseManager
         }
 
         $result = $stmt->execute();
-
         $this->__destruct();
         return $result;
     }
@@ -295,7 +334,6 @@ class DatabaseManager
         }
 
         $result = $stmt->execute();
-
         $this->__destruct();
         return $result;
     }

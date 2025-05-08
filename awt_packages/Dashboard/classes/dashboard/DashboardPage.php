@@ -56,9 +56,13 @@ abstract class DashboardPage extends Controller
         $this->title = "Dashboard";
         $this->event = new DashboardMenuRequest();
         $this->dashboardMenu = new DashboardMenu();
-
-        $this->admin = new Admin();
         $this->event->dashboardMenu = $this->dashboardMenu;
+    }
+
+    public function setShared(array $shared): void
+    {
+        $this->shared = $shared;
+        $this->admin = $this->shared["Dashboard"]["Admin"];
     }
 
     abstract public function index(array|string $params): View;

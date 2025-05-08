@@ -13,17 +13,14 @@ class MenuDrawListener implements IEventListener
 {
 
     public DashboardMenu $dashboardMenu;
-
+    private Admin $admin;
 
     /**
      * @throws DOMException
      */
     private function addMenus(): void
     {
-        $admin = new Admin();
-
-
-        if(!$admin->checkAuthentication() || !$admin->checkPermission(2)) {
+        if (!$this->admin->checkAuthentication() || !$this->admin->checkPermission(2)) {
             return;
         }
 
@@ -36,6 +33,7 @@ class MenuDrawListener implements IEventListener
     public function handle(IEvent $event): array
     {
         $this->dashboardMenu = $event->bundle()['menu'];
+        $this->admin = $event->bundle()['admin'];
 
         try {
             $this->addMenus();

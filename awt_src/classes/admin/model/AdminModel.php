@@ -1,16 +1,44 @@
 <?php
 
+/**
+ * Class AdminModel
+ * Represents an administrative user with properties such as username, email,
+ * permission level, role, and session management. Provides methods for managing
+ * user information, including updating credentials, roles, profile details, and
+ * registering a new admin user.
+ */
+
 namespace admin\model;
 
-use model\Model;
-use session\SessionHandler;
+use /**
+ * The Model class typically serves as the base class for all data-driven models
+ * in the application, providing core functionalities for data manipulation,
+ * validation, and interaction with data storage mechanisms such as databases.
+ *
+ * Responsibilities of this class may include:
+ * - Defining and managing properties that represent data fields.
+ * - Handling data retrieval and storage via external sources such as databases.
+ * - Providing methods for data validation and transformation within the model.
+ * - Acting as a common interface for various entity-specific models in the system.
+ *
+ * This class is expected to be extended by specific implementations tailored to
+ * the application's needs and should follow common design patterns for managing
+ * and structuring data logic.
+ */
+    model\Model;
+use /**
+ * The SessionHandler class provides a way to manage session operations in a standardized manner.
+ * It implements custom session storage handlers for reading, writing, updating, and deleting session data.
+ *
+ * This class works as an interface between PHP's session management system and any custom session storage implementation.
+ */
+    session\SessionHandler;
 
 /**
- * AdminModel Class
+ * Class AdminModel
  *
- * This class extends the base Model class to manage administrator-related
- * functionality, including session management and role handling.
- *
+ * Represents an administrative user with various properties and methods for managing user data,
+ * including authentication, session handling, and role-based permissions.
  */
 class AdminModel extends Model
 {

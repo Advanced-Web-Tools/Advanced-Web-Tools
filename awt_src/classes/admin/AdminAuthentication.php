@@ -1,16 +1,55 @@
 <?php
 
+/**
+ * Handles the authentication process for an administrator user.
+ * This class is responsible for verifying administrator credentials,
+ * initializing sessions, and maintaining session data after successful authentication.
+ *
+ * Extends the SessionHandler for session management functionality.
+ */
+
 namespace admin;
 
-use database\DatabaseManager;
-use session\SessionHandler;
+use /**
+ * Class DatabaseManager
+ *
+ * Manages database connections, queries, and transactions. Provides
+ * functionality to interact with the database in a structured and
+ * organized manner.
+ *
+ * Responsibilities:
+ * - Establishing and managing connections to the database.
+ * - Executing database queries.
+ * - Managing transactions (commit, rollback).
+ * - Handling database errors and exceptions.
+ * - Providing utilities for prepared statements and parameter binding.
+ */
+    database\DatabaseManager;
+use /**
+ * Class SessionHandler
+ *
+ * Handles session management operations, including reading, writing, updating,
+ * and destroying session data. Implements session handling according to PHP's
+ * session handler interface to allow custom session storage.
+ *
+ * Responsibilities:
+ * - Read session data from the storage.
+ * - Write updated session data to the storage.
+ * - Delete session data upon session expiration or destruction.
+ * - Manage session lifecycle.
+ *
+ * Usage:
+ * This handler can be registered using session_set_save_handler() for
+ * custom session handling mechanisms.
+ */
+    session\SessionHandler;
 
 /**
- * AdminAuthentication Class
+ * Handles administrative authentication within the system.
  *
- * This class is responsible for authenticating an administrator
- * using their username and password. It extends the SessionHandler
- * to manage sessions upon successful authentication.
+ * The AdminAuthentication class extends the functionality of the
+ * SessionHandler class and is responsible for verifying administrator
+ * credentials and managing authenticated admin sessions.
  */
 final class AdminAuthentication extends SessionHandler
 {
@@ -57,6 +96,7 @@ final class AdminAuthentication extends SessionHandler
             ])
             ->get();
         if(!empty($result)){
+
             $this->SessionHandler();
             $_SESSION['admin']['id'] = $result[0]['id'];
             $_SESSION['admin']['username'] = $result[0]['username'];

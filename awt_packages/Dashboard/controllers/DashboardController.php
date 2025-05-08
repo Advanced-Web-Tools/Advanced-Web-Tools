@@ -1,12 +1,13 @@
 <?php
 
 use controller\Controller;
+use Dashboard\classes\dashboard\DashboardPage;
 use packages\runtime\api\RuntimeControllerAPI;
 use packages\runtime\handler\enums\ERuntimeFlags;
 
 final class DashboardController extends RuntimeControllerAPI
 {
-    private Controller $controller;
+    private DashboardPage $controller;
     private Controller $actionController;
 
     public function environmentSetup(): void
@@ -24,12 +25,14 @@ final class DashboardController extends RuntimeControllerAPI
         $this->controller->localAssetPath = "/awt_packages/Dashboard/views/assets";
         $this->controller->eventDispatcher = $this->eventDispatcher;
 
+
         $this->actionController = $this->getLocalObject("/controllers/controller/DashboardActionController.php");
         $this->actionController->controllerName = "ActionController";
     }
 
     public function main(): void
     {
+        $this->controller->setShared($this->shared);
         $this->addController($this->controller);
         $this->addController($this->actionController);
     }

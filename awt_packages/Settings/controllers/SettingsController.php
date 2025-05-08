@@ -32,9 +32,9 @@ final class SettingsController extends DashboardPage
             $bundle["category"] = $params["category"];
         }
 
-        $set = new Settings();
+        $set = $this->shared["AWT"]["Settings"];
 
-        $bundle["settings"] = $set->fetchSettings()->getSettings();
+        $bundle["settings"] = $set->getSettings();
 
         foreach ($bundle["settings"] as $key => $setting) {
             if($setting->category !==  $bundle["category"]) {
@@ -50,7 +50,7 @@ final class SettingsController extends DashboardPage
     public function changeSetting(array|string $params): Redirect {
 
         $this->adminCheck();
-        $set = new Settings();
+        $set = $this->shared["AWT"]["Settings"];
 
         $set->fetchSettings();
         $setting = $set->getSetting($_POST["change"]);

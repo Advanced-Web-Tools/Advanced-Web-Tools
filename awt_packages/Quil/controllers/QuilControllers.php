@@ -7,7 +7,7 @@ use packages\runtime\handler\enums\ERuntimeFlags;
 final class QuilControllers extends RuntimeControllerAPI
 {
 
-    private Controller $controller;
+    private QuilController $controller;
     private Controller $actionController;
 
     private Controller $customPageController;
@@ -39,6 +39,8 @@ final class QuilControllers extends RuntimeControllerAPI
 
     public function main(): void
     {
+        $this->controller->setShared($this->shared);
+        $this->controller->setPageManager($this->getShared("Quil","PageManager"));
         $this->addController($this->controller);
         $this->addController($this->actionController);
         $this->addController($this->customPageController);

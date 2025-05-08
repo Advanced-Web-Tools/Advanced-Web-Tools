@@ -13,7 +13,7 @@ final class DashboardMainController extends DashboardPage
         $this->setTitle("Dashboard");
 
         $this->eventDispatcher->dispatch($this->event);
-        return $this->view($this->getViewBundle(["paths" => $locs]));
+        return $this->view($this->getViewBundle(["paths" => ""]));
     }
 
     public function login(array|string $params): View

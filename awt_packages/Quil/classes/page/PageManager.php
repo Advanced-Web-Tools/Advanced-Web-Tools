@@ -74,12 +74,12 @@ class PageManager
     public function fetchRoutes(): self
     {
         $result = $this->database->table('quil_page_route')
-            ->select(["id"])
+            ->select(["*"])
             ->where(["1" => 1])
             ->get();
 
         foreach ($result as $route) {
-            $this->routes[$route["id"]] = new PageRoute($route["id"]);
+            $this->routes[$route["id"]] = new PageRoute($route);
         }
         return $this;
     }

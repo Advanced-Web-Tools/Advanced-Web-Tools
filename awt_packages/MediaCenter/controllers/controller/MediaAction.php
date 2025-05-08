@@ -38,7 +38,7 @@ final class MediaAction extends Controller
     public function upload(array|string $params): Redirect
     {
 
-        $this->admin = new Admin();
+        $this->admin = $this->shared["Dashboard"]["Admin"];
         $red = new Redirect();
 
         if (!$this->admin->checkPermission(2) || !$this->admin->checkAuthentication()) {

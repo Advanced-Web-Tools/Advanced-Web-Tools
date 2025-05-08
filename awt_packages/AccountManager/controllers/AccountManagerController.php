@@ -21,6 +21,7 @@ final class AccountManagerController extends RuntimeControllerAPI
 
     public function main(): void
     {
+        $this->controllerDashboard->setShared($this->shared);
         $this->addController($this->controllerDashboard);
     }
 }

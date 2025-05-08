@@ -28,13 +28,13 @@ final class TwentyTwentyFiveController extends ThemePage
         $this->contactEmail = $this->config::getConfig("AWT", "Contact Email")->getValue();
         $this->phoneNumber = $this->config::getConfig("AWT", "Phone Number")->getValue();
         $this->address = $this->config::getConfig("AWT", "Address")->getValue();
-
-        $this->menu = new ThemeMenu();
-        $this->menuHTML = $this->menu->getHTML();
     }
 
     public function index(array|string $params): View
     {
+        $this->menu = new ThemeMenu();
+        $this->menuHTML = $this->menu->getHTML();
+
         $this->page = $this->matchPageName();
 
         return $this->view(["name" => $this->name,
@@ -48,6 +48,9 @@ final class TwentyTwentyFiveController extends ThemePage
 
     public function about(array|string $params): View
     {
+        $this->menu = new ThemeMenu();
+        $this->menuHTML = $this->menu->getHTML();
+
         $this->page = $this->matchPageName();
         return $this->view(["name" => $this->name,
             "contact" => $this->contactEmail,
@@ -60,6 +63,9 @@ final class TwentyTwentyFiveController extends ThemePage
 
     public function contact(array|string $params): View
     {
+        $this->menu = new ThemeMenu();
+        $this->menuHTML = $this->menu->getHTML();
+
         $this->page = $this->matchPageName();
         return $this->view(["name" => $this->name,
             "contact" => $this->contactEmail,

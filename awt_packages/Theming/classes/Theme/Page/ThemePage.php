@@ -9,6 +9,7 @@ use redirect\Redirect;
 use render\events\RenderReadyEvent;
 use render\TemplateEngine\BladeOne;
 use Theming\classes\Theme\Settings\ThemeSettings;
+use Throwable;
 use view\View;
 
 abstract class ThemePage extends Controller
@@ -48,6 +49,7 @@ abstract class ThemePage extends Controller
     public function view(array $data = []): View
     {
         $db = new DatabaseManager();
+
         $res = $db->table("theming_custom_page")
             ->select(["quil_page_content.content"])
             ->join("quil_page_content", "theming_custom_page.page_content_id = quil_page_content.id")
@@ -103,12 +105,8 @@ abstract class ThemePage extends Controller
             return parent::render();
 
         $this->loadTemplate();
-        $ready = new RenderReadyEvent();
-        $ready->renderer = $this;
 
-        $this->eventDispatcher->dispatch($ready);
         $this->createBundleObjects();
-
 
         try {
             $parser = new BladeOne($this->viewDirectory, CACHE, BladeOne::MODE_AUTO);
@@ -119,7 +117,13 @@ abstract class ThemePage extends Controller
 
 
             $parser->with($this->bundle);
-            return $parser->runString($this->dom->saveHTML());
+            $compiled = $parser->runString($this->dom->saveHTML());
+            $this->dom->loadHTML($compiled);
+            $ready = new RenderReadyEvent();
+            $ready->renderer = $this;
+            $this->eventDispatcher->dispatch($ready);
+
+            return $this->dom->saveHTML();
 
         } catch (Throwable $e) {
             if(DEBUG)

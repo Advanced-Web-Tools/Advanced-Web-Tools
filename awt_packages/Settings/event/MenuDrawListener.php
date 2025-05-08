@@ -27,16 +27,15 @@ class MenuDrawListener implements IEventListener
      * Use `addItem()` method to add your `MenuItem` object.
      */
     public DashboardMenu $dashboardMenu;
+    private Admin $admin;
 
     /**
      * @throws DOMException
      */
     private function addMenus(): void
     {
-        $admin = new Admin();
 
-
-        if(!$admin->checkAuthentication() || !$admin->checkPermission(0)) {
+        if(!$this->admin->checkAuthentication() || !$this->admin->checkPermission(0)) {
             return;
         }
 
@@ -51,6 +50,7 @@ class MenuDrawListener implements IEventListener
     {
         $this->dashboardMenu = $event->bundle()['menu'];
 
+        $this->admin = $event->bundle()["admin"];
         try {
             $this->addMenus();
         } catch (DOMException $e) {

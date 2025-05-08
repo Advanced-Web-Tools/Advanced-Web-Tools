@@ -1,4 +1,5 @@
 <?php
+global $settings;
 require_once './awt_dirMap.php';
 require_once './awt_config.php';
 require_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt_autoLoader.php';
@@ -14,29 +15,30 @@ use router\events\EDynamicRouteListener;
 use router\manager\RouterManager;
 use setting\Config;
 
-if (DEBUG && REMOTE_INSTALL_FOR_DEVS) {
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_SERVER['REQUEST_URI'] == '/dev/install') {
-        if (isset($_FILES["package"]) && DEV_SECRET == $_POST["devSecret"]) {
-            $installer = new PackageInstaller($_FILES["package"]);
-
-            $installer->
-            setDataOwner("AWT")->
-            uploadPackage()->
-            extractPackage()->
-            installPackage()->
-            transferPackageFiles()->
-            extractData()->
-            cleanUp();
-
-            die("Installed on " . Config::getConfig("AWT", "Website Name")->getValue());
-        } else {
-            die(Config::getConfig("AWT", "Website Name")->getValue() . ": Wrong dev secret, or missing file.");
-        }
+if (DEBUG && REMOTE_INSTALL_FOR_DEVS && $_SERVER['REQUEST_METHOD'] == 'POST' && $_SERVER['REQUEST_URI'] == '/dev/install') {
+    if (!isset($_FILES["package"]) || DEV_SECRET != $_POST["devSecret"]) {
+        die(WEB_NAME . ": Wrong dev secret, or missing file.");
     }
+
+    $installer = new PackageInstaller($_FILES["package"]);
+
+    $installer->
+    setDataOwner("AWT")->
+    uploadPackage()->
+    extractPackage()->
+    installPackage()->
+    transferPackageFiles()->
+    extractData()->
+    cleanUp();
+
+    die("Installed on " . Config::getConfig("AWT", "Website Name")->getValue());
 }
 
-
 $packages = new Loader();
+$shared["AWT"]["Settings"] = $settings;
+
+$packages->sharedObjects = $shared;
+
 $router = new RouterManager();
 $eventDispatcher = new EventDispatcher();
 
@@ -57,6 +59,8 @@ if (Config::getConfig("AWT", "use packages")->getValue() == 'true') {
         die($e->getMessage());
     }
 }
+
+$shared = $packages->sharedObjects;
 
 $router->eventDispatcher = $packages->eventDispatcher;
 

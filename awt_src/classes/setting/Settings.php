@@ -19,12 +19,12 @@ class Settings
     {
         $result = $this->database->
         table("awt_setting")->
-        select(["awt_setting.id", "awt_package.name"])->
+        select(["awt_setting.id", "awt_package.name AS package_name", "awt_setting.package_id", "awt_setting.name", "awt_setting.value", "awt_setting.value_type", "awt_setting.category", "awt_setting.required_permission_level"])->
         join("awt_package", "awt_package.id = awt_setting.package_id")->
         get();
 
         foreach ($result as $setting) {
-            $this->settings[$setting["id"]] = new SettingModel($setting["id"], $setting["name"]);
+            $this->settings[$setting["id"]] = new SettingModel($setting["id"], $setting["package_name"], $setting);
         }
 
         return $this;
@@ -56,6 +56,13 @@ class Settings
 
     public function createSetting(int $package_id, string $name, string $value, int $perm, string $value_type = "text", string $category = "Miscellaneous"): int
     {
+
+
+        $res = $this->database->table("awt_setting")->select(["id"])->where(["package_id" => $package_id, "name" => $name])->get();
+
+        if($res !== null && count($res) > 0)
+            return 0;
+
         return $this->database->table("awt_setting")->insert([
             "package_id" => $package_id,
             "name" => $name,

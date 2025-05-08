@@ -15,7 +15,11 @@ final class QuilController extends DashboardPage
     public function __construct()
     {
         parent::__construct();
-        $this->pageManager = new PageManager();
+    }
+
+    public function setPageManager(PageManager $pageManager): void
+    {
+        $this->pageManager = $pageManager;
     }
 
 

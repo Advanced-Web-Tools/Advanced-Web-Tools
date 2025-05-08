@@ -51,6 +51,8 @@ class Router
     public EventDispatcher $eventDispatcher;
 
 
+    public array $shared = [];
+
     /**
      * @var bool Service
      * Determines if this route is used for processing data or other type of jobs, and should be hidden from UI.
@@ -154,7 +156,7 @@ class Router
      */
     public function route(array $params = []): View|Redirect
     {
-        $this->eventDispatcher->dispatch(new RouteEnterEvent($this->path, $this->action, $this->controller->controllerName));
+        $this->eventDispatcher->dispatch(new RouteEnterEvent($this->path, $this->action, $this->controller));
 
         $this->controller->viewName = $this->action;
         return $this->controller->{$this->action}($params);

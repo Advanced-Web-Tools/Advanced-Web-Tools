@@ -25,6 +25,7 @@ class DashboardMenuRequest implements IEvent
 
     public function bundle(): array
     {
-        return ["menu" => $this->dashboardMenu];
+        global $shared;
+        return ["menu" => $this->dashboardMenu, "admin" => $shared["Dashboard"]["Admin"]];
     }
 }

@@ -31,6 +31,7 @@ class RuntimeHandler extends RuntimeExceptions
     protected bool $waitForRuntime;
     public array $passableInstances;
     public array $routers;
+    public array $sharedObjects = [];
 
     public EventDispatcher $eventDispatcher;
 
@@ -88,6 +89,7 @@ class RuntimeHandler extends RuntimeExceptions
      */
     protected function setup(): void
     {
+        $this->runtime->setSharable($this->sharedObjects);
         $this->runtime->setup();
     }
 
@@ -104,7 +106,7 @@ class RuntimeHandler extends RuntimeExceptions
     {
         $this->runtime->main();
         $this->createPassable();
-
+        $this->sharedObjects = $this->runtime->shared;
         if($this->usesEvents) {
             $this->eventDispatcher = $this->runtime->eventDispatcher;
         }
