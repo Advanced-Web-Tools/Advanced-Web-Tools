@@ -11,7 +11,7 @@ class SettingModel extends Model
     public string $package_name;
     public string $name;
     public mixed $value;
-    public string $type;
+    public string $value_type;
     public string $category;
     public ?string $constName = null;
     public int $required_permission_level = 1;
@@ -36,7 +36,7 @@ class SettingModel extends Model
 
         $this->package_id = $data["package_id"];
 
-        $this->type = $data["value_type"];
+        $this->value_type = $data["value_type"];
 
         $this->required_permission_level = $data["required_permission_level"];
 

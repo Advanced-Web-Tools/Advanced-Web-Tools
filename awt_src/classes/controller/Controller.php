@@ -1,16 +1,37 @@
 <?php
 
+/**
+ * Abstract base class for controllers.
+ *
+ * Provides common functionality for controllers, such as setting
+ * the root directory path, view directory path, and controller name.
+ *
+ * This class extends the View class and implements the IController interface.
+ */
+
 namespace controller;
 
-use controller\interfaces\IController;
-use view\View;
+use /**
+ * Interface IController
+ *
+ * Defines the contract for controllers within the application.
+ * Controllers implementing this interface are responsible for
+ * handling requests and returning appropriate responses.
+ */
+    controller\interfaces\IController;
+use /**
+ * The View class is responsible for rendering templates and managing the output display.
+ * This class typically handles the dynamic content replacement in templates and
+ * facilitates the interaction between the controller and the user interface.
+ */
+    view\View;
 
 /**
- * Abstract Controller Class
+ * Abstract class representing a controller, which implements the IController interface.
  *
- * This abstract class extends the View class and implements the
- * IController interface. It provides the foundation for all controllers,
- * including functionality to set the root directory and view paths.
+ * This class provides functionality for managing controller-related properties,
+ * including the controller name, the root directory path, and shared data. It
+ * also defines methods for setting paths necessary for view rendering.
  */
 abstract class Controller extends View implements IController
 {

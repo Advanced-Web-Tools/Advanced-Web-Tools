@@ -1,14 +1,36 @@
 <?php
 
+/**
+ * Represents the Admin class which extends functionality from AdminModel.
+ *
+ * This class includes methods to manage administrator authentication,
+ * permission checks, and logout operations within the administrative context.
+ */
+
 namespace admin;
 
-use admin\model\AdminModel;
+use /**
+ * Class AdminModel
+ *
+ * This class represents the model for handling administrative operations
+ * within the application. It includes methods for managing data interactions
+ * related to administration and provides functionalities to interact with
+ * the database, retrieve and modify data specific to administrative needs.
+ *
+ * Responsibility:
+ * - Contains logic for handling administrative data.
+ * - Interacts with the database for creating, reading, updating, or deleting
+ *   administrative records or entities.
+ * - Acts as a bridge between the database layer and the controller layer
+ *   specific to administrative modules.
+ */
+    admin\model\AdminModel;
 
 /**
- * Admin Class
+ * Class Admin.
  *
- * This class extends the AdminModel to provide functionality related
- * to administrator permissions, authentication, and session management.
+ * Handles administrative-level functionalities including authentication,
+ * permission checks, and session management.
  */
 class Admin extends AdminModel
 {

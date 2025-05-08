@@ -69,9 +69,6 @@ abstract class DashboardPage extends Controller
 
     protected function adminCheck(): void
     {
-
-        $this->admin = new Admin();
-
         if(str_starts_with($_SERVER["REQUEST_URI"], "/dashboard/login/")) {
             return;
         }

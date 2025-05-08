@@ -1,4 +1,5 @@
 <?php
+global $settings;
 require_once './awt_dirMap.php';
 require_once './awt_config.php';
 require_once JOBS . 'loaders' . DIRECTORY_SEPARATOR . 'awt_autoLoader.php';
@@ -33,8 +34,11 @@ if (DEBUG && REMOTE_INSTALL_FOR_DEVS && $_SERVER['REQUEST_METHOD'] == 'POST' && 
     die("Installed on " . Config::getConfig("AWT", "Website Name")->getValue());
 }
 
-$shared = [];
 $packages = new Loader();
+$shared["AWT"]["Settings"] = $settings;
+
+$packages->sharedObjects = $shared;
+
 $router = new RouterManager();
 $eventDispatcher = new EventDispatcher();
 

@@ -1,12 +1,13 @@
 <?php
 
 use controller\Controller;
+use Dashboard\classes\dashboard\DashboardPage;
 use packages\runtime\api\RuntimeControllerAPI;
 use packages\runtime\handler\enums\ERuntimeFlags;
 
 final class DashboardController extends RuntimeControllerAPI
 {
-    private Controller $controller;
+    private DashboardPage $controller;
     private Controller $actionController;
 
     public function environmentSetup(): void
@@ -31,7 +32,7 @@ final class DashboardController extends RuntimeControllerAPI
 
     public function main(): void
     {
-        $this->controller->shared = $this->shared;
+        $this->controller->setShared($this->shared);
         $this->addController($this->controller);
         $this->addController($this->actionController);
     }
