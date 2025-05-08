@@ -9,6 +9,7 @@ use packages\runtime\interface\IRuntime;
 use packages\runtime\Runtime;
 use ReflectionClass;
 use ReflectionException;
+use RuntimeException;
 use UnitEnum;
 
 #[\AllowDynamicProperties]
@@ -23,6 +24,7 @@ abstract class RuntimeAPI extends Runtime implements IRuntime
 {
     public array $passable = [];
     public array $configurationFlags = [];
+    public array $shared = [];
     public array $waitList = [];
     protected string $runtimePath;
 
@@ -146,4 +148,27 @@ abstract class RuntimeAPI extends Runtime implements IRuntime
         $this->waitList[] = $name;
     }
 
+    final protected function addShared(string $name, object $instance): void
+    {
+        $this->shared[$this->name][$name] = $instance;
+    }
+
+    final public function setSharable(array $shared): void
+    {
+        $this->shared = $shared;
+    }
+
+    final public function getShared(string $runtime, string $name, string $expectedClass = null): object|null
+    {
+        $instance = $this->shared[$runtime][$name] ?? null;
+
+        if ($instance !== null && $expectedClass !== null) {
+            if (!($instance instanceof $expectedClass)) {
+                $gotType = is_object($instance) ? get_class($instance) : gettype($instance);
+                throw new RuntimeException("Unexpected instance got $gotType, expected $expectedClass");
+            }
+        }
+
+        return $instance;
+    }
 }

@@ -15,15 +15,33 @@ class SettingModel extends Model
     public string $category;
     public ?string $constName = null;
     public int $required_permission_level = 1;
-    public function __construct(int $id, string $package_name)
+
+    public function __construct(int $id, string $package_name, array $data)
     {
         parent::__construct();
 
+        $this->model_source = "awt_setting";
+
+        $this->model_id = $id;
+
+        $this->id_column = "id";
+
         $this->id = $id;
-        $this->selectByID($this->id, "awt_setting");
-        $this->type = $this->getParam("value_type");
-        $this->required_permission_level = $this->getParam("required_permission_level");
+
+        $this->name = $data["name"];
+
+        $this->value = $data["value"];
+
+        $this->category = $data["category"];
+
+        $this->package_id = $data["package_id"];
+
+        $this->type = $data["value_type"];
+
+        $this->required_permission_level = $data["required_permission_level"];
+
         $this->package_name = $package_name;
+
         $this->paramBlackList("constName");
         $this->paramBlackList("type");
         $this->paramBlackList("package_name");
@@ -31,7 +49,7 @@ class SettingModel extends Model
 
     private function convertType(): void
     {
-        $this->type = match($this->type) {
+        $this->type = match ($this->type) {
             "text" => "string",
             "number" => "int",
             default => "string",
@@ -49,9 +67,9 @@ class SettingModel extends Model
 
     public function createObjectConstant(): self
     {
-        $this->constName = strtoupper(str_replace(" ", "_", strtoupper($this->package_name)) ."_". str_replace(" ", "_", strtoupper($this->name)));
+        $this->constName = strtoupper(str_replace(" ", "_", strtoupper($this->package_name)) . "_" . str_replace(" ", "_", strtoupper($this->name)));
 
-        if(!defined($this->constName)) {
+        if (!defined($this->constName)) {
             define("SETT_" . $this->constName, $this->getObject());
         }
 

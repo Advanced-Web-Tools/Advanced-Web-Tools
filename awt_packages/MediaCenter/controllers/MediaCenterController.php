@@ -1,12 +1,13 @@
 <?php
 
 use controller\Controller;
+use Dashboard\classes\dashboard\DashboardPage;
 use packages\runtime\api\RuntimeControllerAPI;
 use packages\runtime\handler\enums\ERuntimeFlags;
 
 final class MediaCenterController extends RuntimeControllerAPI
 {
-    private Controller $controller;
+    private DashboardPage $controller;
     private Controller $action;
 
     public function environmentSetup(): void
@@ -31,6 +32,9 @@ final class MediaCenterController extends RuntimeControllerAPI
 
     public function main(): void
     {
+        $this->controller->setShared($this->shared);
+        $this->action->shared = $this->shared;
+
         $this->addController($this->controller);
         $this->addController($this->action);
     }

@@ -24,6 +24,8 @@ abstract class Controller extends View implements IController
      */
     public string $rootDirPath;
 
+    public array $shared = [];
+
     /**
      * Sets the root directory path for the controller.
      *

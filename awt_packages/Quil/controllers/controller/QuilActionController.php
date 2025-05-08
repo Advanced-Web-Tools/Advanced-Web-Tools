@@ -22,8 +22,6 @@ final class QuilActionController extends Controller
 
     public function __construct()
     {
-        $this->admin = new Admin();
-        $this->pageManager = new PageManager();
         $this->redirect = new Redirect();
         $this->responder = new AWTRespond();
         $this->database = new DatabaseManager();
@@ -38,6 +36,9 @@ final class QuilActionController extends Controller
 
     public function create(array|string $params): Redirect
     {
+        $this->admin = $this->shared["Dashboard"]["Admin"];
+        $this->pageManager = new PageManager();
+
         if (!$this->admin->checkAuthentication() || !$this->admin->checkPermission(2)) {
             return $this->redirect->back();
         }
@@ -51,6 +52,9 @@ final class QuilActionController extends Controller
 
     public function delete(array|string $params): Redirect
     {
+        $this->admin = new Admin();
+        $this->pageManager = new PageManager();
+
         if (!$this->admin->checkAuthentication() || !$this->admin->checkPermission(2)) {
             return $this->redirect->back();
         }
@@ -61,6 +65,8 @@ final class QuilActionController extends Controller
 
     public function save(array|string $params): AWTRespond
     {
+        $this->admin = new Admin();
+        $this->pageManager = new PageManager();
 
         if (!$this->admin->checkAuthentication() || !$this->admin->checkPermission(2)) {
             return $this->responder->back();
@@ -78,6 +84,9 @@ final class QuilActionController extends Controller
 
     public function createRoute(array|string $params): Redirect
     {
+        $this->admin = $this->shared["Dashboard"]["Admin"];;
+        $this->pageManager = new PageManager();
+
         if (!$this->admin->checkAuthentication() || !$this->admin->checkPermission(2)) {
             return $this->redirect->back();
         }
@@ -90,6 +99,9 @@ final class QuilActionController extends Controller
 
     public function deleteRoute(array|string $params): Redirect
     {
+        $this->admin = $this->shared["Dashboard"]["Admin"];;
+        $this->pageManager = new PageManager();
+
         if (!$this->admin->checkAuthentication() || !$this->admin->checkPermission(2)) {
             return $this->redirect->back();
         }
@@ -101,6 +113,8 @@ final class QuilActionController extends Controller
 
     public function getInfo(array|string $params): AWTRespond
     {
+        $this->admin = $this->shared["Dashboard"]["Admin"];;
+        $this->pageManager = new PageManager();
 
         if (!$this->admin->checkAuthentication() || !$this->admin->checkPermission(2)) {
             return $this->responder->back();
@@ -133,7 +147,6 @@ final class QuilActionController extends Controller
         ];
 
         return $this->responder->setCode(200)->setType(EAWTRespondType::JSON)->setContent(["code" => 200, "content" => json_encode($info)]);
-
     }
 
     public function getSources(array|string $params): AWTRespond
@@ -150,6 +163,9 @@ final class QuilActionController extends Controller
 
     public function addSource(array|string $params): AWTRespond
     {
+        $this->admin = $this->shared["Dashboard"]["Admin"];;
+        $this->pageManager = new PageManager();
+
         if (!$this->admin->checkPermission(1)) {
             return $this->responder->setCode(403)->setType(EAWTRespondType::JSON)->setContent(["code" => 403]);
         }
@@ -169,6 +185,9 @@ final class QuilActionController extends Controller
 
     public function updateSource(array|string $params): AWTRespond
     {
+        $this->admin = $this->shared["Dashboard"]["Admin"];;
+        $this->pageManager = new PageManager();
+
         if (!$this->admin->checkPermission(1)) {
             return $this->responder->setCode(403)->setType(EAWTRespondType::JSON)->setContent(["code" => 403]);
         }
@@ -189,6 +208,9 @@ final class QuilActionController extends Controller
 
     public function delSource(array|string $params): AWTRespond
     {
+        $this->admin = $this->shared["Dashboard"]["Admin"];
+        $this->pageManager = new PageManager();
+
         if (!$this->admin->checkPermission(1)) {
             return $this->responder->setCode(403)->setType(EAWTRespondType::JSON)->setContent(["code" => 403]);
         }

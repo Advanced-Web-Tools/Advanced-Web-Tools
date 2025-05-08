@@ -4,6 +4,8 @@ const PACKAGE_MAX_LOAD_TRY = 5;
 
 const DEBUG = false;
 
+const SHOW_SQL_CONNECTIONS_CALLS = false;
+
 /**
  * # WARNING: Setting this to TRUE enables remote package installations in the local environment on port 3000.
  *

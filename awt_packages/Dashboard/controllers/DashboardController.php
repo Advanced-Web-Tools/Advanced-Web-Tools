@@ -24,12 +24,14 @@ final class DashboardController extends RuntimeControllerAPI
         $this->controller->localAssetPath = "/awt_packages/Dashboard/views/assets";
         $this->controller->eventDispatcher = $this->eventDispatcher;
 
+
         $this->actionController = $this->getLocalObject("/controllers/controller/DashboardActionController.php");
         $this->actionController->controllerName = "ActionController";
     }
 
     public function main(): void
     {
+        $this->controller->shared = $this->shared;
         $this->addController($this->controller);
         $this->addController($this->actionController);
     }

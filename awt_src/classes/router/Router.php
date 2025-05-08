@@ -51,6 +51,8 @@ class Router
     public EventDispatcher $eventDispatcher;
 
 
+    public array $shared = [];
+
     /**
      * @var bool Service
      * Determines if this route is used for processing data or other type of jobs, and should be hidden from UI.

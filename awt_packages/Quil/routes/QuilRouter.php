@@ -32,7 +32,7 @@ final class QuilRouter extends RuntimeRouterAPI
 
         $this->addRouter(new Router("/quil/delete_source/{id}", "delSource", $this->controller->getController("QuilActionController"), true));
 
-        $pm = new PageManager();
+        $pm = $this->getShared("Quil", "PageManager", PageManager::class);
         foreach ($pm->fetchRoutes()->returnRoutes() as $route) {
             $this->addRouter(new Router($route->route, "customPage", $this->controller->getController("CustomPageController")));
         }

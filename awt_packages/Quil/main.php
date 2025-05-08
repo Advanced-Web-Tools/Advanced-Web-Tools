@@ -2,6 +2,7 @@
 
 use packages\runtime\api\RuntimeLinkerAPI;
 use packages\runtime\handler\enums\ERuntimeFlags;
+use Quil\classes\page\PageManager;
 use Quil\event\MenuDrawListener;
 
 final class Quil extends RuntimeLinkerAPI
@@ -23,6 +24,7 @@ final class Quil extends RuntimeLinkerAPI
 
     public function main(): void
     {
-
+        $pageManager = new PageManager();
+        $this->addShared("PageManager", $pageManager);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use admin\Admin;
 use Dashboard\event\MenuDrawListener;
 use packages\runtime\api\RuntimeLinkerAPI;
 use packages\runtime\handler\enums\ERuntimeFlags;
@@ -24,6 +25,6 @@ final class DashboardPackage extends RuntimeLinkerAPI
 
     final public function main(): void
     {
-
+        $this->addShared("Admin", (new Admin()));
     }
 }

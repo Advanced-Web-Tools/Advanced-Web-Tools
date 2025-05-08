@@ -145,6 +145,8 @@ class DatabaseManager
         $stmt->closeCursor();
         $this->columns = array();
         $this->values = array();
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        echo "sql_con insert {$backtrace[1]["file"]}<br>";
         $this->__destruct();
         return null;
     }
@@ -254,9 +256,31 @@ class DatabaseManager
 
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $this->__destruct();
+        if (DEBUG && SHOW_SQL_CONNECTIONS_CALLS)
+            echo "sql_con get " . self::getCallerChain() . "<br>";
+
         return $result;
     }
+
+    private static function getCallerChain()
+    {
+        $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        $files = [];
+
+        foreach ($backtrace as $trace) {
+            if (isset($trace['file'])) {
+                $filename = basename($trace['file']);
+                $line = $trace['line'] ?? '?';
+                $files[] = "{$filename}:{$line}";
+            }
+        }
+
+        // Reverse to show caller first
+        $files = array_reverse($files);
+
+        return implode('->', $files);
+    }
+
 
     /**
      * Builds and executes an UPDATE query.
@@ -290,7 +314,6 @@ class DatabaseManager
         }
 
         $result = $stmt->execute();
-
         $this->__destruct();
         return $result;
     }
@@ -311,7 +334,6 @@ class DatabaseManager
         }
 
         $result = $stmt->execute();
-
         $this->__destruct();
         return $result;
     }

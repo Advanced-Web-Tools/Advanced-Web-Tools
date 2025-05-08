@@ -21,7 +21,7 @@ class ThemeSettings
 
 
         foreach ($result as $setting) {
-            $this->settings[$setting["name"]] = new ThemeSettingModel($setting["id"]);
+            $this->settings[$setting["name"]] = new ThemeSettingModel($setting);
         }
     }
 }
