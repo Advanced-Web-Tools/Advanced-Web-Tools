@@ -1,69 +1,123 @@
 [![Logo](https://github.com/ElStefanos/Advanced-Web-Tools/assets/46761434/eb7d7fd1-dd8e-42a2-94d3-d45a7417ac25)](https://advancedwebtools.com)
 
+# Advanced Web Tools (AWT)
 
-## Description
+**Advanced Web Tools** (AWT) is a next-generation PHP-based Content Management System (CMS) and runtime platform designed to deliver exceptional performance, runtime flexibility, and developer control.
 
-Advanced Web Tools is a PHP-based Content Management System (CMS) project with a clear mission—to evolve into the fastest, most feature-rich, and developer-friendly CMS available. With a focus on speed, advanced functionality, and strict security measures, Advanced Web Tools CMS aims to redefine the standards of effective web content management.
-This is self-hosted software that is free for anyone to install. 
+---
 
-<br>
+## For Users
 
-> **⚠️ Warning!** <br>Advanced Web Tools** is under active development, but is currently stable for use. Due to it being developed, there may be breaking changes at any time. Be careful and make sure you read change-logs before updates!
+### Simplicity and Speed
+AWT is built for those who want a fast, reliable website without the complexity of traditional CMS platforms.  
+It installs in minutes, loads instantly, and requires no command-line tools or external dependencies.
 
-<br>
+### Key Features
+- **Blazing performance** — optimized for speed and minimal resource usage.  
+- **Simple setup** — configure once, deploy anywhere.  
+- **Runtime extensibility** — install new features or modules without downtime.  
+- **Built-in CMS capabilities** — manage content, media, themes, and plugins.  
+- **Stable and secure core** — always active, never breaks on updates.  
 
+### Perfect for
+- Personal or business websites  
+- Lightweight e-commerce systems  
+- Developer-backed web applications  
+- High-performance hosting environments  
 
-## Features
+---
 
-- **Themes**: Customize the look and feel of your website with themes.
-- **Plugins**: Extend the functionality of Advanced Web Tools CMS with a range of plugins.
-- **DAC (Database Access Control)**: Implement stricter security through Database Access Control.
-- **Page Caching**: Optimize performance with built-in page caching.
-- **Theme Customization**: Customize your website in just few clicks.
-- **Page Editor**: Easily edit and manage your web pages with the intuitive page editor.
-- **Media**: Seamlessly handle and organize media content within the CMS.
-- **Online Marketplace**: Explore and integrate third-party extensions through our online marketplace.
+## For Developers
+
+**AWT** provides a hybrid architecture that merges a static, high-performance **Core** with dynamically loadable **Runtime Packages**.  
+This makes it a rare PHP system that can evolve live — without rebuilds or restarts.
+
+### Why choose AWT?
+- **Hybrid architecture**: a fixed **Core** plus runtime-loadable **Packages**.  
+- **Runtime extensibility**: add, update, or remove functionality while the system runs.  
+- **Engineered for speed**: minimal overhead and optimized routing.  
+- **Developer-friendly**: event-driven core, clear API, modular design.  
+- **CMS out of the box**: theming, caching, media, and plugin marketplace.  
+
+---
+
+## Project Structure
+
+- **/awt_src/** — Core system files (router, renderer, ORM, event bus)  
+- **/awt_packages/** — Runtime package directory (modules/plugins)  
+- **/awt_data/** — Storage of user data, uploaded media, runtime state  
+- **/dev_run/** — Development configurations and utilities  
+- **awt_config.php** — Core configuration  
+- **awt_db.php** — Database configuration  
+- **index.php** — Application entry point  
+
+---
 
 ## Installation
 
-Prerequisites:
+### Requirements
+- PHP 8.x  
+- Web server (Apache or NGINX)  
+- MySQL or MariaDB  
 
-1. A web server (Apache or NGINX)
-2. A database (MySQL, MariaDB etc..)
-3. Internet connection (I feel stupid for mentioning this....) 
+### Steps
+1. Clone or download this repository.  
+2. Create an empty database.  
+3. Configure `awt_config.php` with database credentials and paths.  
+4. Import `awt_db.sql` into your database.  
+5. Deploy files to your web-root or virtual host.  
+6. Access your site in a browser and complete setup.
 
-If you don't have anything from above (besides Internet). Refer to one of the guides below on how to quickly setup your LAMP stack:
+---
 
-**Linux**:  [https://www.digitalocean.com/community/tutorials/how-to-install-lamp-stack-on-ubuntu](https://www.digitalocean.com/community/tutorials/how-to-install-lamp-stack-on-ubuntu)
+## Core Components
 
-**Windows**: [https://www.ionos.com/digitalguide/server/tools/xampp-tutorial-create-your-own-local-test-server/](https://www.ionos.com/digitalguide/server/tools/xampp-tutorial-create-your-own-local-test-server/)
+| Component | Description |
+|------------|-------------|
+| **Router** | Maps HTTP requests to controllers or modules |
+| **Renderer** | Template rendering and output generation |
+| **Data Manager / ORM** | Handles data access and model registration |
+| **Session Handler** | User session management |
+| **Event System** | Global event bus for inter-module communication |
+| **Package Manager** | Handles installation and activation of runtime packages |
 
-<br>
+---
 
-> **⚠️ Warning!** <br>These instructional materials are designed to provide fundamental guidance. For individuals seeking to establish a website with robust security measures, we strongly advocate procuring professional hosting services. These services typically offer comprehensive support and infrastructure tailored to safeguarding online assets effectively.
+## Runtime Packages
 
-<br>
+Runtime packages live in `/awt_packages/` and follow a simple contract with the Core.  
+Each package defines metadata, versioning, and event hooks.
 
-And finally:
+**Lifecycle:**
+1. Install via Package Manager  
+2. Link/activate at runtime  
+3. Register event listeners, controllers, and templates  
+4. Update or remove — no restart required  
 
-1. **Download**:  Obtain the latest AWT-Installer from our [GitHub repository](https://github.com/ElStefanos/Advanced-Web-Tools/releases/latest).
+---
 
-2. **Database**:  Make sure there is at least one empty database present (if you are unsure how to create one, contact your hosting provider or refer to this documentation if you are self hosting).
+## Performance and Stability
 
-3. **Extract**: Unzip the downloaded file to your desired location on your server.
+AWT’s architecture minimizes blocking operations and runtime overhead.  
+With proper configuration, **Lighthouse scores of 95–100** are achievable on production servers.
 
-4. **Drag and Drop**: Simply move the CMS files into your web server's root directory.
+---
 
-5. **Setup**: Navigate to your website's URL, and the installation wizard will guide you through the setup process.
+## Contributing
 
-That's it! You're now ready to experience the power and flexibility of Advanced Web Tools CMS.
+Contributions are welcome.  
+See `SECURITY.md` for vulnerability reporting or open an issue for feature requests.  
+Follow the coding standard and include tests where possible.
 
-### Documentation
+---
 
-Improvements to the documentation are always valuable. If you find areas that need clarification or have ideas to enhance the documentation, feel free to submit a pull request.
+## License
 
-### Feature Requests
+This project is licensed under the **GPL-3.0 License**.  
+All derivatives must remain open-source under the same terms.
 
-If you have ideas for new features, share them by opening a feature request on our [GitHub repository](https://github.com/ElStefanos/Advanced-Web-Tools/). We'd love to hear your thoughts.
+---
 
-Thank you for considering contributing to Advanced Web Tools CMS! Together, we can make it even better.
+**Website:** [https://advancedwebtools.com](https://advancedwebtools.com)  
+**Author:** Stefan Crkvenjakov  
+**License:** GPL-3.0
