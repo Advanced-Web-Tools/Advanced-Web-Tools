@@ -14,7 +14,7 @@
         Select files <i class="fa-solid fa-file-import"></i>
     </label>
     <input type="file" name="upload[]" id="upload" style="display: none;" multiple>
-    <button type="submit" class="btn_secondary">Upload files <i class="fa-solid fa-upload"></i></button>
+    <button type="submit" class="btn_secondary hidden" disabled>Upload files <i class="fa-solid fa-upload"></i></button>
 </form>
 @endsection
 @section('page')
@@ -60,7 +60,7 @@
                 @endif
                 <p>Name: {{ $media->name }}</p>
                 <p>File name: {{ $media->data->dataName }} </p>
-                <p>File location: <a target="_blank" rel="nofollow" href="{{$media->data->file_location}}">Here</a></p>
+                <p>File location: <a target="_blank" rel="nofollow" href="/{{$media->data->file_location}}">Here</a></p>
                 <p>Type: {{ $media->type }}</p>
                 <p>Owner: {{ $media->data->ownerName }} </p>
                 <p>Owner type: {{ $media->data->ownerType }}</p>
@@ -87,4 +87,28 @@
 
 <div class="page-sidebar">
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const fileInput = document.getElementById("upload");
+        const label = document.querySelector("label[for='upload']");
+        const submitBtn = document.querySelector(".uploads button[type='submit']");
+
+        fileInput.addEventListener("change", function () {
+            const count = fileInput.files.length;
+
+            if (count > 0) {
+                label.textContent = count + " file(s) selected";
+                label.classList.add("selected");
+                submitBtn.classList.remove("hidden");
+                submitBtn.disabled = false;
+            } else {
+                label.innerHTML = 'Select files <i class="fa-solid fa-file-import"></i>';
+                submitBtn.classList.add("hidden");
+                submitBtn.disabled = true;
+            }
+        });
+    });
+</script>
+
+
 @endsection
