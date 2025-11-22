@@ -2,7 +2,9 @@
 
 namespace packages\runtime\handler;
 
+use cli\CLIHandler;
 use event\EventDispatcher;
+use Exception;
 use object\ObjectHandler;
 use packages\runtime\api\RuntimeAPI;
 use packages\runtime\interface\IRuntime;
@@ -29,9 +31,12 @@ class RuntimeHandler extends RuntimeExceptions
     protected bool $isPassable;
     protected bool $usesEvents;
     protected bool $waitForRuntime;
+    protected bool $isCommandProvider;
     public array $passableInstances;
     public array $routers;
-    public array $sharedObjects = [];
+    public array $sharedObjects;
+
+    public CLIHandler $CLIHandler;
 
     public EventDispatcher $eventDispatcher;
 
@@ -40,8 +45,11 @@ class RuntimeHandler extends RuntimeExceptions
         $this->isLinker = false;
         $this->isRouter = false;
         $this->isPassable = false;
+        $this->isCommandProvider = false;
+        $this->usesEvents = false;
         $this->passableInstances = [];
         $this->routers = [];
+        $this->sharedObjects = [];
     }
 
     /**
@@ -107,7 +115,7 @@ class RuntimeHandler extends RuntimeExceptions
         $this->runtime->main();
         $this->createPassable();
         $this->sharedObjects = $this->runtime->shared;
-        if($this->usesEvents) {
+        if ($this->usesEvents) {
             $this->eventDispatcher = $this->runtime->eventDispatcher;
         }
 
@@ -154,6 +162,10 @@ class RuntimeHandler extends RuntimeExceptions
                 case ERuntimeFlags::WaitForPackage:
                     $this->waitForRuntime = true;
                     break;
+                case ERuntimeFlags::CommandProvider:
+                    if(PHP_SAPI === "cli")
+                        $this->runtime->CLIHandler = $this->CLIHandler;
+                    $this->isCommandProvider = true;
             }
         }
     }
@@ -172,7 +184,7 @@ class RuntimeHandler extends RuntimeExceptions
      *
      * @param RuntimeAPI $runtime The runtime instance to load links from.
      * @return array An array of loaded linked runtime instances.
-     * @throws \Exception
+     * @throws Exception
      */
     public function loadLinked(RuntimeAPI $runtime): array
     {
@@ -212,11 +224,13 @@ class RuntimeHandler extends RuntimeExceptions
      */
     protected function resetRuntimeHandler(): void
     {
+        $this->waitForRuntime = false;
         $this->isLinker = false;
         $this->isRouter = false;
         $this->isPassable = false;
+        $this->isCommandProvider = false;
         $this->usesEvents = false;
-        $this->waitForRuntime = false;
+        $this->passableInstances = [];
     }
 
 }

@@ -242,6 +242,9 @@ class DataManager
 
 
 
+        if(empty($ownerName))
+            return false;
+
         $result = $this->deleteOwnerDirectories($ownerName);
 
         if (!$result)

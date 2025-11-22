@@ -46,4 +46,10 @@ enum ERuntimeFlags
      */
     case WaitForPackage;
 
+    /**
+     * Tells RuntimeHandler that this package provides CLI commands.
+     *
+     */
+    case CommandProvider;
+
 }
