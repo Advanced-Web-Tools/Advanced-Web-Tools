@@ -65,7 +65,7 @@ class DataManager
      */
     public function fetchByOwnerId(int $id): self
     {
-        $data = $this->database->table("awt_data")->select("*")->where(["ownerId" => $id])->get();
+        $data = $this->database->table("awt_data")->select()->where(["ownerId" => $id])->get();
 
         foreach ($data as $key => $d) {
             $model = new DataModel($d['id']);
@@ -129,7 +129,9 @@ class DataManager
 
         foreach ($subDirs as $subDir) {
             $path = DATA . "packages/media/" . $subDir . "/" . $name;
+            var_dump($path);
             if (file_exists($path)) {
+
                 rmdir($path);
             } else {
                 return false;
@@ -227,16 +229,18 @@ class DataManager
     {
         $this->fetchByOwnerId($id);
 
-        $ownerName = $this->data[array_key_first($this->data)]->owner;
+        $ownerName = $this->data[array_key_first($this->data)]->ownerName;
 
         foreach ($this->data as $key => $d) {
-            $status = $d->delete();
+            $status = $d->deleteData($d->id);
 
             unset($this->data[$key]);
 
             if (!$status)
                 return false;
         }
+
+
 
         $result = $this->deleteOwnerDirectories($ownerName);
 

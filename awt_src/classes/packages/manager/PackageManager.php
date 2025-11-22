@@ -158,10 +158,9 @@ class PackageManager
             $dataManager->purgeByOwnerId($id);
         }
 
-        $this->databaseManager->__destruct();
         $this->databaseManager->table("awt_package")->where(["id" => $id])->delete();
 
-        $this->removeFiles(PACKAGES . $this->packages[$id]->name);
+        $this->removeFiles(PACKAGES . $this->packages[$id]->name . DIRECTORY_SEPARATOR);
     }
 
     private function removeFiles(string $dir): void
