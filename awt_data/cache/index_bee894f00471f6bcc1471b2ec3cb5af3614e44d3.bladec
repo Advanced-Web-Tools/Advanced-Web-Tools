@@ -1,0 +1,73 @@
+<?php $_shouldextend[1]=1; ?>
+
+<?php $this->startSection('head'); ?>
+<link rel="stylesheet" href="<?php echo 'http://localhost:3000/awt_packages/Theming/views/assets/css/themes.css'; ?>">
+<?php $this->stopSection(); ?>
+
+<?php $this->startSection("page"); ?>
+<div class="themes">
+ <div class="title">
+ <h3>Installed themes</h3>
+ </div>
+ <?php $__currentLoopData = $themes; $this->addLoop($__currentLoopData);$this->getFirstLoop();
+ foreach($__currentLoopData as $theme): $loop = $this->incrementLoopIndices();  ?>
+ <?php if($theme->package->previewImage !== null): ?>
+ <div class="theme" style="background-image:url('<?php echo \htmlentities($theme->package->previewImage??'', ENT_QUOTES, 'UTF-8', false); ?>');">
+ <?php else: ?>
+ <div class="theme" style="background-image:url('<?php echo 'http://localhost:3000/awt_packages/Theming/views/assets/images/6155fdafbe9057a007832d90_wireframing-101_bloghero.jpg'; ?>');">
+ <?php endif; ?>
+ <div class="info">
+ <p> <?php echo \htmlentities($theme->package->name??'', ENT_QUOTES, 'UTF-8', false); ?> </p>
+ <p> <?php echo \htmlentities($theme->package->description??'', ENT_QUOTES, 'UTF-8', false); ?> </p>
+ <div class="action">
+ <?php if($theme->status != 1): ?>
+ <a class="hp_primary" href="">
+ <button class="btn_primary">Change theme</button>
+ </a>
+ <?php else: ?>
+ <button class="btn_primary" disabled>Current theme</button>
+ <?php endif; ?>
+ </div>
+ </div>
+ </div>
+ <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
+ </div>
+</div>
+<div class="theme-settings">
+ <div class="title">
+ <h3><?php echo \htmlentities($theme->package->name??'', ENT_QUOTES, 'UTF-8', false); ?> settings</h3>
+ </div>
+ <div class="settings">
+ <?php $__currentLoopData = $settings; $this->addLoop($__currentLoopData);$this->getFirstLoop();
+ foreach($__currentLoopData as $setting): $loop = $this->incrementLoopIndices();  ?>
+ <form method="post" class="setting" action="/theming/settings/<?php echo \htmlentities($setting['id']??'', ENT_QUOTES, 'UTF-8', false); ?>/apply">
+ <label for="<?php echo \htmlentities($setting["name"]??'', ENT_QUOTES, 'UTF-8', false); ?>">
+ <?php echo \htmlentities($setting["name"]??'', ENT_QUOTES, 'UTF-8', false); ?>
+
+ </label>
+ <input class="inp_primary md" id="<?php echo \htmlentities($setting["name"]??'', ENT_QUOTES, 'UTF-8', false); ?>" name="setting_value" value="<?php echo \htmlentities($setting["value"]??'', ENT_QUOTES, 'UTF-8', false); ?>" type="<?php echo \htmlentities($setting["type"]??'', ENT_QUOTES, 'UTF-8', false); ?>" />
+ <button class="btn_secondary">Apply</button>
+ </form>
+ <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
+ </div>
+</div>
+<div class="theme-pages">
+ <div class="title">
+ <h3><?php echo \htmlentities($theme->package->name??'', ENT_QUOTES, 'UTF-8', false); ?> pages</h3>
+ </div>
+ <div class="pages">
+ <?php $__currentLoopData = $pages; $this->addLoop($__currentLoopData);$this->getFirstLoop();
+ foreach($__currentLoopData as $page): $loop = $this->incrementLoopIndices();  ?>
+ <div class="theme-page">
+ <p><?php echo \htmlentities($page['name']??'', ENT_QUOTES, 'UTF-8', false); ?></p>
+ <p>Path: <?php echo \htmlentities($page['route']??'', ENT_QUOTES, 'UTF-8', false); ?></p>
+ <a href="<?php echo \htmlentities($page['route']??'', ENT_QUOTES, 'UTF-8', false); ?>" target="_blank" rel="nofollow">Visit</a>
+ <a href="/theming/customize/<?php echo \htmlentities($page['name']??'', ENT_QUOTES, 'UTF-8', false); ?>/<?php echo \htmlentities($theme->id??'', ENT_QUOTES, 'UTF-8', false); ?>" class="hp_primary">
+ <button class="btn_secondary">Customize</button>
+ </a>
+ </div>
+ <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
+ </div>
+</div>
+<?php $this->stopSection(); ?>
+<?php if (isset($_shouldextend[1])) { echo $this->runChild('Dashboard.views.templates.main'); } ?>
