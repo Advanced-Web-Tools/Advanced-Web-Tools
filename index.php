@@ -21,15 +21,19 @@ if (DEBUG && REMOTE_INSTALL_FOR_DEVS && $_SERVER['REQUEST_METHOD'] == 'POST' && 
     }
 
     $installer = new PackageInstaller($_FILES["package"]);
-
-    $installer->
-    setDataOwner("AWT")->
-    uploadPackage()->
-    extractPackage()->
-    installPackage()->
-    transferPackageFiles()->
-    extractData()->
-    cleanUp();
+    
+    try {
+        $installer->
+        setDataOwner("AWT")->
+        uploadPackage()->
+        extractPackage()->
+        installPackage()->
+        transferPackageFiles()->
+        extractData()->
+        cleanUp();
+    } catch (Throwable $e) {
+        die($e->getMessage());
+    }
 
     die("Installed on " . Config::getConfig("AWT", "Website Name")->getValue());
 }

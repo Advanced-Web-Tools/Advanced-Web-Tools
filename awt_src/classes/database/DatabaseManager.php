@@ -74,13 +74,25 @@ class DatabaseManager
 
     public function __construct()
     {
+        global $shared;
+
         $dsn = DB_TYPE . ":host={$this->hostname};dbname={$this->database}";
-        try {
-            $this->pdo = new PDO($dsn, $this->username, $this->password);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            die('Connection failed: ' . $e->getMessage());
+
+        if(!isset($shared["DBEngine"]["PDO"])) {
+            try {
+                $this->pdo = new PDO($dsn, $this->username, $this->password);
+                $this->pdo->setAttribute(PDO::ATTR_PERSISTENT, PDO::ERRMODE_EXCEPTION);
+                $shared["DBEngine"]["PDO"] = $this->pdo;
+            } catch (PDOException $e) {
+                die('Connection failed: ' . $e->getMessage());
+            }
+        } else {
+            $this->pdo = $shared["DBEngine"]["PDO"];
         }
+    }
+
+    public function __destruct() {
+        $this->pdo = null;
     }
 
     /**
@@ -148,7 +160,7 @@ class DatabaseManager
 
         self::showDebugTrace();
 
-        $this->__destruct();
+        $this->reset();
         return null;
     }
 
@@ -186,17 +198,43 @@ class DatabaseManager
      * @param bool $useNot Whether to use != instead of = in the condition.
      * @return $this The instance of the DatabaseManager for chaining.
      */
-    public function where(array $conditions, bool $useNot = false): self
+    public function where(array $conditions, bool $useNot = false, string $conjunction = 'AND'): self
     {
+        $conjunction = strtoupper($conjunction);
+        if (!in_array($conjunction, ['AND', 'OR'])) {
+            $conjunction = 'AND';
+        }
+
         $whereClauses = [];
         foreach ($conditions as $column => $value) {
             $operator = $useNot ? "!=" : "=";
             $whereClauses[] = "{$column} {$operator} :{$column}";
             $this->conditions[":{$column}"] = $value;
         }
-        $this->whereQuery = " WHERE " . implode(' AND ', $whereClauses);
+        $this->whereQuery = " WHERE " . implode(" {$conjunction} ", $whereClauses);
         return $this;
     }
+
+
+    /**
+     * Adds a LIKE clause to the query with conditions.
+     *
+     * @param array $conditions Associative array where keys are columns and values are the patterns to match.
+     * @param bool $useNot Whether to use NOT LIKE instead of LIKE in the condition.
+     * @return $this The instance of the DatabaseManager for chaining.
+     */
+    public function like(array $conditions, bool $useNot = false): self
+    {
+        $likeClauses = [];
+        foreach ($conditions as $column => $value) {
+            $operator = $useNot ? "NOT LIKE" : "LIKE";
+            $likeClauses[] = "{$column} {$operator} :{$column}";
+            $this->conditions[":{$column}"] = $value;
+        }
+        $this->whereQuery = " WHERE " . implode(' AND ', $likeClauses);
+        return $this;
+    }
+
 
     /**
      * Adds an ORDER BY clause to the query.
@@ -251,15 +289,16 @@ class DatabaseManager
         try {
             $stmt->execute();
         } catch (PDOException $e) {
+            $stmt->closeCursor();
             if (DEBUG)
-                die("Error has occured: " . $e->getMessage() . "<br>" . "SQL: " . $sql);
+                die("Error has occurred: " . $e->getMessage() . "<br>" . "SQL: " . $sql);
         }
 
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
+        $stmt->closeCursor();
         self::showDebugTrace();
 
-        $this->__destruct();
+        $this->reset();
         return $result;
     }
 
@@ -295,10 +334,10 @@ class DatabaseManager
         }
 
         $result = $stmt->execute();
-
+        $stmt->closeCursor();
         self::showDebugTrace();
 
-        $this->__destruct();
+        $this->reset();
         return $result;
     }
 
@@ -318,10 +357,10 @@ class DatabaseManager
         }
 
         $result = $stmt->execute();
-
+        $stmt->closeCursor();
         self::showDebugTrace();
 
-        $this->__destruct();
+        $this->reset();
         return $result;
     }
 
@@ -411,7 +450,7 @@ class DatabaseManager
     }
 
 
-    public function __destruct()
+    public function reset()
     {
         $this->lastQuery = $this->sql;
         $this->sql = '';
@@ -425,5 +464,10 @@ class DatabaseManager
         $this->joins = [];
         $this->conditions = [];
         $this->tables = [];
+
+        if ($this->pdo !== null) {
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        }
+
     }
 }

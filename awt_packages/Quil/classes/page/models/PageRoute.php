@@ -17,9 +17,15 @@ class PageRoute extends Model
 {
     public string $route;
 
-    public function __construct(?array $data)
+    public function __construct(array|int $data)
     {
         parent::__construct();
+
+
+        if(!is_array($data)) {
+            $this->selectByID($data, "quil_page_route", "id");
+            return;
+        }
 
         foreach ($data as $key => $value) {
             $this->$key = $value;

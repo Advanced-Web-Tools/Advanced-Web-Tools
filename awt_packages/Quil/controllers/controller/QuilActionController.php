@@ -11,11 +11,12 @@ use Quil\classes\page\models\PageRoute;
 use Quil\classes\page\PageManager;
 use Quil\classes\sources\SourceManager;
 use redirect\Redirect;
+use Dashboard\classes\dashboard\DashboardPage;
+use view\View;
 
-final class QuilActionController extends Controller
+final class QuilActionController extends DashboardPage
 {
     private PageManager $pageManager;
-    private Admin $admin;
     private Redirect $redirect;
     private AWTRespond $responder;
     private DatabaseManager $database;
@@ -28,10 +29,10 @@ final class QuilActionController extends Controller
     }
 
 
-    public function index(array|string $params): Redirect
+    public function index(array|string $params): View
     {
         // TODO: Implement index() method.
-        return $this->redirect->back();
+        return $this->view();
     }
 
     public function create(array|string $params): Redirect

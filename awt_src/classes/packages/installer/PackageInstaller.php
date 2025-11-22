@@ -55,11 +55,11 @@ class PackageInstaller
     /**
      * @throws ErrorException
      */
-    public function uploadPackage(): self
+    public function uploadPackage(bool $local = true): self
     {
         $name = $this->tempName . "." . $this->extension;
         $this->data = $this->dataManager
-            ->uploadData($this->packageFile, $name, "temp", "System", $this->owner);
+            ->uploadData($this->packageFile, $name, "temp", "System", $this->owner, $local);
 
         return $this;
     }
@@ -67,11 +67,11 @@ class PackageInstaller
     /**
      * @throws ErrorException
      */
-    public function extractPackage(): self
+    public function extractPackage(bool $local = true): self
     {
         $zip = new ZipArchive();
 
-        $zip->open($this->data->getLocation(true));
+        $zip->open($this->data->getLocation($local));
         $zip->extractTo(TEMP . $this->tempName);
         $zip->close();
 
@@ -265,19 +265,19 @@ class PackageInstaller
                     "tmp_name" => $filePath,
                 ];
 
-                $data = $this->dataManager->uploadData($fileData, $fileData["name"], $dir, "Package", $this->package->name, true);
+                $this->data = $this->dataManager->uploadData($fileData, $fileData["name"], $dir, "Package", $this->package->name, true);
 
                 if ($fileData["name"] == $this->package->getIcon()) {
                     $this->databaseManager->table("awt_package")->where(["id" => $this->package->getId()])
                         ->update([
-                            "icon" => "/awt_data" . explode("awt_data", $data->getLocation())[1],
+                            "icon" => "/awt_data" . explode("awt_data", $this->data->getLocation())[1],
                         ]);
                 }
 
                 if ($file == $this->package->getPreviewImage()) {
                     $this->databaseManager->table("awt_package")->where(["id" => $this->package->getId()])
                         ->update([
-                            "preview_image" => explode("public_html", $data->getLocation())[1],
+                            "preview_image" => explode("public_html", $this->data->getLocation())[1],
                         ]);
                 }
 
@@ -291,6 +291,9 @@ class PackageInstaller
 
     public function cleanUp(): void
     {
+        if(gettype($this->data) != "object")
+            return;
+
         $this->dataManager->fetchData($this->data->id);
         $this->dataManager->deleteData($this->data->id);
         $this->clearTempFiles();

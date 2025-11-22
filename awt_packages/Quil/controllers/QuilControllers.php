@@ -8,7 +8,7 @@ final class QuilControllers extends RuntimeControllerAPI
 {
 
     private QuilController $controller;
-    private Controller $actionController;
+    private QuilActionController $actionController;
 
     private Controller $customPageController;
     public function environmentSetup(): void
@@ -40,6 +40,7 @@ final class QuilControllers extends RuntimeControllerAPI
     public function main(): void
     {
         $this->controller->setShared($this->shared);
+        $this->actionController->setShared($this->shared);
         $this->controller->setPageManager($this->getShared("Quil","PageManager"));
         $this->addController($this->controller);
         $this->addController($this->actionController);

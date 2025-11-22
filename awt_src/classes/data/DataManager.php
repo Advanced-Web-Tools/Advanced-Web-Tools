@@ -37,7 +37,7 @@ class DataManager
      */
     public function fetchData(?int $id = null): self
     {
-        $this->database->__destruct();
+        $this->database->reset();
         if ($id === null) {
             $data = $this->database->table("awt_data")->select()->where(["1" => "1"])->get();
         } else {

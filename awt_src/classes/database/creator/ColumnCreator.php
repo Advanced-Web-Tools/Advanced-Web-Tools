@@ -17,7 +17,7 @@ class ColumnCreator
     public ?string $onUpdate = null;
     private bool $defaultAsDefined = false;
 
-    public function INT(string $name, string $length): self
+    public static function INT(string $name, string $length): self
     {
         $instance = new self();
         $instance->type = 'INT';
@@ -26,7 +26,7 @@ class ColumnCreator
         return $instance;
     }
 
-    public function VARCHAR(string $name, string $length): self
+    public static function VARCHAR(string $name, string $length): self
     {
         $instance = new self();
         $instance->type = 'VARCHAR';
@@ -35,7 +35,7 @@ class ColumnCreator
         return $instance;
     }
 
-    public function TEXT(string $name): self
+    public static function TEXT(string $name): self
     {
         $instance = new self();
         $instance->type = 'TEXT';
@@ -43,7 +43,7 @@ class ColumnCreator
         return $instance;
     }
 
-    public function LONGTEXT(string $name): self
+    public static function LONGTEXT(string $name): self
     {
         $instance = new self();
         $instance->type = 'LONGTEXT';
@@ -51,7 +51,7 @@ class ColumnCreator
         return $instance;
     }
 
-    public function DATE(string $name): self
+    public static function DATE(string $name): self
     {
         $instance = new self();
         $instance->type = 'DATE';
@@ -59,7 +59,7 @@ class ColumnCreator
         return $instance;
     }
 
-    public function TIMESTAMP(string $name): self
+    public static function TIMESTAMP(string $name): self
     {
         $instance = new self();
         $instance->type = 'TIMESTAMP';
