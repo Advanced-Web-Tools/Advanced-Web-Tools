@@ -164,7 +164,6 @@ class PackageInstaller
                 'system_package' => $this->package->systemPackage ? 1 : 0
             ];
 
-
             $this->databaseManager->table("awt_package")->where(["id" => $this->package->getId()])->update($update);
 
             if (file_exists(TEMP . $this->tempName . "/update.php")) {
@@ -255,6 +254,7 @@ class PackageInstaller
             foreach ($content as $file) {
                 $filePath = $dirPath . "/" . $file;
 
+
                 if (!is_file($filePath)) {
                     continue;
                 }
@@ -265,19 +265,23 @@ class PackageInstaller
                     "tmp_name" => $filePath,
                 ];
 
-                $this->data = $this->dataManager->uploadData($fileData, $fileData["name"], $dir, "Package", $this->package->name, true);
+                $data = $this->dataManager->uploadData($fileData, $fileData["name"], $dir, "Package", $this->package->name, true);
+
+                if(gettype($this->data) != "object")
+                    continue;
 
                 if ($fileData["name"] == $this->package->getIcon()) {
                     $this->databaseManager->table("awt_package")->where(["id" => $this->package->getId()])
                         ->update([
-                            "icon" => "/awt_data" . explode("awt_data", $this->data->getLocation())[1],
+                            "icon" => "/awt_data" . explode("awt_data", $data->getLocation())[1],
                         ]);
                 }
 
-                if ($file == $this->package->getPreviewImage()) {
+
+                if ($fileData["name"] == $this->package->getPreviewImage()) {
                     $this->databaseManager->table("awt_package")->where(["id" => $this->package->getId()])
                         ->update([
-                            "preview_image" => explode("public_html", $this->data->getLocation())[1],
+                            "preview_image" => explode("awt_data", $data->getLocation())[1],
                         ]);
                 }
 
