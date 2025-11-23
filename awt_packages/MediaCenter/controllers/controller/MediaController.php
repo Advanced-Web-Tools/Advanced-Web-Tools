@@ -11,7 +11,6 @@ final class MediaController extends DashboardPage
     public function __construct()
     {
         parent::__construct();
-
         $this->manager = new MediaManager();
     }
 

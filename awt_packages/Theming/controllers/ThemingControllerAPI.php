@@ -2,30 +2,66 @@
 
 
 use Dashboard\classes\dashboard\DashboardPage;
+use object\ObjectFactory;
 use packages\runtime\api\RuntimeControllerAPI;
+use packages\runtime\handler\enums\ERuntimeFlags;
+use Exception;
 
 final class ThemingControllerAPI extends RuntimeControllerAPI
 {
-    private DashboardPage $controller;
+    private ObjectFactory $controller;
 
+    public function environmentSetup(): void
+    {
+        parent::environmentSetup();
+        $this->setRuntimeFlag(ERuntimeFlags::EventDispatcher);
+        $this->setRuntimeFlag(ERuntimeFlags::CreatePassableObject);
+    }
 
     public function setup(): void
     {
-        $this->controller = $this->getLocalObject("/controllers/ThemingController.php");
+        $objectFactory = new ObjectFactory();
+        $props = [
+            "localAssetPath" => "/awt_packages/Theming/views/assets",
+            "eventDispatcher" => $this->eventDispatcher
+        ];
 
-        $this->controller->controllerName = "ThemingController";
-        $this->controller->setRootPath($this->runtimePath);
-        $this->controller->setViewPath("/views/");
-        $this->controller->localAssetPath = "/awt_packages/Theming/views/assets";
+        $methodCalls = [
+            "setName",
+            "setRootPath",
+            "setViewPath",
+            "setShared",
+        ];
 
-        $this->controller->eventDispatcher = $this->eventDispatcher;
+        $methodArgs = [
+            "setName" => ["ThemingController"],
+            "setRootPath" => [$this->runtimePath],
+            "setViewPath" => ["/views/"],
+            "setShared" => [$this->shared],
+        ];
 
+        try {
+            $objectFactory->setClassPath($this->runtimePath . "/controllers/ThemingController.php");
+            $objectFactory->setProperties($props);
+            $objectFactory->setMethodCalls($methodCalls);
+            $objectFactory->setMethodArgs($methodArgs);
+            $objectFactory->setType(DashboardPage::class);
+            $this->controller = $objectFactory;
+        } catch (Exception $e) {
+            if (DEBUG) {
+                die($e->getMessage());
+            }
+        }
     }
 
     public function main(): void
     {
-        $this->controller->setShared($this->shared);
-
-        $this->addController($this->controller);
+        try {
+            $this->addController($this->controller, "ThemingController");
+        } catch (Exception $e) {
+            if (DEBUG) {
+                die($e->getMessage());
+            }
+        }
     }
 }

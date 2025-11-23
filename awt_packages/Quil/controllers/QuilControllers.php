@@ -1,49 +1,127 @@
 <?php
 
 use controller\Controller;
+use object\ObjectFactory;
 use packages\runtime\api\RuntimeControllerAPI;
 use packages\runtime\handler\enums\ERuntimeFlags;
+use Exception;
 
 final class QuilControllers extends RuntimeControllerAPI
 {
 
-    private QuilController $controller;
-    private QuilActionController $actionController;
+    private ObjectFactory $controller;
+    private ObjectFactory $actionController;
+    private ObjectFactory $customPageController;
 
-    private Controller $customPageController;
     public function environmentSetup(): void
     {
         parent::environmentSetup();
         $this->setRuntimeFlag(ERuntimeFlags::EventDispatcher);
+        $this->setRuntimeFlag(ERuntimeFlags::CreatePassableObject);
     }
 
     public function setup(): void
     {
-        $this->controller = $this->getLocalObject("/controllers/controller/QuilController.php");
-        $this->controller->setRootPath($this->runtimePath);
-        $this->controller->setViewPath("/views/");
-        $this->controller->localAssetPath = "/awt_packages/Quil/views/assets";
-        $this->controller->controllerName = "QuilController";
-        $this->controller->eventDispatcher = $this->eventDispatcher;
+        // QuilController
+        $objectFactory = new ObjectFactory();
+        $props = [
+            "localAssetPath" => "/awt_packages/Quil/views/assets",
+            "eventDispatcher" => $this->eventDispatcher
+        ];
+        $methodCalls = [
+            "setRootPath",
+            "setViewPath",
+            "setName",
+            "setShared",
+            "setPageManager"
+        ];
+        $methodArgs = [
+            "setRootPath" => [$this->runtimePath],
+            "setViewPath" => ["/views/"],
+            "setName" => ["QuilController"],
+            "setShared" => [$this->shared],
+            "setPageManager" => [$this->getShared("Quil", "PageManager")]
+        ];
 
-        $this->actionController = $this->getLocalObject("/controllers/controller/QuilActionController.php");
-        $this->actionController->controllerName = "QuilActionController";
+        try {
+            $objectFactory->setClassPath($this->runtimePath . "/controllers/controller/QuilController.php");
+            $objectFactory->setProperties($props);
+            $objectFactory->setMethodCalls($methodCalls);
+            $objectFactory->setMethodArgs($methodArgs);
+            $objectFactory->setType(Controller::class);
+            $this->controller = $objectFactory;
+        } catch (Exception $e) {
+            if (DEBUG) {
+                die($e->getMessage());
+            }
+        }
 
-        $this->customPageController = $this->getLocalObject("/controllers/controller/CustomPageController.php");
-        $this->customPageController->controllerName = "CustomPageController";
-        $this->customPageController->eventDispatcher = $this->eventDispatcher;
-        $this->customPageController->setRootPath($this->runtimePath);
-        $this->customPageController->setViewPath("/views/");
-        $this->customPageController->localAssetPath = "/awt_packages/Quil/views/assets";
+        // QuilActionController
+        $objectFactory = new ObjectFactory();
+        $props = [];
+        $methodCalls = [
+            "setName",
+            "setShared"
+        ];
+        $methodArgs = [
+            "setName" => ["QuilActionController"],
+            "setShared" => [$this->shared]
+        ];
+
+        try {
+            $objectFactory->setClassPath($this->runtimePath . "/controllers/controller/QuilActionController.php");
+            $objectFactory->setProperties($props);
+            $objectFactory->setMethodCalls($methodCalls);
+            $objectFactory->setMethodArgs($methodArgs);
+            $objectFactory->setType(Controller::class);
+            $this->actionController = $objectFactory;
+        } catch (Exception $e) {
+            if (DEBUG) {
+                die($e->getMessage());
+            }
+        }
+
+        // CustomPageController
+        $objectFactory = new ObjectFactory();
+        $props = [
+            "eventDispatcher" => $this->eventDispatcher,
+            "localAssetPath" => "/awt_packages/Quil/views/assets"
+        ];
+        $methodCalls = [
+            "setName",
+            "setRootPath",
+            "setViewPath",
+        ];
+        $methodArgs = [
+            "setName" => ["CustomPageController"],
+            "setRootPath" => [$this->runtimePath],
+            "setViewPath" => ["/views/"],
+        ];
+
+        try {
+            $objectFactory->setClassPath($this->runtimePath . "/controllers/controller/CustomPageController.php");
+            $objectFactory->setProperties($props);
+            $objectFactory->setMethodCalls($methodCalls);
+            $objectFactory->setMethodArgs($methodArgs);
+            $objectFactory->setType(Controller::class);
+            $this->customPageController = $objectFactory;
+        } catch (Exception $e) {
+            if (DEBUG) {
+                die($e->getMessage());
+            }
+        }
     }
 
     public function main(): void
     {
-        $this->controller->setShared($this->shared);
-        $this->actionController->setShared($this->shared);
-        $this->controller->setPageManager($this->getShared("Quil","PageManager"));
-        $this->addController($this->controller);
-        $this->addController($this->actionController);
-        $this->addController($this->customPageController);
+        try {
+            $this->addController($this->controller, "QuilController");
+            $this->addController($this->actionController, "QuilActionController");
+            $this->addController($this->customPageController, "CustomPageController");
+        } catch (Exception $e) {
+            if (DEBUG) {
+                die($e->getMessage());
+            }
+        }
     }
 }

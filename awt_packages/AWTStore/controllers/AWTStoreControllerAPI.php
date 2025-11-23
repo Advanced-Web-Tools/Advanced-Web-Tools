@@ -2,15 +2,16 @@
 
 use controller\Controller;
 use Dashboard\classes\dashboard\DashboardPage;
+use object\ObjectFactory;
 use packages\runtime\api\RuntimeControllerAPI;
 use packages\runtime\handler\enums\ERuntimeFlags;
 
 final class AWTStoreControllerAPI extends RuntimeControllerAPI
 {
 
-    public DashboardPage $publicController;
-    public Controller $proxy;
-    public Controller $serviceController;
+    public ObjectFactory $publicController;
+    public ObjectFactory $proxy;
+    public ObjectFactory $serviceController;
 
     public function environmentSetup(): void
     {
@@ -21,31 +22,90 @@ final class AWTStoreControllerAPI extends RuntimeControllerAPI
 
     public function setup(): void
     {
-        $this->publicController = $this->getLocalObject("/controllers/controller/AWTStoreController.php");
-        $this->publicController->setName("AWTStoreController");
-        $this->publicController->setRootPath($this->runtimePath);
-        $this->publicController->setViewPath("/views/");
-        $this->publicController->localAssetPath = "/awt_packages/AWTStore/views/assets";
-        $this->publicController->eventDispatcher = $this->eventDispatcher;
-        $this->publicController->setShared($this->shared);
+        $objectFactory = new ObjectFactory();
+        $props = [
+            "localAssetPath" => "/awt_packages/AWTStore/views/assets",
+            "eventDispatcher" => $this->eventDispatcher
+        ];
 
-        $this->proxy = $this->getLocalObject("/controllers/controller/AWTStoreProxyController.php");
-        $this->proxy->setName("AWTStoreProxyController");
-        $this->proxy->setRootPath($this->runtimePath);
-        $this->proxy->setViewPath("/views/");
+        $methodCalls = [
+            "setName",
+            "setRootPath",
+            "setViewPath",
+            "setShared",
+        ];
+
+        $methodArgs = [
+            "setName" => ["AWTStoreController"],
+            "setRootPath" => [$this->runtimePath],
+            "setViewPath" => ["/views/"],
+            "setShared" => [$this->shared],
+        ];
+
+        try {
+            $objectFactory->setClassPath($this->runtimePath . "/controllers/controller/AWTStoreController.php");
+            $objectFactory->setProperties($props);
+            $objectFactory->setMethodCalls($methodCalls);
+            $objectFactory->setMethodArgs($methodArgs);
+            $objectFactory->setType(Controller::class);
+            $this->publicController = $objectFactory;
+        } catch (Exception $e) {
+            if(DEBUG)
+                die($e->getMessage());
+        }
 
 
-        $this->serviceController = $this->getLocalObject("/controllers/controller/AWTStoreServiceController.php");
-        $this->serviceController->setName("AWTStoreServiceController");
-        $this->serviceController->setRootPath($this->runtimePath);
-        $this->serviceController->setViewPath("/views/");
+        //AWTStoreProxyController
+        $objectFactory = new ObjectFactory();
+        $methodCalls = [
+            "setName",
+            "setRootPath"
+        ];
+        $methodArgs = [
+            "setName" => ["AWTStoreProxyController"],
+            "setRootPath" => [$this->runtimePath]
+        ];
 
+        try {
+            $objectFactory->setClassPath($this->runtimePath . "/controllers/controller/AWTStoreProxyController.php");
+            $objectFactory->setMethodCalls($methodCalls);
+            $objectFactory->setMethodArgs($methodArgs);
+            $objectFactory->setType(Controller::class);
+            $this->proxy = $objectFactory;
+        } catch(Exception $e) {
+            if(DEBUG)
+                die($e->getMessage());
+        }
+
+
+        //AWTStoreServiceController
+        $objectFactory = new ObjectFactory();
+        $methodArgs = [
+            "setName" => ["AWTStoreServiceController"],
+            "setRootPath" => [$this->runtimePath]
+        ];
+
+        try {
+            $objectFactory->setClassPath($this->runtimePath . "/controllers/controller/AWTStoreServiceController.php");
+            $objectFactory->setMethodCalls($methodCalls);
+            $objectFactory->setMethodArgs($methodArgs);
+            $objectFactory->setType(Controller::class);
+            $this->serviceController = $objectFactory;
+        } catch(Exception $e) {
+            if(DEBUG)
+                die($e->getMessage());
+        }
     }
 
     public function main(): void
     {
-        $this->addController($this->publicController);
-        $this->addController($this->proxy);
-        $this->addController($this->serviceController);
+        try {
+            $this->addController($this->publicController, "AWTStoreController");
+            $this->addController($this->proxy, "AWTStoreProxyController");
+            $this->addController($this->serviceController, "AWTStoreServiceController");
+        } catch (Exception $e) {
+            if(DEBUG)
+                die($e->getMessage());
+        }
     }
 }

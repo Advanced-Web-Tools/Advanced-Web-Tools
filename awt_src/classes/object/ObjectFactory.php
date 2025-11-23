@@ -8,7 +8,8 @@ use ReflectionException;
 
 class ObjectFactory
 {
-    private string $classPath;
+    private ?string $classPath = null;
+    private ?string $className = null;
     public ?string $type = null;
     private array $constructorArgs = [];
     private array $methodCalls = [];
@@ -132,6 +133,22 @@ class ObjectFactory
         return $object;
     }
 
+
+    public function addMethodCall(string $name): self {
+        $this->methodCalls[] = $name;
+        return $this;
+    }
+
+    public function addMethodArgs(string $method, array $args): self {
+        $this->methodArgs[$method] = $args;
+        return $this;
+    }
+    public function setClassName(string $class): self
+    {
+        $this->className = $class;
+        return $this;
+    }
+
     /**
      * Checks if passed object matches the given type.
      * @param object $object
@@ -195,61 +212,69 @@ class ObjectFactory
     /**
      * Initializes and returns an object with previous parameters set.
      * @return object|null
-     * @throws ReflectionException
      * @throws \Exception
      */
-    public function create(): object|null
+    public function create(): ?object
     {
-        $beforeClasses = get_declared_classes();
+        $classToInstantiate = null;
 
-        include_once $this->classPath;
-
-        $afterClasses = get_declared_classes();
-
-        $newClasses = array_diff($afterClasses, $beforeClasses);
-
-        foreach ($newClasses as $className) {
-
-            try {
-                $reflection = new ReflectionClass($className);
-            } catch (\Exception $e) {
-                if (DEBUG)
-                    throw new \Exception("{$className} failed to create object.");
-                exit();
+        if ($this->className !== null) {
+            if ($this->classPath !== null && !class_exists($this->className)) {
+                include_once $this->classPath;
             }
+            $classToInstantiate = $this->className;
+        } elseif ($this->classPath !== null) {
+            $beforeClasses = get_declared_classes();
+            include_once $this->classPath;
+            $afterClasses = get_declared_classes();
+            $newClasses = array_diff($afterClasses, $beforeClasses);
 
-
-            if (!$reflection->isAbstract()) {
-
-                if (count($this->constructorArgs) > 0) {
-                    $object = $reflection->newInstanceArgs($this->constructorArgs);
-                } else {
-                    $object = $reflection->newInstance();
+            if (empty($newClasses)) {
+                if (DEBUG) throw new \Exception("No new class was declared in the file: {$this->classPath}");
+                return null;
+            }
+            
+            foreach ($newClasses as $newClass) {
+                try {
+                    $reflection = new ReflectionClass($newClass);
+                    if (!$reflection->isAbstract()) {
+                        $classToInstantiate = $newClass;
+                        break;
+                    }
+                } catch (ReflectionException $e) {
+                    if (DEBUG) throw new \Exception("Reflection failed for class {$newClass}.", 0, $e);
+                    return null;
                 }
-
-                if ($this->type !== null) {
-                    $res = $this->checkType($object, $this->type);
-
-                    if (!$res)
-                        if (DEBUG)
-                            throw new \Exception("{$className} was an instance of " . get_class($object) . ". Expected: {$this->type}");
-                }
-
-                $object = $this->setProperty($object);
-
-                return $this->callMethods($object);
-
-            } else {
-
-                if (DEBUG)
-                    throw new \Exception("$className failed to create object. $className is an abstract class.");
-
             }
         }
 
+        if ($classToInstantiate === null) {
+            if (DEBUG) throw new \Exception("Could not determine class to instantiate from the provided path or name.");
+            return null;
+        }
 
-        return null;
+        try {
+            $reflection = new ReflectionClass($classToInstantiate);
+        } catch (ReflectionException $e) {
+            if (DEBUG) throw new \Exception("Class '{$classToInstantiate}' not found or could not be reflected.", 0, $e);
+            return null;
+        }
+
+        if ($reflection->isAbstract()) {
+            if (DEBUG) throw new \Exception("Cannot create an instance of abstract class {$classToInstantiate}.");
+            return null;
+        }
+
+        $object = (count($this->constructorArgs) > 0)
+            ? $reflection->newInstanceArgs($this->constructorArgs)
+            : $reflection->newInstance();
+
+        if ($this->type !== null && !$this->checkType($object, $this->type)) {
+            if (DEBUG) throw new \Exception("Object of class " . get_class($object) . " is not an instance of expected type {$this->type}");
+            return null;
+        }
+
+        $object = $this->setProperty($object);
+        return $this->callMethods($object);
     }
-
-
 }

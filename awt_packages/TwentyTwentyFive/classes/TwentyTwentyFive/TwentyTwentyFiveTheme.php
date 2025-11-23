@@ -3,13 +3,14 @@
 namespace TwentyTwentyFive\classes\TwentyTwentyFive;
 
 use controller\Controller;
+use object\ObjectFactory;
 use router\Router;
 use Theming\classes\ThemeAPI\ThemeAPI;
 use TwentyTwentyFive\classes\controller\TwentyTwentyFiveController;
 
 final class TwentyTwentyFiveTheme extends ThemeAPI
 {
-    private Controller $controller;
+    private ObjectFactory $controller;
     public function buildTheme(): void
     {
         $this->setName("TwentyTwentyFive");
@@ -29,13 +30,37 @@ final class TwentyTwentyFiveTheme extends ThemeAPI
 
     private function buildController(): void
     {
-        $this->controller = new TwentyTwentyFiveController();
-        $this->controller->setName("TwentyTwentyFive");
-        $this->controller->setRootPath(PACKAGES . "/TwentyTwentyFive");
-        $this->controller->setViewPath("/views/");
-        $this->controller->packageName = "TwentyTwentyFive";
-        $this->controller->localAssetPath = "/awt_packages/TwentyTwentyFive/views/assets";
-        $this->addController($this->controller);
+        try {
+            $objectFactory = new ObjectFactory();
+            $props = [
+                "packageName" => "TwentyTwentyFive",
+                "localAssetPath" => "/awt_packages/TwentyTwentyFive/views/assets"
+            ];
+            $methodCalls = [
+                "setName",
+                "setRootPath",
+                "setViewPath",
+            ];
+            $methodArgs = [
+                "setName" => ["TwentyTwentyFive"],
+                "setRootPath" => [PACKAGES . "/TwentyTwentyFive"],
+                "setViewPath" => ["/views/"],
+            ];
+
+            $objectFactory->setClassName(TwentyTwentyFiveController::class);
+            $objectFactory->setProperties($props);
+            $objectFactory->setMethodCalls($methodCalls);
+            $objectFactory->setMethodArgs($methodArgs);
+            $objectFactory->setType(TwentyTwentyFiveController::class);
+
+            $this->controller = $objectFactory;
+            $this->addController($this->controller, "TwentyTwentyFive");
+
+        } catch (Exception $e) {
+            if (DEBUG) {
+                die($e->getMessage());
+            }
+        }
     }
 
 }

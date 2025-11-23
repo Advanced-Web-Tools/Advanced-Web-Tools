@@ -3,6 +3,7 @@
 namespace Theming\classes\ThemeAPI;
 
 use event\EventDispatcher;
+use object\ObjectFactory;
 use router\Router;
 use Theming\classes\Theme\Page\ThemePage;
 use Theming\classes\Theme\Settings\ThemeSettings;
@@ -55,8 +56,18 @@ abstract class ThemeAPI
         $this->routes[] = $router;
     }
 
-    protected function addController(ThemePage $controller): void
+    protected function addController(ObjectFactory|ThemePage $controller): void
     {
+        if($controller instanceof ObjectFactory) {
+            $controller->addMethodCall("setID")
+                ->addMethodCall("addPages")
+                ->addMethodCall("setSettings")
+                ->addMethodArgs("setID", [$this->themeID])
+                ->addMethodArgs("addPages", [$this->pages])
+                ->addMethodArgs("setSettings", [$this->themeSettings]);
+            return;
+        }
+
         $controller->setID($this->themeID)->addPages($this->pages)->setSettings($this->themeSettings);
         $this->controllers[] = $controller;
     }
