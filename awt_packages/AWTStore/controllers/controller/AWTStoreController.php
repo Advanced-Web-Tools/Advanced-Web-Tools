@@ -109,7 +109,7 @@ final class AWTStoreController extends DashboardPage
             $pkgName = is_array($pkg) ? $pkg["name"] : $pkg->name ?? null;
             $pkgVersion = is_array($pkg) ? $pkg["version"] : $pkg->version ?? null;
 
-            if($pkgName === $fetched["name"]) {
+            if($pkgVersion != null && $pkgName === $fetched["name"]) {
                 if($this->compareVersions($pkgVersion, $fetched["version"]) === true)
                     return ["installed" => true, "canUpdate" => true, "currentVersion" => $pkgVersion];
 
