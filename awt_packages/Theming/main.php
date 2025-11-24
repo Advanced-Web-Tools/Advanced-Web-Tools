@@ -22,7 +22,7 @@ final class Theming extends RuntimeLinkerAPI {
         $this->setRuntimeFlag(ERuntimeFlags::EventDispatcher);
 
         $this->setRuntimeFlag(ERuntimeFlags::WaitForPackage);
-
+        $this->waitForRuntime("Dashboard");
         $this->waitForRuntime("Quil");
 
     }
