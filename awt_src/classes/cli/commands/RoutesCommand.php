@@ -8,7 +8,7 @@ class RoutesCommand implements CLICommand
 {
 
     private string $lastResult = '';
-    private array $routes;
+    private array $routes = [];
 
     public function addRoutes(array $routes): void
     {

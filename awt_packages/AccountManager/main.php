@@ -11,6 +11,8 @@ final class AccountManager extends RuntimeLinkerAPI
     {
         parent::environmentSetup();
         $this->setRuntimeFlag(ERuntimeFlags::EventDispatcher);
+        $this->setRuntimeFlag(ERuntimeFlags::WaitForPackage);
+        $this->waitForRuntime("Dashboard");
     }
 
     /**

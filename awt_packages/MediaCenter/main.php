@@ -12,6 +12,8 @@ final class MediaCenter extends RuntimeLinkerAPI
         $this->setRuntimeFlag(ERuntimeFlags::EventDispatcher);
         $this->setRuntimeFlag(ERuntimeFlags::WaitForPackage);
         $this->waitForRuntime("Quil");
+        $this->setRuntimeFlag(ERuntimeFlags::WaitForPackage);
+        $this->waitForRuntime("Dashboard");
     }
 
     public function setup(): void
