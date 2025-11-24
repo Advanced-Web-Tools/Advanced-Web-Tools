@@ -148,7 +148,8 @@ final class PackageManagerController extends DashboardPage
 
         if ($this->admin->checkPermission(0)) {
             $uninstaller = new PackageManager();
-            $uninstaller->removePackage($params["id"]);
+            $uninstaller->fetchPackages();
+            $uninstaller->removePackage($params["id"], true);
         } else {
             $this->redirect->redirect("/dashboard/package_manager/error_permission");
         }

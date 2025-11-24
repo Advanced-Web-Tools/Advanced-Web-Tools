@@ -2,6 +2,8 @@
 
 namespace packages\runtime\api;
 
+use cli\CLIHandler;
+use cli\interfaces\CLICommand;
 use Error;
 use event\EventDispatcher;
 use packages\runtime\handler\enums\ERuntimeFlags;
@@ -29,6 +31,7 @@ abstract class RuntimeAPI extends Runtime implements IRuntime
     protected string $runtimePath;
 
     public EventDispatcher $eventDispatcher;
+    public CLIHandler $CLIHandler;
 
     public function __construct()
     {
@@ -171,4 +174,12 @@ abstract class RuntimeAPI extends Runtime implements IRuntime
 
         return $instance;
     }
+
+    final public function addCommand(CLICommand $command): void
+    {
+        if(PHP_SAPI === "cli") {
+            $this->CLIHandler->addCommand($command);
+        }
+    }
+
 }

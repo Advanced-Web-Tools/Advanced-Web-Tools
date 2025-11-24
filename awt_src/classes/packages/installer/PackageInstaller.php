@@ -55,11 +55,11 @@ class PackageInstaller
     /**
      * @throws ErrorException
      */
-    public function uploadPackage(): self
+    public function uploadPackage(bool $local = true): self
     {
         $name = $this->tempName . "." . $this->extension;
         $this->data = $this->dataManager
-            ->uploadData($this->packageFile, $name, "temp", "System", $this->owner);
+            ->uploadData($this->packageFile, $name, "temp", "System", $this->owner, $local);
 
         return $this;
     }
@@ -67,11 +67,11 @@ class PackageInstaller
     /**
      * @throws ErrorException
      */
-    public function extractPackage(): self
+    public function extractPackage(bool $local = true): self
     {
         $zip = new ZipArchive();
 
-        $zip->open($this->data->getLocation(true));
+        $zip->open($this->data->getLocation($local));
         $zip->extractTo(TEMP . $this->tempName);
         $zip->close();
 
@@ -164,7 +164,6 @@ class PackageInstaller
                 'system_package' => $this->package->systemPackage ? 1 : 0
             ];
 
-
             $this->databaseManager->table("awt_package")->where(["id" => $this->package->getId()])->update($update);
 
             if (file_exists(TEMP . $this->tempName . "/update.php")) {
@@ -255,6 +254,7 @@ class PackageInstaller
             foreach ($content as $file) {
                 $filePath = $dirPath . "/" . $file;
 
+
                 if (!is_file($filePath)) {
                     continue;
                 }
@@ -267,6 +267,9 @@ class PackageInstaller
 
                 $data = $this->dataManager->uploadData($fileData, $fileData["name"], $dir, "Package", $this->package->name, true);
 
+                if(gettype($this->data) != "object")
+                    continue;
+
                 if ($fileData["name"] == $this->package->getIcon()) {
                     $this->databaseManager->table("awt_package")->where(["id" => $this->package->getId()])
                         ->update([
@@ -274,10 +277,11 @@ class PackageInstaller
                         ]);
                 }
 
-                if ($file == $this->package->getPreviewImage()) {
+
+                if ($fileData["name"] == $this->package->getPreviewImage()) {
                     $this->databaseManager->table("awt_package")->where(["id" => $this->package->getId()])
                         ->update([
-                            "preview_image" => explode("public_html", $data->getLocation())[1],
+                            "preview_image" => explode("awt_data", $data->getLocation())[1],
                         ]);
                 }
 
@@ -291,6 +295,9 @@ class PackageInstaller
 
     public function cleanUp(): void
     {
+        if(gettype($this->data) != "object")
+            return;
+
         $this->dataManager->fetchData($this->data->id);
         $this->dataManager->deleteData($this->data->id);
         $this->clearTempFiles();

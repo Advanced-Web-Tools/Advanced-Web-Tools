@@ -88,13 +88,8 @@ class TableWizard extends DatabaseManager
             }
         }
 
-        $this->__destruct();
+        $this->columns = [];
 
         return $result;
     }
-
-    public function __destruct() {
-        $this->columns = [];
-    }
-
 }

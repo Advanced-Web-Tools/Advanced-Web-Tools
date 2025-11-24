@@ -16,3 +16,9 @@
     justify-content: center;
     width: fit-content;
 }
+
+.top-bar .uploads label.selected {
+    background: var(--secondary_background) !important;
+    border: 2px solid var(--primary_accent) !important;
+    color: var(--primary_accent) !important;
+}

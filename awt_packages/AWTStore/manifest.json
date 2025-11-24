@@ -1,0 +1,17 @@
+{
+  "plugin": {
+    "storeId": null,
+    "name": "AWTStore",
+    "description": "Default store plugin",
+    "icon": "",
+    "previewImage": "",
+    "version": "1.0.0",
+    "minimumAwtVersion": "24.10.5",
+    "maximumAwtVersion": "",
+    "packageType": "1",
+    "license": "",
+    "licenseUrl": "",
+    "author": "ElStefanos",
+    "system": true
+  }
+}

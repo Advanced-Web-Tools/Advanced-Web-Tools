@@ -2,13 +2,14 @@
 
 use controller\Controller;
 use Dashboard\classes\dashboard\DashboardPage;
+use object\ObjectFactory;
 use packages\runtime\api\RuntimeControllerAPI;
 use packages\runtime\handler\enums\ERuntimeFlags;
 
 final class DashboardController extends RuntimeControllerAPI
 {
-    private DashboardPage $controller;
-    private Controller $actionController;
+    private ObjectFactory $controller;
+    private ObjectFactory $actionController;
 
     public function environmentSetup(): void
     {
@@ -18,22 +19,71 @@ final class DashboardController extends RuntimeControllerAPI
 
     public function setup(): void
     {
-        $this->controller = $this->getLocalObject("/controllers/controller/DashboardMainController.php");
-        $this->controller->setRootPath($this->runtimePath);
-        $this->controller->setViewPath("/views/");
-        $this->controller->controllerName = "DashboardController";
-        $this->controller->localAssetPath = "/awt_packages/Dashboard/views/assets";
-        $this->controller->eventDispatcher = $this->eventDispatcher;
+
+        $props = [
+            "controllerName" => "DashboardController",
+            "localAssetPath" => "/awt_packages/Dashboard/views/assets",
+            "eventDispatcher" => $this->eventDispatcher,
+        ];
+
+        $methods = [
+            "setRootPath",
+            "setViewPath",
+            "setShared"
+        ];
+
+        $methodArgs = [
+            "setRootPath" =>
+            [
+                $this->runtimePath,
+            ],
+            "setViewPath" => [
+                "/views/"
+            ],
+            "setShared" => [
+                $this->shared
+            ]
+        ];
 
 
-        $this->actionController = $this->getLocalObject("/controllers/controller/DashboardActionController.php");
-        $this->actionController->controllerName = "ActionController";
+        $objectFactory = new ObjectFactory();
+        try {
+            $objectFactory->setClassPath($this->runtimePath . "/controllers/controller/DashboardMainController.php");
+            $objectFactory->setType(Controller::class);
+            $objectFactory->setMethodCalls($methods);
+            $objectFactory->setProperties($props);
+            $objectFactory->setMethodArgs($methodArgs);
+            $this->controller = $objectFactory;
+        } catch (Exception $e) {
+            if(DEBUG)
+                die($e->getMessage());
+        }
+
+        $props = [
+            "controllerName" => "ActionController",
+        ];
+
+        $objectFactory = new ObjectFactory();
+
+        try {
+            $objectFactory->setClassPath($this->runtimePath . "/controllers/controller/DashboardActionController.php");
+            $objectFactory->setType(Controller::class);
+            $objectFactory->setProperties($props);
+            $this->actionController = $objectFactory;
+        } catch (Exception $e) {
+            if(DEBUG)
+                die($e->getMessage());
+        }
     }
 
     public function main(): void
     {
-        $this->controller->setShared($this->shared);
-        $this->addController($this->controller);
-        $this->addController($this->actionController);
+        try {
+            $this->addController($this->controller, "DashboardController");
+            $this->addController($this->actionController, "ActionController");
+        } catch (Exception $e) {
+            if(DEBUG)
+                die($e->getMessage());
+        }
     }
 }

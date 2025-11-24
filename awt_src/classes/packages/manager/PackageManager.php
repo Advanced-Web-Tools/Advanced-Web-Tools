@@ -99,14 +99,14 @@ class PackageManager
     public function fetchPackages(): void
     {
 
-        $this->packages = $this->databaseManager
+        $packages = $this->databaseManager
             ->table("awt_package")
             ->select()
             ->where(["type" => 0], true)
             ->orderBy("system_package", "DESC")
             ->get();
 
-        foreach ($this->packages as $packageData) {
+        foreach ($packages as $packageData) {
             $package = new Runtime();
 
             $package->setId($packageData['id']);
@@ -153,15 +153,17 @@ class PackageManager
 
     public function removePackage(int $id, bool $purge = false): void
     {
-        if($purge && array_key_exists($id, $this->packages)) {
+        if(!array_key_exists($id, $this->packages)) {
+            throw new \Exception("Package with ID $id not found.<br>Did you forget to call fetchPackages() before removing a package?");
+        }
+
+        if($purge) {
             $dataManager = new DataManager();
             $dataManager->purgeByOwnerId($id);
         }
 
-        $this->databaseManager->__destruct();
         $this->databaseManager->table("awt_package")->where(["id" => $id])->delete();
-
-        $this->removeFiles(PACKAGES . $this->packages[$id]->name);
+        $this->removeFiles(PACKAGES . $this->packages[$id]->name . DIRECTORY_SEPARATOR);
     }
 
     private function removeFiles(string $dir): void

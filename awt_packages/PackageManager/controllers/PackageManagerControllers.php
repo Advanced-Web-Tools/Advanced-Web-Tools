@@ -1,27 +1,67 @@
 <?php
 
 use Dashboard\classes\dashboard\DashboardPage;
+use object\ObjectFactory;
 use packages\runtime\api\RuntimeControllerAPI;
+use packages\runtime\handler\enums\ERuntimeFlags;
+use Exception;
 
 final class PackageManagerControllers extends RuntimeControllerAPI
 {
 
-    private DashboardPage $controller;
+    private ObjectFactory $controller;
+
+    public function environmentSetup(): void
+    {
+        parent::environmentSetup();
+        $this->setRuntimeFlag(ERuntimeFlags::EventDispatcher);
+        $this->setRuntimeFlag(ERuntimeFlags::CreatePassableObject);
+    }
 
     public function setup(): void
     {
-        $this->controller = $this->getLocalObject("/controllers/controller/PackageManagerController.php");
-        $this->controller->controllerName = "PackageManagerController";
-        $this->controller->setRootPath($this->runtimePath);
-        $this->controller->setViewPath("/view/");
-        $this->controller->localAssetPath = "/awt_packages/PackageManager/view/assets";
-        $this->controller->eventDispatcher = $this->eventDispatcher;
+        $objectFactory = new ObjectFactory();
+        $props = [
+            "localAssetPath" => "/awt_packages/PackageManager/view/assets",
+            "eventDispatcher" => $this->eventDispatcher
+        ];
+
+        $methodCalls = [
+            "setName",
+            "setRootPath",
+            "setViewPath",
+            "setShared",
+        ];
+
+        $methodArgs = [
+            "setName" => ["PackageManagerController"],
+            "setRootPath" => [$this->runtimePath],
+            "setViewPath" => ["/view/"],
+            "setShared" => [$this->shared],
+        ];
+
+        try {
+            $objectFactory->setClassPath($this->runtimePath . "/controllers/controller/PackageManagerController.php");
+            $objectFactory->setProperties($props);
+            $objectFactory->setMethodCalls($methodCalls);
+            $objectFactory->setMethodArgs($methodArgs);
+            $objectFactory->setType(DashboardPage::class);
+            $this->controller = $objectFactory;
+        } catch (Exception $e) {
+            if (DEBUG) {
+                die($e->getMessage());
+            }
+        }
     }
 
     public function main(): void
     {
-        $this->controller->setShared($this->shared);
-
-        $this->addController($this->controller);
+        try {
+            $this->addController($this->controller, "PackageManagerController");
+        } catch (Exception $e) {
+            if (DEBUG) {
+                die($e->getMessage());
+            }
+        }
     }
 }

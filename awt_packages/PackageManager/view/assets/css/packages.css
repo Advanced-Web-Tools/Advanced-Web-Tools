@@ -33,3 +33,20 @@
     gap: 10px;
     justify-content: start;
 }
+
+.install_form {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.install_form button:disabled {
+    display: none;
+}
+
+.install_form label.selected {
+    background: var(--secondary_background) !important;
+    border: 2px solid var(--primary_accent) !important;
+    color: var(--primary_accent) !important;
+}

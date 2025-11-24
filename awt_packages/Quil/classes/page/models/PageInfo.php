@@ -23,10 +23,13 @@ class PageInfo extends Model
     public string $name;
     public ?string $description;
     public ?string $creation_date;
+
     public function __construct(int $id)
     {
         parent::__construct();
+
         $this->selectByID($id, "quil_page");
+
         if($this->route_id !== null)
             $this->route = new PageRoute($this->route_id);
         if($this->admin !== null)

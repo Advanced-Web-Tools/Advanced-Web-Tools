@@ -3,6 +3,8 @@
 namespace packages\runtime\api;
 
 use controller\Controller;
+use Exception;
+use object\ObjectFactory;
 use packages\runtime\handler\enums\ERuntimeFlags;
 
 /**
@@ -32,10 +34,15 @@ abstract class RuntimeControllerAPI extends RuntimeAPI
      * Retrieves a controller by its name.
      *
      * @param string $name The name of the controller to retrieve.
-     * @return Controller The requested controller instance.
+     * @return ObjectFactory|Controller The requested controller instance. If object is ObjectFactory it will be initialized only when route enters.
      */
-    final public function getController(string $name): Controller
+    final public function getController(string $name): ObjectFactory|Controller
     {
+        if($this->controllers[$name] instanceof ObjectFactory) {
+            $this->controllers[$name]->addProperty("packageName", $this->name);
+            return $this->controllers[$name];
+        }
+        
         $this->controllers[$name]->packageName = $this->name;
         return $this->controllers[$name];
     }
@@ -43,11 +50,23 @@ abstract class RuntimeControllerAPI extends RuntimeAPI
     /**
      * Adds a controller to the internal controllers array.
      *
-     * @param Controller $controller The controller to be added.
+     * To pass an ObjectFactory $type must be set to Controller.
+     * @param ObjectFactory|Controller $controller The controller to be added.
+     * @param string $name Optional, only used when ObjectFactory is passed.
+     * @throws Exception on passed ObjectFactory without type.
      */
-    protected function addController(Controller $controller): void
+    protected function addController(ObjectFactory|Controller $controller, string $name = ""): void
     {
-        $this->controllers[$controller->controllerName] = $controller;
+        if($controller instanceof ObjectFactory)
+            if($controller->type == null && DEBUG)
+                throw new Exception("RuntimeControllerAPI: To pass an ObjectFactory you must set 'type' parameter.");
+
+        if($controller instanceof Controller) {
+            $this->controllers[$controller->controllerName] = $controller;
+        } else {
+            $this->controllers[$name] = $controller;
+        }
+
     }
 
 }

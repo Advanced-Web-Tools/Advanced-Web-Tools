@@ -3,6 +3,7 @@ namespace router;
 
 use controller\Controller;
 use event\EventDispatcher;
+use object\ObjectFactory;
 use redirect\Redirect;
 use router\events\RouteEnterEvent;
 use view\View;
@@ -39,10 +40,10 @@ class Router
     public ?string $alias;
 
     /**
-     * @var Controller $controller
+     * @var ObjectFactory|Controller $controller
      * The controller instance associated with the route.
      */
-    public Controller $controller;
+    public ObjectFactory|Controller $controller;
 
     /**
      * @var EventDispatcher $eventDispatcher
@@ -64,9 +65,10 @@ class Router
      *
      * @param string $path The path pattern for the route.
      * @param string $action The action to be called.
-     * @param Controller $controller The controller handling the action.
+     * @param ObjectFactory|Controller $controller The controller handling the action.
+     * @param bool $service
      */
-    public function __construct(string $path, string $action, Controller $controller, bool $service = false)
+    public function __construct(string $path, string $action, ObjectFactory|Controller $controller, bool $service = false)
     {
         $this->path = $path;
         $this->action = $action;
@@ -153,9 +155,15 @@ class Router
      *
      * @param array $params Optional parameters for the controller action.
      * @return View|Redirect The result of the controller action, either a View or Redirect instance.
+     * @throws \ReflectionException
      */
     public function route(array $params = []): View|Redirect
     {
+        if($this->controller instanceof ObjectFactory) {
+            $this->controller = $this->controller->create();
+        }
+
+
         $this->eventDispatcher->dispatch(new RouteEnterEvent($this->path, $this->action, $this->controller));
 
         $this->controller->viewName = $this->action;

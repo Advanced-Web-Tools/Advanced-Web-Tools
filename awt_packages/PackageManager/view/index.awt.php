@@ -4,9 +4,12 @@
 @endsection
 @section("topbar.widgets")
 @if($admin->permission_level == 1 || $admin->permission_level == 0)
-<form action="/package_manager/installer/install" enctype="multipart/form-data" method="post">
-    <input type="file" name="package" id="packageUpload">
-    <button type="submit" class="btn_secondary">Install package.</button>
+<form action="/package_manager/installer/install" enctype="multipart/form-data" method="post" class="install_form">
+    <input type="file" name="package" id="packageUpload" class="hidden">
+    <label for="packageUpload" class="btn_secondary">
+        Select a package
+    </label>
+    <button type="submit" class="btn_secondary" disabled>Install</button>
 </form>
 @endif
 
@@ -44,7 +47,6 @@
             @endif
             <td class="version">{{$package['version']}}</td>
             <td class="actions">
-                <button class="btn_primary">Info</button>
                 @if($package['type'] !== "System")
                 <a href="/package_manager/installer/uninstall/{{$package['id']}}">
                     <button class="btn_action_negative">Uninstall <i class="fas fa-trash-can"></i> </button>
@@ -81,4 +83,23 @@
         </tfoot>
     </table>
 </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const fileInput = document.getElementById("packageUpload");
+        const label = document.querySelector("label[for='packageUpload']");
+        const submitBtn = document.querySelector(".install_form button[type='submit']");
+
+        fileInput.addEventListener("change", function () {
+            if (fileInput.files.length > 0) {
+                const fileName = fileInput.files[0].name;
+                label.textContent = fileName;
+                label.classList.add("selected");
+                submitBtn.disabled = false;
+            } else {
+                label.textContent = "Select a package";
+                submitBtn.disabled = true;
+            }
+        });
+    });
+</script>
 @endsection
