@@ -1,5 +1,6 @@
 <?php
 namespace object;
+use model\Model;
 use ReflectionClass;
 use ReflectionException;
 
@@ -9,17 +10,23 @@ use ReflectionException;
  */
 class ObjectFactory
 {
-    private ?string $classPath = null;
-    private ?string $className = null;
-    public ?string $type = null;
-    private array $constructorArgs = [];
-    private array $methodCalls = [];
-    private array $methodArgs = [];
-    private array $properties = [];
+    private ?string $classPath;
+    private ?string $className;
+    public ?string $type;
+    private array $constructorArgs;
+    private array $methodCalls;
+    private array $methodArgs;
+    private array $properties;
 
     public function __construct()
     {
-
+        $this->classPath = null;
+        $this->className = null;
+        $this->type = null;
+        $this->constructorArgs = [];
+        $this->methodCalls = [];
+        $this->methodArgs = [];
+        $this->properties = [];
     }
 
     /**
@@ -133,7 +140,7 @@ class ObjectFactory
             return $object;
 
         foreach ($this->properties as $property => $value) {
-            if (property_exists($object, $property)) {
+            if (property_exists($object, $property) || $object instanceof Model) {
                 $object->{$property} = $value;
             } else {
                 if (DEBUG)
@@ -279,19 +286,22 @@ class ObjectFactory
         }
 
         if ($classToInstantiate === null) {
-            if (DEBUG) throw new \Exception("Could not determine class to instantiate from the provided path or name.");
+            if (DEBUG)
+                throw new \Exception("Could not determine class to instantiate from the provided path or name.");
             return null;
         }
 
         try {
             $reflection = new ReflectionClass($classToInstantiate);
         } catch (ReflectionException $e) {
-            if (DEBUG) throw new \Exception("Class '{$classToInstantiate}' not found or could not be reflected.", 0, $e);
+            if (DEBUG)
+                throw new \Exception("Class '{$classToInstantiate}' not found or could not be reflected.", 0, $e);
             return null;
         }
 
         if ($reflection->isAbstract()) {
-            if (DEBUG) throw new \Exception("Cannot create an instance of abstract class {$classToInstantiate}.");
+            if (DEBUG)
+                throw new \Exception("Cannot create an instance of abstract class {$classToInstantiate}.");
             return null;
         }
 
@@ -305,6 +315,7 @@ class ObjectFactory
         }
 
         $object = $this->setProperty($object);
-        return $this->callMethods($object);
+        $object = $this->callMethods($object);
+        return $object;
     }
 }

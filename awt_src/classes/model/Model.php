@@ -3,8 +3,13 @@
 namespace model;
 
 use database\DatabaseManager;
+use model\interfaces\IRelationBelongs;
+use model\interfaces\IRelationHasMany;
+use model\interfaces\IRelationWith;
+use object\ObjectFactory;
 use ReflectionClass;
 use ReflectionProperty;
+use Throwable;
 
 /**
  * Model Class
@@ -35,38 +40,197 @@ abstract class Model extends DatabaseManager
     }
 
     /**
-     * Retrieves a single record from the specified table by its ID.
-     * If no table is provided, it infers the table name from the
-     * class name. If no column is specified, it defaults to "id".
-     * The method populates the model's properties with the
-     * retrieved data.
+     * Selects a record from the specified table by its ID and populates the object's properties
+     * with the data from the selected row.
      *
-     * @param int $id The ID of the record to retrieve.
-     * @param string $table The name of the table to select from.
-     * @param string $column The name of the column to use for
-     * identifying the record (defaults to "id").
+     * @param int|null $id The ID of the record to be selected. If null, the method returns without performing any operation.
+     * @param string $table Optional. The name of the table to query from. Defaults to an inferred table name if not provided.
+     * @param string $column Optional. The column name used to match the ID. Defaults to 'id' if not provided.
+     *
+     * @return void
      */
-    final protected function selectByID(int $id, string $table = '', string $column = ''): void
+    final public function selectByID(?int $id, string $table = '', string $column = ''): void
     {
-        if ($table == '') {
-            $table = explode("\\", self::class);
-            $table = end($table);
+        if ($id === null) return;
+
+        $table = $table ?: $this->inferTableName();
+        $column = $column ?: 'id';
+
+        try {
+            $result = $this->table($table)->select()->where([$column => $id])->get();
+
+            if (empty($result) || !isset($result[0]) || !is_array($result[0])) {
+                return;
+            }
+
+            $row = $result[0];
+
+            foreach ($row as $key => $value) {
+                $this->{$key} = $value;
+            }
+
+            $this->model_source = $table;
+            $this->id_column = $column;
+            $this->model_id = $id;
+
+            // Relations
+            $this->loadWith($row);
+            $this->loadBelongsTo($row);
+            $this->loadHasMany($row);
+
+        } catch (Throwable $e) {
+            if (defined('DEBUG') && DEBUG) {
+                die($e->getMessage());
+            }
         }
-
-        if ($column === '') {
-            $column = "id";
-        }
-
-        $result = $this->table($table)->select()->where([$column => $id])->get();
-
-        foreach ($result[0] as $key => $value) {
-            $this->{$key} = $value;
-        }
-
-        $this->model_source = $table;
-        $this->id_column = $column;
-        $this->model_id = $id;
     }
+
+    /**
+     * Infers the table name based on the class name of the current object.
+     * If the class name is in snake_case, it will be used directly.
+     * Otherwise, the class name will be converted from CamelCase to snake_case.
+     *
+     * @return string The inferred table name in snake_case format.
+     */
+    protected function inferTableName(): string
+    {
+        $fullClass = get_class($this);
+        $exp = explode("\\", $fullClass);
+        $shortClass = end($exp);
+        return $this->isSnakeCase($shortClass) ? $shortClass : $this->camelToSnake($shortClass);
+    }
+
+
+    /**
+     * Loads a related object based on the specified configuration and data row.
+     *
+     * @param array $row The associative array of data used to load the related object.
+     * @return void
+     */
+    protected function loadWith(array $row): void
+    {
+        if (!($this instanceof IRelationWith)) return;
+
+        $with = $this->with();
+        if (empty($with['model']) || empty($with['column'])) return;
+
+        $this->loadRelationObject($with, $row);
+    }
+
+
+    /**
+     * Loads a "Belongs To" relationship object for the current model.
+     *
+     * @param array $row An associative array representing the data row used to load the related object.
+     * @return void
+     */
+    protected function loadBelongsTo(array $row): void
+    {
+        if (!($this instanceof IRelationBelongs)) return;
+
+        $belongs = $this->belongsTo();
+        if (empty($belongs['model']) || empty($belongs['column'])) return;
+
+        $this->loadRelationObject($belongs, $row);
+    }
+
+
+    /**
+     * Loads and initializes "has many" relationship objects for the current model instance.
+     *
+     * @param array $row The row of data representing the current model, containing values needed
+     *                   to establish relationships.
+     * @return void
+     */
+    protected function loadHasMany(array $row): void
+    {
+        if (!($this instanceof IRelationHasMany)) return;
+
+        $hasMany = $this->hasMany();
+        if (empty($hasMany['model']) || empty($hasMany['column'])) return;
+
+        $models = is_array($hasMany['model']) ? $hasMany['model'] : [$hasMany['model']];
+
+        foreach ($models as $model) {
+            $model = ltrim($model, '\\');
+            if (!class_exists($model)) continue;
+            $exp = explode("\\", $model);
+            $shortName = end($exp);
+            if (!isset($this->{$shortName}) || !is_array($this->{$shortName})) {
+                $this->{$shortName} = [];
+            }
+
+            $rows = $this->find($hasMany['column'], $this->model_id, $this->camelToSnake($shortName));
+
+            foreach ($rows as $r) {
+                $objFactory = new ObjectFactory();
+                $objFactory->setClassName($model);
+                $objFactory->setMethodCalls(['selectByID']);
+                $objFactory->setMethodArgs(['selectByID' => [$r['id']]]);
+                $objFactory->setType(Model::class);
+                $this->{$shortName}[] = $objFactory->create();
+            }
+        }
+    }
+
+
+    /**
+     * Loads and initializes a related object based on the provided relation and row data.
+     *
+     * @param array $relation An associative array defining the relationship, containing details such as the model class and column for foreign key lookup.
+     * @param array $row The data row containing information necessary to resolve the relation, typically including the foreign key value.
+     * @return void
+     */
+    protected function loadRelationObject(array $relation, array $row): void
+    {
+        $modelClass = ltrim($relation['model'], '\\');
+        if (!class_exists($modelClass)) return;
+
+        $exp = explode("\\", $modelClass);
+        $shortName = end($exp);
+        $foreignValue = $row[$relation['column']] ?? null;
+
+        $objFactory = new ObjectFactory();
+        $objFactory->setClassName($modelClass);
+
+        if (!isset($relation['inConstructor']) || !$relation['inConstructor']) {
+            $objFactory->setMethodCalls(['selectByID']);
+            $objFactory->setMethodArgs(['selectByID' => [$foreignValue]]);
+        } else {
+            $objFactory->setConstructorArgs([$foreignValue]);
+        }
+
+        $this->{$shortName} = $objFactory->create();
+    }
+
+
+    /**
+     * Creates and returns a related object based on the provided relationship definition and optional row data.
+     *
+     * @param array $relation An associative array detailing the relationship, including the model class and column for foreign key lookup.
+     * @param array $row Optional associative array containing data for resolving the relation, typically with the foreign key value.
+     * @return object|null The created related object if successful, or null if the related model class does not exist.
+     */
+    protected function createRelationObject(array $relation, array $row = []): ?object
+    {
+        $modelClass = ltrim($relation['model'], '\\');
+        if (!class_exists($modelClass)) return null;
+
+        $foreignValue = $row[$relation['column']] ?? ($this->model_id ?? null);
+
+        $factory = new ObjectFactory();
+        $factory->setClassName($modelClass);
+
+        if (!isset($relation['inConstructor']) || !$relation['inConstructor']) {
+            $factory->setMethodCalls(['selectByID']);
+            $factory->setMethodArgs(['selectByID' => [$foreignValue]]);
+        } else {
+            $factory->setConstructorArgs([$foreignValue]);
+        }
+
+        return $factory->create();
+    }
+
 
     /**
      * Retrieves all records from the specified table. If no table
@@ -126,7 +290,7 @@ abstract class Model extends DatabaseManager
 
         $update = $this->__toArray();
 
-        if($this->checkColumn($this->model_id, "updated_on"))
+        if ($this->checkColumn($this->model_id, "updated_on"))
             $update[] = ["updated_on" => 'DEFAULT'];
 
         foreach ($this->paramBlackList as $key => $value) {
@@ -160,11 +324,22 @@ abstract class Model extends DatabaseManager
      */
     public function deleteModel(): bool
     {
-        if($this->id_column === null)
+        if ($this->id_column === null)
             $this->id_column = "id";
 
         $where = [$this->id_column => $this->model_id];
         return $this->table($this->model_source)->where($where)->delete();
+    }
+
+
+    public function find(string $column, mixed $value, ?string $source = null): array
+    {
+        $database = new DatabaseManager();
+
+        if ($source === null)
+            $source = $this->model_source;
+
+        return $database->table($source)->select()->where([$column => $value])->get();
     }
 
 
@@ -174,8 +349,37 @@ abstract class Model extends DatabaseManager
      * @param string $key The key to be added to the parameter blacklist.
      * @return void
      */
-    public function paramBlackList(string $key): void {
+    public function paramBlackList(string $key): void
+    {
         $this->paramBlackList[] = $key;
+    }
+
+
+    /**
+     * Converts a given string to snake case.
+     *
+     * @param string $input string for conversion
+     * @return string
+     */
+    protected function camelToSnake(string $input): string
+    {
+        if ($this->isSnakeCase($input)) {
+            return $input;
+        }
+
+        $snake = preg_replace('/(?<!^)[A-Z]/', '_$0', $input);
+        return strtolower($snake);
+    }
+
+
+    /**
+     * Helper function to determine if classname is snake cased
+     * @param string $input
+     * @return bool
+     */
+    private function isSnakeCase(string $input): bool
+    {
+        return (bool)preg_match('/^[a-z0-9]+(?:_[a-z0-9]+)*$/', $input);
     }
 
 
@@ -228,15 +432,30 @@ abstract class Model extends DatabaseManager
      * @param string $name Name of the property to retrieve.
      * @return mixed Returns the value of the property if it exists, or null if not found.
      */
-    public function __get(string $name): mixed
+    public function &__get(string $name): mixed
     {
-        if(property_exists($this, $name))
+        if (property_exists($this, $name)) {
             return $this->{$name};
+        }
 
-        if(array_key_exists($name, $this->dynamicData))
+        if (array_key_exists($name, $this->dynamicData)) {
             return $this->dynamicData[$name];
+        }
 
-        return null;
+        if ($this instanceof IRelationWith) {
+            $with = $this->with();
+            $parts = explode('\\', $with['model'] ?? '');
+            $shortName = end($parts);
+
+            if ($shortName === $name) {
+                $this->dynamicData[$name] = $this->createRelationObject($with);
+                return $this->dynamicData[$name];
+            }
+        }
+
+        // Initialize null if nothing found
+        $this->dynamicData[$name] = null;
+        return $this->dynamicData[$name];
     }
 
 
@@ -251,7 +470,7 @@ abstract class Model extends DatabaseManager
      */
     public function __set(string $name, mixed $value): void
     {
-        if(property_exists($this, $name)) {
+        if (property_exists($this, $name)) {
             $this->{$name} = $value;
             return;
         }
