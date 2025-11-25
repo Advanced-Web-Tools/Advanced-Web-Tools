@@ -162,11 +162,20 @@ abstract class Model extends DatabaseManager
 
             $rows = $this->find($hasMany['column'], $this->model_id, $this->camelToSnake($shortName));
 
+            if(isset($hasMany['as']))
+                $shortName = $hasMany['as'];
+
             foreach ($rows as $r) {
                 $objFactory = new ObjectFactory();
                 $objFactory->setClassName($model);
-                $objFactory->setMethodCalls(['selectByID']);
-                $objFactory->setMethodArgs(['selectByID' => [$r['id']]]);
+
+                if(!isset($hasMany['inConstructor'])) {
+                    $objFactory->setMethodCalls(['selectByID']);
+                    $objFactory->setMethodArgs(['selectByID' => [$r['id']]]);
+                } else {
+                    $objFactory->setConstructorArgs([$r['id']]);
+                }
+
                 $objFactory->setType(Model::class);
                 $this->{$shortName}[] = $objFactory->create();
             }
@@ -199,6 +208,9 @@ abstract class Model extends DatabaseManager
         } else {
             $objFactory->setConstructorArgs([$foreignValue]);
         }
+
+        if(isset($relation['as']))
+            $shortName = $relation['as'];
 
         $this->{$shortName} = $objFactory->create();
     }
@@ -394,11 +406,7 @@ abstract class Model extends DatabaseManager
         $reflect = new ReflectionClass($this);
         $vars = $reflect->getProperties(ReflectionProperty::IS_PUBLIC);
 
-        $result = [];
-
-        foreach ($vars as $property) {
-            $result[$property->getName()] = $property->getValue($this);
-        }
+        $result = $this->__toArray();
 
         return json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
@@ -418,7 +426,14 @@ abstract class Model extends DatabaseManager
 
         foreach ($vars as $property) {
             if ($property->isPublic()) {
-                $result[$property->getName()] = $property->getValue($this);
+
+                if($property->getName($this) === 'dynamicData') {
+                    foreach($this->dynamicData as $key => $value) {
+                        $result[$key] = $value;
+                    }
+                } else {
+                    $result[$property->getName()] = $property->getValue($this);
+                }
             }
         }
 
@@ -444,12 +459,17 @@ abstract class Model extends DatabaseManager
 
         if ($this instanceof IRelationWith) {
             $with = $this->with();
-            $parts = explode('\\', $with['model'] ?? '');
-            $shortName = end($parts);
+            $modelClass = $with['model'] ?? null;
 
-            if ($shortName === $name) {
-                $this->dynamicData[$name] = $this->createRelationObject($with);
-                return $this->dynamicData[$name];
+            if ($modelClass) {
+                $parts = explode('\\', $modelClass);
+                $shortName = end($parts);
+                $alias = $with['as'] ?? $shortName;
+
+                if ($alias === $name) {
+                    $this->dynamicData[$name] = $this->createRelationObject($with);
+                    return $this->dynamicData[$name];
+                }
             }
         }
 
