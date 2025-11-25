@@ -19,6 +19,8 @@ export class Block {
     }
 
     getName() {
+        if(this.name === undefined)
+            return "Unnamed block";
         return this.name;
     }
 

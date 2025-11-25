@@ -20,11 +20,6 @@ final class Theming extends RuntimeLinkerAPI {
         parent::environmentSetup();
 
         $this->setRuntimeFlag(ERuntimeFlags::EventDispatcher);
-
-        $this->setRuntimeFlag(ERuntimeFlags::WaitForPackage);
-        $this->waitForRuntime("Dashboard");
-        $this->waitForRuntime("Quil");
-
     }
 
     public function setup(): void

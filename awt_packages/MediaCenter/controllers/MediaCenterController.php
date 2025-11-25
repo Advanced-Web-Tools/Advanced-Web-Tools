@@ -55,14 +55,13 @@ final class MediaCenterController extends RuntimeControllerAPI
         $objectFactory = new ObjectFactory();
         $props = [
             "eventDispatcher" => $this->eventDispatcher,
+            "shared" => $this->shared,
         ];
         $methodCalls = [
             "setName",
-            "setShared"
         ];
         $methodArgs = [
             "setName" => ["MediaAction"],
-            "setShared" => [$this->shared]
         ];
 
         try {

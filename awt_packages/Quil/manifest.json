@@ -1,12 +1,17 @@
 {
   "plugin": {
+    "storeId": null,
     "name": "Quil",
-    "author": "ElStefanos",
+    "description": "Page builder for Advanced Web Tools",
     "icon": "quil.png",
-    "system": "true",
-    "version": "1.0.0",
-    "description": "Quil - Page builder",
-    "minimumAwtVersion": "24.9.0",
-    "maximumAwtVersion": null
+    "previewImage": "",
+    "version": "2.0.0",
+    "minimumAwtVersion": "24.10.5",
+    "maximumAwtVersion": "",
+    "packageType": "1",
+    "license": "MIT",
+    "licenseUrl": "",
+    "author": "ElStefanos",
+    "system": false
   }
 }

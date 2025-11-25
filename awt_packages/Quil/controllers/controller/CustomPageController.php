@@ -107,6 +107,11 @@ class CustomPageController extends Controller
                 $value = urldecode($params[$source->bind_param_url]);
             }
 
+            if($source->source_name == "page" || $source->source_name == "database") {
+                $source->source_name = "choose_different_name";
+            }
+
+
             $bundle[$source->source_name] = new DummySourceModel($value, $source->table_name, $source->column_selector);
         }
 
@@ -121,7 +126,6 @@ class CustomPageController extends Controller
         } catch (Exception $e) {
             die($e->getMessage());
         }
-
 
         return $this->view($bundle);
     }

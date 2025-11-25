@@ -1,9 +1,9 @@
 import {TextElement} from "../default/conditions/DefaultConditions.js";
-
 export class BlockContext {
-    constructor(block, clipboard) {
+    constructor(block, clipboard, scene) {
         this.currentSelector = block;
         this.clipboard = clipboard;
+        this.scene = scene;
     }
 
     setSelector(block) {
@@ -29,7 +29,7 @@ export class BlockContext {
             }
         }
 
-        this.reattachEventsToScene();
+        this.scene.reattachEventsToScene();
     }
 
     moveBlockBefore() {
@@ -54,7 +54,7 @@ export class BlockContext {
             }
         }
 
-        this.reattachEventsToScene();
+        this.scene.reattachEventsToScene();
     }
 
     createBlockContext(blockElement) {
@@ -87,7 +87,7 @@ export class BlockContext {
             e.preventDefault();
             blockElement.remove();
             contextWrapper.remove();
-            this.reattachEventsToScene();
+            this.scene.reattachEventsToScene();
         });
 
         const moveUpButton = document.createElement('button');
@@ -330,19 +330,19 @@ export class BlockContext {
         this.clipboard.setContent(content);
 
         this.currentSelector.remove();
-        this.reattachEventsToScene();
+        this.scene.reattachEventsToScene();
     }
 
     pasteBlock() {
         this.currentSelector.append(this.clipboard.getContent().clone());
-        this.reattachEventsToScene();
+        this.scene.reattachEventsToScene();
     }
 
     pasteBlockContent() {
         const existingContent = this.currentSelector.html();
         const newContent = this.clipboard.getContent().clone()[0].innerHTML;
         this.currentSelector.html(existingContent + newContent);
-        this.reattachEventsToScene();
+        this.scene.reattachEventsToScene();
     }
 
     replaceBlock() {
@@ -350,7 +350,7 @@ export class BlockContext {
 
         if (content && content.length) {
             this.currentSelector.replaceWith(content);
-            this.reattachEventsToScene();
+            this.scene.reattachEventsToScene();
         } else {
             console.error("Clipboard content is empty or invalid.");
         }
@@ -363,7 +363,7 @@ export class BlockContext {
 
             this.currentSelector.attr("style", newCSS);
 
-            this.reattachEventsToScene();
+            this.scene.reattachEventsToScene();
         } else {
             console.error("Clipboard is empty or invalid.");
         }

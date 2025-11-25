@@ -1,7 +1,8 @@
 import {Editor} from "../Editor.js";
 
 export class EditorOptions {
-    constructor() {
+    constructor(editorInstance) {
+        this.editor = editorInstance;
         this.defaultOptions = {
             autoSave: true,
             autoSaveInterval: 300,
@@ -19,7 +20,7 @@ export class EditorOptions {
         const savedOptions = localStorage.getItem('editorOptions');
         if (savedOptions) {
             try {
-                return JSON.parse(savedOptions);
+                return { ...this.defaultOptions, ...JSON.parse(savedOptions) };
             } catch (e) {
                 console.error('Failed to parse editor options from localStorage:', e);
             }
@@ -43,26 +44,32 @@ export class EditorOptions {
     }
 
     apply() {
-        if(this.options.autoSave) {
-            const urlParams = new URLSearchParams(window.location.search)
+        if (this.interval) {
+            clearInterval(this.interval);
+            this.interval = null;
+        }
+
+        if (this.options.autoSave) {
+            const urlParams = new URLSearchParams(window.location.search);
             const paramValue = urlParams.get('id');
 
-            if(this.interval !== null)
-                clearInterval(this.interval);
-
-            this.interval = setInterval((e) => {
-                new Editor().savePage(paramValue);
-            }, this.options.autoSaveInterval * 1000);
+            if(paramValue) {
+                this.interval = setInterval(() => {
+                    this.editor.savePage(paramValue);
+                }, this.options.autoSaveInterval * 1000);
+            }
         }
 
-        if(this.options.defaultView === 'mobile') {
-            if(!$(".editor .page").hasClass("mobile"))
-                new Editor().mobileView($(".editor .page"));
+        const editorPage = $(".editor .page");
+        if (this.options.defaultView === 'mobile') {
+            if (!editorPage.hasClass("mobile")) {
+                this.editor.mobileView(editorPage);
+            }
         } else {
-            if($(".editor .page").hasClass("mobile"))
-                new Editor().mobileView($(".editor .page"));
+            if (editorPage.hasClass("mobile")) {
+                this.editor.mobileView(editorPage);
+            }
         }
-
     }
 
     draw() {
@@ -82,13 +89,10 @@ export class EditorOptions {
         container.style.width = '50%';
         container.style.height = 'fit-content';
 
-
         const title = document.createElement("h3");
         title.innerHTML = "Editor options <i class=\"fa-solid fa-wrench\"></i>";
-
         title.style.gridColumnStart = '1';
         title.style.gridColumnEnd = '3';
-
         container.appendChild(title);
 
         this.generateFields(container);
@@ -96,15 +100,10 @@ export class EditorOptions {
         const resetButton = document.createElement("button");
         const applyButton = document.createElement("button");
 
-        resetButton.classList.add('reset-button');
-        resetButton.classList.add('btn_action_negative');
-        resetButton.classList.add('sm');
+        resetButton.classList.add('reset-button', 'btn_action_negative', 'sm');
         resetButton.innerHTML = 'Reset <i class="fa-solid fa-rotate-right"></i>';
 
-        applyButton.classList.add('apply-button');
-        applyButton.classList.add('btn_primary');
-        applyButton.classList.add('sm');
-
+        applyButton.classList.add('apply-button', 'btn_primary', 'sm');
         applyButton.innerHTML = 'Apply <i class="fa-solid fa-check"></i>';
 
         resetButton.style.margin = "0 auto";
@@ -116,7 +115,12 @@ export class EditorOptions {
 
         resetButton.addEventListener("click", (e) => {
             this.resetOptions();
-        })
+            container.innerHTML = '';
+            container.appendChild(title);
+            this.generateFields(container);
+            container.appendChild(resetButton);
+            container.appendChild(applyButton);
+        });
 
         container.appendChild(resetButton);
         container.appendChild(applyButton);
@@ -172,14 +176,15 @@ export class EditorOptions {
                 });
             }
 
-            if (typeof value !== 'boolean') {
-                input.classList.add('lg');
-            } else {
-                input.style.width = 'fit-content';
+            if (input) {
+                if (typeof value !== 'boolean') {
+                    input.classList.add('lg');
+                } else {
+                    input.style.width = 'fit-content';
+                }
+                container.appendChild(label);
+                container.appendChild(input);
             }
-
-            container.appendChild(label);
-            container.appendChild(input);
         }
     }
 }

@@ -58,7 +58,7 @@ abstract class QuilEditorAPI extends RuntimeAPI implements IQuilEditor
     }
 
 
-    public function main(): void
+    final public function main(): void
     {
         $this->eventDispatcher->addListener("quil.editor.request", new EQuilEditorListener($this->scriptPaths));
     }
