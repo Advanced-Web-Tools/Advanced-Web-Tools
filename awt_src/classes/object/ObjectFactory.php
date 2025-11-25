@@ -316,6 +316,18 @@ class ObjectFactory
 
         $object = $this->setProperty($object);
         $object = $this->callMethods($object);
+        $this->__destruct();
         return $object;
+    }
+
+    public function __destruct()
+    {
+        $this->classPath = null;
+        $this->className = null;
+        $this->type = null;
+        $this->constructorArgs = [];
+        $this->methodCalls = [];
+        $this->methodArgs = [];
+        $this->properties = [];
     }
 }
