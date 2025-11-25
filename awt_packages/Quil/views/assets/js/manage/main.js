@@ -86,10 +86,12 @@ function createInput(info)
     val.value = null;
     selectRoute.appendChild(val);
 
-    Object.values(info.routes[0]).forEach((route, key) => {
+    Object.values(info.routes[0]).forEach((rt, key) => {
         const val = document.createElement("option");
-        val.textContent = `${route.id}: ${route.route}`;
-        val.value = route.id;
+        val.textContent = `${rt.id}: ${rt.route}`;
+        val.value = rt.id;
+
+        console.log(rt)
 
         selectRoute.appendChild(val);
     });
@@ -98,6 +100,8 @@ function createInput(info)
     selectRoute.value = info.route.id;
 
     container.appendChild(selectRoute);
+
+    console.log(info)
 
     saveButton.addEventListener("click", async (e) => {
         const target = e.currentTarget;

@@ -4,7 +4,7 @@
 use Dashboard\classes\dashboard\DashboardPage;
 use Quil\classes\editor\event\EQuilEditor;
 use Quil\classes\page\PageManager;
-use Quil\classes\page\models\PageContent;
+use Quil\classes\page\models\QuilPageContent;
 use redirect\Redirect;
 use view\View;
 
@@ -50,9 +50,9 @@ final class QuilController extends DashboardPage
             return $redirect->back();
         }
 
-        $page = new PageContent((int) $params["id"]);
+        $page = new QuilPageContent((int) $params["id"]);
 
-        $this->setTitle($page->name);
+        $this->setTitle($page->page->name);
 
         if($page->content === null || $page->content === "") {
             $page->content = "<div class='page'></div>";

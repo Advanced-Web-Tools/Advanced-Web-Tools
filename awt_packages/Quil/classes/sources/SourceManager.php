@@ -3,7 +3,7 @@
 namespace Quil\classes\sources;
 
 use database\DatabaseManager;
-use Quil\classes\sources\models\SourceModel;
+use Quil\classes\sources\models\QuilPageDataSource;
 
 class SourceManager
 {
@@ -49,7 +49,7 @@ class SourceManager
             ->select(['*'])->where(['page_id' => $this->pageId])->get();
 
         foreach ($result as $source) {
-            $this->sources[$source['source_name']] = new SourceModel($source['id']);
+            $this->sources[$source['source_name']] = new QuilPageDataSource($source['id']);
         }
 
         return $this;
