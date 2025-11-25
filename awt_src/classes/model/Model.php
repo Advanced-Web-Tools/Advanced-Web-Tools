@@ -21,6 +21,7 @@ abstract class Model extends DatabaseManager
     public ?string $model_source = null;
     protected ?int $model_id = null;
     public ?string $id_column = null;
+    public array $dynamicData = [];
 
     protected array $paramBlackList = ["tables", "model_source", "id_column"];
 
@@ -191,5 +192,27 @@ abstract class Model extends DatabaseManager
         }
 
         return $result;
+    }
+
+    public function __get($name): mixed
+    {
+        if(property_exists($this, $name))
+            return $this->{$name};
+
+        if(array_key_exists($name, $this->dynamicData))
+            return $this->dynamicData[$name];
+
+        return null;
+    }
+
+
+    public function __set($name, $value)
+    {
+        if(property_exists($this, $name)) {
+            $this->{$name} = $value;
+            return;
+        }
+
+        $this->dynamicData[$name] = $value;
     }
 }

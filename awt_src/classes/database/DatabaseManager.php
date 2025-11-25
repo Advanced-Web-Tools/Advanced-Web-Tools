@@ -297,7 +297,6 @@ class DatabaseManager
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $stmt->closeCursor();
         self::showDebugTrace();
-
         $this->reset();
         return $result;
     }

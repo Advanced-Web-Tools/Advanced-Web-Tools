@@ -22,6 +22,10 @@ export function CreateButtonGroupComponent(container, labelText = "Button group:
     group.classList.add("option");
     group.classList.add("button-group");
 
+    if(contents.length === 4)
+        group.classList.add("four-buttons");
+
+
     if (useLabel) {
         const label = document.createElement("label");
         label.textContent = labelText;

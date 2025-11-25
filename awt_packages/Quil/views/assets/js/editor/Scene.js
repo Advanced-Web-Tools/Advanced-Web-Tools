@@ -20,7 +20,7 @@ export class Scene {
 
         this.clipboard = new Clipboard();
 
-        this.blockContext = new BlockContext(this.currentSelector, this.clipboard);
+        this.blockContext = new BlockContext(this.currentSelector, this.clipboard, this);
 
         this.editor.append(this.insert);
         this.reattachEventsToScene();

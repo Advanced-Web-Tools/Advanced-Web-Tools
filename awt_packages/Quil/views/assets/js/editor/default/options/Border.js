@@ -70,13 +70,14 @@ borderOptions.attachFunction(1, function (block) {
         const value = input.val();
         const selectedUnit = unit.val();
         block.css(`border-${side}-width`, `${value}${selectedUnit}`);
+        console.log(block[0].style[`border-${side}-width`]);
     };
 
     const initializeBorderThicknessInput = (side) => {
         const [borderThicknessValue, borderThicknessUnit] = ExtractUnitAndValue(block, `border-${side}-width`);
 
-        const input = $(`input#border-thickness-${side}`);
-        const unit = $(`select#border-thickness-${side}-unit`);
+        const input = $(`input#border-width-${side}`);
+        const unit = $(`select#border-width-${side}-unit`);
 
         input.val(borderThicknessValue);
         unit.val(borderThicknessUnit);
@@ -87,6 +88,7 @@ borderOptions.attachFunction(1, function (block) {
 
     ['top', 'right', 'bottom', 'left'].forEach(initializeBorderThicknessInput);
 });
+
 borderOptions.attachFunction(2, function (block) {
     const current_style = block.css("border-style");
 
@@ -98,6 +100,7 @@ borderOptions.attachFunction(2, function (block) {
         block.css("border-style", select.val());
     });
 });
+
 borderOptions.attachFunction(3, function (block) {
 
     const current_color = block.css("border-color");
@@ -113,9 +116,3 @@ borderOptions.attachFunction(3, function (block) {
     });
 
 });
-
-
-
-
-
-

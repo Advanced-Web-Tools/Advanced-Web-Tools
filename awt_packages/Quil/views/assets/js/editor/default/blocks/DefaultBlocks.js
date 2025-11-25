@@ -1,6 +1,7 @@
 import {Block} from "../../blocks/Block.js"
 import {blocks} from "../../../main.js";
-import {flexColumn, flexible, flexRow, slider} from "./Layout.js";
+import {container, flexbox, grid, twoRows, twoColumns, slider} from "./Layout.js";
+import {table} from "./Table.js";
 
 const h1 = new Block();
 h1.setName("Heading");
@@ -106,8 +107,10 @@ blocks.addBlock(li);
 blocks.addBlock(blockquote);
 blocks.addBlock(code);
 blocks.addBlock(hr);
-blocks.addBlock(flexible);
-blocks.addBlock(flexRow);
-blocks.addBlock(flexColumn);
+blocks.addBlock(flexbox);
+blocks.addBlock(grid);
+blocks.addBlock(twoColumns);
+blocks.addBlock(twoRows);
 blocks.addBlock(slider);
+blocks.addBlock(table);
 

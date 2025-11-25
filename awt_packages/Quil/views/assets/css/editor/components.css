@@ -149,7 +149,8 @@
     width: 100%;
 }
 
-.button-group .button-wrapper {
+.button-group .button-wrapper
+{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
@@ -159,6 +160,11 @@
     background: var(--primary_background);
     border-radius: var(--border_radius);
 }
+
+.button-group.four-buttons .button-wrapper .btn_grouped {
+    width: 45%;
+}
+
 
 .button-wrapper .btn_grouped {
     display: flex;
