@@ -108,8 +108,15 @@ abstract class Model extends DatabaseManager
 
 
     /**
-     * Saves the model to database
-     * @return bool true on success otherwise false
+     * Saves the current state of the model to the database by updating the record
+     * associated with the model's identifier column.
+     *
+     * The method converts the model's properties into an array, applies necessary
+     * transformations (such as setting an updated timestamp, if applicable), and
+     * removes blacklisted parameters from the update data. It then performs an
+     * update operation on the corresponding database table.
+     *
+     * @return bool True if the update operation was successful, false otherwise.
      */
 
     public function save(): bool
@@ -129,6 +136,12 @@ abstract class Model extends DatabaseManager
         return $this->table($this->model_source)->where($where)->update($update);
     }
 
+    /**
+     * Saves the current model to the database by converting it to an array,
+     * removing blacklisted parameters, and inserting it into the specified table.
+     *
+     * @return bool True if the model was successfully saved, false otherwise.
+     */
     public function saveModel(): bool
     {
         $save = $this->__toArray();
@@ -139,6 +152,12 @@ abstract class Model extends DatabaseManager
         return $this->table($this->model_source)->insert($save)->executeInsert();
     }
 
+    /**
+     * Deletes the current model from the data source (database) based on the defined identifier column and its value.
+     * The identifier column is determined by $id_column, defaulting to "id" if not set.
+     *
+     * @return bool True if the model was successfully deleted, false otherwise.
+     */
     public function deleteModel(): bool
     {
         if($this->id_column === null)
@@ -149,16 +168,22 @@ abstract class Model extends DatabaseManager
     }
 
 
+    /**
+     * Adds a given key to the blacklist of parameters.
+     *
+     * @param string $key The key to be added to the parameter blacklist.
+     * @return void
+     */
     public function paramBlackList(string $key): void {
         $this->paramBlackList[] = $key;
     }
 
 
     /**
-     *  Creates a json of properties.
-     *  Works only on public properties.
+     * Generates a string representation of the object by creating a JSON-encoded
+     * string of its public properties and their values.
      *
-     * @return string Returns a json string of an object.
+     * @return string A JSON-formatted string representing the public properties of the object.
      */
     public function __toString(): string
     {
@@ -175,8 +200,10 @@ abstract class Model extends DatabaseManager
     }
 
     /**
-     * Creates an array of a current object
-     * @return array
+     * Converts the object's public properties into an associative array.
+     * Only includes properties that are publicly accessible.
+     *
+     * @return array Returns an associative array of the object's public properties.
      */
     public function __toArray(): array
     {
@@ -194,7 +221,14 @@ abstract class Model extends DatabaseManager
         return $result;
     }
 
-    public function __get($name): mixed
+    /**
+     * Retrieves the value of a requested property.
+     * Checks for both declared properties and dynamic data.
+     *
+     * @param string $name Name of the property to retrieve.
+     * @return mixed Returns the value of the property if it exists, or null if not found.
+     */
+    public function __get(string $name): mixed
     {
         if(property_exists($this, $name))
             return $this->{$name};
@@ -206,7 +240,16 @@ abstract class Model extends DatabaseManager
     }
 
 
-    public function __set($name, $value)
+    /**
+     * Dynamically sets a value to a property.
+     * Updates an existing property if it exists, otherwise adds it to dynamic data.
+     *
+     * @param string $name The name of the property to set.
+     * @param mixed $value The value to assign to the property.
+     *
+     * @return void
+     */
+    public function __set(string $name, mixed $value): void
     {
         if(property_exists($this, $name)) {
             $this->{$name} = $value;

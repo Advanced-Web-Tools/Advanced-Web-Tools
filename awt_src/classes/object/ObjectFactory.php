@@ -1,11 +1,12 @@
 <?php
-
 namespace object;
-
-use http\Exception;
 use ReflectionClass;
 use ReflectionException;
 
+/**
+ * A factory class used to dynamically create objects and configure them
+ * with specified properties, methods, and constructor arguments before returning.
+ */
 class ObjectFactory
 {
     private ?string $classPath = null;
@@ -97,12 +98,22 @@ class ObjectFactory
         return $this;
     }
 
+    /**
+     * Sets the method calls array.
+     * @param array $methodCalls
+     * @return self
+     */
     public function setMethodCalls(array $methodCalls): self
     {
         $this->methodCalls = $methodCalls;
         return $this;
     }
 
+    /**
+     * Sets the method arguments.
+     * @param array $methodArgs
+     * @return self
+     */
     public function setMethodArgs(array $methodArgs): self
     {
         $this->methodArgs = $methodArgs;
@@ -134,15 +145,32 @@ class ObjectFactory
     }
 
 
+    /**
+     * Adds a method call to the internal list.
+     * @param string $name The name of the method to add.
+     * @return self
+     */
     public function addMethodCall(string $name): self {
         $this->methodCalls[] = $name;
         return $this;
     }
 
+    /**
+     * Adds arguments for a specific method.
+     * @param string $method The name of the method.
+     * @param array $args The arguments to associate with the method.
+     * @return self
+     */
     public function addMethodArgs(string $method, array $args): self {
         $this->methodArgs[$method] = $args;
         return $this;
     }
+
+    /**
+     * Sets the class name for the current instance.
+     * @param string $class The name of the class to set.
+     * @return self
+     */
     public function setClassName(string $class): self
     {
         $this->className = $class;
@@ -210,9 +238,11 @@ class ObjectFactory
 
 
     /**
-     * Initializes and returns an object with previous parameters set.
-     * @return object|null
-     * @throws \Exception
+     * Creates and returns an instance of a class based on the provided class name, file path, or type.
+     * Attempts to dynamically load and instantiate a class from the specified path or directly by name.
+     * Throws exceptions or returns null in cases where class loading or instantiation fails, depending on the debug mode.
+     *
+     * @return object|null The created object instance or null if instantiation fails.
      */
     public function create(): ?object
     {
