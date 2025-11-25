@@ -347,6 +347,22 @@ class DatabaseManager
      */
     public function delete(): bool
     {
+        if($this->whereQuery === '') {
+            if(DEBUG) {
+                $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5);
+
+                foreach ($trace as $level) {
+                    echo "File: " . ($level['file'] ?? '[internal]') . " Line: " . ($level['line'] ?? '?') . "<br>";
+                    echo "Function: " . ($level['function'] ?? '[global]') . "<br><br>";
+                }
+
+                die("No WHERE clause specified for DELETE query. This is a dangerous operation. Please check your code.<br>If your intention is to delete all records, use where(['1'=>'1']) instead.");
+            }
+
+            return false;
+        }
+
+
         $sql = "DELETE FROM {$this->tableName}" . $this->whereQuery;
 
         $stmt = $this->pdo->prepare($sql);
@@ -423,7 +439,7 @@ class DatabaseManager
         return $this->lastQuery;
     }
 
-    private static function getCallerChain()
+    private static function getCallerChain(): string
     {
         $backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         $files = [];
@@ -449,7 +465,7 @@ class DatabaseManager
     }
 
 
-    public function reset()
+    public function reset(): void
     {
         $this->lastQuery = $this->sql;
         $this->sql = '';
