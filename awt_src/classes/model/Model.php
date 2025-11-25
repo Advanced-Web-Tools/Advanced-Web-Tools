@@ -92,7 +92,7 @@ abstract class Model extends DatabaseManager
      *
      * @return string The inferred table name in snake_case format.
      */
-    protected function inferTableName(): string
+    public function inferTableName(): string
     {
         $fullClass = get_class($this);
         $exp = explode("\\", $fullClass);
@@ -107,7 +107,7 @@ abstract class Model extends DatabaseManager
      * @param array $row The associative array of data used to load the related object.
      * @return void
      */
-    protected function loadWith(array $row): void
+    public function loadWith(array $row): void
     {
         if (!($this instanceof IRelationWith)) return;
 
@@ -124,7 +124,7 @@ abstract class Model extends DatabaseManager
      * @param array $row An associative array representing the data row used to load the related object.
      * @return void
      */
-    protected function loadBelongsTo(array $row): void
+    public function loadBelongsTo(array $row): void
     {
         if (!($this instanceof IRelationBelongs)) return;
 
@@ -142,7 +142,7 @@ abstract class Model extends DatabaseManager
      *                   to establish relationships.
      * @return void
      */
-    protected function loadHasMany(array $row): void
+    public function loadHasMany(array $row): void
     {
         if (!($this instanceof IRelationHasMany)) return;
 
@@ -395,6 +395,14 @@ abstract class Model extends DatabaseManager
     }
 
 
+    public function fromArray(array $data): void
+    {
+        foreach ($data as $key => $value) {
+            $this->{$key} = $value;
+        }
+    }
+
+
     /**
      * Generates a string representation of the object by creating a JSON-encoded
      * string of its public properties and their values.
@@ -410,6 +418,7 @@ abstract class Model extends DatabaseManager
 
         return json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
+
 
     /**
      * Converts the object's public properties into an associative array.
@@ -427,15 +436,17 @@ abstract class Model extends DatabaseManager
         foreach ($vars as $property) {
             if ($property->isPublic()) {
 
-                if($property->getName($this) === 'dynamicData') {
-                    foreach($this->dynamicData as $key => $value) {
-                        $result[$key] = $value;
-                    }
-                } else {
-                    $result[$property->getName()] = $property->getValue($this);
-                }
+                $result[$property->getName()] = $property->getValue($this);
+
             }
         }
+
+        foreach($this->dynamicData as $key => $value) {
+            $result[$key] = $value;
+        }
+
+        unset($result['dynamicData']);
+
 
         return $result;
     }
