@@ -92,7 +92,7 @@ abstract class Model extends DatabaseManager
      *
      * @return string The inferred table name in snake_case format.
      */
-    protected function inferTableName(): string
+    public function inferTableName(): string
     {
         $fullClass = get_class($this);
         $exp = explode("\\", $fullClass);
@@ -107,7 +107,7 @@ abstract class Model extends DatabaseManager
      * @param array $row The associative array of data used to load the related object.
      * @return void
      */
-    protected function loadWith(array $row): void
+    public function loadWith(array $row): void
     {
         if (!($this instanceof IRelationWith)) return;
 
@@ -124,7 +124,7 @@ abstract class Model extends DatabaseManager
      * @param array $row An associative array representing the data row used to load the related object.
      * @return void
      */
-    protected function loadBelongsTo(array $row): void
+    public function loadBelongsTo(array $row): void
     {
         if (!($this instanceof IRelationBelongs)) return;
 
@@ -142,7 +142,7 @@ abstract class Model extends DatabaseManager
      *                   to establish relationships.
      * @return void
      */
-    protected function loadHasMany(array $row): void
+    public function loadHasMany(array $row): void
     {
         if (!($this instanceof IRelationHasMany)) return;
 
@@ -162,11 +162,20 @@ abstract class Model extends DatabaseManager
 
             $rows = $this->find($hasMany['column'], $this->model_id, $this->camelToSnake($shortName));
 
+            if(isset($hasMany['as']))
+                $shortName = $hasMany['as'];
+
             foreach ($rows as $r) {
                 $objFactory = new ObjectFactory();
                 $objFactory->setClassName($model);
-                $objFactory->setMethodCalls(['selectByID']);
-                $objFactory->setMethodArgs(['selectByID' => [$r['id']]]);
+
+                if(!isset($hasMany['inConstructor'])) {
+                    $objFactory->setMethodCalls(['selectByID']);
+                    $objFactory->setMethodArgs(['selectByID' => [$r['id']]]);
+                } else {
+                    $objFactory->setConstructorArgs([$r['id']]);
+                }
+
                 $objFactory->setType(Model::class);
                 $this->{$shortName}[] = $objFactory->create();
             }
@@ -199,6 +208,9 @@ abstract class Model extends DatabaseManager
         } else {
             $objFactory->setConstructorArgs([$foreignValue]);
         }
+
+        if(isset($relation['as']))
+            $shortName = $relation['as'];
 
         $this->{$shortName} = $objFactory->create();
     }
@@ -383,6 +395,14 @@ abstract class Model extends DatabaseManager
     }
 
 
+    public function fromArray(array $data): void
+    {
+        foreach ($data as $key => $value) {
+            $this->{$key} = $value;
+        }
+    }
+
+
     /**
      * Generates a string representation of the object by creating a JSON-encoded
      * string of its public properties and their values.
@@ -394,14 +414,11 @@ abstract class Model extends DatabaseManager
         $reflect = new ReflectionClass($this);
         $vars = $reflect->getProperties(ReflectionProperty::IS_PUBLIC);
 
-        $result = [];
-
-        foreach ($vars as $property) {
-            $result[$property->getName()] = $property->getValue($this);
-        }
+        $result = $this->__toArray();
 
         return json_encode($result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
+
 
     /**
      * Converts the object's public properties into an associative array.
@@ -418,9 +435,18 @@ abstract class Model extends DatabaseManager
 
         foreach ($vars as $property) {
             if ($property->isPublic()) {
+
                 $result[$property->getName()] = $property->getValue($this);
+
             }
         }
+
+        foreach($this->dynamicData as $key => $value) {
+            $result[$key] = $value;
+        }
+
+        unset($result['dynamicData']);
+
 
         return $result;
     }
@@ -444,12 +470,17 @@ abstract class Model extends DatabaseManager
 
         if ($this instanceof IRelationWith) {
             $with = $this->with();
-            $parts = explode('\\', $with['model'] ?? '');
-            $shortName = end($parts);
+            $modelClass = $with['model'] ?? null;
 
-            if ($shortName === $name) {
-                $this->dynamicData[$name] = $this->createRelationObject($with);
-                return $this->dynamicData[$name];
+            if ($modelClass) {
+                $parts = explode('\\', $modelClass);
+                $shortName = end($parts);
+                $alias = $with['as'] ?? $shortName;
+
+                if ($alias === $name) {
+                    $this->dynamicData[$name] = $this->createRelationObject($with);
+                    return $this->dynamicData[$name];
+                }
             }
         }
 
