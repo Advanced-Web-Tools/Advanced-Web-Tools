@@ -2,7 +2,7 @@
 const AWT_VERSION = "26.0.0";
 const PACKAGE_MAX_LOAD_TRY = 5;
 
-const DEBUG = true;
+const DEBUG = false;
 
 const SHOW_SQL_CONNECTIONS_CALLS = false;
 
@@ -14,7 +14,7 @@ const SHOW_SQL_CONNECTIONS_CALLS = false;
  *
  * In order for this to work please also set `DEBUG = true;`.
  */
-const REMOTE_INSTALL_FOR_DEVS = true;
+const REMOTE_INSTALL_FOR_DEVS = false;
 const DEV_SECRET = "12345678";
 
 ini_set("post_max_size", "512M");
