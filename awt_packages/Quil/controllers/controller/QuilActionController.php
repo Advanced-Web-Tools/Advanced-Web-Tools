@@ -6,8 +6,8 @@ use AWTRespond\src\AWTRespond;
 use AWTRespond\src\enums\EAWTRespondType;
 use controller\Controller;
 use database\DatabaseManager;
-use Quil\classes\page\models\PageInfo;
-use Quil\classes\page\models\PageRoute;
+use Quil\classes\page\models\QuilPage;
+use Quil\classes\page\models\QuilPageRoute;
 use Quil\classes\page\PageManager;
 use Quil\classes\sources\SourceManager;
 use redirect\Redirect;
@@ -121,12 +121,10 @@ final class QuilActionController extends DashboardPage
             return $this->responder->back();
         }
 
-        $page = new PageInfo($params['id']);
+        $page = new QuilPage($params['id']);
+        $route = $page->route;
+        $admin = $page->admin;
 
-        if ($page->route_id !== null)
-            $route = new PageRoute($page->route_id);
-        if ($page->admin !== null)
-            $admin = new AdminModel($page->created_by);
 
         $info = [
             "page" => [
@@ -136,8 +134,8 @@ final class QuilActionController extends DashboardPage
                 "creation_date" => $page->creation_date
             ],
             "route" => [
-                "path" => $route->route,
-                "id" => $page->route_id,
+                "path" => $route->path,
+                "id" => $route->id,
             ],
             "author" => [
                 "name" => $admin->username

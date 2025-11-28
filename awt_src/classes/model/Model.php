@@ -318,12 +318,15 @@ abstract class Model extends DatabaseManager
      *
      * @return bool True if the model was successfully saved, false otherwise.
      */
-    public function saveModel(): bool
+    public function saveModel(): int|null
     {
         $save = $this->__toArray();
         foreach ($this->paramBlackList as $key => $value) {
             unset($save[$value]);
         }
+
+        if($this->model_id === null)
+            $this->model_source = $this->inferTableName();
 
         return $this->table($this->model_source)->insert($save)->executeInsert();
     }
@@ -340,6 +343,10 @@ abstract class Model extends DatabaseManager
             $this->id_column = "id";
 
         $where = [$this->id_column => $this->model_id];
+
+        if($this->model_source === null)
+            $this->model_source = $this->inferTableName();
+
         return $this->table($this->model_source)->where($where)->delete();
     }
 

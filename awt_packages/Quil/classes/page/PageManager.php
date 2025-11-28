@@ -5,8 +5,10 @@ Quil\classes\page;
 
 use admin\Admin;
 use database\DatabaseManager;
-use Quil\classes\page\models\PageInfo;
-use Quil\classes\page\models\PageRoute;
+use Quil\classes\page\models\collections\QuilPageCollection;
+use Quil\classes\page\models\collections\QuilPageRouteCollection;
+use Quil\classes\page\models\QuilPage;
+use Quil\classes\page\models\QuilPageRoute;
 
 /**
  * Class PageManager
@@ -59,28 +61,18 @@ class PageManager
 
     public function fetchPages(): self
     {
-        $result = $this->database->table('quil_page')
-            ->select(["id"])
-            ->where(["1" => 1])
-            ->get();
-
-        foreach ($result as $page) {
-            $this->pages[$page["id"]] = new PageInfo($page["id"]);
-        }
+        $collection = new QuilPageCollection();
+        $this->pages = $collection->obCollection->toArray();
 
         return $this;
     }
 
     public function fetchRoutes(): self
     {
-        $result = $this->database->table('quil_page_route')
-            ->select(["*"])
-            ->where(["1" => 1])
-            ->get();
 
-        foreach ($result as $route) {
-            $this->routes[$route["id"]] = new PageRoute($route);
-        }
+        $routes = new QuilPageRouteCollection();
+        $this->routes = $routes->obCollection->toArray();
+
         return $this;
     }
 
@@ -124,8 +116,6 @@ class PageManager
         $routeId = null;
         $description = null;
         $content = null;
-
-
 
         if(!isset($params["id"])) {
             return false;
