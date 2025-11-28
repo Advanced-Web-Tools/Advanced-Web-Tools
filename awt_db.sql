@@ -124,17 +124,18 @@ TRUNCATE TABLE `awt_package`;
 --
 
 INSERT INTO `awt_package` (`id`, `store_id`, `installed_by`, `name`, `description`, `icon`, `preview_image`, `license`, `license_url`, `author`, `version`, `minimum_awt_version`, `maximum_awt_version`, `type`, `system_package`, `status`, `installation_date`) VALUES
-(1, 1, 1, 'AWT', 'Advanced Web Tools - Framework', NULL, NULL, NULL, NULL, 'ElStefanos', '24.9.1', '24.9.1', '24.9.1', 0, 1, 1, '2024-08-22 13:43:20'),
-(2, 2, 1, 'Dashboard', 'Advanced Web Tool - Dashboard package', '/awt_data/media/packages/icon/Dashboard/dashboard.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.1', NULL, 1, 1, 1, '2024-09-09 11:48:39'),
-(3, 3, 1, 'Quil', 'Quil - Page builder', '/awt_data/media/packages/icon/Quil/quil.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.1', NULL, 1, 1, 1, '2024-09-09 11:48:39'),
-(4, 4, 1, 'MediaCenter', 'Media Center - Control all your media', '/awt_data/media/packages/icon/MediaCenter/media.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.1', NULL, 1, 1, 1, '2024-09-09 11:48:39'),
-(5, 5, 1, 'Package Manager', 'Default package manager', '/awt_data/media/packages/icon/PackageManager/packages.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.1', NULL, 1, 1, 1, '2024-09-23 11:25:12'),
-(6, 6, 1, 'AWTRespond', 'AWTRespond is a package library to allow other packages easy API handling.', '/awt_data/media/packages/icon/AWTRespond/AWTRespond.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.1', NULL, 1, 1, 1, '2024-10-24 19:37:09'),
-(7, 7, 1, 'AccountManager', 'Manage admin accounts.', '/awt_data/media/packages/icon/Account Manager/accounts.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.1', NULL, 1, 1, 1, '2024-12-24 14:50:28'),
-(8, 8, 1, 'Settings', 'Change settings in AWT.', '/awt_data/media/packages/icon/Settings/settings.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.0', NULL, 1, 1, 1, '2024-12-24 14:50:28'),
-(9, 9, 1, 'Theming', 'Theme your website!', '/awt_data/media/packages/icon/Theming/theme.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.0', NULL, 1, 1, 1, '2024-12-24 14:50:28'),
-(10, 10, 1, 'TwentyTwentyFive', 'AdvancedWebTools - Default Theme', '/awt_data/media/packages/icon/TwentyTwentyFive/theme.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.1', NULL, 2, 0, 1, '2024-12-24 14:50:28');
-
+(1, 1, 1, 'AWT', 'Advanced Web Tools - Framework', NULL, NULL, NULL, NULL, 'ElStefanos', '26.0.0', '26.0.0', '26.0.0', 0, 1, 1, '2024-08-22 13:43:20'),
+(2, NULL, 1, 'Dashboard', 'Advanced Web Tool - Dashboard package', '/awt_data/media/packages/icon/Dashboard/dashboard.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.1', NULL, 1, 1, 1, '2024-09-09 11:48:39'),
+(3, NULL, 1, 'Quil', 'Page builder for Advanced Web Tools', '/awt_data/media/packages/icon/Quil/quil.png', NULL, NULL, NULL, 'ElStefanos', '2.0.0', '24.10.5', '', 1, 0, 1, '2024-09-09 11:48:39'),
+(4, NULL, 1, 'MediaCenter', 'Media Center - Control all your media', '/awt_data/media/packages/icon/MediaCenter/media.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.1', NULL, 1, 1, 1, '2024-09-09 11:48:39'),
+(5, NULL, 1, 'Package Manager', 'Default package manager', '/awt_data/media/packages/icon/PackageManager/packages.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.1', NULL, 1, 1, 1, '2024-09-23 11:25:12'),
+(6, NULL, 1, 'AWTRespond', 'AWTRespond is a package library to allow other packages easy API handling.', '/awt_data/media/packages/icon/AWTRespond/AWTRespond.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.1', NULL, 1, 1, 1, '2024-10-24 19:37:09'),
+(7, NULL, 1, 'AccountManager', 'Manage admin accounts.', '/awt_data/media/packages/icon/Account Manager/accounts.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.1', NULL, 1, 1, 1, '2024-12-24 14:50:28'),
+(8, NULL, 1, 'Settings', 'Change settings in AWT.', '/awt_data/media/packages/icon/Settings/settings.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.0', NULL, 1, 1, 1, '2024-12-24 14:50:28'),
+(9, NULL, 1, 'Theming', 'Theme your website!', '/awt_data/media/packages/icon/Theming/theme.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.0', NULL, 1, 1, 1, '2024-12-24 14:50:28'),
+(10, NULL, 1, 'TwentyTwentyFive', 'AdvancedWebTools - Default Theme', '/awt_data/media/packages/icon/TwentyTwentyFive/theme.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.9.1', NULL, 2, 0, 1, '2024-12-24 14:50:28'),
+(24, NULL, 1, 'AWTStore', 'Default store plugin', '/awt_data/media/packages/icon/AWTStore/store.png', NULL, NULL, NULL, 'ElStefanos', '1.0.0', '24.10.5', '', 1, 1, 1, '2025-05-04 13:41:59');
+COMMIT;
 -- --------------------------------------------------------
 
 --
@@ -164,7 +165,7 @@ TRUNCATE TABLE `awt_setting`;
 --
 
 INSERT INTO `awt_setting` (`id`, `package_id`, `name`, `value_type`, `value`, `required_permission_level`, `category`) VALUES
-(1, 1, 'Website Name', 'text', 'Hello World!', 0, 'General'),
+(1, 1, 'Website Name', 'text', 'site name', 0, 'General'),
 (2, 1, 'Hostname Path', 'text', '', 0, 'General'),
 (3, 1, 'Use Packages', 'boolean', 'true', 0, 'General'),
 (4, 1, 'Session HTTPS Only', 'boolean', 'false', 0, 'Session'),
@@ -172,8 +173,8 @@ INSERT INTO `awt_setting` (`id`, `package_id`, `name`, `value_type`, `value`, `r
 (6, 1, 'Session ID Regeneration Time', 'number', '900', 0, 'Session'),
 (7, 1, 'Session SameSite', 'boolean', 'true', 0, 'Session'),
 (8, 1, 'Contact Email', 'text', 'test@test.com', 0, 'General'),
-(9, 1, 'Phone Number', 'text', '00381 691234567', 0, 'General'),
-(10, 1, 'Address', 'text', 'Djevdjelijska 13', 0, 'General');
+(9, 1, 'Phone Number', 'text', '001 691234567', 0, 'General'),
+(10, 1, 'Address', 'text', 'Address', 0, 'General');
 
 -- --------------------------------------------------------
 
