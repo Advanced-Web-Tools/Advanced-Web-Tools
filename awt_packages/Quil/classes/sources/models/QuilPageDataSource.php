@@ -36,7 +36,7 @@ class QuilPageDataSource extends Model implements IRelationWith
 
         return [
             "column" => "table_id",
-            "model" => "Quil\classes\sources\models\AwtTable",
+            "model" => AwtTable::class,
             "inConstructor" => true,
             "as" => "quil_table"
         ];

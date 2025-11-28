@@ -8,6 +8,7 @@ use database\DatabaseManager;
 use Quil\classes\page\models\collections\QuilPageCollection;
 use Quil\classes\page\models\collections\QuilPageRouteCollection;
 use Quil\classes\page\models\QuilPage;
+use Quil\classes\page\models\QuilPageContent;
 use Quil\classes\page\models\QuilPageRoute;
 
 /**
@@ -40,22 +41,21 @@ class PageManager
             $name = "Page";
         }
 
+        $page = new QuilPage(null);
+
+
         $this->createRoute("/view/$name");
 
-        $this->pageId = $this->database->table("quil_page")
-            ->insert([
-                "route_id" => $this->routeId,
-                "created_by" => $this->admin->getParam("id"),
-                "name" => $name
-            ])
-            ->executeInsert();
+        $page->route_id = $this->routeId;
+        $page->name = $name;
+        $page->created_by = $this->admin->getParam("id");
 
-        $this->contentId = $this->database->table("quil_page_content")
-            ->insert([
-                "page_id" => $this->pageId,
-                "content" => "<div class='page'></div>"
-            ])
-            ->executeInsert();
+        $this->pageId = $page->saveModel();
+
+        $content = new QuilPageContent(null);
+        $content->page_id = $this->pageId;
+        $content->content = "<div class='page'><h1 class='block'>Hello world!</h1></div>";
+        $this->contentId = $content->saveModel();
     }
 
 
@@ -76,7 +76,6 @@ class PageManager
         return $this;
     }
 
-
     public function returnPages(): ?array
     {
         return $this->pages;
@@ -89,24 +88,24 @@ class PageManager
 
     public function deletePage(int $id): void
     {
-        $this->database->table("quil_page")->where(["id" => $id])->delete();
+        $page = new QuilPage($id);
+        if($page->route !== null)
+            $page->route->deleteModel();
+
+        $page->deleteModel();
     }
 
     public function deleteRoute(int $id): void
     {
-        $this->database->table("quil_page_route")->where(["id" => $id])->delete();
+        (new QuilPageRoute($id))->deleteModel();
     }
 
     public function createRoute(string $path): void
     {
         $route = str_replace(" ", "", $path);
-        $this->routeId = $this->database
-            ->table("quil_page_route")
-            ->insert([
-                "route" => $route,
-                "created_by" => $this->admin->getParam("id")
-            ])
-            ->executeInsert();
+
+        $route = new QuilPageRoute(["id" => null ,"route" => $route, "created_by" => $this->admin->getParam("id")]);;
+        $this->routeId = $route->saveModel();
     }
 
     public function savePage(array $params): bool
@@ -123,12 +122,11 @@ class PageManager
 
         $id = $params["id"];
 
-        if(isset($params["name"])) {
-            $name = $params["name"];
-            $ret = $this->database->table("quil_page")->where(["id" => $id])->update([
-                "name" => $name
-            ]);
+        $page = new QuilPage($id);
 
+        if(isset($params["name"])) {
+            $page->name = $params["name"];
+            $ret = $page->save();
             if(!$ret)
                 return false;
         }
@@ -140,11 +138,8 @@ class PageManager
             if($routeId === "null") {
                 $routeId = null;
             }
-
-            $ret = $this->database->table("quil_page")->where(["id" => $id])->update([
-                "route_id" => $routeId
-            ]);
-
+            $page->route_id = $routeId;
+            $ret = $page->save();
             if(!$ret)
                 return false;
         }
@@ -153,12 +148,14 @@ class PageManager
         if(isset($params["description"])) {
             $description = $params["description"];
 
-            $ret = $this->database->table("quil_page")->where(["id" => $id])->update([
-                "description" => $description
-            ]);
+            $page->description = $description;
+
+            $ret = $page->save();
             if(!$ret)
                 return false;
         }
+
+        $page->__destruct();
 
 
         if(isset($params["content"])) {

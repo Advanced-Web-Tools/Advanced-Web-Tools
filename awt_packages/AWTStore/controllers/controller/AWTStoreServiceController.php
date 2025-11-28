@@ -97,4 +97,61 @@ final class AWTStoreServiceController extends Controller
     }
 
 
+    public function updateAWT(array|string $params): Redirect
+    {
+        $this->adminCheck();
+
+        $url = $this->storeURL . $_GET["remote_path"];
+
+        $tmpFile = tempnam(sys_get_temp_dir(), "awt_zip_") . ".zip";
+
+        $fp = fopen($tmpFile, 'w');
+        if (!$fp) {
+            die("Failed to create temporary file.");
+        }
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_FAILONERROR, true);
+
+        $result = curl_exec($ch);
+        if ($result === false) {
+            $error = curl_error($ch);
+            curl_close($ch);
+            fclose($fp);
+            unlink($tmpFile);
+            die("Failed to download package: $error");
+        }
+
+        curl_close($ch);
+        fclose($fp);
+
+
+        $db_config = ROOT . "awt_db.php";
+
+        $db_config_backup = ROOT . "awt_db_backup.php";
+
+        copy($db_config, $db_config_backup);
+        unlink($db_config);
+
+        $zip = new ZipArchive();
+        $res = $zip->open($tmpFile);
+        if ($res === TRUE) {
+            $zip->extractTo(ROOT);
+        }
+
+        copy($db_config_backup, $db_config);
+        unlink($db_config_backup);
+
+        if(file_exists(ROOT . "awt_update.php")) {
+            require_once ROOT . "awt_update.php";
+            unlink(ROOT . "awt_update.php");
+        }
+        unlink($tmpFile);
+
+        return (new Redirect())->back();
+    }
+
+
 }

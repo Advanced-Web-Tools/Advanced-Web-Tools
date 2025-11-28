@@ -2,11 +2,12 @@
 
 namespace Theming\classes\Theme;
 
+use model\interfaces\IRelationHasMany;
 use model\Model;
 use packages\manager\PackageManager;
 use packages\Package;
 
-final class ThemeModel extends Model
+final class ThemeModel extends Model implements IRelationHasMany
 {
     private int $packageID;
     public Package $package;
@@ -42,9 +43,13 @@ final class ThemeModel extends Model
 
             if($this->packageID === $id)
                 return $package;
-
         }
 
         return null;
+    }
+
+    public function hasMany(): array
+    {
+        return ["model" => ["Theming\classes\models\ThemingSettings", "Theming\classes\models\ThemingCustomPage"], "column" => "theme_id"];
     }
 }

@@ -112,7 +112,7 @@ class CustomPageController extends Controller
             }
 
 
-            $bundle[$source->source_name] = new DummySourceModel($value, $source->table_name, $source->column_selector);
+            $bundle[$source->source_name] = new DummySourceModel($value, $source->table_name, $source->column_selector, $source->source_name);
         }
 
         $this->setTitle($this->page["name"]);
