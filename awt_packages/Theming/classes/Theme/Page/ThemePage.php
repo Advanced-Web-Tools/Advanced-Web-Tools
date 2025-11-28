@@ -8,6 +8,8 @@ use DOMDocument;
 use redirect\Redirect;
 use render\events\RenderReadyEvent;
 use render\TemplateEngine\BladeOne;
+use Theming\classes\models\ThemingCustomPage;
+use Theming\classes\models\ThemingTheme;
 use Theming\classes\Theme\Settings\ThemeSettings;
 use Throwable;
 use view\View;
@@ -50,8 +52,9 @@ abstract class ThemePage extends Controller
     {
         $db = new DatabaseManager();
 
+
         $res = $db->table("theming_custom_page")
-            ->select(["quil_page_content.content"])
+            ->select(["quil_page_content.content", "theming_custom_page.id"])
             ->join("quil_page_content", "theming_custom_page.page_content_id = quil_page_content.id")
             ->where([
                 "name"     => $this->matchPageName(),

@@ -17,7 +17,7 @@ use model\Model;
 class QuilPageRoute extends Model implements IRelationWith
 {
     public string $route;
-    public int $id;
+    public ?int $id;
     public int $created_by;
 
     public function __construct(null|array|int $data)
@@ -31,10 +31,8 @@ class QuilPageRoute extends Model implements IRelationWith
         if(!is_array($data)) {
             $this->selectByID($data);
             return;
-        }
-
-        foreach ($data as $key => $value) {
-            $this->$key = $value;
+        } else {
+            $this->fromArray($data);
         }
 
         $this->model_source = "quil_page_route";

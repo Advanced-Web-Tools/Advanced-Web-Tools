@@ -15,6 +15,10 @@ class QuilPage extends Model implements IRelationWith, IRelationBelongs, IRelati
         parent::__construct();
 
         $this->selectByID($id);
+
+        $this->paramBlackList("admin");
+        $this->paramBlackList("route");
+        $this->paramBlackList("content");
     }
 
     public function getName(): string

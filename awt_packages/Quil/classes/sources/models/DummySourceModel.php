@@ -6,18 +6,21 @@ use model\Model;
 
 class DummySourceModel extends Model
 {
-    public function __construct(mixed $value, string $table = '', string $column = '')
+
+    public string $dummyName;
+
+    public function __construct(mixed $value, string $table = '', string $column = '', string $name = '')
     {
         parent::__construct();
+
+        $this->dummyName = $name;
+
+        if($table == '' || $column == '')
+            return;
+
         $res = $this->table($table)->select(["*"])->where([$column => $value])->get()[0];
         if ($res) {
-            $this->createFromArray($res);
-        }
-    }
-
-    private function createFromArray(array $data): void {
-        foreach ($data as $key => $value) {
-            $this->{$key} = $value;
+            $this->fromArray($res);
         }
     }
 }
